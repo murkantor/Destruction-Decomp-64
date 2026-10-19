@@ -197,6 +197,8 @@ segments:
       - [0x294BC, asm]
       - [0x2CAD4, c, auto/2CAD4]
       - [0x2CB08, asm]
+      - [0x2DFB8, c, auto/2DFB8]
+      - [0x2E00C, asm]
       - [0x2E360, c, auto/2E360]
       - [0x2E41C, asm]
       - [0x2E958, c, auto/2E958]
