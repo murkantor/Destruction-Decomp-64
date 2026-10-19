@@ -72,6 +72,10 @@ def shared_rodata(rodata, auto):
                 func = line.split()[1]
             for sym in re.findall(r"%(?:hi|lo)\(((?:D|jtbl)_[0-9A-F]{8})\)", line):
                 users.setdefault(sym, set()).add(func)
+    for path in glob.glob(os.path.join(ROOT, "src", "**", "*.c"), recursive=True):  # C users too
+        text = open(path).read()
+        for sym in re.findall(r"\bextern\b[^;]*?\b((?:D|jtbl)_[0-9A-F]{8})\b", text):
+            users.setdefault(sym, set()).add(os.path.relpath(path, ROOT))
     out = []
     for name, (start, end) in rodata.items():
         if end % 8:
