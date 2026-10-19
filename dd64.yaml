@@ -103,6 +103,8 @@ segments:
       - [0xC730, asm]
       - [0xCCB8, c, auto/CCB8]
       - [0xCD40, asm]
+      - [0xF288, c, auto/F288]
+      - [0xF2E0, asm]
       - [0xF45C, c, auto/F45C]
       - [0xF464, asm]
       - [0xF560, c, auto/F560]

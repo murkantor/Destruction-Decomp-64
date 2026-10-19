@@ -143,8 +143,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000E178` | `00ED78` | 0x298 | `func_8000E178` | `asm/CD40.s` | asm |
 | `8000E410` | `00F010` | 0xf8 | `func_8000E410` | `asm/CD40.s` | asm |
 | `8000E508` | `00F108` | 0x180 | `func_8000E508` | `asm/CD40.s` | asm |
-| `8000E688` | `00F288` | 0x58 | `func_8000E688` | `asm/CD40.s` | asm |
-| `8000E6E0` | `00F2E0` | 0x17c | `func_8000E6E0` | `asm/CD40.s` | asm |
+| `8000E688` | `00F288` | 0x58 | `func_8000E688` | `src/auto/F288.c` | C (generated) |
+| `8000E6E0` | `00F2E0` | 0x17c | `func_8000E6E0` | `asm/F2E0.s` | asm |
 | `8000E85C` | `00F45C` | 0x8 | `func_8000E85C` | `src/auto/F45C.c` | C (generated) |
 | `8000E864` | `00F464` | 0xfc | `func_8000E864` | `asm/F464.s` | asm |
 | `8000E960` | `00F560` | 0x50 | `func_8000E960` | `src/auto/F560.c` | C (generated) |
