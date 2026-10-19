@@ -232,6 +232,53 @@ def leading_args(code):
     return re.sub(r"^(\w[\w \*]*?\b\w+)\(([^()]*)\)(\s*\{)", fix, code, count=0, flags=re.M)
 
 
+def call_sites(code, fname):
+    """(start, open paren, close paren, callee) of each call in the body of fname."""
+    body = re.search(r"^\w[^\n]*\b" + re.escape(fname) + r"\([^;{]*\)\s*\{", code, re.M)
+    if not body:
+        return []
+    out = []
+    for m in re.finditer(r"\b(\w+)\(", code[body.end():]):
+        callee = m.group(1)
+        if callee in ("if", "while", "for", "switch", "return", "sizeof", "M2C_FIELD", "__typeof__") or callee.startswith("M2C_"):
+            continue
+        start = body.end() + m.start()
+        open_i = body.end() + m.end() - 1
+        depth, j = 0, open_i
+        while j < len(code):
+            depth += code[j] == "("
+            depth -= code[j] == ")"
+            if depth == 0:
+                break
+            j += 1
+        out.append((start, open_i, j, callee))
+    return out
+
+
+def shift_call(code, fname, site, k):
+    """Pass fname's first k arguments through as the first k arguments of one call."""
+    start, open_i, close_i, callee = site
+    inner = code[open_i + 1:close_i].strip()
+    lead = ", ".join(f"arg{i}" for i in range(k))
+    code = code[:open_i + 1] + lead + (", " + inner if inner else "") + code[close_i:]
+    # the callee's prototype no longer fits; make it unprototyped
+    code = re.sub(r"^(\S.*\b" + re.escape(callee) + r")\(.*\);(.*)$", r"\1();\2", code, count=1, flags=re.M)
+
+    # make sure fname has parameters arg0 .. arg(k-1)
+    def fix(m):
+        params = m.group(2).strip()
+        have = {int(n) for n in re.findall(r"\barg(\d+)\b", params)}
+        if params == "void":
+            params, have = "", set()
+        top = max(have | set(range(k))) if have or k else -1
+        new = []
+        for i in range(top + 1):
+            pm = re.search(r"[^,]*\barg" + str(i) + r"\b", params)
+            new.append(pm.group(0).strip() if pm else f"M2C_UNK arg{i}")
+        return f"{m.group(1)}({', '.join(new)})" + m.group(3)
+    return re.sub(r"^(\w[\w \*]*?\b" + re.escape(fname) + r")\(([^()]*)\)(\s*\{)", fix, code, count=1, flags=re.M)
+
+
 # m2c option sets to try in turn; different C shapes lead GCC to different code
 VARIANTS = [
     [],
@@ -291,6 +338,20 @@ def try_one(job):
                 if diffs is not None and (best is None or diffs < best[0]):
                     best = (diffs, code)
                 first_why = first_why or why
+        # near misses: try passing the function's own arguments through to each call
+        if best and best[0] <= 8:
+            base = best[1]
+            for site in call_sites(base, name)[:6]:
+                for k in (1, 2):
+                    code = shift_call(base, name, site, k)
+                    if code in seen:
+                        continue
+                    seen.add(code)
+                    ok, why, code, diffs = attempt(code, work, name, vram, size)
+                    if ok:
+                        return name, vram, size, code, ""
+                    if diffs is not None and diffs < best[0]:
+                        best = (diffs, code)
     if best and NEAR_DIR:
         open(os.path.join(NEAR_DIR, f"{best[0]:03d}_{name}.c"), "w").write(best[1])
     return name, vram, size, None, first_why
