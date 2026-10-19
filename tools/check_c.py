@@ -6,7 +6,8 @@ Usage: python3 tools/check_c.py DIR
 
 DIR holds one <function name>.c per function, without the includes. Each is
 compiled and compared the same way as in autodecomp.py, and the ones that
-match are listed in DIR/matches.txt.
+match are listed in DIR/matches.txt, with the place of their .rodata if
+they have any.
 """
 import glob
 import os
@@ -37,10 +38,11 @@ def main():
         print(f"{name}: {'match' if ok else why + (f' ({diffs} words)' if diffs else '')}")
         if ok:
             open(path, "w").write(code)
-            found.append((vram, size, name))
+            found.append((vram, size, name, autodecomp.last_rodata))
     with open(os.path.join(d, "matches.txt"), "w") as f:
-        for vram, size, name in sorted(found):
-            f.write(f"{vram:08X} {size:#06x} {name}\n")
+        for vram, size, name, rodata in sorted(found):
+            extra = f" {rodata[0]:08X} {rodata[1]:#06x}" if rodata else ""
+            f.write(f"{vram:08X} {size:#06x} {name}{extra}\n")
 
 
 if __name__ == "__main__":

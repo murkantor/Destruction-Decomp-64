@@ -289,3 +289,5 @@ guScale = 0x80069B10; // type:func
 guTranslate = 0x80069DE4; // type:func
 CartRomHandle = 0x80131308;
 __osPiTable = 0x800B573C;
+guLookAtF = 0x80068560; // type:func
+guLookAt = 0x800688E0; // type:func

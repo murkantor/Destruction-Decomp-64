@@ -1254,8 +1254,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800682E0` | `068EE0` | 0x100 | `func_800682E0` | `asm/68EE0.s` | asm |
 | `800683E0` | `068FE0` | 0x150 | `cosf` | `asm/68EE0.s` | asm |
 | `80068530` | `069130` | 0x28 | `func_80068530` | `src/auto/69130.c` | C (generated) |
-| `80068560` | `069160` | 0x380 | `func_80068560` | `asm/69158.s` | asm |
-| `800688E0` | `0694E0` | 0x390 | `func_800688E0` | `asm/69158.s` | asm |
+| `80068560` | `069160` | 0x380 | `guLookAtF` | `src/auto/69160.c` | C (generated) |
+| `800688E0` | `0694E0` | 0x384 | `guLookAt` | `src/auto/694E0.c` | C (generated) |
 | `80068C70` | `069870` | 0x98 | `guMtxF2L` | `src/auto/69870.c` | C (generated) |
 | `80068D08` | `069908` | 0xa8 | `func_80068D08` | `asm/69908.s` | asm |
 | `80068DB0` | `0699B0` | 0x50 | `guMtxIdentF` | `src/auto/699B0.c` | C (generated) |

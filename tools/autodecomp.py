@@ -114,11 +114,28 @@ def relocs(o):
     return rel
 
 
+# (vram, size) of the .rodata of the last function matches() accepted, or None
+last_rodata = None
+RODATA_SECTIONS = (".rodata", ".rdata")
+
+
 def matches(o, name, vram, size, rom, syms):
-    """Compare the compiled function with the ROM, resolving relocations."""
+    """Compare the compiled function with the ROM, resolving relocations.
+
+    Constants in .rodata are allowed when every reference points at the same
+    place in the ROM's rodata and the bytes there are the same. That place is
+    left in last_rodata so the caller can give the file its own .rodata
+    subsegment.
+    """
+    global last_rodata
+    last_rodata = None
     sizes = section_sizes(o)
-    if any(sizes.get(s, 0) for s in (".data", ".rodata", ".bss", ".rdata", ".sdata", ".sbss")):
+    if any(sizes.get(s, 0) for s in (".data", ".bss", ".sdata", ".sbss")):
         return False, "uses data sections"
+    rodata = [s for s in RODATA_SECTIONS if sizes.get(s, 0)]
+    if len(rodata) > 1:
+        return False, "two rodata sections"
+    rodata_base = None
     nm = subprocess.run(["mips-linux-gnu-nm", "-S", o], capture_output=True, text=True).stdout
     m = re.search(r"^([0-9a-f]+) ([0-9a-f]+) T " + re.escape(name) + "$", nm, re.M)
     if not m or int(m.group(1), 16) != 0 or sizes.get(".text") != size:
@@ -140,6 +157,22 @@ def matches(o, name, vram, size, rom, syms):
             # jump inside the function: the instruction holds the offset
             if (a & 0xFC000000) != (b & 0xFC000000) or ((b & 0x3FFFFFF) << 2) != ((vram + ((a & 0x3FFFFFF) << 2)) & 0x0FFFFFFC):
                 return False, f"+{k:#x} jump"
+            continue
+        if sym in RODATA_SECTIONS and kind in ("R_MIPS_HI16", "R_MIPS_LO16"):
+            if (a & 0xFFFF0000) != (b & 0xFFFF0000):
+                return False, f"+{k:#x}"
+            if kind == "R_MIPS_HI16":
+                hi[sym] = (b & 0xFFFF, a & 0xFFFF)
+                continue
+            if sym not in hi:
+                return False, f"+{k:#x} lo without hi"
+            lo = b & 0xFFFF
+            rom_addr = ((hi[sym][0] << 16) + (lo - 0x10000 if lo & 0x8000 else lo)) & 0xFFFFFFFF
+            add = a & 0xFFFF
+            base = rom_addr - (add - 0x10000 if add & 0x8000 else add)
+            if rodata_base is not None and base != rodata_base:
+                return False, f"+{k:#x} rodata address"
+            rodata_base = base
             continue
         if sym not in syms:
             m = re.fullmatch(r"(?:D|func|jtbl)_(?:[A-Z]+_)?([0-9A-F]{8})", sym)
@@ -171,6 +204,14 @@ def matches(o, name, vram, size, rom, syms):
             return False, f"reloc {kind}"
     if diffs:
         return False, f"+{diffs} words differ"
+    if rodata:
+        if rodata_base is None:
+            return False, "rodata not referenced"
+        data = subprocess.run(["mips-linux-gnu-objcopy", "-O", "binary", "-j", rodata[0], o, "/dev/stdout"], capture_output=True).stdout
+        off = rodata_base - ROM_BASE
+        if data != rom[off:off + len(data)]:
+            return False, "rodata differs"
+        last_rodata = (rodata_base, len(data))
     return True, size
 
 
@@ -354,7 +395,7 @@ def try_one(job):
                 seen.add(code)
                 ok, why, code, diffs = attempt(code, work, name, vram, size)
                 if ok:
-                    return name, vram, size, code, ""
+                    return name, vram, size, code, last_rodata
                 if diffs is not None and (best is None or diffs < best[0]):
                     best = (diffs, code)
                 first_why = first_why or why
@@ -369,7 +410,7 @@ def try_one(job):
                     seen.add(code)
                     ok, why, code, diffs = attempt(code, work, name, vram, size)
                     if ok:
-                        return name, vram, size, code, ""
+                        return name, vram, size, code, last_rodata
                     if diffs is not None and diffs < best[0]:
                         best = (diffs, code)
     if best and NEAR_DIR:
@@ -409,14 +450,15 @@ def main():
     with multiprocessing.Pool(args.j, initializer=init, initargs=(rom, syms, near)) as pool:
         for name, vram, size, c, why in pool.imap_unordered(try_one, jobs, chunksize=4):
             if c:
-                found.append((vram, name, size))
+                found.append((vram, name, size, why))
                 open(os.path.join(args.out, name + ".c"), "w").write(c)
             else:
                 reasons[why] = reasons.get(why, 0) + 1
     found.sort()
     with open(os.path.join(args.out, "matches.txt"), "w") as f:
-        for vram, name, size in found:
-            f.write(f"{vram:08X} {size:#06x} {name}\n")
+        for vram, name, size, rodata in found:
+            extra = f" {rodata[0]:08X} {rodata[1]:#06x}" if rodata else ""
+            f.write(f"{vram:08X} {size:#06x} {name}{extra}\n")
     print(f"tried {len(jobs)}, matched {len(found)}")
     for k, v in sorted(reasons.items(), key=lambda x: -x[1])[:int(os.environ.get("AUTODECOMP_TOP", "10"))]:
         print(f"  {v:4d} {k}")

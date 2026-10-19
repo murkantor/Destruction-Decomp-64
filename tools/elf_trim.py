@@ -7,6 +7,8 @@ Usage: python3 tools/elf_trim.py FILE.o
   padding between objects, so .text is cut to the end of its last function.
 - It also sets the symbol table's sh_info (first global symbol) too low, which
   modern ld rejects. It is set to the real first global.
+- The literal pool it makes for li.d (.rodata) is marked writable but not
+  allocated, so ld would leave it out of the ROM. It is marked allocated.
 
 The object is edited in place.
 """
@@ -28,6 +30,11 @@ def main():
     sections = [sh(i) for i in range(shnum)]
     strtab = sections[shstrndx]
     name = lambda off: data[strtab[4] + off:data.index(b"\0", strtab[4] + off)].decode()
+    for i, s in enumerate(sections):
+        if name(s[0]) in (".rodata", ".rdata") and s[1] == 1 and not s[2] & 2:  # PROGBITS without SHF_ALLOC
+            s[2] = 2
+            o = shoff + i * shentsize
+            data[o:o + 40] = struct.pack(">10I", *s)
     text = next((i for i, s in enumerate(sections) if name(s[0]) == ".text"), None)
     if text is None:
         return

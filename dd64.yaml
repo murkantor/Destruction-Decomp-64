@@ -582,6 +582,9 @@ segments:
       - [0x68EE0, asm]
       - [0x69130, c, auto/69130]
       - [0x69158, asm]
+      - [0x69160, c, auto/69160]
+      - [0x694E0, c, auto/694E0]
+      - [0x69864, asm]
       - [0x69870, c, auto/69870]
       - [0x69908, asm]
       - [0x699B0, c, auto/699B0]
@@ -784,6 +787,9 @@ segments:
       - [0x7B9D0, textbin, rsp_text]
       - [0x7F510, data]
       - [0xB8960, rodata]
+      - [0xBCCB0, .rodata, auto/69160]
+      - [0xBCCC0, .rodata, auto/694E0]
+      - [0xBCCD0, rodata]
       - { start: 0xBD4A0, type: bss, vram: 0x800BC8A0 }
 
   - name: assets_bd4a0
