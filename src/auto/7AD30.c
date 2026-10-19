@@ -1,10 +1,10 @@
 #include "common.h"
 #include "m2c.h"
 
-extern u8 D_800B6FE0[];
+extern u8 _ctype[];
 
 s32 toupper(s32 c) {
-    if (D_800B6FE0[c & 0xFF] & 4) {
+    if (_ctype[c & 0xFF] & 4) {
         c -= 0x20;
     }
     return c;
