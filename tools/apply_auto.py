@@ -74,6 +74,9 @@ def shared_rodata(rodata, auto):
                 users.setdefault(sym, set()).add(func)
     out = []
     for name, (start, end) in rodata.items():
+        if end % 8:
+            out.append((name, "its end", "the next rodata, which would start 4 bytes off an 8-byte boundary"))
+            continue
         src = open(os.path.join(auto, name + ".c")).read()
         for rom, sym in syms:
             if re.search(r"\b%s\b\s*(\[[^\]]*\])?\s*=" % sym, src):
