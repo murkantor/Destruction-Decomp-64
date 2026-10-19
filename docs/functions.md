@@ -1449,8 +1449,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80073C00` | `074800` | 0x14 | `alFxParam` | `src/libultra/alFxParam.c` | C |
 | `80073C14` | `074814` | 0x1f0 | `func_80073C14` | `asm/74814.s` | asm |
 | `80073E04` | `074A04` | 0x218 | `_loadOutputBuffer` | `asm/74814.s` | asm |
-| `8007401C` | `074C1C` | 0x170 | `_loadBuffer` | `asm/74814.s` | asm |
-| `8007418C` | `074D8C` | 0x170 | `_saveBuffer` | `asm/74814.s` | asm |
+| `8007401C` | `074C1C` | 0x170 | `_loadBuffer` | `src/auto/74C1C.c` | C (generated) |
+| `8007418C` | `074D8C` | 0x170 | `_saveBuffer` | `src/auto/74D8C.c` | C (generated) |
 | `800742FC` | `074EFC` | 0x9c | `_filterBuffer` | `src/auto/74EFC.c` | C (generated) |
 | `80074398` | `074F98` | 0x98 | `_doModFunc` | `asm/74F98.s` | asm |
 | `80074430` | `075030` | 0x100 | `alSavePull` | `src/auto/75030.c` | C (generated) |
