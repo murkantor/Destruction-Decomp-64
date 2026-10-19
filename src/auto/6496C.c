@@ -19,14 +19,14 @@ s32 func_80063DAC(void) {
     return M2C_FIELD(Res_Find(), s32 *, 8);
 }
 
-void *func_80063ED0();                              /* extern */
+void *Res_FindType();                              /* extern */
 
 s32 func_80063DCC(void) {
-    return M2C_FIELD(func_80063ED0(), s32 *, 4);
+    return M2C_FIELD(Res_FindType(), s32 *, 4);
 }
 
-void *func_80063ED0();                              /* extern */
+void *Res_FindType();                              /* extern */
 
 s32 func_80063DEC(void) {
-    return M2C_FIELD(func_80063ED0(), s32 *, 8);
+    return M2C_FIELD(Res_FindType(), s32 *, 8);
 }

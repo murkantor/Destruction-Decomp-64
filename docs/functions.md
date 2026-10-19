@@ -1127,8 +1127,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80063AAC` | `0646AC` | 0xa8 | `func_80063AAC` | `src/auto/646AC.c` | C (generated) |
 | `80063B54` | `064754` | 0xa8 | `func_80063B54` | `src/auto/646AC.c` | C (generated) |
 | `80063BFC` | `0647FC` | 0x4c | `Res_Load` | `src/auto/647FC.c` | C (generated) |
-| `80063C48` | `064848` | 0x90 | `func_80063C48` | `asm/64848.s` | asm |
-| `80063CD8` | `0648D8` | 0x94 | `func_80063CD8` | `asm/64848.s` | asm |
+| `80063C48` | `064848` | 0x90 | `Res_ComputeSizes` | `asm/64848.s` | asm |
+| `80063CD8` | `0648D8` | 0x94 | `Res_FreeAll` | `src/auto/648D8.c` | C (generated) |
 | `80063D6C` | `06496C` | 0x20 | `Res_GetSize` | `src/auto/6496C.c` | C (generated) |
 | `80063D8C` | `06498C` | 0x20 | `func_80063D8C` | `src/auto/6496C.c` | C (generated) |
 | `80063DAC` | `0649AC` | 0x20 | `func_80063DAC` | `src/auto/6496C.c` | C (generated) |
@@ -1137,7 +1137,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80063E0C` | `064A0C` | 0x1c | `func_80063E0C` | `src/auto/64A0C.c` | C (generated) |
 | `80063E28` | `064A28` | 0x50 | `func_80063E28` | `asm/64A28.s` | asm |
 | `80063E78` | `064A78` | 0x58 | `Res_Find` | `src/auto/64A78.c` | C (generated) |
-| `80063ED0` | `064AD0` | 0xa8 | `func_80063ED0` | `asm/64AD0.s` | asm |
+| `80063ED0` | `064AD0` | 0xa8 | `Res_FindType` | `src/auto/64AD0.c` | C (generated) |
 | `80063F78` | `064B78` | 0x10 | `func_80063F78` | `src/auto/64B78.c` | C (generated) |
 | `80063F88` | `064B88` | 0xc | `func_80063F88` | `src/auto/64B78.c` | C (generated) |
 | `80063FA0` | `064BA0` | 0x4c | `func_80063FA0` | `src/auto/64BA0.c` | C (generated) |
