@@ -25,7 +25,7 @@ typedef struct {
 extern Game *gGame;
 u8 func_800330A8(void *, void *, void *, f32, void *);
 
-void func_8002F924(Trigger *t) {
+void Trigger_CheckCarsInZone(Trigger *t) {
     s32 i;
     Car *c;
 

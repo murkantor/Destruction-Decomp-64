@@ -5,7 +5,7 @@ typedef struct { u8 pad[0x10]; s32 x10; } UnkObj;
 typedef struct { u8 pad[0x10FC]; s16 x10FC; } Game;
 void Timer_Start(void *, s64);
 void func_80048B30(void *, s32, s32);
-void func_80048FD8(f32, void *, s32);
+void Menu_LayoutResultRows(f32, void *, s32);
 extern s32 D_800958B4;
 extern s32 D_80096038[];
 extern Game *gGame[];
@@ -28,7 +28,7 @@ s32 Menu_IncrementCount(UnkObj *o) {
         } else {
             func_80048B30(D_800972A0, 2, n + 2);
         }
-        func_80048FD8(26.0f, D_800972A8, o->x10 + 1);
+        Menu_LayoutResultRows(26.0f, D_800972A8, o->x10 + 1);
     }
     Timer_Start(o, 200000000);
     return ret;

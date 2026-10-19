@@ -14,7 +14,7 @@ extern s32 D_800972C0[];
 extern Slot D_80123922[];
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
-void func_80048FD8(f32 y, f32 *xs, s32 num) {
+void Menu_LayoutResultRows(f32 y, f32 *xs, s32 num) {
     s32 i;
     s32 j;
     s32 cnt;

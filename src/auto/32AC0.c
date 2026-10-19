@@ -52,7 +52,7 @@ void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Normalize(Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 u8 func_80035E78(void *, Vec3f *, void *, Vec3f *, f32, s32, f32, f32 *, Vec3f *, Vec3f *, Vec3f *);
-void func_800319F0(Car *, Car *, Hit *);
+void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
 u8 func_80033168(void *, void *, Vec3f *, void *, void *, Vec3f *);
 void func_8003225C(Car *, Car *);
 
@@ -118,7 +118,7 @@ void func_80031EC0(Car *a, s32 idx) {
                     Vec3f_Sub(&hit.x48, &contact, &outB);
                     hit.x20 = pa->xB0;
                     hit.x3C = b->u.d.x29C;
-                    func_800319F0(a, b, &hit);
+                    Car_ApplyCollisionImpulse(a, b, &hit);
                 }
             }
         }

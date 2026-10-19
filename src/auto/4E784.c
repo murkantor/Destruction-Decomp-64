@@ -60,7 +60,7 @@ static inline void addTitle(s32 mode) {
     Ui_AddElement(gUi[0], 2, 0x12F);
 }
 
-void func_8004DB84(void) {
+void Results_ShowLapTimes(void) {
     Str8 buf = D_800BAF34;
     TimeHMS t;
     s32 total = 0;

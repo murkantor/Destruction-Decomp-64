@@ -52,7 +52,7 @@ char *strcpy(char *, const char *);
 s32 func_8001B2F4(s32);
 s32 func_8001B298(s32);
 void func_80048B30(void *, s32, s32);
-void func_80048FD8(f32, void *, s32);
+void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, u64);
 
 static inline s32 Rank_Get(s32 i) {
@@ -171,7 +171,7 @@ void func_8004C340(void) {
         }
     }
     func_80048B30(D_80097294, 3, 1);
-    func_80048FD8(26.0f, D_800972A8, 1);
+    Menu_LayoutResultRows(26.0f, D_800972A8, 1);
     for (i = 0; i < 4; i++) {
         D_800958F8[i].xC = 2;
         D_800958F8[i].x10 = 0;

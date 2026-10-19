@@ -5,7 +5,7 @@ f64 __kernel_standard(s32, char *, f64, f64, f64);
 f64 modf(f64, f64 *);
 f64 func_8007AA20(f64);
 
-f64 func_8007AB20(f64 x) {
+f64 exp(f64 x) {
     union { f64 d; u64 ll; } u;
     f64 ip;
     f64 f;

@@ -43,7 +43,7 @@ void func_80035328(Vec3fPair *, Car *, Hit *);
 void func_80028070(void *, Vec3f, void *, Vec3f, f32);
 f32 fabsf(f32);
 
-void func_800319F0(Car *a, Car *b, Hit *hit) {
+void Car_ApplyCollisionImpulse(Car *a, Car *b, Hit *hit) {
     Vec3fPair r;
     Vec3f t;
     Vec3f s;

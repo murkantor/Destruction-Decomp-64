@@ -53,7 +53,7 @@ void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 s32 func_80014E10(ClipVtx *out, ClipVtx *in, s32 n, void *plane, f32 d);
 
-s32 func_80014FF4(Ctx *ctx, s32 *list, s32 count) {
+s32 Shadow_ClipAndEmitFaces(Ctx *ctx, s32 *list, s32 count) {
     ClipVtx bufA[10];
     ClipVtx bufB[10];
     f32 d;

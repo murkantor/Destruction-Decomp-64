@@ -3,7 +3,7 @@
 
 f64 __kernel_standard(s32, char *, f64, f64, f64);
 f64 func_80079750(f64);
-f64 func_8007AB20(f64);
+f64 exp(f64);
 
 f64 pow(f64 x, f64 y) {
     s32 sign = 1;
@@ -27,5 +27,5 @@ f64 pow(f64 x, f64 y) {
         }
         x = __builtin_fabs(x);
     }
-    return func_8007AB20(func_80079750(x) * y) * sign;
+    return exp(func_80079750(x) * y) * sign;
 }
