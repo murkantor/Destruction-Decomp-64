@@ -1357,22 +1357,22 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006CF2C` | `06DB2C` | 0x28 | `memcpy` | `src/libultra/string.c` | C |
 | `8006CF60` | `06DB60` | 0x58 | `sprintf` | `src/auto/6DB60.c` | C (generated) |
 | `8006CFB8` | `06DBB8` | 0x34 | `proutSprintf` | `src/auto/6DBB8.c` | C (generated) |
-| `8006CFF0` | `06DBF0` | 0x148 | `func_8006CFF0` | `asm/6DBEC.s` | asm |
-| `8006D138` | `06DD38` | 0x58 | `func_8006D138` | `src/auto/6DD38.c` | C (generated) |
-| `8006D190` | `06DD90` | 0x90 | `func_8006D190` | `asm/6DD90.s` | asm |
-| `8006D220` | `06DE20` | 0x8 | `func_8006D220` | `src/auto/6DE20.c` | C (generated) |
-| `8006D228` | `06DE28` | 0x104 | `func_8006D228` | `asm/6DE28.s` | asm |
-| `8006D32C` | `06DF2C` | 0x100 | `func_8006D32C` | `asm/6DE28.s` | asm |
-| `8006D42C` | `06E02C` | 0x110 | `func_8006D42C` | `asm/6DE28.s` | asm |
-| `8006D53C` | `06E13C` | 0xe0 | `func_8006D53C` | `asm/6DE28.s` | asm |
+| `8006CFF0` | `06DBF0` | 0x148 | `osCreateScheduler` | `src/auto/6DBF0.c` | C (generated) |
+| `8006D138` | `06DD38` | 0x58 | `osScAddClient` | `src/auto/6DD38.c` | C (generated) |
+| `8006D190` | `06DD90` | 0x90 | `osScRemoveClient` | `src/auto/6DD90.c` | C (generated) |
+| `8006D220` | `06DE20` | 0x8 | `osScGetCmdQ` | `src/auto/6DE20.c` | C (generated) |
+| `8006D228` | `06DE28` | 0x104 | `__scMain` | `src/auto/6DE28.c` | C (generated) |
+| `8006D32C` | `06DF2C` | 0x100 | `__scHandleRetrace` | `src/auto/6DF2C.c` | C (generated) |
+| `8006D42C` | `06E02C` | 0x110 | `__scHandleRSP` | `src/auto/6E02C.c` | C (generated) |
+| `8006D53C` | `06E13C` | 0xe0 | `__scHandleRDP` | `src/auto/6E13C.c` | C (generated) |
 | `8006D61C` | `06E21C` | 0x54 | `func_8006D61C` | `src/auto/6E21C.c` | C (generated) |
-| `8006D670` | `06E270` | 0xb0 | `func_8006D670` | `asm/6E270.s` | asm |
-| `8006D720` | `06E320` | 0xac | `func_8006D720` | `asm/6E270.s` | asm |
-| `8006D7CC` | `06E3CC` | 0x134 | `func_8006D7CC` | `asm/6E270.s` | asm |
-| `8006D900` | `06E500` | 0x38 | `func_8006D900` | `src/auto/6E500.c` | C (generated) |
-| `8006D938` | `06E538` | 0x218 | `func_8006D938` | `asm/6E538.s` | asm |
-| `8006DB50` | `06E750` | 0x1a0 | `func_8006DB50` | `asm/6E538.s` | asm |
-| `8006DCF0` | `06E8F0` | 0xc0 | `func_8006DCF0` | `asm/6E538.s` | asm |
+| `8006D670` | `06E270` | 0xb0 | `__scTaskComplete` | `src/auto/6E270.c` | C (generated) |
+| `8006D720` | `06E320` | 0xac | `__scAppendList` | `src/auto/6E320.c` | C (generated) |
+| `8006D7CC` | `06E3CC` | 0x134 | `__scExec` | `src/auto/6E3CC.c` | C (generated) |
+| `8006D900` | `06E500` | 0x38 | `__scYield` | `src/auto/6E500.c` | C (generated) |
+| `8006D938` | `06E538` | 0x214 | `__scSchedule` | `src/auto/6E538.c` | C (generated) |
+| `8006DB50` | `06E750` | 0x1a0 | `func_8006DB50` | `asm/6E74C.s` | asm |
+| `8006DCF0` | `06E8F0` | 0xc0 | `func_8006DCF0` | `asm/6E74C.s` | asm |
 | `8006DDB0` | `06E9B0` | 0x88 | `func_8006DDB0` | `src/auto/6E9B0.c` | C (generated) |
 | `8006DE38` | `06EA38` | 0x9c | `func_8006DE38` | `asm/6EA38.s` | asm |
 | `8006DED4` | `06EAD4` | 0xbc | `func_8006DED4` | `asm/6EA38.s` | asm |

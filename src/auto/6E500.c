@@ -3,7 +3,7 @@
 
 M2C_UNK osSpTaskYield(void *);                      /* extern */
 
-void func_8006D900(void *arg0) {
+void __scYield(void *arg0) {
     void *temp_a0;
 
     temp_a0 = M2C_FIELD(arg0, void **, 0x274);

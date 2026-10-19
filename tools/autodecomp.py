@@ -98,13 +98,13 @@ def section_sizes(o):
     return sizes
 
 
-def relocs(o):
+def relocs(o, section=".text"):
     out = subprocess.run(["mips-linux-gnu-readelf", "-rW", o], capture_output=True, text=True).stdout
     rel = {}
     in_text = False
     for line in out.splitlines():
         if line.startswith("Relocation section"):
-            in_text = "'.rel.text'" in line
+            in_text = f"'.rel{section}'" in line
             continue
         if not in_text:
             continue
@@ -207,9 +207,16 @@ def matches(o, name, vram, size, rom, syms):
     if rodata:
         if rodata_base is None:
             return False, "rodata not referenced"
-        data = subprocess.run(["mips-linux-gnu-objcopy", "-O", "binary", "-j", rodata[0], o, "/dev/stdout"], capture_output=True).stdout
+        data = bytearray(subprocess.run(["mips-linux-gnu-objcopy", "-O", "binary", "-j", rodata[0], o, "/dev/stdout"],
+                                        capture_output=True).stdout)
+        # jump tables: words relocated against .text hold an offset into the function
+        for k, (kind, sym) in relocs(o, rodata[0]).items():
+            if kind != "R_MIPS_32" or sym != ".text":
+                return False, f"rodata reloc {kind} {sym}"
+            word = struct.unpack(">I", data[k:k + 4])[0]
+            data[k:k + 4] = struct.pack(">I", vram + word)
         off = rodata_base - ROM_BASE
-        if data != rom[off:off + len(data)]:
+        if bytes(data) != rom[off:off + len(data)]:
             return False, "rodata differs"
         last_rodata = (rodata_base, len(data))
     return True, size

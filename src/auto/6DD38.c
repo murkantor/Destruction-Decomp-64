@@ -3,7 +3,7 @@
 
 s32 osSetIntMask(s32);                             /* extern */
 
-void func_8006D138(void *arg0, void *arg1, s32 arg2) {
+void osScAddClient(void *arg0, void *arg1, s32 arg2) {
     s32 temp_v0;
 
     temp_v0 = osSetIntMask(1);
