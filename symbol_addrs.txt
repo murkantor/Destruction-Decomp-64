@@ -526,3 +526,5 @@ _ctype = 0x800B6FE0;
 Poly_ContainsXZ = 0x80034390; // type:func
 guMtxL2F = 0x80068D08; // type:func
 D_800964E1 = 0x800964E1;
+Poly_ContainsXZMargin = 0x80034438; // type:func
+Ui_GetElementPos = 0x8005F6B4; // type:func

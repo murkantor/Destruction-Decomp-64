@@ -495,12 +495,12 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80034000` | `034C00` | 0xe0 | `func_80034000` | `asm/33D68.s` | asm |
 | `800340E0` | `034CE0` | 0x2b0 | `func_800340E0` | `asm/33D68.s` | asm |
 | `80034390` | `034F90` | 0xa8 | `Poly_ContainsXZ` | `src/auto/34F90.c` | C (generated) |
-| `80034438` | `035038` | 0xec | `func_80034438` | `asm/35038.s` | asm |
-| `80034524` | `035124` | 0x124 | `func_80034524` | `asm/35038.s` | asm |
-| `80034648` | `035248` | 0x14c | `func_80034648` | `asm/35038.s` | asm |
-| `80034794` | `035394` | 0x164 | `func_80034794` | `asm/35038.s` | asm |
-| `800348F8` | `0354F8` | 0x1b0 | `func_800348F8` | `asm/35038.s` | asm |
-| `80034AA8` | `0356A8` | 0x198 | `func_80034AA8` | `asm/35038.s` | asm |
+| `80034438` | `035038` | 0xec | `Poly_ContainsXZMargin` | `src/auto/35038.c` | C (generated) |
+| `80034524` | `035124` | 0x124 | `func_80034524` | `asm/35124.s` | asm |
+| `80034648` | `035248` | 0x14c | `func_80034648` | `asm/35124.s` | asm |
+| `80034794` | `035394` | 0x164 | `func_80034794` | `asm/35124.s` | asm |
+| `800348F8` | `0354F8` | 0x1b0 | `func_800348F8` | `asm/35124.s` | asm |
+| `80034AA8` | `0356A8` | 0x198 | `func_80034AA8` | `asm/35124.s` | asm |
 | `80034C40` | `035840` | 0x48 | `func_80034C40` | `src/auto/35840.c` | C (generated) |
 | `80034C88` | `035888` | 0x274 | `func_80034C88` | `asm/35888.s` | asm |
 | `80034EFC` | `035AFC` | 0x42c | `func_80034EFC` | `asm/35888.s` | asm |
@@ -1007,8 +1007,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8005F414` | `060014` | 0xb0 | `func_8005F414` | `asm/5F52C.s` | asm |
 | `8005F4C4` | `0600C4` | 0xf8 | `func_8005F4C4` | `asm/5F52C.s` | asm |
 | `8005F5BC` | `0601BC` | 0xf8 | `func_8005F5BC` | `asm/5F52C.s` | asm |
-| `8005F6B4` | `0602B4` | 0xec | `func_8005F6B4` | `asm/5F52C.s` | asm |
-| `8005F7A0` | `0603A0` | 0xe4 | `func_8005F7A0` | `asm/5F52C.s` | asm |
+| `8005F6B4` | `0602B4` | 0xec | `Ui_GetElementPos` | `src/auto/602B4.c` | C (generated) |
+| `8005F7A0` | `0603A0` | 0xe4 | `func_8005F7A0` | `asm/603A0.s` | asm |
 | `8005F884` | `060484` | 0xfc | `func_8005F884` | `src/auto/60484.c` | C (generated) |
 | `8005F980` | `060580` | 0x14 | `func_8005F980` | `src/auto/60484.c` | C (generated) |
 | `8005F994` | `060594` | 0x18 | `func_8005F994` | `src/auto/60484.c` | C (generated) |
@@ -1419,11 +1419,11 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80071090` | `071C90` | 0x18 | `osGetThreadPri` | `src/libultra/osGetThreadPri.c` | C |
 | `800710B0` | `071CB0` | 0x134 | `osJamMesg` | `src/auto/71CB0.c` | C (generated) |
 | `800711F0` | `071DF0` | 0xa0 | `osSetTimer` | `asm/71DE4.s` | asm |
-| `80071290` | `071E90` | 0xa4 | `init_lpfilter` | `asm/71DE4.s` | asm |
-| `80071334` | `071F34` | 0x498 | `alFxNew` | `asm/71DE4.s` | asm |
-| `800717CC` | `0723CC` | 0xb8 | `alEnvmixerNew` | `asm/71DE4.s` | asm |
-| `80071884` | `072484` | 0xb0 | `alLoadNew` | `asm/71DE4.s` | asm |
-| `80071934` | `072534` | 0x8c | `alResampleNew` | `asm/71DE4.s` | asm |
+| `80071290` | `071E90` | 0xa4 | `init_lpfilter` | `src/auto/71E90.c` | C (generated) |
+| `80071334` | `071F34` | 0x498 | `alFxNew` | `asm/71F34.s` | asm |
+| `800717CC` | `0723CC` | 0xb8 | `alEnvmixerNew` | `asm/71F34.s` | asm |
+| `80071884` | `072484` | 0xb0 | `alLoadNew` | `asm/71F34.s` | asm |
+| `80071934` | `072534` | 0x8c | `alResampleNew` | `asm/71F34.s` | asm |
 | `800719C0` | `0725C0` | 0x5c | `alAuxBusNew` | `src/auto/725C0.c` | C (generated) |
 | `80071A1C` | `07261C` | 0x5c | `alMainBusNew` | `src/auto/7261C.c` | C (generated) |
 | `80071A78` | `072678` | 0x44 | `alSaveNew` | `src/auto/72678.c` | C (generated) |
