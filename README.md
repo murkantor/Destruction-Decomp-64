@@ -60,6 +60,7 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `tools/` | Compiler setup and the `move` fix for the assembler |
 | `tools/proto/` | Scripts that compare the prototype with retail |
 | `tools/autodecomp.py`, `tools/apply_auto.py` | Generate matching C with m2c and add it to the build |
+| `tools/permute_setup.py`, `tools/permute_collect.py` | Run decomp-permuter on near misses and collect the matches |
 | `tools/rename.py` | Apply names from `symbol_addrs.txt` to the C |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
 | `asm/`, `assets/`, `build/` | Generated, not committed |
@@ -105,6 +106,18 @@ The libultra, libc and audio library names came from [n64sym](https://github.com
    make extract
    make
    ```
+
+Functions that come close are saved in `build/auto/near/`, named by how many instructions differ. [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) can often finish them:
+
+```sh
+git clone https://github.com/simonlindholm/decomp-permuter tools/permuter
+python3 tools/permute_setup.py
+python3 tools/permuter/permuter.py build/permute/func_80012345 --stop-on-zero
+python3 tools/permute_collect.py
+python3 tools/apply_auto.py build/permuted
+make extract
+make
+```
 
 When you clean up a file in `src/auto/`, give it real types and names and move it out of `auto/` (rename its subsegment in `dd64.yaml` to match).
 

@@ -192,7 +192,8 @@ def byte_offsets(code):
         m = pat.search(code, i)
         if not m:
             out.append(code[i:])
-            return "".join(out)
+            # the same with the symbol second: n + &sym
+            return re.sub(r"\+ &(\w+)\b", r"+ (s8 *)&\1", "".join(out))
         depth, j = 0, m.start()
         while j < len(code):
             if code[j] == "(":
