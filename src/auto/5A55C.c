@@ -4,13 +4,13 @@
 typedef struct {
     u8 data[0x68];
 } OSPfs;
-extern s32 D_800B0BB4[];
-extern OSPfs D_800BD290[];
+extern s32 gPakReady[];
+extern OSPfs gPakFs[];
 s32 osPfsFreeBlocks(OSPfs *, s32 *);
 
-s32 func_8005995C(s32 channel, s32 *bytesLeft) {
-    if (D_800B0BB4[channel] != 0) {
-        return osPfsFreeBlocks(&D_800BD290[channel], bytesLeft);
+s32 Pak_FreeBlocks(s32 channel, s32 *bytesLeft) {
+    if (gPakReady[channel] != 0) {
+        return osPfsFreeBlocks(&gPakFs[channel], bytesLeft);
     }
     return -1;
 }

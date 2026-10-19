@@ -890,15 +890,15 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800593B8` | `059FB8` | 0x188 | `func_800593B8` | `asm/59FB8.s` | asm |
 | `80059540` | `05A140` | 0x68 | `func_80059540` | `asm/59FB8.s` | asm |
 | `800595A8` | `05A1A8` | 0xa8 | `func_800595A8` | `asm/59FB8.s` | asm |
-| `80059650` | `05A250` | 0x4c | `func_80059650` | `asm/59FB8.s` | asm |
-| `8005969C` | `05A29C` | 0xe0 | `func_8005969C` | `asm/59FB8.s` | asm |
-| `8005977C` | `05A37C` | 0x60 | `func_8005977C` | `asm/59FB8.s` | asm |
-| `800597DC` | `05A3DC` | 0x80 | `func_800597DC` | `src/auto/5A3DC.c` | C (generated) |
-| `8005985C` | `05A45C` | 0x84 | `func_8005985C` | `src/auto/5A3DC.c` | C (generated) |
-| `800598E0` | `05A4E0` | 0x7c | `func_800598E0` | `src/auto/5A3DC.c` | C (generated) |
-| `8005995C` | `05A55C` | 0x58 | `func_8005995C` | `src/auto/5A55C.c` | C (generated) |
-| `800599B4` | `05A5B4` | 0x70 | `func_800599B4` | `asm/5A5B4.s` | asm |
-| `80059A24` | `05A624` | 0x70 | `func_80059A24` | `asm/5A5B4.s` | asm |
+| `80059650` | `05A250` | 0x4c | `Pak_SetGameInfo` | `asm/59FB8.s` | asm |
+| `8005969C` | `05A29C` | 0xe0 | `Pak_Init` | `asm/59FB8.s` | asm |
+| `8005977C` | `05A37C` | 0x60 | `Pak_Check` | `asm/59FB8.s` | asm |
+| `800597DC` | `05A3DC` | 0x80 | `Pak_FindFile` | `src/auto/5A3DC.c` | C (generated) |
+| `8005985C` | `05A45C` | 0x84 | `Pak_AllocateFile` | `src/auto/5A3DC.c` | C (generated) |
+| `800598E0` | `05A4E0` | 0x7c | `Pak_DeleteFile` | `src/auto/5A3DC.c` | C (generated) |
+| `8005995C` | `05A55C` | 0x58 | `Pak_FreeBlocks` | `src/auto/5A55C.c` | C (generated) |
+| `800599B4` | `05A5B4` | 0x70 | `Pak_ReadFile` | `src/auto/5A5B4.c` | C (generated) |
+| `80059A24` | `05A624` | 0x70 | `Pak_WriteFile` | `src/auto/5A624.c` | C (generated) |
 | `80059A94` | `05A694` | 0x38 | `func_80059A94` | `src/auto/5A694.c` | C (generated) |
 | `80059ACC` | `05A6CC` | 0x44 | `func_80059ACC` | `src/auto/5A6CC.c` | C (generated) |
 | `80059B10` | `05A710` | 0x50 | `func_80059B10` | `src/auto/5A710.c` | C (generated) |
@@ -1379,17 +1379,17 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006DF90` | `06EB90` | 0x140 | `func_8006DF90` | `asm/6EA38.s` | asm |
 | `8006E0D0` | `06ECD0` | 0x144 | `__osMotorAccess` | `asm/6EA38.s` | asm |
 | `8006E214` | `06EE14` | 0x24c | `osMotorInit` | `asm/6EA38.s` | asm |
-| `8006E460` | `06F060` | 0x30c | `func_8006E460` | `asm/6EA38.s` | asm |
+| `8006E460` | `06F060` | 0x30c | `osPfsAllocateFile` | `asm/6EA38.s` | asm |
 | `8006E76C` | `06F36C` | 0x124 | `func_8006E76C` | `asm/6EA38.s` | asm |
-| `8006E890` | `06F490` | 0x460 | `func_8006E890` | `asm/6EA38.s` | asm |
+| `8006E890` | `06F490` | 0x460 | `osPfsChecker` | `asm/6EA38.s` | asm |
 | `8006ECF0` | `06F8F0` | 0x158 | `func_8006ECF0` | `asm/6EA38.s` | asm |
 | `8006EE48` | `06FA48` | 0x168 | `func_8006EE48` | `asm/6EA38.s` | asm |
-| `8006EFB0` | `06FBB0` | 0x1ac | `func_8006EFB0` | `asm/6EA38.s` | asm |
+| `8006EFB0` | `06FBB0` | 0x1ac | `osPfsDeleteFile` | `asm/6EA38.s` | asm |
 | `8006F15C` | `06FD5C` | 0x68 | `__osPfsReleasePages` | `src/auto/6FD5C.c` | C (generated) |
-| `8006F1D0` | `06FDD0` | 0x190 | `func_8006F1D0` | `asm/6FDC4.s` | asm |
+| `8006F1D0` | `06FDD0` | 0x190 | `osPfsFileState` | `asm/6FDC4.s` | asm |
 | `8006F360` | `06FF60` | 0x110 | `osPfsFreeBlocks` | `asm/6FDC4.s` | asm |
 | `8006F470` | `070070` | 0x1f0 | `osPfsInitPak` | `asm/6FDC4.s` | asm |
-| `8006F660` | `070260` | 0x440 | `func_8006F660` | `asm/6FDC4.s` | asm |
+| `8006F660` | `070260` | 0x440 | `osPfsReadWriteFile` | `asm/6FDC4.s` | asm |
 | `8006FAA0` | `0706A0` | 0x60 | `func_8006FAA0` | `asm/6FDC4.s` | asm |
 | `8006FB00` | `070700` | 0x1a0 | `osPfsFindFile` | `asm/6FDC4.s` | asm |
 | `8006FCA0` | `0708A0` | 0x64 | `__osPfsSelectBank` | `src/auto/708A0.c` | C (generated) |
