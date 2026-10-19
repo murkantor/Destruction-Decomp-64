@@ -28,7 +28,7 @@ s32 inflate_codes(struct huft *tl, struct huft *td, s32 bl, s32 bd);
 #define NEEDBITS(n) { while (k < (n)) { s32 c = Inflate_GetByte(); if (c == 0x100) return 1; b |= ((u32)c) << k; k += 8; } }
 #define DUMPBITS(n) { b >>= (n); k -= (n); }
 
-s32 func_800514D0(void)
+s32 inflate_dynamic(void)
 {
     s32 i;
     u32 j;

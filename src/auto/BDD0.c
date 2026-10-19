@@ -53,7 +53,7 @@ void func_8000AD40(Car *, f32 a[4][4], f32 b[4][4]);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Particles_EmitTrail(void *, Vec3f, Car *);
-void func_80012A9C(void *, void *, void *, f32 m[4][4], s32);
+void Light_UpdateVertexColors(void *, void *, void *, f32 m[4][4], s32);
 void func_8000A9D8(Car *, Vec3f, f32 m[4][4]);
 Gfx *func_8000A894(Car *, Gfx *);
 Gfx *Debris_UpdateDraw(Car *, Gfx *);
@@ -140,7 +140,7 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
                     EmitTrail(car);
                 }
                 if (car->xB80) {
-                    func_80012A9C(car->xB80, D_8012556C[0], D_80125570->xC, m18, !car->xD);
+                    Light_UpdateVertexColors(car->xB80, D_8012556C[0], D_80125570->xC, m18, !car->xD);
                 }
             } else {
                 func_8000A9D8(car, pos, m18);

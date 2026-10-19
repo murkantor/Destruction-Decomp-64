@@ -7,7 +7,7 @@ extern void Vec3f_Dot(f32 *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Sub(Vec3f *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 
-s32 func_800179D0(Vec3f *out, Vec3f *in, s32 n, Vec3f *normal, f32 d)
+s32 Poly_ClipToPlane(Vec3f *out, Vec3f *in, s32 n, Vec3f *normal, f32 d)
 {
     f32 dist[2];
     s32 i;

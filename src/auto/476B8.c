@@ -82,7 +82,7 @@ static inline void AddSprites(void)
         Ui_AddSpriteElement(gUi[0], &a);
 }
 
-void func_80046AB8(void)
+void Race_End(void)
 {
     s32 lim[2];
     UiItem *item = NULL;

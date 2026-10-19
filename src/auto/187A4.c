@@ -18,7 +18,7 @@ typedef struct {
     f32 d5;
 } Mgr;
 extern Grid *D_800BC9C4;
-s32 func_800179D0(Vec3f *, Vec3f *, s32, Plane *, f32);
+s32 Poly_ClipToPlane(Vec3f *, Vec3f *, s32, Plane *, f32);
 
 void Shadow_ClipPolys(Mgr *m, s32 *ids, s32 n) {
     s32 i;
@@ -42,15 +42,15 @@ void Shadow_ClipPolys(Mgr *m, s32 *ids, s32 n) {
             bufA[k].y = v->y;
             bufA[k].z = v->z;
         }
-        r = func_800179D0(bufB, bufA, cnt, &m->planes[0], m->d[0]);
+        r = Poly_ClipToPlane(bufB, bufA, cnt, &m->planes[0], m->d[0]);
         if (r == 0) continue;
-        r = func_800179D0(bufA, bufB, r, &m->planes[1], m->d[1]);
+        r = Poly_ClipToPlane(bufA, bufB, r, &m->planes[1], m->d[1]);
         if (r == 0) continue;
-        r = func_800179D0(bufB, bufA, r, &m->planes[2], m->d[2]);
+        r = Poly_ClipToPlane(bufB, bufA, r, &m->planes[2], m->d[2]);
         if (r == 0) continue;
-        r = func_800179D0(bufA, bufB, r, &m->planes[3], m->d[3]);
+        r = Poly_ClipToPlane(bufA, bufB, r, &m->planes[3], m->d[3]);
         if (r == 0) continue;
-        r = func_800179D0(bufB, bufA, r, &m->plane5, m->d5);
+        r = Poly_ClipToPlane(bufB, bufA, r, &m->plane5, m->d5);
         if (r == 0) continue;
         if (r < 3) continue;
         first = bufB;

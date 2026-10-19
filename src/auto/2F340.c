@@ -34,7 +34,7 @@ typedef struct {
 extern Game *gGame;
 s32 rand(void);
 void Math_SinCos(f32, f32 *, f32 *);
-void func_80028070(void *, Vec3f, void *, Vec3f, f32);
+void Car_OnCollision2(void *, Vec3f, void *, Vec3f, f32);
 
 void func_8002E740(void) {
     s32 list[32];
@@ -88,7 +88,7 @@ void func_8002E740(void) {
                     Math_SinCos(rand() * (1.0f / 32767.0f) * 6.2831853, &dirs[k].x, &dirs[k].z);
                     dirs[k].y = 0.0f;
                 }
-                func_80028070(a->x1EC, dirs[0], b->x1EC, dirs[1], 5.0f);
+                Car_OnCollision2(a->x1EC, dirs[0], b->x1EC, dirs[1], 5.0f);
             }
         }
     }

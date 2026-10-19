@@ -76,7 +76,7 @@ extern s32 rand(void);
 extern void func_80016F48(void *, Vec3f, Vec3f, f32, f32, s32);
 extern void Fx_SpawnParticlesMode(void *, Vec3f, Vec3f, f32, f32, s32, s32, s32);
 extern void Car_SetPrimColorFromTrack(Car *);
-extern void func_8002028C(Car *);
+extern void Car_UpdateTrackSegment(Car *);
 extern void func_80020FB0(Car *);
 extern f32 func_8001FB40(Car *);
 extern void Standings_Resort(void *, Car *);
@@ -186,7 +186,7 @@ void Car_UpdateWreck(Car *car) {
             Car_SetPrimColorFromTrack(car);
         }
         if (race->x10 == 0) {
-            func_8002028C(car);
+            Car_UpdateTrackSegment(car);
         }
         func_80020FB0(car);
         if (race->x10 == 0 && D_800958A8 != 2 && car->xC) {

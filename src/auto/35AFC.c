@@ -36,7 +36,7 @@ extern void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Scale(Vec3f *out, Vec3f *v, f32 s);
 extern void func_80035328(Vec3f *out, Player *p, Contact *c);
 extern u8 Body_EnergyRatioExceeds(Car *car, Vec3f *imp);
-extern void func_80028070(Car *car, Vec3f pos, Car *car2, Vec3f pos2, f32 len);
+extern void Car_OnCollision2(Car *car, Vec3f pos, Car *car2, Vec3f pos2, f32 len);
 
 void Car_ApplyContactImpulses(Player *p, Car *car)
 {
@@ -70,7 +70,7 @@ void Car_ApplyContactImpulses(Player *p, Car *car)
                 Vec3f_Length(&len, &imp[0]);
                 car->x16C = c->xC;
                 n++;
-                func_80028070(car, c->pos, car, c->pos, len);
+                Car_OnCollision2(car, c->pos, car, c->pos, len);
             }
             c = c->next;
         } while (c);

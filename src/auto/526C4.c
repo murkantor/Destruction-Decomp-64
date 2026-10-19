@@ -8,7 +8,7 @@ extern u32 D_800BCA2C;
 extern s32 D_800BCA30;
 
 s32 Inflate_GetByte(void);
-s32 func_800514D0(void);
+s32 inflate_dynamic(void);
 s32 Inflate_Stored(void);
 s32 inflate_fixed(void);
 void func_80052370(s32, u32);
@@ -44,7 +44,7 @@ static inline s32 InflateBlock(s32 *e) {
     D_800BCA14 = b;
     D_800BCA18 = k;
     if (t == 2) {
-        return func_800514D0();
+        return inflate_dynamic();
     }
     if (t == 0) {
         return Inflate_Stored();
