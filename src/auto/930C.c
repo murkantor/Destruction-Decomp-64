@@ -3,7 +3,7 @@
 
 extern s32 D_80124364;
 extern s32 D_80126068[];
-void func_80008DD0(s32, s32, s32, s32);
+void Msg_Queue(s32, s32, s32, s32);
 
 void func_8000870C(s32 *arr, s32 n, s32 val) {
     s8 i, j;
@@ -15,5 +15,5 @@ void func_8000870C(s32 *arr, s32 n, s32 val) {
             }
         }
     }
-    func_80008DD0(val, 0, 1, 0);
+    Msg_Queue(val, 0, 1, 0);
 }

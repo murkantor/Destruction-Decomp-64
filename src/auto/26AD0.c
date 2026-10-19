@@ -8,7 +8,7 @@ typedef struct {
 } Cam;
 typedef struct { u8 pad[0x38]; Cam *x38; } Owner;
 void *Mem_Alloc(u32 size);
-void func_8003AAC4(f32 (*)[3]);
+void Basis_Orthonormalize(f32 (*)[3]);
 
 void Camera_Create(Owner *o, Vec3f pos) {
     Cam *cam = Mem_Alloc(0x50);
@@ -42,6 +42,6 @@ void Camera_Create(Owner *o, Vec3f pos) {
             cam->m[i][2] = 0.0f;
         }
     }
-    func_8003AAC4(cam->m);
+    Basis_Orthonormalize(cam->m);
     o->x38 = cam;
 }

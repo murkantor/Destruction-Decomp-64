@@ -22,7 +22,7 @@ typedef struct {
     f32 x, y, z;
 } Vec3;
 void *Mem_Alloc(s32);
-void func_8003AAC4(void *);
+void Basis_Orthonormalize(void *);
 
 void Cam_Create(Obj *obj, Vec3 v) {
     Cam *cam;
@@ -56,6 +56,6 @@ void Cam_Create(Obj *obj, Vec3 v) {
             cam->m[i][2] = 0.0f;
         }
     }
-    func_8003AAC4(cam->m);
+    Basis_Orthonormalize(cam->m);
     obj->x38 = cam;
 }
