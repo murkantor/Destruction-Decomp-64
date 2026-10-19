@@ -1154,8 +1154,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80064464` | `065064` | 0x38 | `func_80064464` | `src/auto/65064.c` | C (generated) |
 | `8006449C` | `06509C` | 0x1c | `func_8006449C` | `src/auto/6509C.c` | C (generated) |
 | `800644C0` | `0650C0` | 0x414 | `func_800644C0` | `asm/650B8.s` | asm |
-| `800648D4` | `0654D4` | 0x74 | `func_800648D4` | `asm/650B8.s` | asm |
-| `80064948` | `065548` | 0x70 | `func_80064948` | `asm/650B8.s` | asm |
+| `800648D4` | `0654D4` | 0x74 | `func_800648D4` | `src/auto/654D4.c` | C (generated) |
+| `80064948` | `065548` | 0x70 | `func_80064948` | `src/auto/654D4.c` | C (generated) |
 | `800649B8` | `0655B8` | 0xb8 | `func_800649B8` | `src/auto/655B8.c` | C (generated) |
 | `80064A70` | `065670` | 0xc0 | `func_80064A70` | `asm/65670.s` | asm |
 | `80064B30` | `065730` | 0x5c | `Timer_Start` | `src/auto/65730.c` | C (generated) |

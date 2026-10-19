@@ -578,6 +578,7 @@ segments:
       - [0x65064, c, auto/65064]
       - [0x6509C, c, auto/6509C]
       - [0x650B8, asm]
+      - [0x654D4, c, auto/654D4]
       - [0x655B8, c, auto/655B8]
       - [0x65670, asm]
       - [0x65730, c, auto/65730]
