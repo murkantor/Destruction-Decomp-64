@@ -1511,8 +1511,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80077F80` | `078B80` | 0x110 | `bcmp` | `asm/784C0.s` | asm |
 | `80078090` | `078C90` | 0x250 | `_Litob` | `asm/784C0.s` | asm |
 | `800782E0` | `078EE0` | 0x440 | `_Ldtob` | `asm/784C0.s` | asm |
-| `80078720` | `079320` | 0x98 | `func_80078720` | `asm/784C0.s` | asm |
-| `800787B8` | `0793B8` | 0x5a8 | `func_800787B8` | `asm/784C0.s` | asm |
+| `80078720` | `079320` | 0x98 | `_Ldunscale` | `src/auto/79320.c` | C (generated) |
+| `800787B8` | `0793B8` | 0x5a8 | `func_800787B8` | `asm/793B8.s` | asm |
 | `80078D60` | `079960` | 0xb8 | `osDriveRomInit` | `src/auto/79960.c` | C (generated) |
 | `80078E20` | `079A20` | 0x84 | `ldiv` | `src/auto/79A20.c` | C (generated) |
 | `80078EA4` | `079AA4` | 0x13c | `lldiv` | `asm/79AA4.s` | asm |
@@ -1533,10 +1533,10 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80079BC0` | `07A7C0` | 0x34 | `rand` | `src/libc/7A7C0.c` | C |
 | `80079BF4` | `07A7F4` | 0xc | `func_80079BF4` | `src/auto/7A7F4.c` | C (generated) |
 | `80079C00` | `07A800` | 0x220 | `func_80079C00` | `asm/7A800.s` | asm |
-| `80079E20` | `07AA20` | 0xb0 | `func_80079E20` | `asm/7A800.s` | asm |
-| `80079ED0` | `07AAD0` | 0x110 | `strcmp` | `asm/7A800.s` | asm |
-| `80079FE0` | `07ABE0` | 0x80 | `func_80079FE0` | `asm/7A800.s` | asm |
-| `8007A060` | `07AC60` | 0xd0 | `func_8007A060` | `asm/7A800.s` | asm |
+| `80079E20` | `07AA20` | 0xb0 | `strcat` | `src/libc/7AA20.c` | C |
+| `80079ED0` | `07AAD0` | 0x110 | `strcmp` | `asm/7AAD0.s` | asm |
+| `80079FE0` | `07ABE0` | 0x78 | `strncat` | `src/libc/7ABE0.c` | C |
+| `8007A060` | `07AC60` | 0xcc | `strrchr` | `src/libc/7AC60.c` | C |
 | `8007A130` | `07AD30` | 0x24 | `toupper` | `src/auto/7AD30.c` | C (generated) |
 | `8007A160` | `07AD60` | 0x70 | `func_8007A160` | `asm/7AD54.s` | asm |
 | `8007A1D0` | `07ADD0` | 0x74 | `__cmpdi2` | `asm/7AD54.s` | asm |

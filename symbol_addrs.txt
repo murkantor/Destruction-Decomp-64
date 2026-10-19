@@ -347,3 +347,7 @@ frexp = 0x8007ACB0; // type:func
 modf = 0x8007AD20; // type:func
 __muldi3 = 0x8007A244; // type:func
 errno = 0x8011EF00;
+strcat = 0x80079E20; // type:func
+strncat = 0x80079FE0; // type:func
+strrchr = 0x8007A060; // type:func
+_Ldunscale = 0x80078720; // type:func
