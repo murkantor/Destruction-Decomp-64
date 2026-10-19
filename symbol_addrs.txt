@@ -441,3 +441,4 @@ SaveMenu_PrevSlot = 0x8003BBD4; // type:func
 SaveMenu_NextSlot = 0x8003BD3C; // type:func
 gSaveSlots = 0x8012EE28;
 gSaveSlotText = 0x80123BC0;
+Car_UpdateWheels = 0x8002FA2C; // type:func
