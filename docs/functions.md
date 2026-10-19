@@ -1118,12 +1118,12 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80063744` | `064344` | 0x9c | `Time_ToSeconds` | `src/auto/64344.c` | C (generated) |
 | `800637E0` | `0643E0` | 0xc | `func_800637E0` | `src/auto/643E0.c` | C (generated) |
 | `800637EC` | `0643EC` | 0x8 | `func_800637EC` | `src/auto/643EC.c` | C (generated) |
-| `800637F4` | `0643F4` | 0x9c | `func_800637F4` | `asm/643F4.s` | asm |
+| `800637F4` | `0643F4` | 0x9c | `Clock_Step` | `src/auto/643F4.c` | C (generated) |
 | `80063890` | `064490` | 0x30 | `func_80063890` | `src/auto/64490.c` | C (generated) |
 | `800638C0` | `0644C0` | 0x8 | `func_800638C0` | `src/auto/644C0.c` | C (generated) |
 | `800638C8` | `0644C8` | 0xc | `func_800638C8` | `src/auto/644C0.c` | C (generated) |
-| `800638D4` | `0644D4` | 0x14c | `func_800638D4` | `asm/644D4.s` | asm |
-| `80063A20` | `064620` | 0x8c | `Res_Get` | `asm/644D4.s` | asm |
+| `800638D4` | `0644D4` | 0x148 | `Time_Split` | `src/auto/644D4.c` | C (generated) |
+| `80063A20` | `064620` | 0x8c | `Res_Get` | `asm/6461C.s` | asm |
 | `80063AAC` | `0646AC` | 0xa8 | `func_80063AAC` | `src/auto/646AC.c` | C (generated) |
 | `80063B54` | `064754` | 0xa8 | `func_80063B54` | `src/auto/646AC.c` | C (generated) |
 | `80063BFC` | `0647FC` | 0x4c | `Res_Load` | `src/auto/647FC.c` | C (generated) |

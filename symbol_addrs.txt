@@ -480,3 +480,5 @@ gResArchiveEnd = 0x839F30;
 Res_FreeAll = 0x80063CD8; // type:func
 Res_FindType = 0x80063ED0; // type:func
 Res_ComputeSizes = 0x80063C48; // type:func
+Clock_Step = 0x800637F4; // type:func
+Time_Split = 0x800638D4; // type:func
