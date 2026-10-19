@@ -3,7 +3,7 @@
 
 void func_80079160(u64, u64, f64 *);
 
-f64 func_80079318(f64 x) {
+f64 atan(f64 x) {
     s32 sign;
     u64 num;
     u64 den;
