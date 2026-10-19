@@ -1221,8 +1221,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800660F0` | `066CF0` | 0x88 | `func_800660F0` | `asm/66658.s` | asm |
 | `80066178` | `066D78` | 0x1c | `func_80066178` | `src/auto/66D78.c` | C (generated) |
 | `80066194` | `066D94` | 0x44 | `func_80066194` | `asm/66D94.s` | asm |
-| `800661D8` | `066DD8` | 0x44 | `func_800661D8` | `asm/66D94.s` | asm |
-| `8006621C` | `066E1C` | 0x58 | `func_8006621C` | `asm/66D94.s` | asm |
+| `800661D8` | `066DD8` | 0x44 | `func_800661D8` | `src/auto/66DD8.c` | C (generated) |
+| `8006621C` | `066E1C` | 0x58 | `func_8006621C` | `src/auto/66E1C.c` | C (generated) |
 | `80066274` | `066E74` | 0x5c | `func_80066274` | `src/auto/66E74.c` | C (generated) |
 | `800662D0` | `066ED0` | 0x260 | `func_800662D0` | `asm/66ED0.s` | asm |
 | `80066530` | `067130` | 0x394 | `func_80066530` | `asm/66ED0.s` | asm |
@@ -1258,9 +1258,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800688E0` | `0694E0` | 0x390 | `func_800688E0` | `asm/69158.s` | asm |
 | `80068C70` | `069870` | 0x98 | `guMtxF2L` | `asm/69158.s` | asm |
 | `80068D08` | `069908` | 0xa8 | `func_80068D08` | `asm/69158.s` | asm |
-| `80068DB0` | `0699B0` | 0x50 | `guMtxIdentF` | `asm/69158.s` | asm |
-| `80068E00` | `069A00` | 0xf0 | `func_80068E00` | `asm/69158.s` | asm |
-| `80068EF0` | `069AF0` | 0xdc | `func_80068EF0` | `asm/69158.s` | asm |
+| `80068DB0` | `0699B0` | 0x50 | `guMtxIdentF` | `src/auto/699B0.c` | C (generated) |
+| `80068E00` | `069A00` | 0xf0 | `func_80068E00` | `asm/69A00.s` | asm |
+| `80068EF0` | `069AF0` | 0xdc | `func_80068EF0` | `asm/69A00.s` | asm |
 | `80068FCC` | `069BCC` | 0xac | `func_80068FCC` | `src/auto/69BCC.c` | C (generated) |
 | `80069080` | `069C80` | 0xa8 | `guNormalize` | `src/libultra/guNormalize.c` | C |
 | `80069130` | `069D30` | 0x1b0 | `func_80069130` | `asm/69D28.s` | asm |
@@ -1287,15 +1287,15 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006A5F0` | `06B1F0` | 0x210 | `osInitialize` | `asm/6B084.s` | asm |
 | `8006A800` | `06B400` | 0x130 | `osRecvMesg` | `asm/6B084.s` | asm |
 | `8006A930` | `06B530` | 0x130 | `osSendMesg` | `asm/6B084.s` | asm |
-| `8006AA60` | `06B660` | 0x60 | `osSetEventMesg` | `asm/6B084.s` | asm |
-| `8006AAC0` | `06B6C0` | 0xd0 | `osSetThreadPri` | `asm/6B084.s` | asm |
-| `8006AB90` | `06B790` | 0x120 | `osStartThread` | `asm/6B084.s` | asm |
-| `8006ACB0` | `06B8B0` | 0x40 | `__osDequeueThread` | `asm/6B084.s` | asm |
-| `8006ACF0` | `06B8F0` | 0x54 | `__osTimerServicesInit` | `asm/6B084.s` | asm |
-| `8006AD44` | `06B944` | 0x13c | `__osTimerInterrupt` | `asm/6B084.s` | asm |
-| `8006AE80` | `06BA80` | 0x60 | `__osSetTimerIntr` | `asm/6B084.s` | asm |
-| `8006AEE0` | `06BAE0` | 0x110 | `__osInsertTimer` | `asm/6B084.s` | asm |
-| `8006AFF0` | `06BBF0` | 0x60 | `osVirtualToPhysical` | `asm/6B084.s` | asm |
+| `8006AA60` | `06B660` | 0x5c | `osSetEventMesg` | `src/auto/6B660.c` | C (generated) |
+| `8006AAC0` | `06B6C0` | 0xd0 | `osSetThreadPri` | `asm/6B6BC.s` | asm |
+| `8006AB90` | `06B790` | 0x120 | `osStartThread` | `asm/6B6BC.s` | asm |
+| `8006ACB0` | `06B8B0` | 0x40 | `__osDequeueThread` | `asm/6B6BC.s` | asm |
+| `8006ACF0` | `06B8F0` | 0x54 | `__osTimerServicesInit` | `asm/6B6BC.s` | asm |
+| `8006AD44` | `06B944` | 0x13c | `__osTimerInterrupt` | `asm/6B6BC.s` | asm |
+| `8006AE80` | `06BA80` | 0x60 | `__osSetTimerIntr` | `asm/6B6BC.s` | asm |
+| `8006AEE0` | `06BAE0` | 0x110 | `__osInsertTimer` | `asm/6B6BC.s` | asm |
+| `8006AFF0` | `06BBF0` | 0x54 | `osVirtualToPhysical` | `src/auto/6BBF0.c` | C (generated) |
 | `8006B050` | `06BC50` | 0x8 | `__assert` | `src/libultra/__assert.c` | C |
 | `8006B060` | `06BC60` | 0x2c | `func_8006B060` | `src/auto/6BC60.c` | C (generated) |
 | `8006B08C` | `06BC8C` | 0x30 | `func_8006B08C` | `src/auto/6BC60.c` | C (generated) |
@@ -1332,14 +1332,14 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006C0F0` | `06CCF0` | 0x30 | `__osSpSetPc` | `asm/6CCEC.s` | asm |
 | `8006C120` | `06CD20` | 0x40 | `osViGetCurrentFramebuffer` | `asm/6CCEC.s` | asm |
 | `8006C160` | `06CD60` | 0x40 | `osViGetNextFramebuffer` | `asm/6CCEC.s` | asm |
-| `8006C1A0` | `06CDA0` | 0x50 | `osViSetMode` | `asm/6CCEC.s` | asm |
-| `8006C1F0` | `06CDF0` | 0x170 | `func_8006C1F0` | `asm/6CCEC.s` | asm |
-| `8006C360` | `06CF60` | 0xd0 | `func_8006C360` | `asm/6CCEC.s` | asm |
+| `8006C1A0` | `06CDA0` | 0x4c | `osViSetMode` | `src/auto/6CDA0.c` | C (generated) |
+| `8006C1F0` | `06CDF0` | 0x170 | `func_8006C1F0` | `asm/6CDEC.s` | asm |
+| `8006C360` | `06CF60` | 0xd0 | `func_8006C360` | `asm/6CDEC.s` | asm |
 | `8006C430` | `06D030` | 0x44 | `func_8006C430` | `src/auto/6D030.c` | C (generated) |
 | `8006C480` | `06D080` | 0x44 | `osViSwapBuffer` | `src/libultra/osViSwapBuffer.c` | C |
-| `8006C4D0` | `06D0D0` | 0x60 | `osViBlack` | `asm/6D0C4.s` | asm |
-| `8006C530` | `06D130` | 0x90 | `__osSiRawReadIo` | `asm/6D0C4.s` | asm |
-| `8006C5C0` | `06D1C0` | 0x70 | `__osSiRawWriteIo` | `asm/6D0C4.s` | asm |
+| `8006C4D0` | `06D0D0` | 0x5c | `osViBlack` | `src/auto/6D0D0.c` | C (generated) |
+| `8006C530` | `06D130` | 0x90 | `__osSiRawReadIo` | `asm/6D12C.s` | asm |
+| `8006C5C0` | `06D1C0` | 0x70 | `__osSiRawWriteIo` | `asm/6D12C.s` | asm |
 | `8006C630` | `06D230` | 0x100 | `func_8006C630` | `src/auto/6D230.c` | C (generated) |
 | `8006C730` | `06D330` | 0x40 | `func_8006C730` | `asm/6D330.s` | asm |
 | `8006C770` | `06D370` | 0x19c | `func_8006C770` | `asm/6D330.s` | asm |
@@ -1355,9 +1355,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006CED0` | `06DAD0` | 0x38 | `strchr` | `asm/6D330.s` | asm |
 | `8006CF08` | `06DB08` | 0x24 | `strlen` | `src/libultra/string.c` | C |
 | `8006CF2C` | `06DB2C` | 0x28 | `memcpy` | `src/libultra/string.c` | C |
-| `8006CF60` | `06DB60` | 0x58 | `sprintf` | `asm/6DB54.s` | asm |
-| `8006CFB8` | `06DBB8` | 0x38 | `proutSprintf` | `asm/6DB54.s` | asm |
-| `8006CFF0` | `06DBF0` | 0x148 | `func_8006CFF0` | `asm/6DB54.s` | asm |
+| `8006CF60` | `06DB60` | 0x58 | `sprintf` | `src/auto/6DB60.c` | C (generated) |
+| `8006CFB8` | `06DBB8` | 0x38 | `proutSprintf` | `asm/6DBB8.s` | asm |
+| `8006CFF0` | `06DBF0` | 0x148 | `func_8006CFF0` | `asm/6DBB8.s` | asm |
 | `8006D138` | `06DD38` | 0x58 | `func_8006D138` | `src/auto/6DD38.c` | C (generated) |
 | `8006D190` | `06DD90` | 0x90 | `func_8006D190` | `asm/6DD90.s` | asm |
 | `8006D220` | `06DE20` | 0x8 | `func_8006D220` | `src/auto/6DE20.c` | C (generated) |

@@ -245,3 +245,5 @@ D_80125B70 = 0x80125B70; // size:0x60
 gGameTime = 0x800D31D0; // size:0x8
 Time_Get = 0x80063738; // type:func
 Timer_Start = 0x80064B30; // type:func
+__osViNext = 0x800B6C24;
+__osEventStateTab = 0x80131078;
