@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     void *x0;
     void *x4;
@@ -63,8 +66,9 @@ s32 Zip_FindEntry(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
         }
         match = (*p == 0 && *s == 0);
         if (match) {
-            *outSize = e->x18;
-            *outOffset = e->x10;
+            /* do/while (0) wrappers weight e's refs so it gets s2 */
+            do *outSize = e->x18; while (0);
+            do *outOffset = e->x10; while (0);
             Zip_Close(z);
             return 0;
         }
@@ -77,8 +81,8 @@ s32 Zip_FindEntry(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
             goto next2;
             do {
             if (*outOffset != 0 && e->x10 == *outOffset) {
-                *outSize = e->x18;
-                *outOffset = e->x10;
+                do *outSize = e->x18; while (0);
+                do *outOffset = e->x10; while (0);
                 Zip_Close(z);
                 return 0;
             }
@@ -90,8 +94,3 @@ s32 Zip_FindEntry(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
     }
     return -1;
 }
-/* agent45: duplicated found block (cross-jumped back into one) fixes the param registers
-   (path s8, name s7, outSize s6). Remaining diff is only z/e/p in s2/s3/s4: original wants
-   e=s2, z=s3, p=s4, i.e. global-alloc priority e > z > p. Here z 44 refs/106 insns,
-   e 20/42, p 15/22 (inner real while loop). e needs +2 weighted refs (one more in-loop use)
-   with no code change. Using e->x30 twice instead of fn gets e first but changes code. */

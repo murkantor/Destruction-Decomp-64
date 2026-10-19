@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad[0x2C];
     f32 x2C;
@@ -41,15 +44,6 @@ extern Track *D_80123320;
 extern f32 D_80091C80;
 
 
-static inline f32 DistSq(f32 *a, f32 *b) {
-    f32 dx = a[0] - b[0];
-    f32 dy = a[1] - b[1];
-    f32 dz = a[2] - b[2];
-    dx = dx * dx;
-    dy = dy * dy;
-    dz = dz * dz;
-    return dx + dy + dz;
-}
 void Camera_UpdateCheckpointCam(Player *pl, Car *car, f32 dt) {
     u8 hit = 0;
     f32 *pos = &car->x290;
@@ -63,12 +57,9 @@ void Camera_UpdateCheckpointCam(Player *pl, Car *car, f32 dt) {
         }
     } else if (D_8009562C->x2C < D_80130200.timer) {
         dx = D_8009562C->x3C - car->x290;
-        dx = dx * dx;
         dy = D_8009562C->x40 - car->x294;
-        dy = dy * dy;
         dz = D_8009562C->x44 - car->x298;
-        dz = dz * dz;
-        d = dx + dy + dz;
+        d = dx * dx + dy * dy + dz * dz;
         if ((0.0 < D_8009562C->x30 && D_8009562C->x30 < D_80130200.timer) || D_8009562C->x38 * D_8009562C->x38 < d) {
             if (D_8009562C->x34 * D_8009562C->x34 < d) {
                 hit = 1;
@@ -95,7 +86,11 @@ void Camera_UpdateCheckpointCam(Player *pl, Car *car, f32 dt) {
             }
             cp = &D_80123320->cps[fwd];
             i++;
-            if (DistSq(&cp->x3C, pos) < cp->x38 * cp->x38) {
+            dx = cp->x3C - pos[0];
+            dy = cp->x40 - pos[1];
+            dz = cp->x44 - pos[2];
+            d = dx * dx + dy * dy + dz * dz;
+            if (d < cp->x38 * cp->x38) {
                 found = fwd;
                 break;
             }
@@ -109,7 +104,11 @@ void Camera_UpdateCheckpointCam(Player *pl, Car *car, f32 dt) {
             }
             cp = &D_80123320->cps[back];
             i++;
-            if (DistSq(&cp->x3C, pos) < cp->x38 * cp->x38) {
+            dx = cp->x3C - pos[0];
+            dy = cp->x40 - pos[1];
+            dz = cp->x44 - pos[2];
+            d = dx * dx + dy * dy + dz * dz;
+            if (d < cp->x38 * cp->x38) {
                 found = back;
                 D_80130200.step = -D_80130200.step;
                 break;
@@ -133,4 +132,3 @@ void Camera_UpdateCheckpointCam(Player *pl, Car *car, f32 dt) {
     }
     D_80130200.timer += dt;
 }
-/* agent45: 16 words: in all three DistSq blocks original loads cp->x3C/x40 into f2 and subtracts into f4/f6 (no local-alloc tie for dx,dy; dz ties). Tried user-var temps, *=, return forms, separate squares. */

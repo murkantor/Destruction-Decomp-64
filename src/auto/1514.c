@@ -1,5 +1,10 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x0; f32 x4; f32 x8; f32 xC; f32 x10; f32 x14; } Seg;
 u8 func_80001670(f32, f32);
+
+static inline f32 Side(f32 ux, f32 uz, f32 px, f32 pz, f32 k) { return ux * px + uz * pz + k; }
 
 s32 Seg_Intersect2D(Seg *a, Seg *b) {
     f32 ax;
@@ -10,7 +15,7 @@ s32 Seg_Intersect2D(Seg *a, Seg *b) {
     f32 cx;
     f32 dx;
     f32 az;
-    f32 d1, d2, k, e, f;
+    f32 d1, d2;
 
     dx = b->xC;
     dz = b->x14;
@@ -21,18 +26,15 @@ s32 Seg_Intersect2D(Seg *a, Seg *b) {
     ax = a->x0;
     az = a->x8;
 
-    k = bx * az - ax * bz;
-    d1 = (bz - az) * cx + (ax - bx) * cz + k;
-    d2 = (bz - az) * dx + (ax - bx) * dz + k;
+    d1 = Side(bz - az, ax - bx, cx, cz, bx * az - ax * bz);
+    d2 = Side(bz - az, ax - bx, dx, dz, bx * az - ax * bz);
     if (d1 != 0.0f && d2 != 0.0f) {
         if (func_80001670(d1, d2)) return 0;
     }
-    k = dx * cz - cx * dz;
-    d1 = (dz - cz) * ax + (cx - dx) * az + k;
-    d2 = (dz - cz) * bx + (cx - dx) * bz + k;
+    d1 = Side(dz - cz, cx - dx, ax, az, dx * cz - cx * dz);
+    d2 = Side(dz - cz, cx - dx, bx, bz, dx * cz - cx * dz);
     if (d1 != 0.0f && d2 != 0.0f) {
         if (func_80001670(d1, d2)) return 0;
     }
     return 1;
 }
-/* agent45: 15 words, FP temp regs only (k gets f10 vs f6). Tried decl/load order hill-climb, operand orders, e/f locals, inline helper. */

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 void Vec3f_Sub(Vec3f *out, Vec3f *a, Vec3f *b);
@@ -46,7 +49,8 @@ s32 Seg_SphereSweepIntersect(Vec3f *p0, Vec3f *p1, Vec3f *q0, Vec3f *q1, f32 r, 
         return 0;
     }
     if (disc == 0.0) {
-        t = -b / (2.0 * a);
+        /* do/while (0) raises b's register priority */
+        do t = -b / (2.0 * a); while (0);
     } else {
         f32 inv, q, base;
         disc = sqrtf(disc);
@@ -74,4 +78,3 @@ s32 Seg_SphereSweepIntersect(Vec3f *p0, Vec3f *p1, Vec3f *q0, Vec3f *q1, f32 r, 
     *outT = t;
     return 1;
 }
-/* agent45: compile with --flags -ffast-math (inline sqrt.s). Then only b (f12 vs f10) and the D_800B9610 constant pseudo (f10 vs f12) are swapped: global-alloc priority of const (3 refs/14 insns, DF) beats b (7 refs/47). */

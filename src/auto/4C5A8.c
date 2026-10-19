@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 extern char gSaveSlotText[][50];
 extern char D_80123C56[];
 extern char D_80123CBA[];
@@ -11,7 +14,6 @@ s32 sprintf(char *, const char *, ...);
 
 void Menu_SetupRetryPlaceText(void) {
     char *text;
-    char *t2;
     s32 place;
 
     Ui_ResetScreen(0x112F2, 0x112F3);
@@ -22,7 +24,8 @@ void Menu_SetupRetryPlaceText(void) {
     place = D_80097360;
     if (D_80095CB8[D_800958B0] - 1 < D_801252F4) {
         sprintf(text + 200, "OR BETTER IN CIRCUIT STANDINGS");
-        switch (D_800958B0) {
+        /* the nested do/while (0) raises place's register priority (loop-weighted refs) so it gets s0 */
+        do do switch (D_800958B0) {
             case 0:
                 place = 3;
                 break;
@@ -35,12 +38,13 @@ void Menu_SetupRetryPlaceText(void) {
             case 3:
                 place = 1;
                 break;
-        }
+        } while (0); while (0);
+        text = D_80123CBA;
     } else {
         sprintf(text + 200, "OR BETTER IN RACE STANDINGS");
+        text = D_80123CBA;
     }
-    t2 = D_80123CBA;
-    sprintf(t2, "TO ADVANCE");
+    sprintf(text, "TO ADVANCE");
     switch (place) {
         case 1:
             sprintf(D_80123C56, "1ST");
@@ -70,4 +74,3 @@ void Menu_SetupRetryPlaceText(void) {
     }
     D_80097350 = 0;
 }
-/* agent45: only diff is original keeps &D_80123CBA (=gSaveSlotText[5]) in s1 and does move a0,s1 for "TO ADVANCE". Tried reusing text, text+=250, gSaveSlotText[5], assignment in arg. */

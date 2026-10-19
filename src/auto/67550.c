@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad[0x1C];
 } ALVoice;
@@ -37,11 +40,6 @@ static inline void SetVol(Snd66950 *s, s32 idx, u16 vol) {
     alSynSetVol(D_8011F2B8, &D_800CCA9C[idx], vol, D_800CCAB0);
 }
 
-static inline void SetPan(Snd66950 *s, s32 idx, u8 pan) {
-    s->xB6 = pan;
-    alSynSetPan(D_8011F2B8, &D_800CCA9C[idx], pan);
-}
-
 void Seq_UpdateVolPan(Snd66950 *s, s32 idx) {
     u32 vol;
 
@@ -58,9 +56,8 @@ void Seq_UpdateVolPan(Snd66950 *s, s32 idx) {
         SetVol(s, idx, vol);
     }
     if (s->xB5 != s->xB6) {
-        SetPan(s, idx, (s->xB5 * s->xA8 >> 7) & 0x7F);
+        vol = (s->xB5 * s->xA8 >> 7) & 0x7F;
+        s->xB6 = vol;
+        alSynSetPan(D_8011F2B8, &D_800CCA9C[idx], vol);
     }
 }
-/* agent45: only 3 words differ at the pan store: original "andi v1; move a2,v1; sb a2,0xB6",
-   ours "andi v0; move a2,v0; sb v0". Tried pan locals of many types, reused vol/pan locals,
-   inline params s32/u8 with &0x7F inside, assignment-in-arg, ALVoice* param; no luck. */

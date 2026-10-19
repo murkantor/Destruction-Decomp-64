@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 pad[0x2C4]; f32 x2C4; } Car;
 typedef struct { u8 pad[0x10]; s8 x10; u8 pad2[0xF]; Car *x20; } CamCfg;
@@ -31,6 +34,7 @@ void func_80021700(Cam *cam, f32 dt) {
     f32 w;
     f32 p, q, r;
     f32 k;
+    f32 zero;
 
     if (D_80095628) {
         Camera_UpdateCheckpointCam(cam, car, dt);
@@ -39,9 +43,10 @@ void func_80021700(Cam *cam, f32 dt) {
     switch (cam->xB4) {
     case 0:
         y = 1.1f;
-        h = 0.0f;
+        zero = 0.0f;
+        lo = zero;
+        h = zero;
         w = 10.0f;
-        lo = 0.0f;
         if (car->x2C4 < 0.0) {
             h = car->x2C4;
             y += h;
@@ -85,4 +90,3 @@ void func_80021700(Cam *cam, f32 dt) {
         break;
     }
 }
-/* agent45: only case 0 differs (one insn): original materialises 0.0f in f0, h = mov f0, lo = mov h (in bc1f delay). Tried orders, lo = h, h = lo, chained, literal 0.0f args. */
