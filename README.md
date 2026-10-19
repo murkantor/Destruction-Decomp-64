@@ -136,4 +136,4 @@ When you clean up a file in `src/auto/`, give it real types and names and move i
 
 See [docs/rom.md](docs/rom.md) for the ROM layout and what is known about the data, and [docs/prototype.md](docs/prototype.md) for what a prototype build adds.
 
-[docs/functions.md](docs/functions.md) lists every function with its address, size, file and state, and [docs/files.md](docs/files.md) lists the source files. `make docs` regenerates both from the current build.
+[docs/functions.md](docs/functions.md) lists every function with its address, size, file and state, and [docs/files.md](docs/files.md) lists the source files. `make docs` regenerates both from the current build. [docs/systems.md](docs/systems.md) explains the parts that are understood so far.
