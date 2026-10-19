@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_8004FD80(s32 *);                           /* extern */
+s32 Pak_Open(s32 *);                           /* extern */
 s32 func_80050910(s32);                             /* extern */
 M2C_UNK func_80063380(M2C_UNK);                     /* extern */
 M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
@@ -15,7 +15,7 @@ s32 func_8003C2C4(void) {
     s32 sp10;
     M2C_UNK var_a0;
 
-    if (func_8004FD80(&sp10) & 0xFF) {
+    if (Pak_Open(&sp10) & 0xFF) {
         if (func_80050910(sp10) & 0xFF) {
             if (M2C_FIELD(gGame, s16 *, 0xC) != 1) {
                 func_80063380(1);

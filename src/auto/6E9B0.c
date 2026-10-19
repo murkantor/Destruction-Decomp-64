@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 M2C_UNK osRecvMesg(s32, M2C_UNK, M2C_UNK);       /* extern */
-M2C_UNK func_8006DED4();                            /* extern */
+M2C_UNK __osPackReadData();                            /* extern */
 s32 __osSiRawStartDma(M2C_UNK, M2C_UNK *);              /* extern */
 M2C_UNK __osSiGetAccess();                            /* extern */
 M2C_UNK __osSiRelAccess();                            /* extern */
@@ -14,7 +14,7 @@ s32 osContStartReadData(s32 arg0) {
 
     __osSiGetAccess();
     if (__osContLastCmd != 1) {
-        func_8006DED4();
+        __osPackReadData();
         __osSiRawStartDma(1, &__osContPifRam);
         osRecvMesg(arg0, 0, 1);
     }

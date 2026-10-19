@@ -7,7 +7,7 @@ typedef struct {
 } Ctx;
 extern Ctx *D_800CCAC0;
 extern Ctx *D_800CCAC4;
-s32 func_80065BAC(s32);
+s32 Sound_PlayFindVoice(s32);
 
 s32 func_800661D8(Ctx *ctx, s32 arg1) {
     s32 ret;
@@ -15,7 +15,7 @@ s32 func_800661D8(Ctx *ctx, s32 arg1) {
     if (ctx != NULL && ctx->unk10 < 0) {
         D_800CCAC0 = ctx;
     }
-    ret = func_80065BAC(arg1);
+    ret = Sound_PlayFindVoice(arg1);
     D_800CCAC0 = D_800CCAC4;
     return ret;
 }

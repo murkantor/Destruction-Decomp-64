@@ -4,7 +4,7 @@
 extern s32 D_800964D4;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
-u8 func_8004FD80(s32 *);
+u8 Pak_Open(s32 *);
 u8 func_80050910(s32);
 void func_80063564(s32, s32);
 
@@ -12,7 +12,7 @@ s32 func_8003C3E8(void) {
     s32 h;
 
     if (D_800964D4 == 0) {
-        if (func_8004FD80(&h) && func_80050910(h)) {
+        if (Pak_Open(&h) && func_80050910(h)) {
         if (D_8009734C) {
             func_80063564(9, 1);
         } else if (D_8009734D) {

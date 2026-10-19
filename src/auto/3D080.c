@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_8004FD80(s32 *);                           /* extern */
+s32 Pak_Open(s32 *);                           /* extern */
 s32 func_80050910(s32);                             /* extern */
 M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
 extern s32 D_800964D4;
@@ -14,7 +14,7 @@ s32 func_8003C480(void *arg0) {
     s32 sp10;
     M2C_UNK var_a0;
 
-    if (func_8004FD80(&sp10) & 0xFF) {
+    if (Pak_Open(&sp10) & 0xFF) {
         if (func_80050910(sp10) & 0xFF) {
             if (D_8009734C != 0) {
                 var_a0 = 9;
