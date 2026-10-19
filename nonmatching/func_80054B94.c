@@ -37,7 +37,8 @@ void func_80054B94(Obj *obj) {
             func_80056098(obj->x90);
         }
         flag = func_800540C0();
+        i = D_80125C90;
         D_800B04B0++;
-    } while (!((D_80125C90 >> 12) & 1));
+    } while (!(((u32)i >> 12) & 1));
     osScRemoveClient(D_80130250, &client);
 }

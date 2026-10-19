@@ -25,6 +25,7 @@ void osWritebackDCacheAll(void);
 void func_80067368(Hdr *arg0, s32 base) {
     Hdr *h = arg0;
     s32 i;
+    char unused[8];
 
     if (h->x10 >= 0) {
         h->x10 |= 0x80000000;

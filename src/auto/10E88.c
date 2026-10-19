@@ -28,7 +28,7 @@ typedef struct { s32 key; s32 value; } KeyValue;
 extern Ui *gUi;
 extern KeyValue D_80137104[];
 void Res_Load(s32, void *);
-void func_8005F7A0(Ui *, void *);
+void Ui_AddResource(Ui *, void *);
 
 s32 Font_GetStringWidth(u8 *str, s32 fontId) {
     s8 i;
@@ -51,7 +51,7 @@ s32 Font_GetStringWidth(u8 *str, s32 fontId) {
             }
         }
         Res_Load(D_80137104[j].key, buf);
-        func_8005F7A0(gUi, buf);
+        Ui_AddResource(gUi, buf);
     }
     fd = &gUi->fonts[i].data;
     for (p = str; *p != 0; p++) {

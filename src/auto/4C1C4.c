@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad[0x10];
     s32 value;
@@ -10,9 +13,9 @@ extern u8 D_80097336;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 extern u8 D_800972F0;
-s32 func_80049FC0(s32);
-u8 func_8004FD80(s32 *);
-u8 func_80050910(s32);
+s32 Menu_NextFreeSlot(s32);
+u8 Pak_Open(s32 *);
+u8 Menu_HandleSelect(s32);
 void func_80063564(s32, s32);
 void func_80063380(s32);
 
@@ -26,13 +29,13 @@ s32 func_8004B5C4(MenuItem *item) {
         item->value = 0;
         done = 1;
     } else {
-        next = func_80049FC0(item->value);
+        next = Menu_NextFreeSlot(item->value);
         if (next == -1) {
             done = 1;
-        } else if (D_800958B4 >= 12) {
-            done = 1;
-        } else {
+        } else if (D_800958B4 < 12) {
             item->value = next;
+        } else {
+            done = 1;
         }
     }
     if (done) {
@@ -41,7 +44,7 @@ s32 func_8004B5C4(MenuItem *item) {
         if (D_80097D50 != -1) {
             D_8009734C = 0;
             D_8009734D = 1;
-            func_80063564(func_8004FD80(&slot) ? (func_80050910(slot) ? 11 : 6) : 6, 1);
+            func_80063564(Pak_Open(&slot) ? (Menu_HandleSelect(slot) ? 11 : 6) : 6, 1);
         } else if (D_800972F0) {
             func_80063564(0x2E, 1);
         } else {

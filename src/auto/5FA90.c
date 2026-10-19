@@ -53,7 +53,7 @@ typedef struct { u8 pad[0x10]; void *x10; } UiElem;
 
 extern void *gUi[];
 void Res_Load(s32, void *);
-void func_8005F7A0(Mgr *, void *);
+void Ui_AddResource(Mgr *, void *);
 UiElem *Ui_FindElement(void *, s32, s32);
 void func_8005F994(void *);
 
@@ -80,7 +80,7 @@ void func_8005EE90(Mgr *m, Def *d) {
     }
     if (i == m->x8B62) {
         Res_Load(d->x18, buf);
-        func_8005F7A0(m, buf);
+        Ui_AddResource(m, buf);
     }
     e->x10 = m->res[i].x4;
     e->x18 = d->x1C;

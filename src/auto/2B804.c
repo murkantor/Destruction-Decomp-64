@@ -19,7 +19,7 @@ extern s32 D_800958BC;
 extern s32 D_80095D94[][3];
 
 void func_8002B66C(void);
-void func_8002AE70(void);
+void Results_TallyStandings(void);
 s32 func_8001B298(s32);
 int rand(void);
 
@@ -58,5 +58,5 @@ void Race_AwardPot(void) {
             }
         }
     }
-    func_8002AE70();
+    Results_TallyStandings();
 }

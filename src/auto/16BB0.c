@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad[8];
     s32 x8;
@@ -32,30 +35,30 @@ typedef struct {
     u8 pad[0x1100];
     RaceState *race;
 } GameState;
-extern GameState *gGame;
+extern GameState *gGame[];
 extern f32 D_80131304[];
 void *Mem_AllocAligned(u32, u32, u32);
 void Mem_Free(void *);
-void *func_80063A20(s32);
-void func_80063BFC(s32, void *);
+void *Res_Get(s32);
+void Res_Load(s32, void *);
 
 s32 func_80015FB0(s32 id) {
     Obj *o = Mem_AllocAligned(sizeof(Obj) + 0x14, 0x3F, 0);
     Info *info;
     s32 i;
 
-    func_80063BFC(id, o);
-    info = func_80063A20(o->xC);
+    Res_Load(id, o);
+    info = Res_Get(o->xC);
     o->x50 = 1;
-    o->x20 = func_80063A20(info->x8);
+    o->x20 = Res_Get(info->x8);
     o->x12 = info->xC * 4;
     o->x1A = info->x10 * 4;
     o->x26 = info->x14;
+    o->x27 = info->x18;
     o->x10 = 0;
     o->x18 = 0;
     o->x30 = 0;
-    o->x27 = info->x18;
-    gGame->race->xA8 = o;
+    gGame[0]->race->xA8 = o;
     for (i = 3; i >= 0; i--) {
         D_80131304[i - 3] = 1.0f;
     }

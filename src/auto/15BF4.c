@@ -51,7 +51,7 @@ void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
-s32 func_80014E10(ClipVtx *out, ClipVtx *in, s32 n, void *plane, f32 d);
+s32 Poly_ClipSH(ClipVtx *out, ClipVtx *in, s32 n, void *plane, f32 d);
 
 s32 Shadow_ClipAndEmitFaces(Ctx *ctx, s32 *list, s32 count) {
     ClipVtx bufA[10];
@@ -86,11 +86,11 @@ s32 Shadow_ClipAndEmitFaces(Ctx *ctx, s32 *list, s32 count) {
             bufA[j].pos.y = mv->y;
             bufA[j].pos.z = mv->z;
         }
-        if ((n = func_80014E10(bufB, bufA, n, ctx->x250, ctx->x280)) == 0) continue;
-        if ((n = func_80014E10(bufA, bufB, n, ctx->x25C, ctx->x284)) == 0) continue;
-        if ((n = func_80014E10(bufB, bufA, n, ctx->x268, ctx->x288)) == 0) continue;
-        if ((n = func_80014E10(bufA, bufB, n, ctx->x274, ctx->x28C)) == 0) continue;
-        if ((n = func_80014E10(bufB, bufA, n, &ctx->x2B4, ctx->x2C0)) == 0) continue;
+        if ((n = Poly_ClipSH(bufB, bufA, n, ctx->x250, ctx->x280)) == 0) continue;
+        if ((n = Poly_ClipSH(bufA, bufB, n, ctx->x25C, ctx->x284)) == 0) continue;
+        if ((n = Poly_ClipSH(bufB, bufA, n, ctx->x268, ctx->x288)) == 0) continue;
+        if ((n = Poly_ClipSH(bufA, bufB, n, ctx->x274, ctx->x28C)) == 0) continue;
+        if ((n = Poly_ClipSH(bufB, bufA, n, &ctx->x2B4, ctx->x2C0)) == 0) continue;
         vert = bufB;
         if (n < 3) continue;
         if (D_800BC9AC + n > 32) {

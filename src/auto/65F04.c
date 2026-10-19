@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad0[0x20];
     f32 x20;
@@ -24,15 +27,10 @@ typedef struct {
     u8 x11C[4];
 } Voice;
 
-u8 *func_80065304(Voice *v) {
+u8 *Voice_PopEnvelope(Voice *v, u8 *r) {
     s32 i = v->xD3 - 1;
-    u8 *p = &v->x114[i];
-    u8 c = *p;
-    u8 *r;
-
-    if (c != 0xFF) {
-        *p = --c;
-        if (c == 0) {
+    if (v->x114[i] != 0xFF) {
+        if (--v->x114[i] == 0) {
             v->xD3 = i;
             i = -1;
         }

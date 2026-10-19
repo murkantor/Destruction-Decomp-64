@@ -62,7 +62,13 @@ void func_80023944(Player *pl, Car *car, f32 dt) {
             hit = 1;
         }
     } else if (D_8009562C->x2C < D_80130200.timer) {
-        d = DistSq(&D_8009562C->x3C, &car->x290);
+        dx = D_8009562C->x3C - car->x290;
+        dx = dx * dx;
+        dy = D_8009562C->x40 - car->x294;
+        dy = dy * dy;
+        dz = D_8009562C->x44 - car->x298;
+        dz = dz * dz;
+        d = dx + dy + dz;
         if ((0.0 < D_8009562C->x30 && D_8009562C->x30 < D_80130200.timer) || D_8009562C->x38 * D_8009562C->x38 < d) {
             if (D_8009562C->x34 * D_8009562C->x34 < d) {
                 hit = 1;

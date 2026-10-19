@@ -1,9 +1,12 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad[0x10]; s16 **x10; u8 pad14[0x14]; s16 *x28; } Elem;
 typedef struct { u8 pad[0x1058]; u64 x1058; } Game;
-extern Game *gGame;
+extern Game *gGame[];
 extern void *gUi;
 extern s32 D_800D1AE8[];
-extern s16 *D_800D1AEC;
+extern s16 *D_800D1AEC[];
 extern s32 D_800D1AF0;
 extern u64 D_800D1AF8;
 extern u64 D_800D1B00;
@@ -21,11 +24,11 @@ void func_8000E864(void) {
     D_800D1AE8[0] = size / 2;
     buf = Mem_AllocAligned(size, 7, 0);
     e = Ui_FindElement(gUi, 2, 0x1F);
-    D_800D1AEC = *e->x10;
+    D_800D1AEC[0] = *e->x10;
     *e->x10 = buf;
     e->x28 = buf;
     D_800D1AF0 = 0;
-    D_800D1B00 = Time_Get(&gGame->x1058);
+    D_800D1B00 = Time_Get(&gGame[0]->x1058);
     D_800D1AF8 = 100000;
     for (i = 0; i < D_800D1AE8[0]; i++) {
         *buf++ = 1;

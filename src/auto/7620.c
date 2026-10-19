@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 pad[0x30]; s32 x30; u8 pad34[0x160]; s32 x194; } Car;
 typedef struct { u8 pad0[0x74]; Car *cars[12]; s32 xA4; } Race;
@@ -34,14 +37,14 @@ extern s32 D_801320C8[];
 extern s64 D_80131F90[];
 extern s32 D_80132164[];
 extern u8 D_8007EE48[];
-extern SndSlot D_801311D0[];
+extern volatile SndSlot D_801311D0[];
 
 s16 func_80064D70(void);
 u64 Time_Get(u64 *);
 Vec3f func_8001FBA8(Car *);
 s8 Pool_PushCopy(void *, SndReq *);
 
-void func_80006A20(void *pool) {
+void Sound_StartCarLoops(void *pool) {
     SndReq req;
     Vec3f zero = D_800B7F20;
     Car *car;

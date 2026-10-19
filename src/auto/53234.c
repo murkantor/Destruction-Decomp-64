@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 extern s32 D_800BCA30;
 extern s32 D_800BCA34;
 extern s32 D_800BCA38;
@@ -11,9 +14,9 @@ extern s32 D_800BCA54;
 extern s32 D_800B048C;
 s32 Mem_AllocAlt(s32);
 void Mem_Free(s32);
-s32 func_80051AC4(void);
+s32 inflate(void);
 
-s32 func_80052634(s32 src, s32 srcLen, s32 dst, s32 dstLen) {
+s32 Decompress_ToBuffer(s32 src, s32 srcLen, s32 dst, s32 dstLen) {
     s32 r;
 
     D_800BCA40 = src;
@@ -30,7 +33,7 @@ s32 func_80052634(s32 src, s32 srcLen, s32 dst, s32 dstLen) {
         return -1;
     }
     D_800B048C = 0;
-    r = func_80051AC4();
+    r = inflate();
     Mem_Free(D_800BCA30);
     if (D_800BCA50 != D_800BCA54) {
         return -1;
@@ -38,11 +41,8 @@ s32 func_80052634(s32 src, s32 srcLen, s32 dst, s32 dstLen) {
     if (D_800BCA44 != D_800BCA48) {
         return -1;
     }
-    if (r != 0) {
+    if (r != 0 || D_800B048C != 0) {
         return -1;
     }
-    if (D_800B048C != 0) {
-        r = -1;
-    }
-    return r;
+    return 0;
 }

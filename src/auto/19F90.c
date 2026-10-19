@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 op;
     u8 pad1[3];
@@ -59,7 +62,7 @@ s32 Res_Get(s32);
 void func_80013A54(s32 *, s32 *, s8, s8, s16);
 void Sfx_AddEntry(Cmd *, s16, s8, s8);
 
-void func_80019390(Obj *arg0, Script *arg1, s32 arg2) {
+void Script_Relocate(Obj *arg0, Script *arg1, s32 arg2) {
     SfxDef *sfx;
     Group *groups;
     u8 flag;
@@ -120,7 +123,7 @@ void func_80019390(Obj *arg0, Script *arg1, s32 arg2) {
         case 0xD9:
             if (flag) {
                 s32 t = (c->x4 & 0x400) == 0;
-                if ((c->x4 & 0x200) ? t : t ^ 1) {
+                if (!(c->x4 & 0x200) ? (t ^ 1) != 0 : t != 0) {
                     c->x4 ^= 0x600;
                 }
             }

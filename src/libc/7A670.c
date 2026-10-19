@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 f64 __kernel_standard(s32, char *, f64, f64, f64);
-f64 func_80079750(f64);
+f64 log(f64);
 f64 exp(f64);
 
 f64 pow(f64 x, f64 y) {
@@ -27,5 +27,5 @@ f64 pow(f64 x, f64 y) {
         }
         x = __builtin_fabs(x);
     }
-    return exp(func_80079750(x) * y) * sign;
+    return exp(log(x) * y) * sign;
 }

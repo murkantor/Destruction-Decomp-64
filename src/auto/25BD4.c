@@ -23,7 +23,7 @@ s32 func_80024FD4(s32 arg0) {
     return 0;
 }
 
-M2C_UNK func_80019390(M2C_UNK *, void *, s32);      /* extern */
+M2C_UNK Script_Relocate(M2C_UNK *, void *, s32);      /* extern */
 s32 Mem_AllocAligned(s32, M2C_UNK, M2C_UNK);           /* extern */
 M2C_UNK Res_Load(s32, s32);                    /* extern */
 s32 Res_GetSize();                                /* extern */
@@ -43,6 +43,6 @@ s32 func_80025064(s32 arg0) {
     temp_s0 = (func_80063DAC(arg0) - temp_s1) + temp_v0;
     M2C_FIELD(temp_s0, s32 *, 4) = func_80063E0C(M2C_FIELD(temp_s0, s32 *, 4), temp_s1, temp_v0);
     M2C_FIELD(temp_s0, s32 *, 0xC) = func_80063E0C(M2C_FIELD(temp_s0, s32 *, 0xC), temp_s1, temp_v0);
-    func_80019390(&D_80125460, temp_s0, temp_v0);
+    Script_Relocate(&D_80125460, temp_s0, temp_v0);
     return 0;
 }

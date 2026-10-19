@@ -45,7 +45,7 @@ void Heap_Free(void *heap, HeapBlock *blk);
 void *HeapBlock_Ptr(HeapBlock *);
 void *Ui_FindElement(Ui *, s32, s32);
 void *Mem_Alloc(u32);
-void func_8005EDC0(Ui *, void *, u32);
+void Ui_AddMissingResources(Ui *, void *, u32);
 void func_8005EE90(Ui *, Entry24 *);
 void Ui_AddSprite(Ui *, Entry48 *);
 void Ui_AddSpriteElement(Ui *, Entry48 *);
@@ -99,7 +99,7 @@ s32 func_8005DD20(Ui *ui, s32 id) {
     case 0:
         break;
     case 0x3F0:
-        func_8005EDC0(ui, buf, size);
+        Ui_AddMissingResources(ui, buf, size);
         break;
     case 0x3F1: {
         Entry24 *e;

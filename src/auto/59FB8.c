@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 type;
     s32 channel;
@@ -44,9 +47,10 @@ void Pad_Clear(s32);
 
 extern s32 D_800B0BA0;
 
-void func_800593B8(void) {
+void Pad_PollAll(void) {
     s32 i;
     s32 j;
+    s32 k;
     Controller *c;
 
     if (D_800B0BA0) {
@@ -57,16 +61,17 @@ void func_800593B8(void) {
     }
     osContGetReadData(gContPads);
     gNumControllers = 0;
-    for (i = 0; i < 4; i++) {
-        if (((gContPattern >> i) & 1) && gContPads[i].errnum == 0) {
+    for (k = 0; k < 4; k++) {
+        if (((gContPattern >> k) & 1) && gContPads[k].errnum == 0) {
             gNumControllers++;
-            Pad_Update(i);
+            Pad_Update(k);
         } else {
-            Pad_Clear(i);
+            Pad_Clear(k);
         }
     }
     gNumControllers = 0;
-    for (i = 0, c = gControllers; i < 4; i++, c++) {
+    for (i = 0; i < 4; i++) {
+        c = &gControllers[i];
         if (gRumbleRetry) {
             c->status = osMotorInit(&gSiMesgQueue, c->pfs, i);
             if (c->status == 0) {

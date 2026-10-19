@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     u8 pad4[0xC];
@@ -29,13 +32,13 @@ typedef struct {
 extern GameState *gGame;
 extern s32 D_800958A8;
 extern s32 D_800958AC;
-extern volatile u32 D_800958B4;
+extern u32 D_800958B4[];
 void func_80005180(Driver *);
-void func_800051F4(Driver *);
-void func_80005DCC(Driver *);
-void func_80006378(Driver *);
+void Ai_SelectTeamTarget(Driver *);
+void Ai_Update(Driver *);
+void Ai_UpdateSteer(Driver *);
 
-void func_80004E00(Driver *d) {
+void Ai_UpdateDriver(Driver *d) {
     Brain *b = d->brain;
     RaceState *r = gGame->race;
     s32 n;
@@ -51,18 +54,18 @@ void func_80004E00(Driver *d) {
     }
     if (b->tick == 0) {
         if (D_800958A8 == 3 && D_800958AC == 2) {
-            func_800051F4(d);
+            Ai_SelectTeamTarget(d);
         } else {
             func_80005180(d);
-            func_80005DCC(d);
+            Ai_Update(d);
         }
     } else {
-        func_80006378(d);
+        Ai_UpdateSteer(d);
     }
-    n = b->tick + 1;
-    b->tick = n;
-    ok = n < 5;
-    if (D_800958B4 >= 4) {
+    n = ++b->tick;
+    if (D_800958B4[0] < 4) {
+        ok = n < 5;
+    } else {
         ok = n < 3;
     }
     if (!ok) {

@@ -30,7 +30,7 @@ typedef struct {
 extern Ui *gUi;
 s32 func_80010228(s32);
 void Res_Load(s32, void *);
-void func_8005F7A0(Ui *, void *);
+void Ui_AddResource(Ui *, void *);
 
 void func_800100BC(s32 id, s32 res) {
     u8 buf[0x28];
@@ -51,7 +51,7 @@ void func_800100BC(s32 id, s32 res) {
     }
     if (i == gUi->count) {
         Res_Load(func_80010228(res), buf);
-        func_8005F7A0(gUi, buf);
+        Ui_AddResource(gUi, buf);
     }
     {
         Ui *ui = gUi;

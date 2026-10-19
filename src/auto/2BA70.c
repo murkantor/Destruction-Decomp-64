@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad0[0x10];
     s32 x10;
@@ -39,7 +42,7 @@ extern u64 D_80095E28[][5];
 extern s32 func_8001B298(s32);
 extern void Standings_Resort(Node **, Car *);
 
-void func_8002AE70(void) {
+void Results_TallyStandings(void) {
     Race *race = gGame[0]->x1100;
     u8 again;
     s32 i, j;
@@ -103,11 +106,8 @@ void func_8002AE70(void) {
                 }
                 D_80095E28[id][j] = node->car->laps[j];
             }
-            {
-                u64 best = node->car->x80;
-                D_80095E28[id][4] = total;
-                D_80095E28[id][3] = best;
-            }
+            D_80095E28[id][3] = node->car->x80;
+            D_80095E28[id][4] = total;
         } else if (node->car->x10 > 0) {
             D_80095DF4[id] = node->car->x10 * 100;
         }

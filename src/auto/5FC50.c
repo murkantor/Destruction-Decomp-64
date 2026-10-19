@@ -61,7 +61,7 @@ void Heap_Free(void *, HeapBlock *);
 void Res_Load(s32, void *);
 s32 Res_Get(s32);
 void func_80060370(void *, s32, s32, s32, s32, s32, s32);
-void func_8006134C(void *, Sprite *, s32);
+void Bg_Init(void *, Sprite *, s32);
 void func_80061524(void *, s32, s32);
 void func_8006153C(void *);
 void func_80061590(void *, s32);
@@ -115,7 +115,7 @@ void Ui_AddSpriteElement(Ui *ui, Desc *d) {
     el->x84 = d->x20;
     el->x88 = el->x10->xC;
     el->x8C = el->x10->x10;
-    func_8006134C(el->x18, el->x10, 0);
+    Bg_Init(el->x18, el->x10, 0);
     if (d->x3C) {
         func_80061524(el->x18, d->x40, d->x44);
     } else {

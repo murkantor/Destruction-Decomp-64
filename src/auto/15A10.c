@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f pos; s32 xC; s32 x10; } ClipVtx;
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
@@ -13,7 +16,7 @@ static inline void Vec3f_Scale(Vec3f *v, f32 t) {
     v->z = z;
 }
 
-s32 func_80014E10(ClipVtx *out, ClipVtx *in, s32 n, Vec3f *normal, f32 d) {
+s32 Poly_ClipSH(ClipVtx *out, ClipVtx *in, s32 n, Vec3f *normal, f32 d) {
     f32 dprev, dcur;
     s32 i, prev, count;
     f32 t;
@@ -23,27 +26,24 @@ s32 func_80014E10(ClipVtx *out, ClipVtx *in, s32 n, Vec3f *normal, f32 d) {
     Vec3f_Dot(&dprev, normal, &in[n - 1].pos);
     dprev -= d;
     count = 0;
-    cur = in;
     for (i = 0; i < n; i++) {
         prev = i - 1;
         if (prev < 0) prev = n - 1;
-        Vec3f_Dot(&dcur, normal, &cur->pos);
+        Vec3f_Dot(&dcur, normal, &in[i].pos);
         dcur -= d;
         if (dprev >= 0.0f) {
-            *out++ = in[prev];
+            out[count] = in[prev];
             count++;
         }
         if (dprev * dcur < 0.0f) {
             t = dprev / (dprev - dcur);
             p = &in[prev];
-            Vec3f_Sub(&out->pos, &cur->pos, &p->pos);
-            Vec3f_Scale(&out->pos, t);
+            Vec3f_Sub(&out[count].pos, &in[i].pos, &p->pos);
+            Vec3f_Scale(&out[count].pos, t);
+            Vec3f_Add(&out[count].pos, &out[count].pos, &p->pos);
             count++;
-            Vec3f_Add(&out->pos, &out->pos, &p->pos);
-            out++;
         }
         dprev = dcur;
-        cur++;
     }
     return count;
 }

@@ -27,7 +27,7 @@ extern Game *gGame;
 extern u8 *D_801245A4;
 void Vec3f_Set(Vec3f *, f32, f32, f32);
 void Mtx_FromRotPos(Mtx *, void *, Car *, s32, s32);
-void func_80016C1C(void *, Vec3f *, Vec3f *, Vec3f, f32, f32, s32, s32, s32);
+void Particles_EmitAlongSegment(void *, Vec3f *, Vec3f *, Vec3f, f32, f32, s32, s32, s32);
 void func_80017F7C(void *);
 void func_80017F98(void *);
 
@@ -68,12 +68,12 @@ void func_8000AD40(Car *car, void *a, void *b)
             case 8:
             case 9:
             case 10:
-                func_80016C1C(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 0);
+                Particles_EmitAlongSegment(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 0);
                 break;
             case 3:
             case 4:
             case 7:
-                func_80016C1C(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 1);
+                Particles_EmitAlongSegment(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 1);
                 break;
             }
         }
@@ -95,12 +95,12 @@ void func_8000AD40(Car *car, void *a, void *b)
             case 8:
             case 9:
             case 10:
-                func_80016C1C(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 0);
+                Particles_EmitAlongSegment(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 0);
                 break;
             case 3:
             case 4:
             case 7:
-                func_80016C1C(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 1);
+                Particles_EmitAlongSegment(D_801245A4 + 0xB0, &p1, &p2, zero, 3.0f, 0.5f, 20, 20, 1);
                 break;
             }
         }

@@ -1,14 +1,15 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 x0; s32 x4; s32 x8; } InitConfig;
 extern InitConfig gInitConfig;
 extern s32 D_800C06F0;
 extern f32 D_800C06F4;
-extern s32 D_800C06F8;
-extern s32 D_800C06FC;
+extern s64 D_800C06F8;
 extern f64 D_800BBF30;
 extern s32 func_80062F34(void);
-extern void func_80062E4C(s64);
-void func_80062D9C(void) {
-    s64 t;
+extern void Timer_Reset(void);
+void Timer_InitRate(void) {
     switch (gInitConfig.x8) {
     case 0:
         D_800C06F0 = 60;
@@ -23,8 +24,6 @@ void func_80062D9C(void) {
     } else {
         D_800C06F4 = 1.0f;
     }
-    t = 0;
-    D_800C06F8 = t >> 32;
-    D_800C06FC = t;
-    func_80062E4C(t);
+    D_800C06F8 = 0;
+    Timer_Reset();
 }

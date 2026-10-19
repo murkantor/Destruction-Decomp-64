@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad0[4];
     s32 x4;
@@ -13,9 +16,10 @@ typedef struct {
     u8 pad8B54[0xE];
     s16 x8B62;
 } Mgr;
-void func_8005F7A0(Mgr *, Ent *);
+void Ui_AddResource(Mgr *, Ent *);
 
-void func_8005EDC0(Mgr *m, Ent *e, u32 size) {
+void Ui_AddMissingResources(Mgr *m, Ent *arg1, u32 size) {
+    Ent *e = arg1;
     u32 i;
     s32 j;
     u32 n = size / 40;
@@ -27,7 +31,7 @@ void func_8005EDC0(Mgr *m, Ent *e, u32 size) {
             }
         }
         if (j == m->x8B62) {
-            func_8005F7A0(m, e);
+            Ui_AddResource(m, e);
         }
     }
 }

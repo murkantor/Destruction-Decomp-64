@@ -3,7 +3,7 @@
 
 f64 __kernel_standard(s32, char *, f64, f64, f64);
 f64 modf(f64, f64 *);
-f64 func_8007AA20(f64);
+f64 _exp_cordic(f64);
 
 f64 exp(f64 x) {
     union { f64 d; u64 ll; } u;
@@ -20,9 +20,9 @@ f64 exp(f64 x) {
     }
     f = modf(x * 1.4426950408889634, &ip) * 0.6931471805599453;
     if (f > 0.0) {
-        u.d = func_8007AA20(f);
+        u.d = _exp_cordic(f);
     } else if (f < 0.0) {
-        u.d = 1.0 / func_8007AA20(-f);
+        u.d = 1.0 / _exp_cordic(-f);
     } else {
         u.d = 1.0;
     }

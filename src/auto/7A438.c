@@ -1,9 +1,9 @@
 #include "common.h"
 #include "m2c.h"
 
-f64 func_80079750();                                /* extern */
+f64 log();                                /* extern */
 extern f64 D_800BC808;
 
 f64 func_80079838(void) {
-    return func_80079750() * D_800BC808;
+    return log() * D_800BC808;
 }

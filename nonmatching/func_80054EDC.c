@@ -14,10 +14,11 @@ void __assert(const char *, const char *, int);
 
 #define GFX2(g,a,b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_80054EDC(Font *font, s32 x0, s32 y, u8 *str, Gfx *g) {
+Gfx *func_80054EDC(Font *font, s32 x0, s32 y0, u8 *str, Gfx *g) {
     s32 x;
+    s32 y;
     u8 c;
-    u8 pal = 0;
+    u8 pal;
     u8 ch;
 
     if (font == NULL) {
@@ -27,6 +28,7 @@ Gfx *func_80054EDC(Font *font, s32 x0, s32 y, u8 *str, Gfx *g) {
         __assert(D_800BBB6C, D_800BBB70, 0x79);
     }
     x = x0;
+    y = y0;
     GFX2(g, 0xE7000000, 0);
     GFX2(g, 0xE2001E01, 1);
     GFX2(g, 0xF9000000, 0x80);
@@ -40,6 +42,7 @@ Gfx *func_80054EDC(Font *font, s32 x0, s32 y, u8 *str, Gfx *g) {
     GFX2(g, 0xE3000A01, 0);
     GFX2(g, 0xE200001C, 0x3466048);
     GFX2(g, 0xFCFFFFFF, 0xFFFCF279);
+    pal = 0;
     while ((c = *str++) != 0) {
         switch (c) {
         case 1:

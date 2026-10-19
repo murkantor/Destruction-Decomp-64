@@ -57,7 +57,7 @@ void Light_UpdateVertexColors(void *, void *, void *, f32 m[4][4], s32);
 void func_8000A9D8(Car *, Vec3f, f32 m[4][4]);
 Gfx *func_8000A894(Car *, Gfx *);
 Gfx *Debris_UpdateDraw(Car *, Gfx *);
-Gfx *func_800191C0(Gfx *, s32);
+Gfx *Gfx_SetViewport2(Gfx *, s32);
 Gfx *func_80015624(void *, Gfx *);
 void func_800158EC(void *, f32 m[4][4]);
 void Particle_DrawAt(void *);
@@ -151,7 +151,7 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
             if (!car->xD) {
                 gfx = func_8000A894(car, Car_DrawShadowDL(car, gfx));
             }
-            gfx = func_800191C0(Debris_UpdateDraw(car, gfx), -2);
+            gfx = Gfx_SetViewport2(Debris_UpdateDraw(car, gfx), -2);
             gfx = DrawParticle(car, gfx, m18);
             if (!car->xD && car->xB70[0]) {
                 g = func_80017E8C(car->xB70[0], gfx);
@@ -170,7 +170,7 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
                 Obj_EmitPositionedDL(car->xB70[2]);
                 Obj_EmitPositionedDL(car->xB70[3]);
             }
-            gfx = func_800191C0(gfx, 0);
+            gfx = Gfx_SetViewport2(gfx, 0);
         }
     }
     return gfx;

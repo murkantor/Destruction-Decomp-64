@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u16 imageX;
     u16 imageW;
@@ -53,7 +56,7 @@ typedef struct {
 } Palette;
 void func_8006DF90(uObjBg *);
 
-void func_8006134C(Background *b, BgImage *img, Palette *pal) {
+void Bg_Init(Background *b, BgImage *img, Palette *pal) {
     uObjTxtrTLUT *t;
 
     b->flags = 0;
@@ -64,9 +67,9 @@ void func_8006134C(Background *b, BgImage *img, Palette *pal) {
     b->bg.imageX = 0;
     b->bg.imageY = 0;
     b->bg.imageW = img->width * 4;
+    b->bg.imageH = img->height * 4;
     b->bg.frameX = 0;
     b->bg.frameY = 0;
-    b->bg.imageH = img->height * 4;
     b->bg.frameW = img->width * 4;
     b->bg.frameH = img->height * 4;
     b->bg.imagePtr = img->image;
@@ -87,11 +90,11 @@ void func_8006134C(Background *b, BgImage *img, Palette *pal) {
         t->type = 0x30;
         t->image = pal->data;
         t->phead = pal->start + 0x100;
+        t->pnum = pal->count - 1;
         t->zero = 0;
         t->sid = 0;
         t->flag = -1;
         t->mask = 0;
-        t->pnum = pal->count - 1;
         b->flags |= 2;
     } else {
         b->flags &= 0xFFFD;

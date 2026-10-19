@@ -9,9 +9,8 @@ extern void Timer_Start(void *, s64);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
 s32 func_8004C0C4(Obj *o) {
     s32 ret = 0;
-    s32 n = o->x10;
-    if (n > 0) {
-        o->x10 = n - 1;
+    if (o->x10 > 0) {
+        o->x10--;
         ret = 1;
         if (gGame[0]->x10FC == 0x22) {
             func_80048B30(D_80097294, 3);

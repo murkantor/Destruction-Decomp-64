@@ -9,17 +9,17 @@ void func_8004396C(void) {
     s32 n;
     s32 sel = -1;
     s32 i;
-    s32 t = rand();
-
-    n = t % 8;
+    s32 k;
+    n = rand() % 8;
 
     if (n == 0) {
         n = 1;
     }
+    k = n;
     do {
         for (i = 0; i < 12; i++) {
             if (D_80096ED0[i] == 0) {
-                if (--n == 0) {
+                if (--k == 0) {
                     sel = i;
                     D_80096ED0[i] = 1;
                 }

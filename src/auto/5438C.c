@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u32 sh_name;
     u32 sh_type;
@@ -47,6 +50,8 @@ static inline char *SecName(Elf32_Ehdr *elf, s32 i) {
 void Elf_ResolveSymbols(Elf32_Ehdr *elf) {
     s32 i;
     s32 j;
+    s32 n;
+    u8 *sym;
     Elf32_Shdr *symtab;
 
     symtab = (Elf32_Shdr *)((u8 *)elf + elf->e_shoff);
@@ -63,8 +68,7 @@ found:
             break;
         }
     }
-    j = 0;
-    while (j < (s32)(symtab->sh_size / symtab->sh_entsize)) {
-        j++;
+    for (j = 0; j < (s32)(symtab->sh_size / symtab->sh_entsize); j++) {
+        sym = (u8 *)elf + symtab->sh_offset + j * symtab->sh_entsize;
     }
 }
