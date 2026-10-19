@@ -9,7 +9,7 @@ M2C_UNK __osSiRelAccess();                            /* extern */
 extern M2C_UNK __osContPifRam;
 extern u8 __osContLastCmd;
 
-s32 func_8006DDB0(s32 arg0) {
+s32 osContStartReadData(s32 arg0) {
     s32 temp_v0;
 
     __osSiGetAccess();

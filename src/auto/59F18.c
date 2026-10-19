@@ -41,7 +41,7 @@ s32 __osMotorAccess(void *, s32);
 void Rumble_Restart(s32);
 void Rumble_Stop(s32);
 void Rumble_AllowRetry(void);
-void func_80058B78(void);
+void Pad_Read(void);
 
 void Rumble_Stop(s32 channel) {
     Controller *c = &gControllers[channel];

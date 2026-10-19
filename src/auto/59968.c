@@ -41,12 +41,12 @@ s32 __osMotorAccess(void *, s32);
 void Rumble_Restart(s32);
 void Rumble_Stop(s32);
 void Rumble_AllowRetry(void);
-void func_80058B78(void);
+void Pad_Read(void);
 
 void Pad_ReadAll(void) {
     s32 i;
 
-    func_80058B78();
+    Pad_Read();
     for (i = 0; i < 4; i++) {
         if ((gContPattern >> i) & 1) {
             if (gContPads[i].errnum == 0) {

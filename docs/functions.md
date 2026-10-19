@@ -877,7 +877,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80058A68` | `059668` | 0xc | `func_80058A68` | `src/auto/59640.c` | C (generated) |
 | `80058A74` | `059674` | 0xe4 | `func_80058A74` | `asm/59674.s` | asm |
 | `80058B58` | `059758` | 0x20 | `func_80058B58` | `src/auto/59758.c` | C (generated) |
-| `80058B78` | `059778` | 0x1f0 | `func_80058B78` | `asm/59778.s` | asm |
+| `80058B78` | `059778` | 0x1f0 | `Pad_Read` | `src/auto/59778.c` | C (generated) |
 | `80058D68` | `059968` | 0x100 | `Pad_ReadAll` | `src/auto/59968.c` | C (generated) |
 | `80058E68` | `059A68` | 0xa0 | `Pad_Init` | `src/auto/59A68.c` | C (generated) |
 | `80058F08` | `059B08` | 0x238 | `Pad_Update` | `src/auto/59B08.c` | C (generated) |
@@ -1373,8 +1373,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006D938` | `06E538` | 0x214 | `__scSchedule` | `src/auto/6E538.c` | C (generated) |
 | `8006DB50` | `06E750` | 0x1a0 | `osCreatePiManager` | `src/auto/6E750.c` | C (generated) |
 | `8006DCF0` | `06E8F0` | 0xb8 | `func_8006DCF0` | `src/auto/6E8F0.c` | C (generated) |
-| `8006DDB0` | `06E9B0` | 0x88 | `func_8006DDB0` | `src/auto/6E9B0.c` | C (generated) |
-| `8006DE38` | `06EA38` | 0x9c | `func_8006DE38` | `asm/6EA38.s` | asm |
+| `8006DDB0` | `06E9B0` | 0x88 | `osContStartReadData` | `src/auto/6E9B0.c` | C (generated) |
+| `8006DE38` | `06EA38` | 0x9c | `osContGetReadData` | `asm/6EA38.s` | asm |
 | `8006DED4` | `06EAD4` | 0xbc | `func_8006DED4` | `asm/6EA38.s` | asm |
 | `8006DF90` | `06EB90` | 0x140 | `func_8006DF90` | `asm/6EA38.s` | asm |
 | `8006E0D0` | `06ECD0` | 0x144 | `__osMotorAccess` | `asm/6EA38.s` | asm |
@@ -1388,7 +1388,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006F15C` | `06FD5C` | 0x68 | `__osPfsReleasePages` | `src/auto/6FD5C.c` | C (generated) |
 | `8006F1D0` | `06FDD0` | 0x190 | `func_8006F1D0` | `asm/6FDC4.s` | asm |
 | `8006F360` | `06FF60` | 0x110 | `osPfsFreeBlocks` | `asm/6FDC4.s` | asm |
-| `8006F470` | `070070` | 0x1f0 | `func_8006F470` | `asm/6FDC4.s` | asm |
+| `8006F470` | `070070` | 0x1f0 | `osPfsInitPak` | `asm/6FDC4.s` | asm |
 | `8006F660` | `070260` | 0x440 | `func_8006F660` | `asm/6FDC4.s` | asm |
 | `8006FAA0` | `0706A0` | 0x60 | `func_8006FAA0` | `asm/6FDC4.s` | asm |
 | `8006FB00` | `070700` | 0x1a0 | `osPfsFindFile` | `asm/6FDC4.s` | asm |

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80058B78();                            /* extern */
+M2C_UNK Pad_Read();                            /* extern */
 M2C_UNK sprintf(M2C_UNK *, M2C_UNK *);        /* extern */
 extern M2C_UNK D_800BBAF8;
 extern M2C_UNK D_800BBB34;
@@ -11,7 +11,7 @@ extern s32 D_80125C8C;
 void func_80053EA8(void) {
     sprintf(&D_800D1090, &D_800BBAF8);
     do {
-        func_80058B78();
+        Pad_Read();
     } while (!(D_80125C8C & 0x1000));
     sprintf(&D_800D1090, &D_800BBB34);
 }
