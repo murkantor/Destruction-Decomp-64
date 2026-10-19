@@ -6,7 +6,7 @@ M2C_UNK func_8002D0E0(s32);                         /* extern */
 M2C_UNK func_800500CC(s32 *);                       /* extern */
 M2C_UNK func_80050684(s32 *);                       /* extern */
 M2C_UNK Mem_Free(s32 *);                       /* extern */
-M2C_UNK func_80058A74();                            /* extern */
+M2C_UNK Cont_ReadAll();                            /* extern */
 M2C_UNK func_80058B58();                            /* extern */
 s32 Pak_SetGameInfo(u16, s32, M2C_UNK *, M2C_UNK *, M2C_UNK *); /* extern */
 s32 Pak_Init(M2C_UNK *);                       /* extern */
@@ -30,7 +30,7 @@ void func_8004FE4C(s32 *arg0) {
 
     temp_s1 = Mem_Alloc(0x320);
     if (D_80097D58 == 0) {
-        func_80058A74();
+        Cont_ReadAll();
     }
     temp_v0 = Pak_ReadFile(0, D_80097D50, 0, 0x320, temp_s1);
     *arg0 = temp_v0;
@@ -45,7 +45,7 @@ void func_8004FE4C(s32 *arg0) {
             if (D_80097D58 == 0) {
                 func_80058B58();
             }
-            func_80058A74();
+            Cont_ReadAll();
             D_80097D58 = 1;
             if (D_80097D4C != 0) {
                 D_80097D4C = 0;

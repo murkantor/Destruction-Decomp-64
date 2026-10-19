@@ -21,7 +21,7 @@ extern f64 D_800B8B58;
 extern f64 D_800B8B60;
 extern f32 D_80095624;
 void func_80039B70(f32, f32 *, f32 *);
-void func_8002322C(Cam *);
+void Camera_UpdateBasis(Cam *);
 
 void func_8002205C(Cam *cam, Car *car, f32 speed, f32 *angle) {
     f32 s;
@@ -34,5 +34,5 @@ void func_8002205C(Cam *cam, Car *car, f32 speed, f32 *angle) {
     cam->x38 = car->x290.x + D_80095624 * s;
     cam->x40 = car->x290.z + D_80095624 * c;
     cam->x3C = car->x290.y + D_800B8B60;
-    func_8002322C(cam);
+    Camera_UpdateBasis(cam);
 }

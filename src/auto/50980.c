@@ -8,14 +8,14 @@ extern s32 D_80097D68;
 extern u8 D_80097D6C[];
 extern u8 D_80097D7C[];
 extern OSMesgQueue gSiMesgQueue;
-void func_80058A74(void);
+void Cont_ReadAll(void);
 void func_80058B58(void);
 void func_80050684(s32 *);
 s32 Pak_SetGameInfo(s32, s32, void *, void *, OSMesgQueue *);
 s32 Pak_Init(OSMesgQueue *);
 
 u8 Pak_Open(s32 *out) {
-    func_80058A74();
+    Cont_ReadAll();
     D_80097D58 = 1;
     if (D_80097D4C) {
         D_80097D4C = 0;

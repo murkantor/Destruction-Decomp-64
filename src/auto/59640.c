@@ -1,10 +1,10 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80058A74();                            /* extern */
+M2C_UNK Cont_ReadAll();                            /* extern */
 
 void func_80058A40(void) {
-    func_80058A74();
+    Cont_ReadAll();
 }
 
 extern s32 D_8011EF04;
