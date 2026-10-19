@@ -1,0 +1,20 @@
+#include "common.h"
+#include "m2c.h"
+
+typedef struct { u8 pad[0x10]; s32 x10; } Menu;
+void func_800100BC(s32, s32);
+void Timer_Start(void *, s64);
+
+s32 func_8003CF7C(Menu *m) {
+    if (m->x10 == 0) {
+        func_800100BC(0x17E, 0x111F4);
+        func_800100BC(0x17D, 0x111F8);
+        m->x10 = 1;
+    } else {
+        func_800100BC(0x17D, 0x111F4);
+        func_800100BC(0x17E, 0x111F8);
+        m->x10 = 0;
+    }
+    Timer_Start(m, 250000000);
+    return 1;
+}

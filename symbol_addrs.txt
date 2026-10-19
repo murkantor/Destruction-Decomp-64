@@ -510,3 +510,4 @@ Pad_LatchAll = 0x80062E90; // type:func
 gControllersLatched = 0x800C0430;
 Sound_SetPanById = 0x800660F0; // type:func
 Sound_SetVolumeById = 0x80066064; // type:func
+__osPfsRequestOneChannel = 0x8007766C; // type:func
