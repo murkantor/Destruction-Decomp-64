@@ -1314,8 +1314,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006B788` | `06C388` | 0xa8 | `func_8006B788` | `src/auto/6C388.c` | C (generated) |
 | `8006B830` | `06C430` | 0x8 | `alSynDelete` | `src/auto/6C388.c` | C (generated) |
 | `8006B840` | `06C440` | 0x50 | `func_8006B840` | `src/auto/6C440.c` | C (generated) |
-| `8006B890` | `06C490` | 0x128 | `func_8006B890` | `asm/6C490.s` | asm |
-| `8006B9B8` | `06C5B8` | 0xb8 | `func_8006B9B8` | `asm/6C490.s` | asm |
+| `8006B890` | `06C490` | 0x128 | `alSynAllocVoice` | `src/auto/6C490.c` | C (generated) |
+| `8006B9B8` | `06C5B8` | 0xb8 | `_allocatePVoice` | `src/auto/6C5B8.c` | C (generated) |
 | `8006BA70` | `06C670` | 0x7c | `alSynStopVoice` | `src/auto/6C670.c` | C (generated) |
 | `8006BAF0` | `06C6F0` | 0x94 | `alSynStartVoice` | `src/auto/6C6F0.c` | C (generated) |
 | `8006BB90` | `06C790` | 0x90 | `alSynSetPitch` | `src/auto/6C790.c` | C (generated) |
@@ -1325,7 +1325,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006BE00` | `06CA00` | 0x94 | `alSynAllocFX` | `src/libultra/alSynAllocFX.c` | C |
 | `8006BEA0` | `06CAA0` | 0x10 | `osAiGetLength` | `src/libultra/osAiGetLength.c` | C |
 | `8006BEB0` | `06CAB0` | 0x130 | `func_8006BEB0` | `asm/6CAB0.s` | asm |
-| `8006BFE0` | `06CBE0` | 0xa0 | `func_8006BFE0` | `asm/6CAB0.s` | asm |
+| `8006BFE0` | `06CBE0` | 0x94 | `osAiSetNextBuffer` | `src/auto/6CBE0.c` | C (generated) |
 | `8006C080` | `06CC80` | 0x10 | `osDpGetStatus` | `src/libultra/osDpGetStatus.c` | C |
 | `8006C090` | `06CC90` | 0x10 | `osDpSetStatus` | `src/libultra/osDpSetStatus.c` | C |
 | `8006C0A0` | `06CCA0` | 0x4c | `osDpGetCounters` | `src/libultra/osDpGetCounters.c` | C |
