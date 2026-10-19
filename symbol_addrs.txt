@@ -784,3 +784,5 @@ Standings_Resort = 0x80027A60; // type:func
 NameEntry_UpdateCursor = 0x8004AADC; // type:func
 Camera_BuildProjection = 0x8005B2F8; // type:func
 DebugMenu_DrawPage = 0x80054508; // type:func
+Racer_UpdateLapTiming = 0x8001F6F8; // type:func
+Race_UpdateFinish = 0x800458F4; // type:func
