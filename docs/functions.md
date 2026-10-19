@@ -127,7 +127,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000BAC0` | `00C6C0` | 0x8 | `func_8000BAC0` | `src/auto/C6C0.c` | C (generated) |
 | `8000BAC8` | `00C6C8` | 0x8 | `func_8000BAC8` | `src/auto/C6C0.c` | C (generated) |
 | `8000BAD0` | `00C6D0` | 0x60 | `func_8000BAD0` | `src/auto/C6C0.c` | C (generated) |
-| `8000BB30` | `00C730` | 0x144 | `func_8000BB30` | `asm/C730.s` | asm |
+| `8000BB30` | `00C730` | 0x144 | `func_8000BB30` | `src/auto/C730.c` | C (generated) |
 | `8000BC74` | `00C874` | 0x444 | `func_8000BC74` | `src/auto/C874.c` | C (generated) |
 | `8000C0B8` | `00CCB8` | 0x88 | `func_8000C0B8` | `src/auto/CCB8.c` | C (generated) |
 | `8000C140` | `00CD40` | 0xb34 | `Hud_UpdateScoreCounter` | `src/auto/CD40.c` | C (generated) |

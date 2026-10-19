@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y; } Pos2;
 typedef struct { void *x0; u8 pad[0x64]; } Ent68;
 extern s8 D_800B8180;
@@ -34,9 +37,10 @@ s32 func_8000BB30(s32 *arg0, s8 idx) {
     pos = Ui_GetElementPos(ui[0], 0, id);
     if (D_800958A4 < 3) {
         pos.x = func_8003EC70(str, 0x111EC, D_8007EED4);
+        Ui_SetElementPos(ui[0], 0, id, pos.x, pos.y);
     } else {
         pos.x = func_8003EC70(str, 0x111EC, D_8007EED8[idx]);
+        Ui_SetElementPos(ui[0], 0, id, pos.x, pos.y);
     }
-    Ui_SetElementPos(ui[0], 0, id, pos.x, pos.y);
     return 0;
 }
