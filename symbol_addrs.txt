@@ -225,3 +225,8 @@ gDrawCars = 0x80095880;
 gDrawWorld = 0x80095884;
 gDrawSkyDome = 0x80095888;
 gDoPhysics = 0x8009588C;
+
+// libultra register reads n64sym did not find
+osAiGetLength = 0x8006BEA0; // type:func
+osDpGetStatus = 0x8006C080; // type:func
+__osAiDeviceBusy = 0x800745A0; // type:func

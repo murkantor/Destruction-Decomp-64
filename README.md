@@ -2,7 +2,7 @@
 
 A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
 
-Status: the ROM builds and matches. 458 of about 1550 functions are in C. Files outside `src/auto/` are cleaned up, with real names and types; `src/auto/` holds C generated with m2c that still uses placeholder types.
+Status: the ROM builds and matches. 465 of 1548 functions (30%, but only 6% of the code by size) are in C; `make progress` prints the current numbers. Files outside `src/auto/` are cleaned up, with real names and types; `src/auto/` holds C generated with m2c that still uses placeholder types.
 
 You need your own copy of the ROM. It is not included and must never be committed.
 
@@ -43,7 +43,7 @@ sudo apt install make curl python3-venv binutils-mips-linux-gnu
    ```
    A matching build prints `build/dd64.z64: OK`.
 
-Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make distclean` removes everything generated.
+Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make progress` shows how much is in C. `make distclean` removes everything generated.
 
 ## Layout
 
