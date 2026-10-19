@@ -1,0 +1,9 @@
+#include "common.h"
+#include "m2c.h"
+
+M2C_UNK func_8006DDB0(M2C_UNK *);                   /* extern */
+extern M2C_UNK D_800D2E40;
+
+void func_80058B58(void) {
+    func_8006DDB0(&D_800D2E40);
+}
