@@ -431,3 +431,4 @@ gNumVoices = 0x800CCA98;
 gVoices = 0x800CCAA0;
 __osContDataCrc = 0x800774FC; // type:func
 HeapBlock_Ptr = 0x80055374; // type:func
+Elf_Link = 0x80053C80; // type:func

@@ -36,7 +36,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80001F98` | `002B98` | 0x84 | `func_80001F98` | `asm/2B98.s` | asm |
 | `8000201C` | `002C1C` | 0x58 | `func_8000201C` | `src/auto/2C1C.c` | C (generated) |
 | `80002074` | `002C74` | 0x40 | `func_80002074` | `src/auto/2C74.c` | C (generated) |
-| `800020B4` | `002CB4` | 0x94 | `func_800020B4` | `asm/2CB4.s` | asm |
+| `800020B4` | `002CB4` | 0x94 | `func_800020B4` | `src/auto/2CB4.c` | C (generated) |
 | `80002148` | `002D48` | 0x34 | `func_80002148` | `src/auto/2D48.c` | C (generated) |
 | `8000217C` | `002D7C` | 0xa4 | `func_8000217C` | `asm/2D7C.s` | asm |
 | `80002220` | `002E20` | 0xe0 | `func_80002220` | `src/auto/2E20.c` | C (generated) |
@@ -776,7 +776,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80053570` | `054170` | 0x21c | `Elf_FindSymbol` | `asm/53C50.s` | asm |
 | `8005378C` | `05438C` | 0x174 | `Elf_ResolveSymbols` | `asm/53C50.s` | asm |
 | `80053900` | `054500` | 0x380 | `Elf_Relocate` | `asm/53C50.s` | asm |
-| `80053C80` | `054880` | 0x80 | `func_80053C80` | `asm/53C50.s` | asm |
+| `80053C80` | `054880` | 0x80 | `Elf_Link` | `src/auto/54880.c` | C (generated) |
 | `80053D00` | `054900` | 0x30 | `strcpy` | `src/auto/54900.c` | C (generated) |
 | `80053D30` | `054930` | 0x28 | `func_80053D30` | `src/auto/54900.c` | C (generated) |
 | `80053D58` | `054958` | 0x8 | `func_80053D58` | `src/auto/54900.c` | C (generated) |
@@ -890,9 +890,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800593B8` | `059FB8` | 0x188 | `func_800593B8` | `asm/59FB8.s` | asm |
 | `80059540` | `05A140` | 0x68 | `func_80059540` | `asm/59FB8.s` | asm |
 | `800595A8` | `05A1A8` | 0xa8 | `func_800595A8` | `asm/59FB8.s` | asm |
-| `80059650` | `05A250` | 0x4c | `Pak_SetGameInfo` | `asm/59FB8.s` | asm |
-| `8005969C` | `05A29C` | 0xe0 | `Pak_Init` | `asm/59FB8.s` | asm |
-| `8005977C` | `05A37C` | 0x60 | `Pak_Check` | `asm/59FB8.s` | asm |
+| `80059650` | `05A250` | 0x4c | `Pak_SetGameInfo` | `src/auto/5A250.c` | C (generated) |
+| `8005969C` | `05A29C` | 0xe0 | `Pak_Init` | `asm/5A29C.s` | asm |
+| `8005977C` | `05A37C` | 0x60 | `Pak_Check` | `asm/5A29C.s` | asm |
 | `800597DC` | `05A3DC` | 0x80 | `Pak_FindFile` | `src/auto/5A3DC.c` | C (generated) |
 | `8005985C` | `05A45C` | 0x84 | `Pak_AllocateFile` | `src/auto/5A3DC.c` | C (generated) |
 | `800598E0` | `05A4E0` | 0x7c | `Pak_DeleteFile` | `src/auto/5A3DC.c` | C (generated) |
