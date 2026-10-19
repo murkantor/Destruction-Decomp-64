@@ -81,14 +81,14 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80007744` | `008344` | 0x17c | `func_80007744` | `asm/72D0.s` | asm |
 | `800078C0` | `0084C0` | 0x3c4 | `func_800078C0` | `asm/72D0.s` | asm |
 | `80007C84` | `008884` | 0x2e4 | `func_80007C84` | `asm/72D0.s` | asm |
-| `80007F68` | `008B68` | 0x6c | `func_80007F68` | `asm/72D0.s` | asm |
-| `80007FD4` | `008BD4` | 0x30 | `func_80007FD4` | `asm/72D0.s` | asm |
-| `80008004` | `008C04` | 0x7c | `func_80008004` | `asm/72D0.s` | asm |
-| `80008080` | `008C80` | 0x19c | `func_80008080` | `asm/72D0.s` | asm |
-| `8000821C` | `008E1C` | 0x7c | `func_8000821C` | `asm/72D0.s` | asm |
-| `80008298` | `008E98` | 0x78 | `func_80008298` | `asm/72D0.s` | asm |
-| `80008310` | `008F10` | 0x1dc | `func_80008310` | `asm/72D0.s` | asm |
-| `800084EC` | `0090EC` | 0x19c | `func_800084EC` | `asm/72D0.s` | asm |
+| `80007F68` | `008B68` | 0x6c | `Sfx_StopPair` | `src/auto/8B68.c` | C (generated) |
+| `80007FD4` | `008BD4` | 0x30 | `func_80007FD4` | `asm/8BD4.s` | asm |
+| `80008004` | `008C04` | 0x7c | `func_80008004` | `asm/8BD4.s` | asm |
+| `80008080` | `008C80` | 0x19c | `func_80008080` | `asm/8BD4.s` | asm |
+| `8000821C` | `008E1C` | 0x7c | `func_8000821C` | `asm/8BD4.s` | asm |
+| `80008298` | `008E98` | 0x78 | `func_80008298` | `asm/8BD4.s` | asm |
+| `80008310` | `008F10` | 0x1dc | `func_80008310` | `asm/8BD4.s` | asm |
+| `800084EC` | `0090EC` | 0x19c | `func_800084EC` | `asm/8BD4.s` | asm |
 | `80008688` | `009288` | 0xc | `func_80008688` | `src/auto/9288.c` | C (generated) |
 | `80008694` | `009294` | 0xc | `func_80008694` | `src/auto/9288.c` | C (generated) |
 | `800086A0` | `0092A0` | 0xc | `func_800086A0` | `src/auto/9288.c` | C (generated) |
@@ -272,9 +272,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80018DAC` | `0199AC` | 0x26c | `func_80018DAC` | `asm/199AC.s` | asm |
 | `80019018` | `019C18` | 0x8 | `func_80019018` | `src/auto/19C18.c` | C (generated) |
 | `80019020` | `019C20` | 0x30 | `func_80019020` | `src/auto/19C20.c` | C (generated) |
-| `80019050` | `019C50` | 0x68 | `func_80019050` | `asm/19C50.s` | asm |
-| `800190B8` | `019CB8` | 0x108 | `func_800190B8` | `asm/19C50.s` | asm |
-| `800191C0` | `019DC0` | 0x100 | `func_800191C0` | `asm/19C50.s` | asm |
+| `80019050` | `019C50` | 0x68 | `func_80019050` | `src/auto/19C50.c` | C (generated) |
+| `800190B8` | `019CB8` | 0x108 | `func_800190B8` | `asm/19CB8.s` | asm |
+| `800191C0` | `019DC0` | 0x100 | `func_800191C0` | `asm/19CB8.s` | asm |
 | `800192C0` | `019EC0` | 0x8 | `func_800192C0` | `src/auto/19EC0.c` | C (generated) |
 | `800192C8` | `019EC8` | 0x8 | `func_800192C8` | `src/auto/19EC0.c` | C (generated) |
 | `800192D0` | `019ED0` | 0x8 | `func_800192D0` | `src/auto/19EC0.c` | C (generated) |
@@ -404,7 +404,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80025EB4` | `026AB4` | 0x1c | `func_80025EB4` | `src/auto/26AB4.c` | C (generated) |
 | `80025ED0` | `026AD0` | 0xe0 | `func_80025ED0` | `asm/26AD0.s` | asm |
 | `80025FB0` | `026BB0` | 0x1c | `func_80025FB0` | `src/auto/26BB0.c` | C (generated) |
-| `80025FCC` | `026BCC` | 0x68 | `func_80025FCC` | `asm/26BCC.s` | asm |
+| `80025FCC` | `026BCC` | 0x68 | `func_80025FCC` | `src/auto/26BCC.c` | C (generated) |
 | `80026034` | `026C34` | 0x1c | `func_80026034` | `src/auto/26C34.c` | C (generated) |
 | `80026050` | `026C50` | 0x80 | `func_80026050` | `asm/26C50.s` | asm |
 | `800260D0` | `026CD0` | 0x1c | `func_800260D0` | `src/auto/26CD0.c` | C (generated) |
@@ -852,8 +852,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800572E8` | `057EE8` | 0x20 | `func_800572E8` | `src/auto/57EC8.c` | C (generated) |
 | `80057308` | `057F08` | 0x2c | `func_80057308` | `src/auto/57F08.c` | C (generated) |
 | `80057334` | `057F34` | 0x68 | `func_80057334` | `src/auto/57F08.c` | C (generated) |
-| `8005739C` | `057F9C` | 0x6c | `func_8005739C` | `asm/57F9C.s` | asm |
-| `80057408` | `058008` | 0x198 | `func_80057408` | `asm/57F9C.s` | asm |
+| `8005739C` | `057F9C` | 0x6c | `Sched_WaitRetrace` | `src/auto/57F9C.c` | C (generated) |
+| `80057408` | `058008` | 0x198 | `func_80057408` | `asm/58008.s` | asm |
 | `800575A0` | `0581A0` | 0x54 | `func_800575A0` | `src/auto/581A0.c` | C (generated) |
 | `800575F4` | `0581F4` | 0x8 | `func_800575F4` | `src/auto/581A0.c` | C (generated) |
 | `800575FC` | `0581FC` | 0x340 | `func_800575FC` | `asm/581FC.s` | asm |
@@ -1229,8 +1229,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800668C4` | `0674C4` | 0x8c | `func_800668C4` | `src/auto/674C4.c` | C (generated) |
 | `80066950` | `067550` | 0x164 | `func_80066950` | `asm/67550.s` | asm |
 | `80066AB4` | `0676B4` | 0x140 | `func_80066AB4` | `asm/67550.s` | asm |
-| `80066BF4` | `0677F4` | 0x68 | `func_80066BF4` | `asm/67550.s` | asm |
-| `80066C5C` | `06785C` | 0x1f4 | `func_80066C5C` | `asm/67550.s` | asm |
+| `80066BF4` | `0677F4` | 0x68 | `func_80066BF4` | `src/auto/677F4.c` | C (generated) |
+| `80066C5C` | `06785C` | 0x1f4 | `func_80066C5C` | `asm/6785C.s` | asm |
 | `80066E50` | `067A50` | 0x1c | `func_80066E50` | `src/auto/67A50.c` | C (generated) |
 | `80066E6C` | `067A6C` | 0xb8 | `func_80066E6C` | `asm/67A6C.s` | asm |
 | `80066F24` | `067B24` | 0x58 | `func_80066F24` | `src/auto/67B24.c` | C (generated) |
@@ -1242,7 +1242,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80067500` | `068100` | 0x94 | `func_80067500` | `src/auto/68100.c` | C (generated) |
 | `80067594` | `068194` | 0x134 | `func_80067594` | `asm/68194.s` | asm |
 | `800676C8` | `0682C8` | 0x180 | `func_800676C8` | `asm/68194.s` | asm |
-| `80067848` | `068448` | 0x2c | `func_80067848` | `asm/68194.s` | asm |
+| `80067848` | `068448` | 0x2c | `Mem_Fill` | `asm/68194.s` | asm |
 | `80067874` | `068474` | 0x38 | `func_80067874` | `src/auto/68474.c` | C (generated) |
 | `800678AC` | `0684AC` | 0xa4 | `func_800678AC` | `asm/684AC.s` | asm |
 | `80067950` | `068550` | 0x414 | `func_80067950` | `asm/684AC.s` | asm |
@@ -1538,20 +1538,20 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80079FE0` | `07ABE0` | 0x78 | `strncat` | `src/libc/7ABE0.c` | C |
 | `8007A060` | `07AC60` | 0xcc | `strrchr` | `src/libc/7AC60.c` | C |
 | `8007A130` | `07AD30` | 0x24 | `toupper` | `src/auto/7AD30.c` | C (generated) |
-| `8007A160` | `07AD60` | 0x70 | `func_8007A160` | `asm/7AD54.s` | asm |
-| `8007A1D0` | `07ADD0` | 0x74 | `__cmpdi2` | `asm/7AD54.s` | asm |
-| `8007A244` | `07AE44` | 0x34 | `__muldi3` | `asm/7AD54.s` | asm |
-| `8007A278` | `07AE78` | 0xfc | `func_8007A278` | `asm/7AD54.s` | asm |
-| `8007A374` | `07AF74` | 0xcc | `func_8007A374` | `asm/7AD54.s` | asm |
-| `8007A440` | `07B040` | 0x170 | `__divdi3` | `asm/7AD54.s` | asm |
-| `8007A5B0` | `07B1B0` | 0x20 | `__udivdi3` | `asm/7AD54.s` | asm |
-| `8007A5D0` | `07B1D0` | 0x40 | `__umoddi3` | `asm/7AD54.s` | asm |
-| `8007A610` | `07B210` | 0x120 | `__fixunsdfdi` | `asm/7AD54.s` | asm |
-| `8007A730` | `07B330` | 0x100 | `__floatdidf` | `asm/7AD54.s` | asm |
-| `8007A830` | `07B430` | 0xf0 | `func_8007A830` | `asm/7AD54.s` | asm |
-| `8007A920` | `07B520` | 0x100 | `__floatdisf` | `asm/7AD54.s` | asm |
-| `8007AA20` | `07B620` | 0x100 | `func_8007AA20` | `asm/7AD54.s` | asm |
-| `8007AB20` | `07B720` | 0x190 | `func_8007AB20` | `asm/7AD54.s` | asm |
+| `8007A160` | `07AD60` | 0x6c | `__kernel_standard` | `src/libc/7AD60.c` | C |
+| `8007A1D0` | `07ADD0` | 0x74 | `__cmpdi2` | `asm/7ADCC.s` | asm |
+| `8007A244` | `07AE44` | 0x34 | `__muldi3` | `asm/7ADCC.s` | asm |
+| `8007A278` | `07AE78` | 0xfc | `func_8007A278` | `asm/7ADCC.s` | asm |
+| `8007A374` | `07AF74` | 0xcc | `func_8007A374` | `asm/7ADCC.s` | asm |
+| `8007A440` | `07B040` | 0x170 | `__divdi3` | `asm/7ADCC.s` | asm |
+| `8007A5B0` | `07B1B0` | 0x20 | `__udivdi3` | `asm/7ADCC.s` | asm |
+| `8007A5D0` | `07B1D0` | 0x40 | `__umoddi3` | `asm/7ADCC.s` | asm |
+| `8007A610` | `07B210` | 0x120 | `__fixunsdfdi` | `asm/7ADCC.s` | asm |
+| `8007A730` | `07B330` | 0x100 | `__floatdidf` | `asm/7ADCC.s` | asm |
+| `8007A830` | `07B430` | 0xf0 | `func_8007A830` | `asm/7ADCC.s` | asm |
+| `8007A920` | `07B520` | 0x100 | `__floatdisf` | `asm/7ADCC.s` | asm |
+| `8007AA20` | `07B620` | 0x100 | `func_8007AA20` | `asm/7ADCC.s` | asm |
+| `8007AB20` | `07B720` | 0x190 | `func_8007AB20` | `asm/7ADCC.s` | asm |
 | `8007ACB0` | `07B8B0` | 0x60 | `frexp` | `src/libc/7B8B0.c` | C |
-| `8007AD10` | `07B910` | 0x8 | `func_8007AD10` | `src/auto/7B910.c` | C (generated) |
+| `8007AD10` | `07B910` | 0x8 | `matherr` | `src/auto/7B910.c` | C (generated) |
 | `8007AD20` | `07B920` | 0xa4 | `modf` | `src/libc/7B920.c` | C |
