@@ -1316,12 +1316,12 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006B840` | `06C440` | 0x50 | `func_8006B840` | `src/auto/6C440.c` | C (generated) |
 | `8006B890` | `06C490` | 0x128 | `func_8006B890` | `asm/6C490.s` | asm |
 | `8006B9B8` | `06C5B8` | 0xb8 | `func_8006B9B8` | `asm/6C490.s` | asm |
-| `8006BA70` | `06C670` | 0x80 | `func_8006BA70` | `asm/6C490.s` | asm |
-| `8006BAF0` | `06C6F0` | 0xa0 | `func_8006BAF0` | `asm/6C490.s` | asm |
-| `8006BB90` | `06C790` | 0x90 | `func_8006BB90` | `asm/6C490.s` | asm |
-| `8006BC20` | `06C820` | 0xc0 | `func_8006BC20` | `asm/6C490.s` | asm |
-| `8006BCE0` | `06C8E0` | 0x90 | `func_8006BCE0` | `asm/6C490.s` | asm |
-| `8006BD70` | `06C970` | 0x90 | `func_8006BD70` | `asm/6C490.s` | asm |
+| `8006BA70` | `06C670` | 0x7c | `alSynStopVoice` | `src/auto/6C670.c` | C (generated) |
+| `8006BAF0` | `06C6F0` | 0x94 | `alSynStartVoice` | `src/auto/6C6F0.c` | C (generated) |
+| `8006BB90` | `06C790` | 0x90 | `alSynSetPitch` | `src/auto/6C790.c` | C (generated) |
+| `8006BC20` | `06C820` | 0xb8 | `alSynSetVol` | `src/auto/6C820.c` | C (generated) |
+| `8006BCE0` | `06C8E0` | 0x90 | `alSynSetFXMix` | `src/auto/6C8E0.c` | C (generated) |
+| `8006BD70` | `06C970` | 0x90 | `alSynSetPan` | `src/auto/6C970.c` | C (generated) |
 | `8006BE00` | `06CA00` | 0x94 | `alSynAllocFX` | `src/libultra/alSynAllocFX.c` | C |
 | `8006BEA0` | `06CAA0` | 0x10 | `osAiGetLength` | `src/libultra/osAiGetLength.c` | C |
 | `8006BEB0` | `06CAB0` | 0x130 | `func_8006BEB0` | `asm/6CAB0.s` | asm |
