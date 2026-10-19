@@ -54,7 +54,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80003450` | `004050` | 0x32c | `func_80003450` | `src/auto/4050.c` | C (generated) |
 | `80003780` | `004380` | 0x4ac | `Ai_ConstrainTarget` | `src/auto/4380.c` | C (generated) |
 | `80003C2C` | `00482C` | 0x2bc | `Seg_AvoidCircleXZ` | `src/auto/482C.c` | C (generated) |
-| `80003EE8` | `004AE8` | 0x5a0 | `Path_AvoidEdges` | `asm/4AE8.s` | asm |
+| `80003EE8` | `004AE8` | 0x5a0 | `Path_AvoidEdges` | `src/auto/4AE8.c` | C (generated) |
 | `80004488` | `005088` | 0x120 | `Car_ClampToSphere` | `src/auto/5088.c` | C (generated) |
 | `800045B0` | `0051B0` | 0x70 | `func_800045B0` | `src/auto/51B0.c` | C (generated) |
 | `80004620` | `005220` | 0x174 | `func_80004620` | `src/auto/5220.c` | C (generated) |

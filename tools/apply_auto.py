@@ -77,8 +77,11 @@ def shared_rodata(rodata, auto):
         for sym in re.findall(r"\bextern\b[^;]*?\b((?:D|jtbl)_[0-9A-F]{8})\b", text):
             users.setdefault(sym, set()).add(os.path.relpath(path, ROOT))
     out = []
-    for name, (start, end) in rodata.items():
-        if end % 8:
+    labels = {rom for rom, _ in syms}
+    for name, (start, end) in list(rodata.items()):
+        if end % 8 and end not in labels:
+            rodata[name] = (start, end + 4)  # the object's rodata is rounded up to 8 over padding
+        elif end % 8:
             out.append((name, "its end", "the next rodata, which would start 4 bytes off an 8-byte boundary"))
             continue
         src = open(os.path.join(auto, name + ".c")).read()
