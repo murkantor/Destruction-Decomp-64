@@ -5,7 +5,7 @@ M2C_UNK func_8002C318(s32);                         /* extern */
 M2C_UNK func_8002C6F0();                            /* extern */
 M2C_UNK func_8005C780(s32);                         /* extern */
 M2C_UNK func_8005D81C(s32);                         /* extern */
-M2C_UNK func_80062E90();                            /* extern */
+M2C_UNK Pad_Update();                            /* extern */
 M2C_UNK func_80063578(s16, u8);                     /* extern */
 M2C_UNK func_80063890(M2C_UNK *);                   /* extern */
 M2C_UNK Res_FreeAll();                            /* extern */
@@ -20,7 +20,7 @@ void func_80063404(s32 arg0) {
     Res_FreeAll();
     func_80063578(D_8011EEEA, D_8011EEEC);
     func_8002C318(arg0);
-    func_80062E90();
+    Pad_Update();
     func_80063890(&gGameTime);
     func_80063890(gGame + 0x1058);
     func_8005C780(D_8011EEF8);
