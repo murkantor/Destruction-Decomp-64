@@ -56,7 +56,8 @@ def shared_rodata(rodata, auto):
     """(function, symbol, other user) for rodata symbols that other functions also use.
 
     A function's rodata becomes local to its C file, so a symbol in that range
-    that other asm still references would be left undefined at link time.
+    that other code still references would be left undefined at link time.
+    main() gives those symbols fixed addresses in linker_syms.txt.
     """
     syms = []  # (rom, name) of every rodata label
     for path in glob.glob(os.path.join(ROOT, "asm", "data", "*.rodata.s")):
@@ -115,11 +116,21 @@ def main():
         if len(p) == 5:
             rodata[p[2]] = (int(p[3], 16) - ROM_BASE, int(p[3], 16) - ROM_BASE + int(p[4], 16))
     shared = shared_rodata(rodata, auto)
-    if shared:
-        for name, sym, user in shared:
-            print(f"skipping {name}: its rodata {sym} is also used by {user}")
-        skip = {s[0] for s in shared}
-        matches = [m for m in matches if m[2] not in skip]
+    skip = {name for name, sym, user in shared if sym == "its end"}
+    for name, sym, user in shared:
+        if sym == "its end":
+            print(f"skipping {name}: its rodata end is not 8-byte aligned")
+    pinned = sorted({sym for name, sym, user in shared if name not in skip})
+    if pinned:
+        # the rodata moves into a C file, so other users find these symbols by address
+        ls_path = os.path.join(ROOT, "linker_syms.txt")
+        text = open(ls_path).read()
+        for sym in pinned:
+            if not re.search(r"^%s = " % sym, text, re.M):
+                text += f"{sym} = 0x{sym.split('_')[1]}; /* rodata shared by more than one file */\n"
+                print(f"{sym}: shared rodata, added to linker_syms.txt")
+        open(ls_path, "w").write(text)
+    matches = [m for m in matches if m[2] not in skip]
     new_rodata = []  # (rom start, rom end, path)
 
     # functions an existing C file pulls in with INCLUDE_ASM: replace that line

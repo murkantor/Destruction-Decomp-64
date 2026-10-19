@@ -118,5 +118,7 @@ GCC 2.7.2 habits that decide whether a function matches:
 
 - A store through a pointer into a struct field is assumed not to alias a plain global scalar, so loads of the global move above the store. When the original reloads the global after the store, declare the global as an array or struct member (`extern s32 D_x[];` and `D_x[0]`).
 - Writing each `switch` case as its own store (`o->x = 1; break;`) keeps cases with equal values apart. Assigning a local and storing once lets them merge.
-- A rodata symbol used by another function cannot become a string or array literal in C. Declare it `extern` instead. `tools/apply_auto.py` skips such functions.
+- A rodata symbol used by another file can still be a literal in C when the literal lands at the original address. The other users then find it through an address in `linker_syms.txt`, which `tools/apply_auto.py` adds itself. Two files sharing one literal were usually one source file.
+- A file's rodata must end on an 8-byte boundary. When the literals end 4 bytes short and no symbol starts there, define a zero word after the function (`const s32 D_x = 0;`); `tools/apply_auto.py` does this too.
+- A function that reads a global both as a scalar and as an array can use an alias: `extern void *gUiArr[] __asm__("gUi");`.
 - Some constants load into registers only when they arrive through a local or an inline parameter, for example a `u64` timer value or a struct field copied to a local before a call.
