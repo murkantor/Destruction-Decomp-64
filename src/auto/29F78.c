@@ -29,7 +29,7 @@ extern Rec *D_80096084;
 extern void *gUi;
 extern void Car_ApplyDamage(Car *, s32, f32, s32);
 extern void func_800259A8(Car *);
-extern u8 func_800267B4(Rec *, Car *);
+extern u8 Obj_HasValue(Rec *, Car *);
 extern void func_800266C8(Slot *);
 extern void Ui_RemoveElement(void *, s32);
 extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 unique);
@@ -72,14 +72,14 @@ void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
         }
         if (D_800958AC == 2) {
             flag = 0;
-            if (D_80096078->x8 == a && func_800267B4(D_80096080, b)) {
+            if (D_80096078->x8 == a && Obj_HasValue(D_80096080, b)) {
                 b->x20++;
                 D_80096080->x38 += 5;
                 func_800266C8(D_80096078);
                 flag = 1;
                 Ui_RemoveElement(gUi, 0x135);
             }
-            if (D_80096078->x8 == b && func_800267B4(D_80096080, a)) {
+            if (D_80096078->x8 == b && Obj_HasValue(D_80096080, a)) {
                 a->x20++;
                 D_80096080->x38 += 5;
                 func_800266C8(D_80096078);
@@ -93,14 +93,14 @@ void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
                 Announcer_QueueRandom(list, 2, 0, 0, 0);
                 flag = 0;
             }
-            if (D_8009607C->x8 == a && func_800267B4(D_80096084, b)) {
+            if (D_8009607C->x8 == a && Obj_HasValue(D_80096084, b)) {
                 b->x20++;
                 D_80096084->x38 += 5;
                 func_800266C8(D_8009607C);
                 flag = 1;
                 Ui_RemoveElement(gUi, 0x134);
             }
-            if (D_8009607C->x8 == b && func_800267B4(D_80096084, a)) {
+            if (D_8009607C->x8 == b && Obj_HasValue(D_80096084, a)) {
                 a->x20++;
                 D_80096084->x38 += 5;
                 func_800266C8(D_8009607C);

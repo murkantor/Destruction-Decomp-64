@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80023DDC(void *, M2C_UNK);             /* extern */
+M2C_UNK Handler_CallX8ById(void *, M2C_UNK);             /* extern */
 s32 Array_Find(M2C_UNK, void *, s16);            /* extern */
 M2C_UNK Array_SwapRemove(void *, s32, s16);            /* extern */
 
@@ -15,7 +15,7 @@ void func_8006417C(void *arg0, M2C_UNK arg1) {
         Array_SwapRemove(temp_s1, temp_v0, M2C_FIELD(arg0, s16 *, 0xD10));
         M2C_FIELD(arg0, s16 *, 0xD10) = (s16) ((u16) M2C_FIELD(arg0, s16 *, 0xD10) - 1);
     }
-    func_80023DDC(arg0, arg1);
+    Handler_CallX8ById(arg0, arg1);
 }
 
 s16 func_80064D70();                                /* extern */

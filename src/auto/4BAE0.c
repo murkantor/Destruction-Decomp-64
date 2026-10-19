@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80043390(s32, s32);                     /* extern */
+M2C_UNK Results_LoadBanner(s32, s32);                     /* extern */
 M2C_UNK func_80063380(M2C_UNK);                     /* extern */
 M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
 extern s8 D_800958A0;
@@ -28,7 +28,7 @@ s32 func_8004AEE0(s32 arg0) {
         func_80063380(1);
         func_80063564(0x13, 1);
     } else {
-        func_80043390(arg0, 3);
+        Results_LoadBanner(arg0, 3);
     }
     return 1;
 }

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_800084EC(s32);                         /* extern */
+M2C_UNK Res_LoadSoundBank(s32);                         /* extern */
 M2C_UNK func_80057308();                            /* extern */
 M2C_UNK World_UpdateSounds(void *);                      /* extern */
 M2C_UNK func_8005FAE4(s32);                         /* extern */
@@ -38,7 +38,7 @@ void func_80063070(void *arg0) {
         func_80063404(M2C_FIELD(arg0, s32 *, 0x4BD24));
     }
     if ((M2C_FIELD(D_8011EEF8, s32 *, 0x52C) != 0) && (Sound_CountPlaying(2) == 0)) {
-        func_800084EC(M2C_FIELD(D_8011EEF8, s32 *, 0x52C));
+        Res_LoadSoundBank(M2C_FIELD(D_8011EEF8, s32 *, 0x52C));
         M2C_FIELD(D_8011EEF8, s32 *, 0x52C) = 0;
     }
     func_800633A0(M2C_FIELD(arg0, s32 *, 0x4BD24));

@@ -6,18 +6,18 @@ extern Snd *D_8011EEF8;
 extern u8 D_80096EB4;
 extern s32 D_800BC9E4;
 extern s32 Sound_CountPlaying(s32);
-extern void func_800084EC(s32);
+extern void Res_LoadSoundBank(s32);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
 s32 func_800486A8(Obj *o) {
     if (o->x10 == 0 || o->x10 == 3) {
         if (D_80096EB4 != 0 || D_800BC9E4 != D_8011EEF8->x520) {
             if (Sound_CountPlaying(2) == 0) {
                 if (D_800BC9E4 == 12) {
-                    func_800084EC(0x759E);
+                    Res_LoadSoundBank(0x759E);
                 } else if (D_800BC9E4 == 13) {
-                    func_800084EC(0x75A0);
+                    Res_LoadSoundBank(0x75A0);
                 } else {
-                    func_800084EC(D_8011EEF8->x510[D_800BC9E4]);
+                    Res_LoadSoundBank(D_8011EEF8->x510[D_800BC9E4]);
                 }
                 D_80096EB4 = 0;
                 D_8011EEF8->x520 = D_800BC9E4;

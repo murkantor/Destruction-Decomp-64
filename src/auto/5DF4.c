@@ -32,7 +32,7 @@ extern Slot *D_8009607C;
 extern Slot *D_80096080;
 extern Slot *D_80096084;
 extern s32 D_800958A4;
-u8 func_800267B4(void *, Car *);
+u8 Obj_HasValue(void *, Car *);
 Vec3f func_8001FBA8(void *);
 Vec3f func_8001FB88(void *);
 Vec3f func_8001FC08(Car *);
@@ -80,7 +80,7 @@ void Ai_SelectTeamTarget(Car *car) {
 
     o = car->x38;
     d3 = 0.0f;
-    if (func_800267B4(D_80096080, car)) {
+    if (Obj_HasValue(D_80096080, car)) {
         p = D_8009607C;
         q = D_80096078;
         r = D_80096080;

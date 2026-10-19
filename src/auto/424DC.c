@@ -17,7 +17,7 @@ extern s32 D_80096E90;
 extern s32 D_80125C14;
 extern s32 D_80097350;
 void Ui_ResetScreen(s32, s32);
-void func_80041664(void);
+void Menu_BuildIdList(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDef *);
 void func_80040FD8(s32, s32);
@@ -32,7 +32,7 @@ void func_800418DC(void) {
     e = D_800BA3D0;
     r = D_800BA418;
     Ui_ResetScreen(0x112B8, 0x112B9);
-    func_80041664();
+    Menu_BuildIdList();
     for (i = 0; i < D_80125BE0.n; i++) {
         if (D_80125BE0.ids[i] == D_800958B4[0]) {
             for (j = 3 * sizeof(Ent68); j >= 0; j -= sizeof(Ent68)) {

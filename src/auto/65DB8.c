@@ -5,7 +5,7 @@ typedef struct { u8 pad[0x10]; u8 *x10; } Bank;
 typedef struct { u8 pad[0x70]; Bank *x70; } SeqPlayer;
 void Seq_ReadEnvelope(SeqPlayer *, u8 *);
 
-u8 *func_800651B8(SeqPlayer *obj, u8 *src) {
+u8 *Seq_ReadEnvelopeCmd(SeqPlayer *obj, u8 *src) {
     s32 v = *src++;
 
     if (v & 0x80) {

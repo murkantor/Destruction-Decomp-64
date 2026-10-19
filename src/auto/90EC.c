@@ -21,7 +21,7 @@ extern s32 Sound_SetVolume(s32, s32);
 extern s32 SoundEmitter_Init(s32, void *);
 extern void func_80064100(s32);
 
-s32 func_800084EC(ResHdr *p) {
+s32 Res_LoadSoundBank(ResHdr *p) {
     HeapBlock blk; u32 size; s32 i; s32 n; f32 vol;
 
     size = Res_GetSize((s32)p);

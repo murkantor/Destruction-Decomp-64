@@ -21,7 +21,7 @@ void func_800638C8(void *);
 void func_8005CC98(void *);
 void Ui_RemoveElement(void *, s32);
 s32 Sound_CountPlaying(s32);
-void func_800084EC(s32);
+void Res_LoadSoundBank(s32);
 s32 Sound_SetVolume(s32, s32);
 f32 Time_ToSeconds(void *);
 
@@ -43,11 +43,11 @@ s32 func_8004686C(Menu *m) {
             Ui_RemoveElement(gUi, 0x1B1);
             if (Sound_CountPlaying(2) == 0) {
                 if (D_8011EEF8->x520 == 12) {
-                    func_800084EC(0x759E);
+                    Res_LoadSoundBank(0x759E);
                 } else if (D_8011EEF8->x520 == 13) {
-                    func_800084EC(0x75A0);
+                    Res_LoadSoundBank(0x75A0);
                 } else {
-                    func_800084EC(D_8011EEF8->x510[D_8011EEF8->x520]);
+                    Res_LoadSoundBank(D_8011EEF8->x510[D_8011EEF8->x520]);
                 }
             }
             vol = D_8011EEF8->x514 * D_800BACC0;
@@ -64,11 +64,11 @@ s32 func_8004686C(Menu *m) {
         case 2:
             if (Sound_CountPlaying(2) == 0) {
                 if (D_8011EEF8->x520 == 12) {
-                    func_800084EC(0x759E);
+                    Res_LoadSoundBank(0x759E);
                 } else if (D_8011EEF8->x520 == 13) {
-                    func_800084EC(0x75A0);
+                    Res_LoadSoundBank(0x75A0);
                 } else {
-                    func_800084EC(D_8011EEF8->x510[D_8011EEF8->x520]);
+                    Res_LoadSoundBank(D_8011EEF8->x510[D_8011EEF8->x520]);
                 }
             }
             func_80063564(0x20, 1);

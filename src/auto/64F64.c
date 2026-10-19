@@ -12,7 +12,7 @@ typedef struct {
 } ObjList;
 s32 Array_Find(s32 value, s32 *arr, s32 n);
 void Array_SwapRemove(s32 *arr, s32 idx, s32 n);
-void func_80023DDC(ObjList *l, s32 item);
+void Handler_CallX8ById(ObjList *l, s32 item);
 void Mem_Free(void *);
 
 void ObjList_Reset(ObjList *l) {
@@ -27,7 +27,7 @@ void ObjList_Reset(ObjList *l) {
             Array_SwapRemove(l->items, idx, l->xD10);
             l->xD10--;
         }
-        func_80023DDC(l, item);
+        Handler_CallX8ById(l, item);
     }
     node = l->xA0C;
     while (node != NULL) {

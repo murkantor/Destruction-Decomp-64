@@ -3,7 +3,7 @@
 
 extern s32 D_800958A4;
 typedef struct { u8 pad[0x3C]; s32 x3C[3]; } Obj;
-s32 func_800267B4(Obj *obj, s32 value) {
+s32 Obj_HasValue(Obj *obj, s32 value) {
     char unused[1];
     u8 found;
     s32 n;

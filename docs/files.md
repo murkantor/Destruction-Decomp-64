@@ -87,7 +87,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `008E1C` | `8000821C` | 0x7c | `src/auto/8E1C.c` | C (generated) | 1 |  |
 | `008E98` | `80008298` | 0x70 | `src/auto/8E98.c` | C (generated) | 1 |  |
 | `008F10` | `80008310` | 0x1dc | `src/auto/8F10.c` | C (generated) | 1 | `SoundEmitter_Init` |
-| `0090EC` | `800084EC` | 0x19c | `src/auto/90EC.c` | C (generated) | 1 |  |
+| `0090EC` | `800084EC` | 0x19c | `src/auto/90EC.c` | C (generated) | 1 | `Res_LoadSoundBank` |
 | `009288` | `80008688` | 0x24 | `src/auto/9288.c` | C (generated) | 3 |  |
 | `0092AC` | `800086AC` | 0x60 | `src/auto/92AC.c` | C (generated) | 1 | `Game_TimeBefore` |
 | `00930C` | `8000870C` | 0xbc | `src/auto/930C.c` | C (generated) | 1 |  |
@@ -102,7 +102,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `00A114` | `80009514` | 0x58 | `src/auto/A114.c` | C (generated) | 1 | `Game_GetTime` |
 | `00A16C` | `8000956C` | 0xcc | `src/auto/A16C.c` | C (generated) | 1 | `World_FlagAllObjects` |
 | `00A238` | `80009638` | 0xbc | `src/auto/A238.c` | C (generated) | 1 |  |
-| `00A2F4` | `800096F4` | 0x340 | `src/auto/A2F4.c` | C (generated) | 1 |  |
+| `00A2F4` | `800096F4` | 0x340 | `src/auto/A2F4.c` | C (generated) | 1 | `Race_Init` |
 | `00A634` | `80009A34` | 0xc4 | `src/auto/A634.c` | C (generated) | 1 |  |
 | `00A700` | `80009B00` | 0x190 | `src/auto/A700.c` | C (generated) | 1 | `Car_SetPartsForMode` |
 | `00A890` | `80009C90` | 0x12c | `src/auto/A890.c` | C (generated) | 1 |  |
@@ -147,7 +147,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0100F4` | `8000F4F4` | 0x244 | `src/auto/100F4.c` | C (generated) | 1 | `Ui_UpdateFadeBlink` |
 | `010338` | `8000F738` | 0x60 | `src/auto/10338.c` | C (generated) | 1 |  |
 | `010398` | `8000F798` | 0x28 | `src/auto/10398.c` | C (generated) | 1 |  |
-| `0103C0` | `8000F7C0` | 0x1c0 | `asm/103C0.s` | asm | 1 |  |
+| `0103C0` | `8000F7C0` | 0x1c0 | `asm/103C0.s` | asm | 1 | `SaveSlot_FormatTime` |
 | `010580` | `8000F980` | 0x8 | `src/auto/10580.c` | C (generated) | 1 |  |
 | `010588` | `8000F988` | 0x144 | `src/auto/10588.c` | C (generated) | 1 |  |
 | `0106CC` | `8000FACC` | 0x8 | `src/auto/106CC.c` | C (generated) | 1 |  |
@@ -324,7 +324,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `023F40` | `80023340` | 0x604 | `src/auto/23F40.c` | C (generated) | 1 | `Car_ResolveTrackCollision` |
 | `024544` | `80023944` | 0x39c | `asm/24544.s` | asm | 1 |  |
 | `0248E0` | `80023CE0` | 0x7c | `src/auto/248E0.c` | C (generated) | 1 |  |
-| `024960` | `80023D60` | 0xf8 | `asm/2495C.s` | asm | 2 |  |
+| `024960` | `80023D60` | 0xf8 | `asm/2495C.s` | asm | 2 | `Handler_CallX8ById` |
 | `024A58` | `80023E58` | 0xa4 | `src/auto/24A58.c` | C (generated) | 1 | `Handler_Dispatch` |
 | `024AFC` | `80023EFC` | 0x44 | `src/auto/24AFC.c` | C (generated) | 1 |  |
 | `024B40` | `80023F40` | 0x20 | `src/auto/24B40.c` | C (generated) | 1 |  |
@@ -375,7 +375,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `026E9C` | `8002629C` | 0x1c | `src/auto/26E9C.c` | C (generated) | 1 |  |
 | `026EB8` | `800262B8` | 0x410 | `src/auto/26EB8.c` | C (generated) | 1 |  |
 | `0272C8` | `800266C8` | 0xec | `src/auto/272C8.c` | C (generated) | 1 |  |
-| `0273B4` | `800267B4` | 0x54 | `src/auto/273B4.c` | C (generated) | 1 |  |
+| `0273B4` | `800267B4` | 0x54 | `src/auto/273B4.c` | C (generated) | 1 | `Obj_HasValue` |
 | `027408` | `80026808` | 0x160 | `src/auto/27408.c` | C (generated) | 1 |  |
 | `027568` | `80026968` | 0x1c | `src/auto/27568.c` | C (generated) | 1 |  |
 | `027590` | `80026990` | 0xc94 | `asm/27584.s` | asm | 1 | `Race_PlaceCarsOnGrid` |
@@ -577,7 +577,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `041B0C` | `80040F0C` | 0xcc | `src/auto/41B0C.c` | C (generated) | 1 | `Ui_RemapTextures` |
 | `041BD8` | `80040FD8` | 0x4a4 | `asm/41BD8.s` | asm | 1 |  |
 | `04207C` | `8004147C` | 0x1e8 | `src/auto/4207C.c` | C (generated) | 1 | `PakMenu_FormatSlotText` |
-| `042264` | `80041664` | 0x278 | `asm/42264.s` | asm | 1 |  |
+| `042264` | `80041664` | 0x278 | `asm/42264.s` | asm | 1 | `Menu_BuildIdList` |
 | `0424DC` | `800418DC` | 0x2a4 | `src/auto/424DC.c` | C (generated) | 1 |  |
 | `042780` | `80041B80` | 0x144 | `src/auto/42780.c` | C (generated) | 1 |  |
 | `0428C4` | `80041CC4` | 0x180 | `src/auto/428C4.c` | C (generated) | 1 |  |
@@ -592,7 +592,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `043CE8` | `800430E8` | 0x148 | `src/auto/43CE8.c` | C (generated) | 1 |  |
 | `043E30` | `80043230` | 0xb0 | `src/auto/43E30.c` | C (generated) | 1 |  |
 | `043EE0` | `800432E0` | 0xa4 | `src/auto/43EE0.c` | C (generated) | 1 |  |
-| `043F90` | `80043390` | 0x128 | `src/auto/43F90.c` | C (generated) | 1 |  |
+| `043F90` | `80043390` | 0x128 | `src/auto/43F90.c` | C (generated) | 1 | `Results_LoadBanner` |
 | `0440B8` | `800434B8` | 0x2d4 | `src/auto/440B8.c` | C (generated) | 1 |  |
 | `04438C` | `8004378C` | 0x1e0 | `src/auto/4438C.c` | C (generated) | 1 |  |
 | `04456C` | `8004396C` | 0xf4 | `src/auto/4456C.c` | C (generated) | 1 |  |
@@ -678,7 +678,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `04FFA8` | `8004F3A8` | 0x13c | `src/auto/4FFA8.c` | C (generated) | 1 |  |
 | `0500E4` | `8004F4E4` | 0x1b0 | `src/auto/500E4.c` | C (generated) | 1 |  |
 | `050294` | `8004F694` | 0x5ec | `src/auto/50294.c` | C (generated) | 1 | `Credits_Update` |
-| `050880` | `8004FC80` | 0x100 | `asm/50880.s` | asm | 1 |  |
+| `050880` | `8004FC80` | 0x100 | `asm/50880.s` | asm | 1 | `Credits_Init` |
 | `050980` | `8004FD80` | 0xcc | `src/auto/50980.c` | C (generated) | 1 | `Pak_Open` |
 | `050A4C` | `8004FE4C` | 0x190 | `src/auto/50A4C.c` | C (generated) | 1 |  |
 | `050BDC` | `8004FFDC` | 0xc4 | `src/auto/50BDC.c` | C (generated) | 1 | `Pak_WriteSave` |
@@ -730,16 +730,16 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `055404` | `80054804` | 0x2f8 | `src/auto/55404.c` | C (generated) | 1 | `DebugMenu_Draw` |
 | `0556FC` | `80054AFC` | 0x4c | `src/auto/556FC.c` | C (generated) | 1 |  |
 | `055748` | `80054B48` | 0x4c | `src/auto/55748.c` | C (generated) | 2 |  |
-| `055794` | `80054B94` | 0x13c | `asm/55794.s` | asm | 1 |  |
+| `055794` | `80054B94` | 0x13c | `asm/55794.s` | asm | 1 | `DebugMenu_Run` |
 | `0558D0` | `80054CD0` | 0x100 | `src/auto/558D0.c` | C (generated) | 1 |  |
 | `0559D0` | `80054DD0` | 0x10c | `src/auto/559D0.c` | C (generated) | 1 | `Gfx_LoadTlut` |
-| `055ADC` | `80054EDC` | 0x444 | `asm/55ADC.s` | asm | 1 |  |
+| `055ADC` | `80054EDC` | 0x444 | `asm/55ADC.s` | asm | 1 | `Font_DrawString` |
 | `055F20` | `80055320` | 0x94 | `src/auto/55F20.c` | C (generated) | 8 | `HeapBlock_Ptr` |
 | `055FB4` | `800553B4` | 0x30 | `src/auto/55FB4.c` | C (generated) | 1 |  |
 | `055FE4` | `800553E4` | 0x4b4 | `src/heap.c` | C | 4 | First-fit heap with an address-sorted free list |
 | `056498` | `80055898` | 0xf4 | `src/pool.c` | C | 4 | Fixed-size block pools |
 | `05658C` | `8005598C` | 0x160 | `src/mem.c` | C | 5 | Allocations from the main heap (Mem_Alloc, Mem_Free) |
-| `0566EC` | `80055AEC` | 0xc4 | `src/auto/566EC.c` | C (generated) | 1 |  |
+| `0566EC` | `80055AEC` | 0xc4 | `src/auto/566EC.c` | C (generated) | 1 | `Mem_Shrink` |
 | `0567B0` | `80055BB0` | 0x94 | `src/auto/567B0.c` | C (generated) | 2 |  |
 | `056844` | `80055C44` | 0x84 | `src/auto/56844.c` | C (generated) | 1 | `Emitter_FreeAll` |
 | `0568D0` | `80055CD0` | 0x1fc | `asm/568C8.s` | asm | 1 |  |
@@ -761,7 +761,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `057EC8` | `800572C8` | 0x40 | `src/auto/57EC8.c` | C (generated) | 2 |  |
 | `057F08` | `80057308` | 0x94 | `src/auto/57F08.c` | C (generated) | 2 |  |
 | `057F9C` | `8005739C` | 0x6c | `src/auto/57F9C.c` | C (generated) | 1 | `Sched_WaitRetrace` |
-| `058008` | `80057408` | 0x198 | `asm/58008.s` | asm | 1 |  |
+| `058008` | `80057408` | 0x198 | `asm/58008.s` | asm | 1 | `Font_BlitString` |
 | `0581A0` | `800575A0` | 0x5c | `src/auto/581A0.c` | C (generated) | 2 |  |
 | `0581FC` | `800575FC` | 0x340 | `src/auto/581FC.c` | C (generated) | 1 | `Gfx_InitRenderState` |
 | `05853C` | `8005793C` | 0x28 | `src/auto/5853C.c` | C (generated) | 1 |  |
@@ -770,7 +770,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `05873C` | `80057B3C` | 0xe0 | `src/auto/5873C.c` | C (generated) | 1 | `Gfx_NextCmd` |
 | `05881C` | `80057C1C` | 0xf4 | `src/auto/5881C.c` | C (generated) | 1 | `Gfx_WalkToCommand` |
 | `058910` | `80057D10` | 0x21c | `src/auto/58910.c` | C (generated) | 1 | `Gfx_ReplaceCommand` |
-| `058B2C` | `80057F2C` | 0x118 | `src/auto/58B2C.c` | C (generated) | 1 |  |
+| `058B2C` | `80057F2C` | 0x118 | `src/auto/58B2C.c` | C (generated) | 1 | `Gfx_StripCommands` |
 | `058C44` | `80058044` | 0x1b0 | `asm/58C44.s` | asm | 1 |  |
 | `058DF4` | `800581F4` | 0x38 | `src/auto/58DF4.c` | C (generated) | 1 |  |
 | `058E2C` | `8005822C` | 0x228 | `src/auto/58E2C.c` | C (generated) | 1 | `Gfx_CountCommandKind` |
@@ -983,7 +983,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `064BA0` | `80063FA0` | 0x4c | `src/auto/64BA0.c` | C (generated) | 1 |  |
 | `064BEC` | `80063FEC` | 0x60 | `src/auto/64BEC.c` | C (generated) | 1 | `List_Remove` |
 | `064C4C` | `8006404C` | 0x50 | `src/auto/64C4C.c` | C (generated) | 1 | `List_Contains` |
-| `064C9C` | `8006409C` | 0x60 | `src/auto/64C9C.c` | C (generated) | 1 |  |
+| `064C9C` | `8006409C` | 0x60 | `src/auto/64C9C.c` | C (generated) | 1 | `List_MoveNodeById` |
 | `064D00` | `80064100` | 0x7c | `src/auto/64D00.c` | C (generated) | 1 |  |
 | `064D7C` | `8006417C` | 0xc0 | `src/auto/64D7C.c` | C (generated) | 2 |  |
 | `064E3C` | `8006423C` | 0xc8 | `src/auto/64E3C.c` | C (generated) | 1 | `ObjList_Clear` |
@@ -1011,7 +1011,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `065CF0` | `800650F0` | 0x40 | `src/auto/65CF0.c` | C (generated) | 1 |  |
 | `065D30` | `80065130` | 0x30 | `src/auto/65D30.c` | C (generated) | 3 |  |
 | `065D60` | `80065160` | 0x58 | `src/auto/65D60.c` | C (generated) | 1 |  |
-| `065DB8` | `800651B8` | 0x60 | `src/auto/65DB8.c` | C (generated) | 1 |  |
+| `065DB8` | `800651B8` | 0x60 | `src/auto/65DB8.c` | C (generated) | 1 | `Seq_ReadEnvelopeCmd` |
 | `065E18` | `80065218` | 0x38 | `src/auto/65E18.c` | C (generated) | 4 |  |
 | `065E50` | `80065250` | 0xb4 | `src/auto/65E50.c` | C (generated) | 1 | `Seq_PushCall` |
 | `065F04` | `80065304` | 0xac | `src/auto/65F04.c` | C (generated) | 1 | `Voice_PopEnvelope` |

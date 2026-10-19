@@ -23,7 +23,7 @@ extern void osDpGetCounters(u32 *);
 extern void osDpSetStatus(u32);
 extern u32 osDpGetStatus(void);
 extern void func_80056408(void *);
-extern void func_80057408(void *, s32, s32, char *);
+extern void Font_BlitString(void *, s32, s32, char *);
 extern s32 sprintf(char *, const char *, ...);
 extern void func_80055F70(void *);
 extern void func_80056098(void *);
@@ -46,25 +46,25 @@ Task *Gfx_BusyScreen(s32 *out, s32 n) {
                 if (count > 100) {
                     u32 status;
                     func_80056408(ctx);
-                    func_80057408(ctx, 30, 60, D_800BBBEC);
-                    func_80057408(ctx, 30, 70, D_800BBC0C);
+                    Font_BlitString(ctx, 30, 60, D_800BBBEC);
+                    Font_BlitString(ctx, 30, 70, D_800BBC0C);
                     sprintf(buf, D_800BBC2C, count);
-                    func_80057408(ctx, 30, 80, buf);
+                    Font_BlitString(ctx, 30, 80, buf);
                     sprintf(buf, D_800BBC44, D_800B0B6C);
-                    func_80057408(ctx, 30, 90, buf);
-                    func_80057408(ctx, 30, 100, D_800BBC0C);
-                    func_80057408(ctx, 30, 110, D_800BBC5C);
-                    func_80057408(ctx, 30, 120, D_800BBC7C);
+                    Font_BlitString(ctx, 30, 90, buf);
+                    Font_BlitString(ctx, 30, 100, D_800BBC0C);
+                    Font_BlitString(ctx, 30, 110, D_800BBC5C);
+                    Font_BlitString(ctx, 30, 120, D_800BBC7C);
                     osDpGetCounters(counters);
                     osDpSetStatus(0x3C0);
                     status = osDpGetStatus();
                     sprintf(buf, D_800BBC9C, counters[1] * 100 / counters[0], counters[2] * 100 / counters[0],
                             counters[3] * 100 / counters[0]);
-                    func_80057408(ctx, 30, 140, buf);
+                    Font_BlitString(ctx, 30, 140, buf);
                     sprintf(buf, D_800BBCC4, (status & 0x10) ? D_800BBCD8 : D_800BBCE0,
                             (status & 0x20) ? D_800BBCE8 : D_800BBCE0, (status & 0x40) ? D_800BBCF0 : D_800BBCE0,
                             (status & 0x100) ? D_800BBCF8 : D_800BBCE0);
-                    func_80057408(ctx, 30, 150, buf);
+                    Font_BlitString(ctx, 30, 150, buf);
                 }
                 break;
             case 2:

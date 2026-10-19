@@ -85,7 +85,7 @@ void osDpGetCounters(u32 *);
 void osDpSetStatus(u32);
 u32 osDpGetStatus(void);
 s32 sprintf(char *, const char *, ...);
-void func_80057408(Task *, s32, s32, char *);
+void Font_BlitString(Task *, s32, s32, char *);
 void Emitter_FreeAll(void *, void *);
 
 s32 Debug_DrawPerfStats(Task *t, s32 submit, s32 arg2) {
@@ -150,25 +150,25 @@ s32 Debug_DrawPerfStats(Task *t, s32 submit, s32 arg2) {
             osDpGetStatus();
             sprintf(buf, "CMD=%ld%% PIPE=%ld%% TMEM=%ld%%", cnt[1] * 100 / cnt[0], cnt[2] * 100 / cnt[0],
                     cnt[3] * 100 / cnt[0]);
-            func_80057408(done, 20, 190, buf);
+            Font_BlitString(done, 20, 190, buf);
             if (D_800B0B78 != 0) {
                 sprintf(buf, "CPU=%d%%", (s32)(((now - D_800B0B78) * 64) / 3000) * 100 / 16667);
-                func_80057408(done, 20, 200, buf);
+                Font_BlitString(done, 20, 200, buf);
             }
             if (done->xB8 != NULL) {
-                func_80057408(done, 20, 20, done->xB8);
+                Font_BlitString(done, 20, 20, done->xB8);
             }
             sprintf(buf, "FPS=%d Frames=%d", 60 / D_800B0B70, D_800B0B70);
-            func_80057408(done, 180, 200, buf);
+            Font_BlitString(done, 180, 200, buf);
             D_800B0B70 = 0;
             sprintf(buf, "Triangles=%ld", done->xAC);
-            func_80057408(done, 20, 210, buf);
+            Font_BlitString(done, 20, 210, buf);
             sprintf(buf, "LoadTiles=%ld", done->xB0);
-            func_80057408(done, 90, 210, buf);
+            Font_BlitString(done, 90, 210, buf);
             sprintf(buf, "Dyn=%ld", D_800D2E6C);
-            func_80057408(done, 160, 210, buf);
+            Font_BlitString(done, 160, 210, buf);
             sprintf(buf, "Fix=%ld", D_80125C58);
-            func_80057408(done, 220, 210, buf);
+            Font_BlitString(done, 220, 210, buf);
         }
         if (done->xB4 != NULL) {
             Emitter_FreeAll(done->xB4, gParticlePool);

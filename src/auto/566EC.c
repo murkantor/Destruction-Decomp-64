@@ -25,7 +25,7 @@ rest.ptr = (u8 *)blk->ptr + newSize; rest.id.size = extra; blk->id.size -= extra
     }
 }
 
-void func_80055AEC(void *ptr, u32 size) {
+void Mem_Shrink(void *ptr, u32 size) {
     Block blk;
     BlockId *hdr;
 

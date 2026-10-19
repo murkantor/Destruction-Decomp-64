@@ -22,7 +22,7 @@ void *HeapBlock_Ptr(HeapBlock *);
 void Ui_AddElement(Ui *, s32, s32);
 void func_80063564(s32, s32);
 
-void func_80043390(Obj *o, s32 arg1) {
+void Results_LoadBanner(Obj *o, s32 arg1) {
     void *p;
     void *t;
     UiElem *e = NULL;

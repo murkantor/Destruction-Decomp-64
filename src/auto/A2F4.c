@@ -38,11 +38,11 @@ void *Mem_Alloc(s32);
 u64 Time_Get(u64 *);
 void Game_SaveItems(Settings *);
 s32 Sound_CountPlaying(s32);
-void func_800084EC(s32);
+void Res_LoadSoundBank(s32);
 void Owner_AllocSlotBuffers(Obj96F4 *);
 void Sound_StartCarLoops(Settings *);
 
-void func_800096F4(Obj96F4 *obj) {
+void Race_Init(Obj96F4 *obj) {
     s32 i;
     s32 j;
     Ent50 *e;
@@ -79,13 +79,13 @@ void func_800096F4(Obj96F4 *obj) {
     case 1:
         Game_SaveItems(D_8011EEF8[0]);
         if (D_8011EEF8[0]->x530 == 0 && gGame->x10FC != 3 && Sound_CountPlaying(2) == 0) {
-            func_800084EC(0x75A0);
+            Res_LoadSoundBank(0x75A0);
             D_8011EEF8[0]->x520 = 13;
         }
         break;
     case 2:
         Owner_AllocSlotBuffers(obj);
-        tbl = D_8011EEF8[0]->x50C; func_800084EC(tbl[D_800958B4]);
+        tbl = D_8011EEF8[0]->x50C; Res_LoadSoundBank(tbl[D_800958B4]);
         Game_SaveItems(D_8011EEF8[0]);
         if (D_8011EEF8[0]->x530 == 0) {
             if (gGame->x10FC == 25) {
@@ -97,7 +97,7 @@ void func_800096F4(Obj96F4 *obj) {
                 st = D_800958B4;
             }
             if (Sound_CountPlaying(2) != 0) {
-                func_800084EC(snd);
+                Res_LoadSoundBank(snd);
                 D_8011EEF8[0]->x52C = 0;
             } else {
                 D_8011EEF8[0]->x52C = snd;

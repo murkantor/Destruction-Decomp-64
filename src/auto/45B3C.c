@@ -40,7 +40,7 @@ void Race_AwardPot(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
-u8 func_800267B4(void *, void *);
+u8 Obj_HasValue(void *, void *);
 void func_8005F884(void *);
 void func_80063380(s32);
 void func_80063564(s32, s32);
@@ -94,11 +94,11 @@ s32 Race_CheckFinishHud(Obj *obj) {
             Ui_RemoveElement(gUi[0], 0x135);
             Ui_RemoveElement(gUi[0], 0x138);
         }
-        if (D_80096078 && D_80096078->x8 && func_800267B4(D_80096084, D_80096078->x8)) {
+        if (D_80096078 && D_80096078->x8 && Obj_HasValue(D_80096084, D_80096078->x8)) {
             Ui_RemoveElement(gUi[0], 0x135);
             a = 0;
         }
-        if (D_8009607C && D_8009607C->x8 && func_800267B4(D_80096080, D_8009607C->x8)) {
+        if (D_8009607C && D_8009607C->x8 && Obj_HasValue(D_80096080, D_8009607C->x8)) {
             Ui_RemoveElement(gUi[0], 0x134);
             b = 0;
         }
