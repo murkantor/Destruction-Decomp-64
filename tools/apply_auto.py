@@ -50,6 +50,37 @@ def merge(codes):
     return "\n".join(out).rstrip() + "\n"
 
 
+def shared_rodata(rodata):
+    """(function, symbol, other user) for rodata symbols that other functions also use.
+
+    A function's rodata becomes local to its C file, so a symbol in that range
+    that other asm still references would be left undefined at link time.
+    """
+    syms = []  # (rom, name) of every rodata label
+    for path in glob.glob(os.path.join(ROOT, "asm", "data", "*.rodata.s")):
+        for line in open(path):
+            m = re.match(r"dlabel (\w+)", line)
+            if m:
+                sym = m.group(1)
+                if re.fullmatch(r"(?:D|jtbl)_[0-9A-F]{8}", sym):
+                    syms.append((int(sym.split("_")[1], 16) - ROM_BASE, sym))
+    users = {}  # symbol -> functions whose asm references it
+    for path in glob.glob(os.path.join(ROOT, "asm", "*.s")):
+        func = None
+        for line in open(path):
+            if line.startswith("glabel "):
+                func = line.split()[1]
+            for sym in re.findall(r"%(?:hi|lo)\(((?:D|jtbl)_[0-9A-F]{8})\)", line):
+                users.setdefault(sym, set()).add(func)
+    out = []
+    for name, (start, end) in rodata.items():
+        for rom, sym in syms:
+            if start <= rom < end:
+                for user in sorted(users.get(sym, set()) - {name}):
+                    out.append((name, sym, user))
+    return out
+
+
 def main():
     args = sys.argv[1:]
     subdir = "auto"
@@ -67,6 +98,12 @@ def main():
         matches.append((int(p[0], 16), int(p[1], 16), p[2]))
         if len(p) == 5:
             rodata[p[2]] = (int(p[3], 16) - ROM_BASE, int(p[3], 16) - ROM_BASE + int(p[4], 16))
+    shared = shared_rodata(rodata)
+    if shared:
+        for name, sym, user in shared:
+            print(f"skipping {name}: its rodata {sym} is also used by {user}")
+        skip = {s[0] for s in shared}
+        matches = [m for m in matches if m[2] not in skip]
     new_rodata = []  # (rom start, rom end, path)
 
     # functions an existing C file pulls in with INCLUDE_ASM: replace that line

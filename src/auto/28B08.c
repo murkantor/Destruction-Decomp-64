@@ -7,7 +7,7 @@ typedef struct { u8 pad[0xA4]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame;
 
-s8 func_80027F08(ItemNode **list, Item *x) {
+s8 ItemList_IndexOf(ItemNode **list, Item *x) {
     ItemNode *n = *list;
     s8 i;
 
