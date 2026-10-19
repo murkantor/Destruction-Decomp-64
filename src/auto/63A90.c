@@ -7,7 +7,7 @@ extern Controller gControllersLatched[4];
 void func_80062BB0(void);
 void Pad_Read(void);
 
-void Pad_Update(void) {
+void Pad_LatchAll(void) {
     s32 i;
 
     func_80062BB0();
