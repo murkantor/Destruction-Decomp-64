@@ -33,6 +33,7 @@ check: $(ROM)
 	@sha1sum -c $(TARGET).sha1
 
 extract:
+	rm -rf asm
 	$(PYTHON) -m splat split $(TARGET).yaml
 
 $(ROM): $(ELF)
