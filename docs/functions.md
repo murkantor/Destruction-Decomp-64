@@ -961,10 +961,10 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8005C780` | `05D380` | 0x50 | `func_8005C780` | `src/auto/5D380.c` | C (generated) |
 | `8005C7D0` | `05D3D0` | 0x60 | `func_8005C7D0` | `asm/5D3D0.s` | asm |
 | `8005C830` | `05D430` | 0x144 | `func_8005C830` | `asm/5D3D0.s` | asm |
-| `8005C974` | `05D574` | 0xb0 | `func_8005C974` | `asm/5D3D0.s` | asm |
-| `8005CA24` | `05D624` | 0xa8 | `func_8005CA24` | `asm/5D3D0.s` | asm |
-| `8005CACC` | `05D6CC` | 0xc0 | `func_8005CACC` | `asm/5D3D0.s` | asm |
-| `8005CB8C` | `05D78C` | 0x74 | `func_8005CB8C` | `asm/5D3D0.s` | asm |
+| `8005C974` | `05D574` | 0xb0 | `Rom_Copy` | `src/auto/5D574.c` | C (generated) |
+| `8005CA24` | `05D624` | 0xa8 | `func_8005CA24` | `asm/5D624.s` | asm |
+| `8005CACC` | `05D6CC` | 0xc0 | `func_8005CACC` | `asm/5D624.s` | asm |
+| `8005CB8C` | `05D78C` | 0x74 | `func_8005CB8C` | `asm/5D624.s` | asm |
 | `8005CC00` | `05D800` | 0x4c | `func_8005CC00` | `src/auto/5D800.c` | C (generated) |
 | `8005CC4C` | `05D84C` | 0x4c | `func_8005CC4C` | `src/auto/5D84C.c` | C (generated) |
 | `8005CC98` | `05D898` | 0x3c | `func_8005CC98` | `src/auto/5D898.c` | C (generated) |
@@ -975,10 +975,10 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8005D208` | `05DE08` | 0x3c | `func_8005D208` | `src/auto/5DE08.c` | C (generated) |
 | `8005D244` | `05DE44` | 0x12c | `func_8005D244` | `asm/5DE44.s` | asm |
 | `8005D370` | `05DF70` | 0xd8 | `func_8005D370` | `asm/5DE44.s` | asm |
-| `8005D448` | `05E048` | 0x64 | `func_8005D448` | `asm/5DE44.s` | asm |
+| `8005D448` | `05E048` | 0x64 | `func_8005D448` | `src/auto/5E048.c` | C (generated) |
 | `8005D4AC` | `05E0AC` | 0x34 | `func_8005D4AC` | `src/auto/5E0AC.c` | C (generated) |
 | `8005D4E0` | `05E0E0` | 0x8 | `func_8005D4E0` | `src/auto/5E0AC.c` | C (generated) |
-| `8005D4E8` | `05E0E8` | 0x98 | `func_8005D4E8` | `asm/5E0E8.s` | asm |
+| `8005D4E8` | `05E0E8` | 0x98 | `func_8005D4E8` | `src/auto/5E0E8.c` | C (generated) |
 | `8005D580` | `05E180` | 0x44 | `func_8005D580` | `src/auto/5E180.c` | C (generated) |
 | `8005D5C4` | `05E1C4` | 0x7c | `func_8005D5C4` | `src/auto/5E180.c` | C (generated) |
 | `8005D640` | `05E240` | 0x2c | `func_8005D640` | `src/auto/5E180.c` | C (generated) |
