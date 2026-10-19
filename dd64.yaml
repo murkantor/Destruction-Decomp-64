@@ -799,6 +799,8 @@ segments:
       - [0x78498, asm]
       - [0x784A0, c, auto/784A0]
       - [0x784C0, asm]
+      - [0x78C90, c, auto/78C90]
+      - [0x78ED4, asm]
       - [0x79320, c, auto/79320]
       - [0x793B8, asm]
       - [0x79960, c, auto/79960]

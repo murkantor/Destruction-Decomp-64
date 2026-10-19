@@ -1477,7 +1477,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80075210` | `075E10` | 0x28 | `func_80075210` | `src/auto/75E10.c` | C (generated) |
 | `80075240` | `075E40` | 0x320 | `bcopy` | `asm/75E38.s` | asm |
 | `80075560` | `076160` | 0x570 | `_Printf` | `asm/75E38.s` | asm |
-| `80075AD0` | `0766D0` | 0x4c0 | `func_80075AD0` | `asm/75E38.s` | asm |
+| `80075AD0` | `0766D0` | 0x4c0 | `_Putfld` | `asm/75E38.s` | asm |
 | `80075F90` | `076B90` | 0x50c | `func_80075F90` | `asm/75E38.s` | asm |
 | `8007649C` | `07709C` | 0xd0 | `func_8007649C` | `asm/75E38.s` | asm |
 | `8007656C` | `07716C` | 0xb4 | `func_8007656C` | `asm/75E38.s` | asm |
@@ -1509,8 +1509,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80077CA0` | `0788A0` | 0x190 | `osEPiRawReadIo` | `asm/784C0.s` | asm |
 | `80077E30` | `078A30` | 0x150 | `osEPiRawWriteIo` | `asm/784C0.s` | asm |
 | `80077F80` | `078B80` | 0x110 | `bcmp` | `asm/784C0.s` | asm |
-| `80078090` | `078C90` | 0x250 | `_Litob` | `asm/784C0.s` | asm |
-| `800782E0` | `078EE0` | 0x440 | `_Ldtob` | `asm/784C0.s` | asm |
+| `80078090` | `078C90` | 0x244 | `_Litob` | `src/auto/78C90.c` | C (generated) |
+| `800782E0` | `078EE0` | 0x440 | `_Ldtob` | `asm/78ED4.s` | asm |
 | `80078720` | `079320` | 0x98 | `_Ldunscale` | `src/auto/79320.c` | C (generated) |
 | `800787B8` | `0793B8` | 0x5a8 | `func_800787B8` | `asm/793B8.s` | asm |
 | `80078D60` | `079960` | 0xb8 | `osDriveRomInit` | `src/auto/79960.c` | C (generated) |
