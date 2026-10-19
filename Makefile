@@ -46,11 +46,20 @@ $(BUILD_DIR)/%.s.o: %.s
 	@mkdir -p $(@D)
 	$(AS) $(ASFLAGS) -o $@ $<
 
+# Pure C goes through KMC's own assembler, like the original build. Files with
+# INCLUDE_ASM need modern gas for splat's macros; KMC's assembler encodes move
+# as addu, so tools/fix_move.sed makes modern gas do the same.
 $(BUILD_DIR)/%.c.o: %.c
 	@mkdir -p $(@D)
-	$(CC) -S $(CFLAGS) -o $(BUILD_DIR)/$*.c.s $<
-	sed -E -f tools/fix_move.sed -i $(BUILD_DIR)/$*.c.s
-	$(AS) $(ASFLAGS) -o $@ $(BUILD_DIR)/$*.c.s
+	@if grep -q INCLUDE_ASM $<; then \
+		echo "$(CC) -S $(CFLAGS) $< (modern gas)"; \
+		$(CC) -S $(CFLAGS) -o $(BUILD_DIR)/$*.c.s $< && \
+		sed -E -f tools/fix_move.sed -i $(BUILD_DIR)/$*.c.s && \
+		$(AS) $(ASFLAGS) -o $@ $(BUILD_DIR)/$*.c.s; \
+	else \
+		echo "$(CC) -c $(CFLAGS) $<"; \
+		$(CC) -c $(CFLAGS) -o $@ $< && python3 tools/elf_trim.py $@; \
+	fi
 
 $(BUILD_DIR)/%.bin.o: %.bin
 	@mkdir -p $(@D)

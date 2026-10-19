@@ -2,7 +2,7 @@
 
 A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
 
-Status: the ROM builds and matches. 408 of about 1550 functions are in C: the boot path in `src/main/boot.c`, and 403 generated or hand-fixed ones in `src/auto/` that still need real types and names.
+Status: the ROM builds and matches. 411 of about 1550 functions are in C: `src/main/boot.c`, `src/romfile.c` and 403 generated or hand-fixed ones in `src/auto/` that still need real types and names.
 
 You need your own copy of the ROM. It is not included and must never be committed.
 
@@ -15,7 +15,7 @@ You need your own copy of the ROM. It is not included and must never be committe
 
 - Linux (or WSL) with `make`, `curl`, `sha1sum` and Python 3.
 - MIPS binutils: `mips-linux-gnu-as`, `ld`, `objcopy`, `objdump`.
-- KMC GCC 2.7.2, the compiler the game was built with. `tools/setup.sh` downloads it.
+- KMC GCC 2.7.2 and its assembler, which the game was built with. `tools/setup.sh` downloads them.
 
 On Debian or Ubuntu:
 
@@ -62,6 +62,7 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `tools/autodecomp.py`, `tools/apply_auto.py` | Generate matching C with m2c and add it to the build |
 | `tools/permute_setup.py`, `tools/permute_collect.py` | Run decomp-permuter on near misses and collect the matches |
 | `tools/rename.py` | Apply names from `symbol_addrs.txt` to the C |
+| `tools/diff_func.py` | Show a hand-written function's code next to the original |
 | `tools/check_c.py` | Check hand-written functions against the ROM before `apply_auto.py` adds them |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
 | `asm/`, `assets/`, `build/` | Generated, not committed |
@@ -128,7 +129,7 @@ When you clean up a file in `src/auto/`, give it real types and names and move i
 |---|---|
 | Compiler | KMC GCC 2.7.2 |
 | Flags | `-O2 -G0 -mips3 -mgp32 -mfp32` |
-| Assembler | Modern GNU as. KMC's assembler encodes `move` as `addu`, so `tools/fix_move.sed` rewrites it in the compiler output first |
+| Assembler | KMC's binutils 2.6 for files that are all C, like the original build. `tools/elf_trim.py` cuts the padding it adds after `.text` and fixes its symbol table for modern ld. Files with `INCLUDE_ASM` use modern GNU as, with `tools/fix_move.sed` to encode `move` the KMC way |
 | libultra | 2.0I, built 31 Jul 1998, with asserts |
 
 See [docs/rom.md](docs/rom.md) for the ROM layout and what is known about the data, and [docs/prototype.md](docs/prototype.md) for what a prototype build adds.

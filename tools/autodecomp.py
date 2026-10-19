@@ -74,16 +74,15 @@ def load_symbols():
 
 
 def compile_c(src, workdir):
+    """Compile like the Makefile does for files without INCLUDE_ASM: KMC GCC and its assembler."""
     c = os.path.join(workdir, "f.c")
-    s = os.path.join(workdir, "f.s")
     o = os.path.join(workdir, "f.o")
     open(c, "w").write(src)
     env = dict(os.environ, COMPILER_PATH=KMC)
-    r = subprocess.run([os.path.join(KMC, "gcc"), "-S", *CFLAGS, "-o", s, c], capture_output=True, text=True, env=env)
+    r = subprocess.run([os.path.join(KMC, "gcc"), "-c", *CFLAGS, "-o", o, c], capture_output=True, text=True, env=env)
     if r.returncode:
         return None, r.stderr
-    subprocess.run(["sed", "-E", "-i", "-f", os.path.join(ROOT, "tools", "fix_move.sed"), s], check=True)
-    r = subprocess.run(["mips-linux-gnu-as", *ASFLAGS, "-o", o, s], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "elf_trim.py"), o], capture_output=True, text=True)
     if r.returncode:
         return None, r.stderr
     return o, ""
