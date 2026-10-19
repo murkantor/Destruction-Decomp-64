@@ -508,3 +508,5 @@ Vec3f_DistXZ = 0x80000624; // type:func
 Emitter_FreeAll = 0x80055C44; // type:func
 Pad_LatchAll = 0x80062E90; // type:func
 gControllersLatched = 0x800C0430;
+Sound_SetPanById = 0x800660F0; // type:func
+Sound_SetVolumeById = 0x80066064; // type:func
