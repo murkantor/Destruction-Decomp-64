@@ -463,3 +463,4 @@ _loadBuffer = 0x8007401C; // type:func
 _saveBuffer = 0x8007418C; // type:func
 alFxPull = 0x80073850; // type:func
 alResamplePull = 0x800735A0; // type:func
+NameEntry_Backspace = 0x8004A3B4; // type:func
