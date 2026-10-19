@@ -26,7 +26,7 @@ typedef struct { u8 pad0[0x38]; Obj *x38; } Car;
 extern Game *gGame;
 Vec3f func_8001FBA8(void *);
 Vec3f func_8001FC08(Car *);
-Vec3f func_80003EE8(Seg *, Elem8 *);
+Vec3f Path_AvoidEdges(Seg *, Elem8 *);
 Vec3f Seg_AvoidCircleXZ(Seg *, Circle *);
 u8 Track_IsGridCellSolid(Vec3f *);
 f32 func_800005C8(Vec3f, Vec3f);
@@ -50,7 +50,7 @@ void func_80003780(Car *car) {
     seg.b = o->x5C;
     changed = 0;
     for (i = 0; i < trk->x2C->x14; i++) {
-        o->x5C = func_80003EE8(&seg, &trk->x2C->x18[i]);
+        o->x5C = Path_AvoidEdges(&seg, &trk->x2C->x18[i]);
         seg.b = o->x5C;
     }
     if (orig.x != o->x5C.x || orig.y != o->x5C.y || orig.z != o->x5C.z) {
@@ -66,7 +66,7 @@ void func_80003780(Car *car) {
     seg.a = func_8001FBA8(car);
     seg.b = o->x5C;
     for (i = 0; i < trk->x2C->x14; i++) {
-        o->x5C = func_80003EE8(&seg, &trk->x2C->x18[i]);
+        o->x5C = Path_AvoidEdges(&seg, &trk->x2C->x18[i]);
         seg.b = o->x5C;
     }
     if (orig.x != o->x5C.x || orig.y != o->x5C.y || orig.z != o->x5C.z) {

@@ -15,7 +15,7 @@ typedef struct {
     s32 frame;
 } Model;
 void guMtxL2F(Mtx *, s32);
-Gfx *func_800112EC(Model *, Mtx *, Gfx *);
+Gfx *Particles_Draw(Model *, Mtx *, Gfx *);
 
 void func_8001723C(Model *m, s32 *arg, s32 layer) {
     Mtx mtx;
@@ -27,7 +27,7 @@ void func_8001723C(Model *m, s32 *arg, s32 layer) {
     }
     buf = m->frame;
     guMtxL2F(&mtx, *arg);
-    g = func_800112EC(m, &mtx, m->dl[layer][buf]);
+    g = Particles_Draw(m, &mtx, m->dl[layer][buf]);
     g->w0 = 0xDF000000;
     g->w1 = 0;
 }

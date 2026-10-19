@@ -54,7 +54,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80003450` | `004050` | 0x32c | `func_80003450` | `src/auto/4050.c` | C (generated) |
 | `80003780` | `004380` | 0x4ac | `func_80003780` | `src/auto/4380.c` | C (generated) |
 | `80003C2C` | `00482C` | 0x2bc | `Seg_AvoidCircleXZ` | `src/auto/482C.c` | C (generated) |
-| `80003EE8` | `004AE8` | 0x5a0 | `func_80003EE8` | `asm/4AE8.s` | asm |
+| `80003EE8` | `004AE8` | 0x5a0 | `Path_AvoidEdges` | `asm/4AE8.s` | asm |
 | `80004488` | `005088` | 0x120 | `Car_ClampToSphere` | `src/auto/5088.c` | C (generated) |
 | `800045B0` | `0051B0` | 0x70 | `func_800045B0` | `src/auto/51B0.c` | C (generated) |
 | `80004620` | `005220` | 0x174 | `func_80004620` | `src/auto/5220.c` | C (generated) |
@@ -149,7 +149,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000E864` | `00F464` | 0xfc | `func_8000E864` | `asm/F464.s` | asm |
 | `8000E960` | `00F560` | 0x50 | `func_8000E960` | `src/auto/F560.c` | C (generated) |
 | `8000E9B0` | `00F5B0` | 0x138 | `Fade_Step` | `src/auto/F5B0.c` | C (generated) |
-| `8000EAE8` | `00F6E8` | 0x6dc | `func_8000EAE8` | `src/auto/F6E8.c` | C (generated) |
+| `8000EAE8` | `00F6E8` | 0x6dc | `Hud_UpdateBlinkElements` | `src/auto/F6E8.c` | C (generated) |
 | `8000F1C4` | `00FDC4` | 0x330 | `func_8000F1C4` | `asm/FDC4.s` | asm |
 | `8000F4F4` | `0100F4` | 0x244 | `Ui_UpdateFadeBlink` | `src/auto/100F4.c` | C (generated) |
 | `8000F738` | `010338` | 0x60 | `func_8000F738` | `src/auto/10338.c` | C (generated) |
@@ -185,7 +185,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80010E94` | `011A94` | 0x8 | `func_80010E94` | `src/auto/11A08.c` | C (generated) |
 | `80010E9C` | `011A9C` | 0xe0 | `Particles_Update` | `src/auto/11A9C.c` | C (generated) |
 | `80010F7C` | `011B7C` | 0x370 | `func_80010F7C` | `src/auto/11B7C.c` | C (generated) |
-| `800112EC` | `011EEC` | 0x944 | `func_800112EC` | `asm/11EEC.s` | asm |
+| `800112EC` | `011EEC` | 0x944 | `Particles_Draw` | `src/auto/11EEC.c` | C (generated) |
 | `80011C30` | `012830` | 0x9c | `func_80011C30` | `src/auto/12830.c` | C (generated) |
 | `80011CCC` | `0128CC` | 0xe4 | `func_80011CCC` | `src/auto/128CC.c` | C (generated) |
 | `80011DB0` | `0129B0` | 0x244 | `Render_DrawSkyAndWorld` | `src/auto/129B0.c` | C (generated) |
@@ -356,7 +356,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80022E1C` | `023A1C` | 0x410 | `func_80022E1C` | `src/auto/23A1C.c` | C (generated) |
 | `8002322C` | `023E2C` | 0xb0 | `Camera_UpdateBasis` | `src/auto/23E2C.c` | C (generated) |
 | `800232DC` | `023EDC` | 0x64 | `func_800232DC` | `src/auto/23EDC.c` | C (generated) |
-| `80023340` | `023F40` | 0x604 | `func_80023340` | `src/auto/23F40.c` | C (generated) |
+| `80023340` | `023F40` | 0x604 | `Car_ResolveTrackCollision` | `src/auto/23F40.c` | C (generated) |
 | `80023944` | `024544` | 0x39c | `func_80023944` | `asm/24544.s` | asm |
 | `80023CE0` | `0248E0` | 0x7c | `func_80023CE0` | `src/auto/248E0.c` | C (generated) |
 | `80023D60` | `024960` | 0x7c | `func_80023D60` | `asm/2495C.s` | asm |
@@ -417,7 +417,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800267B4` | `0273B4` | 0x54 | `func_800267B4` | `asm/273B4.s` | asm |
 | `80026808` | `027408` | 0x160 | `func_80026808` | `src/auto/27408.c` | C (generated) |
 | `80026968` | `027568` | 0x1c | `func_80026968` | `src/auto/27568.c` | C (generated) |
-| `80026990` | `027590` | 0xc94 | `func_80026990` | `asm/27584.s` | asm |
+| `80026990` | `027590` | 0xc94 | `Race_PlaceCarsOnGrid` | `asm/27584.s` | asm |
 | `80027624` | `028224` | 0x44 | `func_80027624` | `src/auto/28224.c` | C (generated) |
 | `80027668` | `028268` | 0x150 | `Track_FindNearestSegment` | `src/auto/28268.c` | C (generated) |
 | `800277C0` | `0283C0` | 0x158 | `List_BuildSorted` | `src/auto/283C0.c` | C (generated) |
@@ -433,7 +433,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800286AC` | `0292AC` | 0x1f8 | `func_800286AC` | `src/auto/292AC.c` | C (generated) |
 | `800288A4` | `0294A4` | 0x18 | `func_800288A4` | `src/auto/294A4.c` | C (generated) |
 | `800288BC` | `0294BC` | 0x190 | `Track_ScaleVertsByDistance` | `src/auto/294BC.c` | C (generated) |
-| `80028A4C` | `02964C` | 0x664 | `func_80028A4C` | `asm/2964C.s` | asm |
+| `80028A4C` | `02964C` | 0x664 | `Car_DeformMeshAtImpact` | `asm/2964C.s` | asm |
 | `800290B0` | `029CB0` | 0x2c8 | `Car_ApplyDamage` | `src/auto/29CB0.c` | C (generated) |
 | `80029378` | `029F78` | 0x6a0 | `func_80029378` | `src/auto/29F78.c` | C (generated) |
 | `80029A18` | `02A618` | 0xbb4 | `func_80029A18` | `asm/2A618.s` | asm |
@@ -445,7 +445,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8002B358` | `02BF58` | 0x314 | `func_8002B358` | `src/auto/2BF58.c` | C (generated) |
 | `8002B66C` | `02C26C` | 0x134 | `func_8002B66C` | `src/auto/2C26C.c` | C (generated) |
 | `8002B7A0` | `02C3A0` | 0x4f8 | `func_8002B7A0` | `asm/2C3A0.s` | asm |
-| `8002BC98` | `02C898` | 0x23c | `func_8002BC98` | `src/auto/2C898.c` | C (generated) |
+| `8002BC98` | `02C898` | 0x23c | `Track_LoadGridObjects` | `src/auto/2C898.c` | C (generated) |
 | `8002BED4` | `02CAD4` | 0x34 | `func_8002BED4` | `src/auto/2CAD4.c` | C (generated) |
 | `8002BF08` | `02CB08` | 0x28 | `func_8002BF08` | `src/auto/2CB08.c` | C (generated) |
 | `8002BF30` | `02CB30` | 0x204 | `World_Update` | `src/auto/2CB30.c` | C (generated) |
@@ -490,7 +490,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80032EA4` | `033AA4` | 0x11c | `Points_ComputeAABB` | `src/auto/33AA4.c` | C (generated) |
 | `80032FC0` | `033BC0` | 0xe8 | `func_80032FC0` | `src/auto/33BC0.c` | C (generated) |
 | `800330A8` | `033CA8` | 0xc0 | `func_800330A8` | `src/auto/33CA8.c` | C (generated) |
-| `80033168` | `033D68` | 0xb54 | `func_80033168` | `asm/33D68.s` | asm |
+| `80033168` | `033D68` | 0xb54 | `Obb_Overlap` | `asm/33D68.s` | asm |
 | `80033CBC` | `0348BC` | 0x344 | `func_80033CBC` | `asm/33D68.s` | asm |
 | `80034000` | `034C00` | 0xe0 | `Poly_StraddlesPlane` | `src/auto/34C00.c` | C (generated) |
 | `800340E0` | `034CE0` | 0x2b0 | `Poly_ClipAgainstPlane` | `src/auto/34CE0.c` | C (generated) |
@@ -503,7 +503,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80034AA8` | `0356A8` | 0x198 | `Physics_AddContact` | `src/auto/354F8.c` | C (generated) |
 | `80034C40` | `035840` | 0x48 | `func_80034C40` | `src/auto/35840.c` | C (generated) |
 | `80034C88` | `035888` | 0x274 | `Body_EnergyRatioExceeds` | `src/auto/35888.c` | C (generated) |
-| `80034EFC` | `035AFC` | 0x42c | `func_80034EFC` | `src/auto/35AFC.c` | C (generated) |
+| `80034EFC` | `035AFC` | 0x42c | `Car_ApplyContactImpulses` | `src/auto/35AFC.c` | C (generated) |
 | `80035328` | `035F28` | 0x33c | `func_80035328` | `src/auto/35F28.c` | C (generated) |
 | `80035664` | `036264` | 0xe0 | `Track_GetFace` | `src/auto/36264.c` | C (generated) |
 | `80035744` | `036344` | 0xd4 | `func_80035744` | `src/auto/36344.c` | C (generated) |
@@ -514,9 +514,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800361E0` | `036DE0` | 0x1e4 | `func_800361E0` | `asm/36A78.s` | asm |
 | `800363C4` | `036FC4` | 0x368 | `func_800363C4` | `asm/36A78.s` | asm |
 | `8003672C` | `03732C` | 0xdfc | `func_8003672C` | `asm/36A78.s` | asm |
-| `80037528` | `038128` | 0x828 | `func_80037528` | `asm/36A78.s` | asm |
-| `80037D50` | `038950` | 0x40c | `func_80037D50` | `asm/36A78.s` | asm |
-| `8003815C` | `038D5C` | 0x14f4 | `func_8003815C` | `asm/36A78.s` | asm |
+| `80037528` | `038128` | 0x828 | `Car_ApplyWheelForces` | `src/auto/38128.c` | C (generated) |
+| `80037D50` | `038950` | 0x40c | `func_80037D50` | `asm/38950.s` | asm |
+| `8003815C` | `038D5C` | 0x14f4 | `func_8003815C` | `asm/38950.s` | asm |
 | `80039650` | `03A250` | 0x1ac | `Car_SelectGear` | `src/auto/3A250.c` | C (generated) |
 | `800397FC` | `03A3FC` | 0x74 | `func_800397FC` | `src/auto/3A3FC.c` | C (generated) |
 | `80039870` | `03A470` | 0xe8 | `Car_UpdateRpm` | `src/auto/3A470.c` | C (generated) |
@@ -1478,7 +1478,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80075240` | `075E40` | 0x320 | `bcopy` | `asm/75E38.s` | asm |
 | `80075560` | `076160` | 0x570 | `_Printf` | `asm/75E38.s` | asm |
 | `80075AD0` | `0766D0` | 0x4bc | `_Putfld` | `src/auto/766D0.c` | C (generated) |
-| `80075F90` | `076B90` | 0x50c | `func_80075F90` | `src/auto/76B90.c` | C (generated) |
+| `80075F90` | `076B90` | 0x50c | `__osLeoInterrupt` | `src/auto/76B90.c` | C (generated) |
 | `8007649C` | `07709C` | 0xd0 | `__osLeoAbnormalResume` | `src/auto/7709C.c` | C (generated) |
 | `8007656C` | `07716C` | 0xb4 | `__osLeoResume` | `src/auto/7709C.c` | C (generated) |
 | `80076620` | `077220` | 0x34 | `__osSumcalc` | `src/libultra/__osSumcalc.c` | C |

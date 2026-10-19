@@ -43,7 +43,7 @@ extern s32 osEPiRawStartDma(OSPiHandle *, s32, u32, void *, u32);
     while (stat & 3) \
         stat = IO_READ(PI_STATUS_REG);
 
-s32 func_80075F90(void)
+s32 __osLeoInterrupt(void)
 {
     volatile u32 pi_stat;
     u32 stat;

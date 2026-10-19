@@ -53,7 +53,7 @@ void Vec3f_Normalize(Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 u8 func_80035E78(void *, Vec3f *, void *, Vec3f *, f32, s32, f32, f32 *, Vec3f *, Vec3f *, Vec3f *);
 void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
-u8 func_80033168(void *, void *, Vec3f *, void *, void *, Vec3f *);
+u8 Obb_Overlap(void *, void *, Vec3f *, void *, void *, Vec3f *);
 void func_8003225C(Car *, Car *);
 
 void func_80031EC0(Car *a, s32 idx) {
@@ -123,7 +123,7 @@ void func_80031EC0(Car *a, s32 idx) {
             }
         }
         if (dist2 < r2) {
-            if (func_80033168(pa->x130, pa->xC8, &pa->pos, pb->x130, pb->xC8, &pb->pos)) {
+            if (Obb_Overlap(pa->x130, pa->xC8, &pa->pos, pb->x130, pb->xC8, &pb->pos)) {
                 func_8003225C(a, b);
             }
         }

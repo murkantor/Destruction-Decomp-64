@@ -44,7 +44,7 @@ extern void Ui_RemoveElement(Ui *ui, s32 elem);
 extern void func_8005DBDC(Obj *obj);
 
 #define E D_8007EF68[p][i]
-s32 func_8000EAE8(Obj *obj, s8 p)
+s32 Hud_UpdateBlinkElements(Obj *obj, s8 p)
 {
     Vec3f pos;
     ElemTbl tbl = D_800B8290;

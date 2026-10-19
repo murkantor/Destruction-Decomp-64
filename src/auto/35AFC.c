@@ -38,7 +38,7 @@ extern void func_80035328(Vec3f *out, Player *p, Contact *c);
 extern u8 Body_EnergyRatioExceeds(Car *car, Vec3f *imp);
 extern void func_80028070(Car *car, Vec3f pos, Car *car2, Vec3f pos2, f32 len);
 
-void func_80034EFC(Player *p, Car *car)
+void Car_ApplyContactImpulses(Player *p, Car *car)
 {
     Vec3f2 acc2 = D_800B9570;
     f32 speed2;

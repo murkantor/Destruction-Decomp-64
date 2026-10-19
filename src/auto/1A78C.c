@@ -52,7 +52,7 @@ extern void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 extern void Vec3f_Normalize(Vec3f *, Vec3f *);
 extern void Particles_Update(Weather *);
 extern void guMtxL2F(f32 mf[4][4], Mtx *m);
-extern Gfx *func_800112EC(Weather *, f32 (*)[4], Gfx *);
+extern Gfx *Particles_Draw(Weather *, f32 (*)[4], Gfx *);
 extern void guPosition(Mtx *, f32, f32, f32, f32, f32, f32, f32);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
@@ -118,7 +118,7 @@ Gfx *func_80019B8C(Cam *cam, Gfx *gfx) {
         Particles_Update(w);
     }
     guMtxL2F(m, cam->mtx);
-    g = func_800112EC(w, m, w->bufs[frame]);
+    g = Particles_Draw(w, m, w->bufs[frame]);
     g->w0 = 0xDF000000;
     g->w1 = 0;
     Vec3f_Sub(&dir, &cam->x48, &cam->x2C);

@@ -32,7 +32,7 @@ extern void *Mem_AllocAligned(u32 size, s32 align, s32 flags);
 extern void Res_Load(s32 id, void *dst);
 extern void Grid_AddObjToCellsInRect(GridObj *obj, f32 x0, f32 z0, f32 x1, f32 z1);
 
-void *func_8002BC98(s32 id)
+void *Track_LoadGridObjects(s32 id)
 {
     GridHdr *grid = gGame->track->x70->grid;
     u32 size;
