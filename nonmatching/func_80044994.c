@@ -1,0 +1,43 @@
+typedef struct { u8 pad[0xB4]; u8 xB4; } Car44994;
+typedef struct { Car44994 *x0; u8 pad[0x64]; } Slot44994;
+extern u8 *gGame;
+typedef struct { f32 x0; f32 x4; f32 x8; } Timing44994;
+
+extern Timing44994 D_800D1BA0;
+extern f32 D_800D1BA8;
+extern u8 D_800D1BAC;
+extern s8 D_800D31CC;
+extern Slot44994 D_800958DC[];
+f32 Time_ToSeconds(void *);
+s8 func_800086A0(void);
+u8 func_800086AC(void);
+void func_800213F0(Car44994 *);
+void func_80063564(s32, s32);
+
+s32 func_80044994(void) {
+    f32 t;
+    f32 r;
+    s32 i;
+
+        t = Time_ToSeconds(gGame + 0x1058);
+    D_800D1BA0.x8 = (t - D_800D1BA0.x0) * 0.1;
+    D_800D1BA0.x4 = t;
+    if (D_800D1BA0.x8 >= 1.0) {
+        D_800D1BA0.x8 = 1.0f;
+    }
+    if (!D_800D1BAC) {
+        return 0;
+    }
+    if (func_800086A0()) {
+        return 0;
+    }
+    if (func_800086AC()) {
+        return 0;
+    }
+    for (i = 0; i < D_800D31CC; i++) {
+        D_800958DC[i].x0->xB4 = 2;
+        func_800213F0(D_800958DC[i].x0);
+    }
+    func_80063564(0x1B, 1);
+    return 0;
+}
