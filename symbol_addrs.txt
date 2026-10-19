@@ -513,3 +513,4 @@ Sound_SetVolumeById = 0x80066064; // type:func
 __osPfsRequestOneChannel = 0x8007766C; // type:func
 Tensor_MulVec3f = 0x8003AA28; // type:func
 Sprite_SetSize = 0x800615AC; // type:func
+memset = 0x800799A0; // type:func
