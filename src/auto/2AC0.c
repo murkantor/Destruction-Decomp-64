@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_80001D78(s32);                             /* extern */
+s32 Obj_CreateFromCfg(s32);                             /* extern */
 s32 HeapBlock_Ptr(M2C_UNK *);                       /* extern */
 M2C_UNK Heap_AllocAlt(M2C_UNK *, M2C_UNK *, M2C_UNK, M2C_UNK, s32); /* extern */
 M2C_UNK Heap_Free(M2C_UNK *, M2C_UNK *);        /* extern */
@@ -17,7 +17,7 @@ s32 func_80001EC0(s32 arg0) {
     Heap_AllocAlt(&gMainHeap, &sp18, 0x3C, 7, 0);
     temp_v0_2 = HeapBlock_Ptr(&sp18);
     Res_Load(arg0, temp_v0_2);
-    temp_v0 = func_80001D78(temp_v0_2);
+    temp_v0 = Obj_CreateFromCfg(temp_v0_2);
     func_80064100(temp_v0);
     Heap_Free(&gMainHeap, &sp18);
     return temp_v0;
