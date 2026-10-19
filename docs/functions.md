@@ -1516,7 +1516,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80078D60` | `079960` | 0xb8 | `osDriveRomInit` | `src/auto/79960.c` | C (generated) |
 | `80078E20` | `079A20` | 0x84 | `ldiv` | `src/auto/79A20.c` | C (generated) |
 | `80078EA4` | `079AA4` | 0x13c | `lldiv` | `asm/79AA4.s` | asm |
-| `80078FE0` | `079BE0` | 0xd8 | `asin` | `asm/79AA4.s` | asm |
+| `80078FE0` | `079BE0` | 0xd8 | `asin` | `src/libc/79BE0.c` | C |
 | `800790B8` | `079CB8` | 0xa4 | `acos` | `src/libc/79CB8.c` | C |
 | `80079160` | `079D60` | 0x1b8 | `func_80079160` | `asm/79D5C.s` | asm |
 | `80079318` | `079F18` | 0x118 | `func_80079318` | `asm/79D5C.s` | asm |

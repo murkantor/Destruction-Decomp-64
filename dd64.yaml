@@ -1095,6 +1095,7 @@ segments:
       - [0x79A18, asm]
       - [0x79A20, c, auto/79A20]
       - [0x79AA4, asm]
+      - [0x79BE0, c, libc/79BE0]
       - [0x79CB8, c, libc/79CB8]
       - [0x79D5C, asm]
       - [0x7A1A0, c, auto/7A1A0]
