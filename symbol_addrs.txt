@@ -258,3 +258,6 @@ sintable = 0x800B4E80;
 alAuxBusPull = 0x800725D0; // type:func
 alMainBusPull = 0x80073430; // type:func
 alSavePull = 0x80074430; // type:func
+__osViCurr = 0x800B6C20;
+alGlobals = 0x800B56E0;
+__osPiDevMgr = 0x800B5720;
