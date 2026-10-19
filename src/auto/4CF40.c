@@ -80,7 +80,7 @@ static inline s32 Rank_Get(s32 i) {
     return rank;
 }
 
-void func_8004C340(void) {
+void Results_DrawStandings(void) {
     S2 sp;
     S12 ids;
     char num[8];

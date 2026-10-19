@@ -8,7 +8,7 @@ extern Entry16 D_80095BE8[];
 void func_8005DC68(void *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
-void func_80049528(s32, s32, s32, s32);
+void Records_Draw(s32, s32, s32, s32);
 
 void Menu_ShowVersus(s32 a, s32 b) {
     s32 typeA, typeB, idA, idB;
@@ -46,7 +46,7 @@ void Menu_ShowVersus(s32 a, s32 b) {
     Ui_AddElement(gUi[0], 2, 0x12E);
     Ui_AddElement(gUi[0], 2, 0x25);
     Ui_AddElement(gUi[0], 2, 0x26);
-    func_80049528(typeA, typeB, idA, idB);
+    Records_Draw(typeA, typeB, idA, idB);
     Ui_AddElement(gUi[0], 2, 0x9F);
     Ui_AddElement(gUi[0], 2, 0xA0);
     if (b == 0) {

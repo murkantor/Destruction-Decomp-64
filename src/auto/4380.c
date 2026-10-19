@@ -31,7 +31,7 @@ Vec3f Seg_AvoidCircleXZ(Seg *, Circle *);
 u8 Track_IsGridCellSolid(Vec3f *);
 f32 func_800005C8(Vec3f, Vec3f);
 
-void func_80003780(Car *car) {
+void Ai_ConstrainTarget(Car *car) {
     Obj *o;
     Trk *trk;
     Seg seg;

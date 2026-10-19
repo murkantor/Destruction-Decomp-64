@@ -47,7 +47,7 @@ Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 f32 func_800005C8(Vec3f, Vec3f);
 
-void func_80002D10(Car *car) {
+void Ai_UpdateLaneOffset(Car *car) {
     Vec3f t;
     Vec3f fwd;
     Vec3f pos;

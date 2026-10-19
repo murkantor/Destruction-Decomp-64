@@ -29,7 +29,7 @@ extern u8 D_80091B28;
 extern ResTbl D_80091B30[];
 void func_80013A54(s32 a0, ResTbl *a1, s8 a2, s8 a3, s16 a4);
 
-void func_8001C944(ResHdr *hdr, s32 base, u8 flag) {
+void Model_FixupDisplayList(ResHdr *hdr, s32 base, u8 flag) {
     u8 used[256];
     s32 i;
     s32 k;

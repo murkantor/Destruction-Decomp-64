@@ -15,7 +15,7 @@ extern void *gUi;
 void Ui_AddModeLabels(s32);
 void Ui_AddSpriteElement(void *, UiDesc *);
 void Ui_AddElement(void *, s32, s32);
-void func_80049528(s32, s32, s32, s32);
+void Records_Draw(s32, s32, s32, s32);
 
 s32 Menu_NextFreeSlot(s32 cur) {
     s32 side = -100;
@@ -68,6 +68,6 @@ found:
         Ui_AddElement(gUi, 2, 0x12F);
         p = -1;
     }
-    func_80049528(p, side, cur, i);
+    Records_Draw(p, side, cur, i);
     return i;
 }

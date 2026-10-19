@@ -56,7 +56,7 @@ void func_800625F8(void *, s32, s32);
 Gfx *func_8006102C(void *, Gfx *);
 void func_80061480(void *, f32, f32, s32);
 void Sprite_SetSize(void *, s32, s32, s32, s32);
-Gfx *func_80061648(void *, Gfx *, s32);
+Gfx *Bg_Draw(void *, Gfx *, s32);
 Gfx *func_8005E92C(Gfx *, s32, s32, s32, s32, s32);
 Gfx *Gfx_SetTextureLUT(Gfx *);
 
@@ -101,7 +101,7 @@ Gfx *func_8005E2AC(Ctx *ctx, Gfx *g) {
                 func_80061480(b->x18, b->x78, b->x7C, 0);
             }
             Sprite_SetSize(b->x18, b->x80, b->x84, b->x88 * b->x78, b->x8C * b->x7C);
-            g = func_80061648(b->x18, g, 0);
+            g = Bg_Draw(b->x18, g, 0);
             break;
         }
         case 0: {

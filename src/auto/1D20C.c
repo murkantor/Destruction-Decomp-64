@@ -30,7 +30,7 @@ s32 Res_Get(s32);
 s32 func_80063D8C(s32);
 s32 func_80063DAC(s32);
 s32 func_80063E0C(s32, s32, void *);
-void func_8001C944(ResHdr *, s32, s32);
+void Model_FixupDisplayList(ResHdr *, s32, s32);
 void func_80063F88(void);
 
 u8 *Res_LoadModel(s32 id) {
@@ -68,7 +68,7 @@ u8 *Res_LoadModel(s32 id) {
     if (id == 0x4650) {
         D_8012EE24 = hdr->x18;
     }
-    func_8001C944(hdr, x24, flag);
+    Model_FixupDisplayList(hdr, x24, flag);
     func_80063F88();
     return buf;
 }

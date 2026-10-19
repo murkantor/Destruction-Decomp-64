@@ -29,7 +29,7 @@ void func_800100BC(s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
 void Timer_Start(void *, u64);
 
-void func_8004EC08(void) {
+void Results_DrawTeamScores(void) {
     F3 xs = D_800BB2A0;
     f32 ys[7] = { 92.0f, 111.0f, 155.0f, 175.0f, 129.0f, 191.0f, 0.0f };
     s32 best[3] = { 0, 0, 0 };

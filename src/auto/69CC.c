@@ -29,9 +29,9 @@ extern Vec3f func_8001FB88(Car *);
 extern Vec3f func_8001FC08(Car *);
 extern f32 func_800005C8(Vec3f, Vec3f);
 extern void Car_UpdateTrackSection(Car *);
-extern void func_80002D10(Car *);
+extern void Ai_UpdateLaneOffset(Car *);
 extern void Ai_UpdateTargetPoint(Car *);
-extern void func_80003780(Car *);
+extern void Ai_ConstrainTarget(Car *);
 extern void Ai_Steer(Car *);
 
 static inline void aim(Car *car, Target t) {
@@ -96,7 +96,7 @@ void Ai_Update(Car *car) {
         break;
     case 8:
         Car_UpdateTrackSection(car);
-        func_80002D10(car);
+        Ai_UpdateLaneOffset(car);
         ai->x10 = 7;
         break;
     case 10:
@@ -112,13 +112,13 @@ void Ai_Update(Car *car) {
     case 7:
     case 9:
     case 12:
-        func_80002D10(car);
+        Ai_UpdateLaneOffset(car);
         break;
     case 6:
         break;
     }
     if (ai->x10 < 7) {
-        func_80003780(car);
+        Ai_ConstrainTarget(car);
     }
     Ai_Steer(car);
 }
