@@ -1372,7 +1372,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006D900` | `06E500` | 0x38 | `__scYield` | `src/auto/6E500.c` | C (generated) |
 | `8006D938` | `06E538` | 0x214 | `__scSchedule` | `src/auto/6E538.c` | C (generated) |
 | `8006DB50` | `06E750` | 0x1a0 | `osCreatePiManager` | `src/auto/6E750.c` | C (generated) |
-| `8006DCF0` | `06E8F0` | 0xc0 | `func_8006DCF0` | `asm/6E8F0.s` | asm |
+| `8006DCF0` | `06E8F0` | 0xb8 | `func_8006DCF0` | `src/auto/6E8F0.c` | C (generated) |
 | `8006DDB0` | `06E9B0` | 0x88 | `func_8006DDB0` | `src/auto/6E9B0.c` | C (generated) |
 | `8006DE38` | `06EA38` | 0x9c | `func_8006DE38` | `asm/6EA38.s` | asm |
 | `8006DED4` | `06EAD4` | 0xbc | `func_8006DED4` | `asm/6EA38.s` | asm |
@@ -1385,13 +1385,13 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006ECF0` | `06F8F0` | 0x158 | `func_8006ECF0` | `asm/6EA38.s` | asm |
 | `8006EE48` | `06FA48` | 0x168 | `func_8006EE48` | `asm/6EA38.s` | asm |
 | `8006EFB0` | `06FBB0` | 0x1ac | `func_8006EFB0` | `asm/6EA38.s` | asm |
-| `8006F15C` | `06FD5C` | 0x74 | `func_8006F15C` | `asm/6EA38.s` | asm |
-| `8006F1D0` | `06FDD0` | 0x190 | `func_8006F1D0` | `asm/6EA38.s` | asm |
-| `8006F360` | `06FF60` | 0x110 | `osPfsFreeBlocks` | `asm/6EA38.s` | asm |
-| `8006F470` | `070070` | 0x1f0 | `func_8006F470` | `asm/6EA38.s` | asm |
-| `8006F660` | `070260` | 0x440 | `func_8006F660` | `asm/6EA38.s` | asm |
-| `8006FAA0` | `0706A0` | 0x60 | `func_8006FAA0` | `asm/6EA38.s` | asm |
-| `8006FB00` | `070700` | 0x1a0 | `osPfsFindFile` | `asm/6EA38.s` | asm |
+| `8006F15C` | `06FD5C` | 0x68 | `__osPfsReleasePages` | `src/auto/6FD5C.c` | C (generated) |
+| `8006F1D0` | `06FDD0` | 0x190 | `func_8006F1D0` | `asm/6FDC4.s` | asm |
+| `8006F360` | `06FF60` | 0x110 | `osPfsFreeBlocks` | `asm/6FDC4.s` | asm |
+| `8006F470` | `070070` | 0x1f0 | `func_8006F470` | `asm/6FDC4.s` | asm |
+| `8006F660` | `070260` | 0x440 | `func_8006F660` | `asm/6FDC4.s` | asm |
+| `8006FAA0` | `0706A0` | 0x60 | `func_8006FAA0` | `asm/6FDC4.s` | asm |
+| `8006FB00` | `070700` | 0x1a0 | `osPfsFindFile` | `asm/6FDC4.s` | asm |
 | `8006FCA0` | `0708A0` | 0x64 | `__osPfsSelectBank` | `src/auto/708A0.c` | C (generated) |
 | `8006FD10` | `070910` | 0xa4 | `__osSiRawStartDma` | `src/auto/70910.c` | C (generated) |
 | `8006FDC0` | `0709C0` | 0x1a0 | `osCreateViManager` | `src/auto/709C0.c` | C (generated) |
@@ -1473,7 +1473,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80074BC0` | `0757C0` | 0x1d0 | `osEPiRawStartDma` | `asm/757C0.s` | asm |
 | `80074D90` | `075990` | 0x3c0 | `__osDevMgrMain` | `asm/757C0.s` | asm |
 | `80075150` | `075D50` | 0x54 | `__osPiCreateAccessQueue` | `src/auto/75D50.c` | C (generated) |
-| `800751A4` | `075DA4` | 0x6c | `func_800751A4` | `asm/75DA4.s` | asm |
+| `800751A4` | `075DA4` | 0x6c | `__osPiGetAccess` | `src/auto/75DA4.c` | C (generated) |
 | `80075210` | `075E10` | 0x28 | `func_80075210` | `src/auto/75E10.c` | C (generated) |
 | `80075240` | `075E40` | 0x320 | `bcopy` | `asm/75E38.s` | asm |
 | `80075560` | `076160` | 0x570 | `_Printf` | `asm/75E38.s` | asm |
@@ -1513,7 +1513,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800782E0` | `078EE0` | 0x440 | `_Ldtob` | `asm/784C0.s` | asm |
 | `80078720` | `079320` | 0x98 | `func_80078720` | `asm/784C0.s` | asm |
 | `800787B8` | `0793B8` | 0x5a8 | `func_800787B8` | `asm/784C0.s` | asm |
-| `80078D60` | `079960` | 0xc0 | `func_80078D60` | `asm/784C0.s` | asm |
+| `80078D60` | `079960` | 0xb8 | `osDriveRomInit` | `src/auto/79960.c` | C (generated) |
 | `80078E20` | `079A20` | 0x84 | `ldiv` | `src/auto/79A20.c` | C (generated) |
 | `80078EA4` | `079AA4` | 0x13c | `lldiv` | `asm/79AA4.s` | asm |
 | `80078FE0` | `079BE0` | 0xd8 | `func_80078FE0` | `asm/79AA4.s` | asm |
