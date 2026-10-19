@@ -12,7 +12,7 @@ extern Slot D_80130518[];
 extern UiDesc D_800BAE38;
 extern UiPos2 D_800BAE80;
 extern void *gUi;
-void func_80049340(s32);
+void Ui_AddModeLabels(s32);
 void Ui_AddSpriteElement(void *, UiDesc *);
 void Ui_AddElement(void *, s32, s32);
 void func_80049528(s32, s32, s32, s32);
@@ -49,7 +49,7 @@ found:
     if (cur == -1) {
         UiDesc d;
         UiPos2 pos;
-        func_80049340(side);
+        Ui_AddModeLabels(side);
         d = D_800BAE38;
         pos = D_800BAE80;
         d.x24 = i + 0x112D0;

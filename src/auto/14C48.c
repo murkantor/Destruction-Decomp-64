@@ -14,7 +14,7 @@ extern s32 D_80131380;
 extern void func_80063AAC(s32);
 extern void Mem_Free(void *);
 
-void func_80014048(void) {
+void Track_FreeAnims(void) {
     s32 i;
     s32 j;
     char unused[1];

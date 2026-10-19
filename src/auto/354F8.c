@@ -55,7 +55,7 @@ extern Vec3f Tensor_MulVec3f(Tensor *, Vec3f *);
 extern double fabs(double);
 extern void func_80034C40(World *, Body *);
 
-void func_80034AA8(Body *bodies, s32 *count, Body *src, World *w) {
+void Physics_AddContact(Body *bodies, s32 *count, Body *src, World *w) {
     Body *dst;
     Vec3f tmp;
     f32 d;

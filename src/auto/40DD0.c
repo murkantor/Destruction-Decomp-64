@@ -7,7 +7,7 @@ extern s32 gControllers, D_80125D30, D_80125DE0, D_80125E90;
 extern s32 D_800958A4, D_800958AC;
 extern void func_80063564(s32, s32);
 
-s32 func_800401D0(Arg *arg) {
+s32 Menu_SetPlayerCount(Arg *arg) {
     D_800958A4 = arg->x10 + 2;
     switch (D_800958A4) {
     case 2:

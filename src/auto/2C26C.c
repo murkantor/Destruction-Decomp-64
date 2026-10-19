@@ -8,7 +8,7 @@ extern Game *gGame[];
 extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern s32 D_800958A4;
-void func_80027A60(void *, Car *);
+void Standings_Resort(void *, Car *);
 
 void func_8002B66C(void) {
     Race *r = gGame[0]->x1100;
@@ -22,10 +22,10 @@ void func_8002B66C(void) {
         c = gGame[0]->x1100->x74[i];
         if (c->xD == 0 && c->x3C == 0 && c->x10 > 0) {
             c->x18 += c->x10;
-            func_80027A60(r->x14, gGame[0]->x1100->x74[i]);
+            Standings_Resort(r->x14, gGame[0]->x1100->x74[i]);
         }
     }
     for (i = 0; i < D_800958A4; i++) {
-        func_80027A60(r->x14, gGame[0]->x1100->x74[i]);
+        Standings_Resort(r->x14, gGame[0]->x1100->x74[i]);
     }
 }

@@ -74,7 +74,7 @@ extern u32 D_800958B4;
 extern u32 D_800958A8; extern s32 D_800958A4[], D_800958AC[];
 
 typedef struct { s32 x0; s32 x4; } Pair;
-void func_80010454(Pair *out) {
+void Race_GetLapTimeLimits(Pair *out) {
     s32 idx;
     switch (gGame->xC) {
     case -1:

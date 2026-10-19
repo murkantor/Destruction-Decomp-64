@@ -40,7 +40,7 @@ extern u8 D_80125460[];
 extern s32 D_80130248;
 extern u8 D_80083B78[];
 void func_80012548(Camera *);
-Gfx *func_8005B2F8(Gfx *, Camera *);
+Gfx *Camera_BuildProjection(Gfx *, Camera *);
 Gfx *func_800196BC(void *, Gfx *);
 void Tex_UpdateScrollAndAnim(void);
 Gfx *func_80011FF4(Gfx *, Camera *);
@@ -65,7 +65,7 @@ Gfx *Render_DrawSkyAndWorld(s32 arg0, Gfx *gfx, Camera *cam) {
         GFX2(gfx, 0xE2001D00, 4);
         GFX2(gfx, 0xEE000000, 0x7FFE0000);
         cam->xC = 8192.0f;
-        gfx = func_8005B2F8(gfx, cam);
+        gfx = Camera_BuildProjection(gfx, cam);
         GFX2(gfx, 0xDA380000, D_1304D8);
         if (gDrawSkyDome) {
             GFX2(gfx, 0xDE000000, D_801244D0->x20);
@@ -73,7 +73,7 @@ Gfx *Render_DrawSkyAndWorld(s32 arg0, Gfx *gfx, Camera *cam) {
         cam->xC = far;
         cam->eye = eye;
         cam->at = at;
-        g = func_8005B2F8(gfx, cam);
+        g = Camera_BuildProjection(gfx, cam);
         gfx = g + 2;
         g[0].w0 = 0xDA380000;
         g[0].w1 = (u32)D_1304D8;

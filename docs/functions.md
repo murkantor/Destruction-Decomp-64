@@ -48,8 +48,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80002630` | `003230` | 0x1c4 | `InitLookupTables` | `src/auto/3230.c` | C (generated) |
 | `80002800` | `003400` | 0x8 | `func_80002800` | `src/auto/3400.c` | C (generated) |
 | `80002810` | `003410` | 0x294 | `AI_PickAttackTarget` | `src/auto/3410.c` | C (generated) |
-| `80002AB0` | `0036B0` | 0x260 | `func_80002AB0` | `asm/36A4.s` | asm |
-| `80002D10` | `003910` | 0x574 | `func_80002D10` | `asm/36A4.s` | asm |
+| `80002AB0` | `0036B0` | 0x258 | `Ai_PickTarget2` | `src/auto/36B0.c` | C (generated) |
+| `80002D10` | `003910` | 0x574 | `func_80002D10` | `asm/3908.s` | asm |
 | `80003284` | `003E84` | 0x1cc | `Ai_UpdateTargetPoint` | `src/auto/3E84.c` | C (generated) |
 | `80003450` | `004050` | 0x330 | `func_80003450` | `asm/4050.s` | asm |
 | `80003780` | `004380` | 0x4ac | `func_80003780` | `asm/4050.s` | asm |
@@ -73,22 +73,22 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800066D0` | `0072D0` | 0x110 | `func_800066D0` | `src/auto/72D0.c` | C (generated) |
 | `800067E0` | `0073E0` | 0x234 | `Ai_CheckStuck` | `src/auto/73E0.c` | C (generated) |
 | `80006A20` | `007620` | 0x288 | `func_80006A20` | `asm/7614.s` | asm |
-| `80006CA8` | `0078A8` | 0x1e4 | `func_80006CA8` | `asm/7614.s` | asm |
-| `80006E8C` | `007A8C` | 0x390 | `func_80006E8C` | `asm/7614.s` | asm |
+| `80006CA8` | `0078A8` | 0x1e4 | `EngineSfx_UpdateAll` | `src/auto/78A8.c` | C (generated) |
+| `80006E8C` | `007A8C` | 0x390 | `func_80006E8C` | `asm/7A8C.s` | asm |
 | `8000721C` | `007E1C` | 0xb0 | `func_8000721C` | `src/auto/7E1C.c` | C (generated) |
 | `800072CC` | `007ECC` | 0x220 | `Sound_PlayCar` | `src/auto/7ECC.c` | C (generated) |
 | `800074EC` | `0080EC` | 0x258 | `Sound_PlayAt` | `asm/80EC.s` | asm |
 | `80007744` | `008344` | 0x17c | `func_80007744` | `src/auto/8344.c` | C (generated) |
 | `800078C0` | `0084C0` | 0x3c4 | `func_800078C0` | `asm/84C0.s` | asm |
-| `80007C84` | `008884` | 0x2e4 | `func_80007C84` | `asm/84C0.s` | asm |
+| `80007C84` | `008884` | 0x2e4 | `EngineSfx_Crossfade` | `src/auto/8884.c` | C (generated) |
 | `80007F68` | `008B68` | 0x6c | `Sfx_StopPair` | `src/auto/8B68.c` | C (generated) |
 | `80007FD4` | `008BD4` | 0x30 | `func_80007FD4` | `asm/8BD4.s` | asm |
 | `80008004` | `008C04` | 0x7c | `func_80008004` | `src/auto/8C04.c` | C (generated) |
 | `80008080` | `008C80` | 0x19c | `func_80008080` | `asm/8C80.s` | asm |
 | `8000821C` | `008E1C` | 0x7c | `func_8000821C` | `src/auto/8E1C.c` | C (generated) |
 | `80008298` | `008E98` | 0x70 | `func_80008298` | `src/auto/8E98.c` | C (generated) |
-| `80008310` | `008F10` | 0x1dc | `func_80008310` | `asm/8F08.s` | asm |
-| `800084EC` | `0090EC` | 0x19c | `func_800084EC` | `asm/8F08.s` | asm |
+| `80008310` | `008F10` | 0x1dc | `SoundEmitter_Init` | `src/auto/8F10.c` | C (generated) |
+| `800084EC` | `0090EC` | 0x19c | `func_800084EC` | `asm/90EC.s` | asm |
 | `80008688` | `009288` | 0xc | `func_80008688` | `src/auto/9288.c` | C (generated) |
 | `80008694` | `009294` | 0xc | `func_80008694` | `src/auto/9288.c` | C (generated) |
 | `800086A0` | `0092A0` | 0xc | `func_800086A0` | `src/auto/9288.c` | C (generated) |
@@ -166,7 +166,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8001021C` | `010E1C` | 0xc | `func_8001021C` | `src/auto/10E14.c` | C (generated) |
 | `80010228` | `010E28` | 0x60 | `func_80010228` | `src/auto/10E28.c` | C (generated) |
 | `80010288` | `010E88` | 0x1cc | `Font_GetStringWidth` | `src/auto/10E88.c` | C (generated) |
-| `80010454` | `011054` | 0x18c | `func_80010454` | `src/auto/10E88.c` | C (generated) |
+| `80010454` | `011054` | 0x18c | `Race_GetLapTimeLimits` | `src/auto/10E88.c` | C (generated) |
 | `800105E0` | `0111E0` | 0x14c | `Hud_ResetTimeStrings` | `src/auto/111E0.c` | C (generated) |
 | `80010730` | `011330` | 0x64 | `func_80010730` | `src/auto/11330.c` | C (generated) |
 | `80010794` | `011394` | 0x38 | `func_80010794` | `src/auto/11330.c` | C (generated) |
@@ -214,12 +214,12 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80013BB0` | `0147B0` | 0x230 | `Anim_UpdateTimers` | `src/auto/147B0.c` | C (generated) |
 | `80013DE0` | `0149E0` | 0x1dc | `Tex_UpdateScrollAndAnim` | `src/auto/149E0.c` | C (generated) |
 | `80013FBC` | `014BBC` | 0x8c | `func_80013FBC` | `src/auto/14BBC.c` | C (generated) |
-| `80014048` | `014C48` | 0x1a8 | `func_80014048` | `src/auto/14C48.c` | C (generated) |
+| `80014048` | `014C48` | 0x1a8 | `Track_FreeAnims` | `src/auto/14C48.c` | C (generated) |
 | `800141F0` | `014DF0` | 0x8 | `func_800141F0` | `src/auto/14DF0.c` | C (generated) |
 | `800141F8` | `014DF8` | 0x8 | `func_800141F8` | `src/auto/14DF0.c` | C (generated) |
 | `80014200` | `014E00` | 0x218 | `PathMover_Update` | `src/auto/14E00.c` | C (generated) |
 | `80014418` | `015018` | 0x23c | `PathMover_Update2` | `src/auto/15018.c` | C (generated) |
-| `80014654` | `015254` | 0x230 | `func_80014654` | `asm/15254.s` | asm |
+| `80014654` | `015254` | 0x230 | `Mover_FollowPath` | `asm/15254.s` | asm |
 | `80014884` | `015484` | 0x8c | `func_80014884` | `src/auto/15484.c` | C (generated) |
 | `80014910` | `015510` | 0x48 | `func_80014910` | `asm/15510.s` | asm |
 | `80014958` | `015558` | 0x394 | `func_80014958` | `asm/15510.s` | asm |
@@ -253,7 +253,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800174D0` | `0180D0` | 0x124 | `Player_AllocBuffers` | `src/auto/180D0.c` | C (generated) |
 | `800175F4` | `0181F4` | 0x1c | `func_800175F4` | `src/auto/181F4.c` | C (generated) |
 | `80017610` | `018210` | 0x94 | `func_80017610` | `src/auto/18210.c` | C (generated) |
-| `800176A4` | `0182A4` | 0x264 | `func_800176A4` | `asm/182A4.s` | asm |
+| `800176A4` | `0182A4` | 0x264 | `Particles_EmitTrail` | `src/auto/182A4.c` | C (generated) |
 | `80017908` | `018508` | 0x28 | `func_80017908` | `src/auto/18508.c` | C (generated) |
 | `80017930` | `018530` | 0x98 | `func_80017930` | `src/auto/18530.c` | C (generated) |
 | `800179D0` | `0185D0` | 0x1d4 | `func_800179D0` | `asm/185C8.s` | asm |
@@ -348,7 +348,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800215CC` | `0221CC` | 0x134 | `func_800215CC` | `src/auto/221CC.c` | C (generated) |
 | `80021700` | `022300` | 0x27c | `func_80021700` | `asm/22300.s` | asm |
 | `8002197C` | `02257C` | 0xe8 | `Vec3f_LerpOffset` | `src/auto/2257C.c` | C (generated) |
-| `80021A64` | `022664` | 0x1bc | `func_80021A64` | `src/auto/22664.c` | C (generated) |
+| `80021A64` | `022664` | 0x1bc | `Camera_SetChaseFromCar` | `src/auto/22664.c` | C (generated) |
 | `80021C20` | `022820` | 0x43c | `func_80021C20` | `asm/22820.s` | asm |
 | `8002205C` | `022C5C` | 0xe8 | `func_8002205C` | `src/auto/22C5C.c` | C (generated) |
 | `80022144` | `022D44` | 0x928 | `func_80022144` | `asm/22D44.s` | asm |
@@ -423,7 +423,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800277C0` | `0283C0` | 0x158 | `List_BuildSorted` | `src/auto/283C0.c` | C (generated) |
 | `80027918` | `028518` | 0xa4 | `ItemList_MoveUp` | `src/auto/28518.c` | C (generated) |
 | `800279BC` | `0285BC` | 0xa4 | `ItemList_MoveDown` | `src/auto/28518.c` | C (generated) |
-| `80027A60` | `028660` | 0x294 | `func_80027A60` | `asm/28660.s` | asm |
+| `80027A60` | `028660` | 0x294 | `Standings_Resort` | `src/auto/28660.c` | C (generated) |
 | `80027CF4` | `0288F4` | 0x58 | `func_80027CF4` | `src/auto/288F4.c` | C (generated) |
 | `80027D4C` | `02894C` | 0x180 | `Car_CompareRacePosition` | `src/auto/2894C.c` | C (generated) |
 | `80027ECC` | `028ACC` | 0x3c | `func_80027ECC` | `src/auto/28ACC.c` | C (generated) |
@@ -500,7 +500,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80034648` | `035248` | 0x14c | `func_80034648` | `src/auto/35248.c` | C (generated) |
 | `80034794` | `035394` | 0x164 | `func_80034794` | `src/auto/35394.c` | C (generated) |
 | `800348F8` | `0354F8` | 0x1b0 | `Plane_IntersectSegment` | `src/auto/354F8.c` | C (generated) |
-| `80034AA8` | `0356A8` | 0x198 | `func_80034AA8` | `src/auto/354F8.c` | C (generated) |
+| `80034AA8` | `0356A8` | 0x198 | `Physics_AddContact` | `src/auto/354F8.c` | C (generated) |
 | `80034C40` | `035840` | 0x48 | `func_80034C40` | `src/auto/35840.c` | C (generated) |
 | `80034C88` | `035888` | 0x274 | `Body_EnergyRatioExceeds` | `src/auto/35888.c` | C (generated) |
 | `80034EFC` | `035AFC` | 0x42c | `func_80034EFC` | `asm/35AFC.s` | asm |
@@ -612,7 +612,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003FD84` | `040984` | 0x1f4 | `func_8003FD84` | `src/auto/40984.c` | C (generated) |
 | `8003FF78` | `040B78` | 0x21c | `PakMenu_CycleOption` | `src/auto/40B78.c` | C (generated) |
 | `80040194` | `040D94` | 0x3c | `func_80040194` | `src/auto/40D94.c` | C (generated) |
-| `800401D0` | `040DD0` | 0x190 | `func_800401D0` | `src/auto/40DD0.c` | C (generated) |
+| `800401D0` | `040DD0` | 0x190 | `Menu_SetPlayerCount` | `src/auto/40DD0.c` | C (generated) |
 | `80040360` | `040F60` | 0x140 | `func_80040360` | `src/auto/40F60.c` | C (generated) |
 | `800404A0` | `0410A0` | 0x174 | `func_800404A0` | `src/auto/410A0.c` | C (generated) |
 | `80040614` | `041214` | 0x198 | `Menu_NextOption` | `src/auto/41214.c` | C (generated) |
@@ -684,8 +684,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80048780` | `049380` | 0x3b0 | `func_80048780` | `asm/49380.s` | asm |
 | `80048B30` | `049730` | 0x4a8 | `func_80048B30` | `asm/49380.s` | asm |
 | `80048FD8` | `049BD8` | 0x368 | `func_80048FD8` | `asm/49380.s` | asm |
-| `80049340` | `049F40` | 0x1e8 | `func_80049340` | `asm/49380.s` | asm |
-| `80049528` | `04A128` | 0x878 | `func_80049528` | `asm/49380.s` | asm |
+| `80049340` | `049F40` | 0x1e8 | `Ui_AddModeLabels` | `src/auto/49F40.c` | C (generated) |
+| `80049528` | `04A128` | 0x878 | `func_80049528` | `asm/4A128.s` | asm |
 | `80049DA0` | `04A9A0` | 0x220 | `Menu_ShowVersus` | `src/auto/4A9A0.c` | C (generated) |
 | `80049FC0` | `04ABC0` | 0x29c | `Menu_NextFreeSlot` | `src/auto/4ABC0.c` | C (generated) |
 | `8004A25C` | `04AE5C` | 0xac | `LetterWheel_Next` | `src/auto/4AE5C.c` | C (generated) |
@@ -694,7 +694,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004A494` | `04B094` | 0xe0 | `NameEntry_AddLetter` | `src/auto/4B094.c` | C (generated) |
 | `8004A574` | `04B174` | 0x174 | `func_8004A574` | `src/auto/4B174.c` | C (generated) |
 | `8004A6E8` | `04B2E8` | 0x3f4 | `func_8004A6E8` | `asm/4B2E8.s` | asm |
-| `8004AADC` | `04B6DC` | 0x2b0 | `func_8004AADC` | `asm/4B2E8.s` | asm |
+| `8004AADC` | `04B6DC` | 0x2b0 | `NameEntry_UpdateCursor` | `src/auto/4B6DC.c` | C (generated) |
 | `8004AD8C` | `04B98C` | 0xa8 | `func_8004AD8C` | `src/auto/4B98C.c` | C (generated) |
 | `8004AE34` | `04BA34` | 0xac | `func_8004AE34` | `src/auto/4BA34.c` | C (generated) |
 | `8004AEE0` | `04BAE0` | 0xa0 | `func_8004AEE0` | `src/auto/4BAE0.c` | C (generated) |
@@ -793,7 +793,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80054074` | `054C74` | 0x28 | `func_80054074` | `src/auto/54C58.c` | C (generated) |
 | `8005409C` | `054C9C` | 0x20 | `func_8005409C` | `src/auto/54C9C.c` | C (generated) |
 | `800540C0` | `054CC0` | 0x448 | `func_800540C0` | `asm/54CBC.s` | asm |
-| `80054508` | `055108` | 0x2fc | `func_80054508` | `asm/54CBC.s` | asm |
+| `80054508` | `055108` | 0x2fc | `DebugMenu_DrawPage` | `src/auto/55108.c` | C (generated) |
 | `80054804` | `055404` | 0x2f8 | `DebugMenu_Draw` | `src/auto/55404.c` | C (generated) |
 | `80054AFC` | `0556FC` | 0x4c | `func_80054AFC` | `src/auto/556FC.c` | C (generated) |
 | `80054B48` | `055748` | 0x30 | `func_80054B48` | `src/auto/55748.c` | C (generated) |
@@ -836,7 +836,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80056090` | `056C90` | 0x8 | `func_80056090` | `src/auto/56C90.c` | C (generated) |
 | `80056098` | `056C98` | 0x24 | `func_80056098` | `src/auto/56C90.c` | C (generated) |
 | `800560BC` | `056CBC` | 0x34 | `func_800560BC` | `src/auto/56C90.c` | C (generated) |
-| `800560F0` | `056CF0` | 0x220 | `DebugMenu_BuildFrameSetup` | `asm/56CF0.s` | asm |
+| `800560F0` | `056CF0` | 0x220 | `DebugMenu_BuildFrameSetup` | `src/auto/56CF0.c` | C (generated) |
 | `80056310` | `056F10` | 0x90 | `func_80056310` | `src/auto/56F10.c` | C (generated) |
 | `800563A0` | `056FA0` | 0x50 | `func_800563A0` | `src/auto/56FA0.c` | C (generated) |
 | `800563F0` | `056FF0` | 0xc | `func_800563F0` | `src/auto/56FF0.c` | C (generated) |
@@ -944,7 +944,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8005B02C` | `05BC2C` | 0x13c | `func_8005B02C` | `src/auto/5BC2C.c` | C (generated) |
 | `8005B168` | `05BD68` | 0xb8 | `func_8005B168` | `src/auto/5BD68.c` | C (generated) |
 | `8005B220` | `05BE20` | 0xd8 | `func_8005B220` | `src/auto/5BE20.c` | C (generated) |
-| `8005B2F8` | `05BEF8` | 0x2c4 | `func_8005B2F8` | `asm/5BEF8.s` | asm |
+| `8005B2F8` | `05BEF8` | 0x2c4 | `Camera_BuildProjection` | `src/auto/5BEF8.c` | C (generated) |
 | `8005B5BC` | `05C1BC` | 0x2c | `func_8005B5BC` | `src/auto/5C1BC.c` | C (generated) |
 | `8005B5E8` | `05C1E8` | 0x1c | `func_8005B5E8` | `src/auto/5C1E8.c` | C (generated) |
 | `8005B604` | `05C204` | 0x24c | `Gfx_SetViewportScissor` | `src/auto/5C204.c` | C (generated) |
@@ -982,7 +982,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8005D580` | `05E180` | 0x44 | `func_8005D580` | `src/auto/5E180.c` | C (generated) |
 | `8005D5C4` | `05E1C4` | 0x7c | `func_8005D5C4` | `src/auto/5E180.c` | C (generated) |
 | `8005D640` | `05E240` | 0x2c | `func_8005D640` | `src/auto/5E180.c` | C (generated) |
-| `8005D66C` | `05E26C` | 0x1b0 | `func_8005D66C` | `src/auto/5E26C.c` | C (generated) |
+| `8005D66C` | `05E26C` | 0x1b0 | `Ctx_FreeAll` | `src/auto/5E26C.c` | C (generated) |
 | `8005D81C` | `05E41C` | 0x9c | `func_8005D81C` | `src/auto/5E41C.c` | C (generated) |
 | `8005D8B8` | `05E4B8` | 0x64 | `func_8005D8B8` | `src/auto/5E4B8.c` | C (generated) |
 | `8005D91C` | `05E51C` | 0xc4 | `Ui_AddElement` | `src/auto/5E51C.c` | C (generated) |

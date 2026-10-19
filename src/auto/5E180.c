@@ -27,9 +27,9 @@ void func_8005D5C4(void *arg0) {
 }
 
 M2C_UNK func_8000FACC(s32);                         /* extern */
-M2C_UNK func_8005D66C();                            /* extern */
+M2C_UNK Ctx_FreeAll();                            /* extern */
 
 void func_8005D640(s32 arg0) {
-    func_8005D66C();
+    Ctx_FreeAll();
     func_8000FACC(arg0);
 }

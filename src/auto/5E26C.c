@@ -25,7 +25,7 @@ extern void func_8005DCC4(Ctx *);
 extern void func_80063AAC(s32);
 extern void func_80060640(s32);
 
-void func_8005D66C(Ctx *ctx) {
+void Ctx_FreeAll(Ctx *ctx) {
     s16 i;
 
     func_8005DC68(ctx);

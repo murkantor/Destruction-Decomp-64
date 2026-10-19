@@ -14,7 +14,7 @@ void func_80063B54(void *);
 void func_8000217C(s32);
 void func_80002074(void);
 void func_80002148(void);
-void func_80014048(void);
+void Track_FreeAnims(void);
 void func_8002DCBC(void);
 void func_80063FEC(Node **, Node *);
 void Mem_Free(void *);
@@ -38,7 +38,7 @@ void func_80024E44(Obj *arg0) {
         func_80002074();
         func_80002148();
     }
-    func_80014048();
+    Track_FreeAnims();
     func_8002DCBC();
     for (i = 0; i < arg0->xC->x4 * arg0->xC->x5; i++) {
         while (arg0->xC->x2C[i] != NULL) {

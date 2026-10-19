@@ -28,7 +28,7 @@ extern void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 extern void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 extern void Camera_UpdateBasis(Cam *);
 
-void func_80021A64(Cam *cam, Car *car, f32 fz, f32 fx, f32 fy, f32 tx, f32 ty) {
+void Camera_SetChaseFromCar(Cam *cam, Car *car, f32 fz, f32 fx, f32 fy, f32 tx, f32 ty) {
     Vec3f pos;
     Vec3f tmp;
     f32 nx;

@@ -13,7 +13,7 @@ extern A50 D_8011EF11[];
 extern A20 D_8007EF70[2][10];
 void func_8000FAD4(s32);
 void Hud_ResetTimeStrings(void);
-void func_80010454(s32);
+void Race_GetLapTimeLimits(s32);
 
 void func_8000F988(s32 a0, s32 a1) {
     s32 i;
@@ -50,5 +50,5 @@ void func_8000F988(s32 a0, s32 a1) {
         }
     }
 end:
-    func_80010454(a1);
+    Race_GetLapTimeLimits(a1);
 }
