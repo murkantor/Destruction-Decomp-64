@@ -7,7 +7,8 @@ For each function in the splat output under asm/ (not asm/nonmatchings), this
 runs m2c, compiles the result with the same compiler and flags as the Makefile,
 and compares it with the ROM. Address fields are compared through the
 relocations, so a wrong symbol or offset counts as a mismatch. Matches are
-written to OUT/matches.txt and their C to OUT/<name>.c.
+written to OUT/matches.txt and their C to OUT/<name>.c. The closest miss for
+each function that compiles to the right size goes to OUT/near/<diffs>_<name>.c.
 """
 import argparse
 import os
@@ -124,13 +125,14 @@ def matches(o, name, vram, size, rom, syms):
     text = subprocess.run(["mips-linux-gnu-objcopy", "-O", "binary", "-j", ".text", o, "/dev/stdout"], capture_output=True).stdout
     rel = relocs(o)
     hi = {}
+    diffs = 0
     for k in range(0, size, 4):
         a = struct.unpack(">I", text[k:k + 4])[0]
         b = struct.unpack(">I", rom[vram - ROM_BASE + k:vram - ROM_BASE + k + 4])[0]
         r = rel.get(k)
         if r is None:
             if a != b:
-                return False, f"+{k:#x}"
+                diffs += 1
             continue
         kind, sym = r
         if kind == "R_MIPS_26" and sym == ".text":
@@ -164,6 +166,8 @@ def matches(o, name, vram, size, rom, syms):
                     return False, f"+{k:#x} address"
         else:
             return False, f"reloc {kind}"
+    if diffs:
+        return False, f"+{diffs} words differ"
     return True, size
 
 
@@ -180,6 +184,30 @@ def repair(code, err):
     return code
 
 
+def byte_offsets(code):
+    """m2c writes byte offsets from a symbol as (&sym + n); make the addition bytewise."""
+    out, i = [], 0
+    pat = re.compile(r"\(&(\w+) \+ ")
+    while True:
+        m = pat.search(code, i)
+        if not m:
+            out.append(code[i:])
+            return "".join(out)
+        depth, j = 0, m.start()
+        while j < len(code):
+            if code[j] == "(":
+                depth += 1
+            elif code[j] == ")":
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        sym, rest = m.group(1), code[m.end():j]
+        out.append(code[i:m.start()])
+        out.append(f"((__typeof__({sym}) *)((s8 *)&{sym} + {byte_offsets(rest)}))")
+        i = j + 1
+
+
 # m2c option sets to try in turn; different C shapes lead GCC to different code
 VARIANTS = [
     [],
@@ -191,9 +219,34 @@ VARIANTS = [
 ]
 
 
+def attempt(code, work, name, vram, size):
+    """Compile code (repairing common slips) and compare it. Returns (matched, reason, code, diffs)."""
+    o, err = compile_c('#include "common.h"\n#include "m2c.h"\n\n' + code, work)
+    for _ in range(3):
+        if o:
+            break
+        fixed = repair(code, err)
+        if fixed == code:
+            break
+        code = fixed
+        o, err = compile_c('#include "common.h"\n#include "m2c.h"\n\n' + code, work)
+    if not o:
+        why = "compile error"
+        if os.environ.get("AUTODECOMP_ERRORS"):
+            line = next((l for l in err.splitlines() if ":" in l and "warning" not in l and "In function" not in l), err[:80])
+            why += ": " + re.sub(r"^.*?:\d+: ", "", line)[:70]
+        return False, why, code, None
+    ok, why = matches(o, name, vram, size, ROM, SYMS)
+    if ok:
+        return True, "", code, 0
+    if why.startswith("+") and why.endswith("words differ"):
+        return False, "code differs", code, int(why[1:].split()[0])
+    return False, why, code, None
+
+
 def try_one(job):
     name, vram, size, text, m2c = job
-    first_why = None
+    first_why, best = None, None
     with tempfile.TemporaryDirectory() as work:
         asm = os.path.join(work, name + ".s")
         open(asm, "w").write(text)
@@ -202,38 +255,29 @@ def try_one(job):
             r = subprocess.run([sys.executable, os.path.join(m2c, "m2c.py"), "--target", "mips-gcc-c", "--valid-syntax", *opts, asm],
                                capture_output=True, text=True)
             if r.returncode or "M2C_ERROR" in r.stdout or not r.stdout.strip():
-                why = "m2c failed"
-            elif r.stdout in seen:
+                first_why = first_why or "m2c failed"
                 continue
-            else:
-                seen.add(r.stdout)
-                code = r.stdout
-                o, err = compile_c('#include "common.h"\n#include "m2c.h"\n\n' + code, work)
-                for _ in range(3):
-                    if o:
-                        break
-                    fixed = repair(code, err)
-                    if fixed == code:
-                        break
-                    code = fixed
-                    o, err = compile_c('#include "common.h"\n#include "m2c.h"\n\n' + code, work)
-                if not o:
-                    why = "compile error"
-                    if os.environ.get("AUTODECOMP_ERRORS"):
-                        line = next((l for l in err.splitlines() if ":" in l and "warning" not in l and "In function" not in l), err[:80])
-                        why += ": " + re.sub(r"^.*?:\d+: ", "", line)[:70]
-                else:
-                    ok, why = matches(o, name, vram, size, ROM, SYMS)
-                    if ok:
-                        return name, vram, size, code, ""
-                    why = "code differs" if why.startswith("+") else why
-            first_why = first_why or why
+            for code in (r.stdout, byte_offsets(r.stdout)):
+                if code in seen:
+                    continue
+                seen.add(code)
+                ok, why, code, diffs = attempt(code, work, name, vram, size)
+                if ok:
+                    return name, vram, size, code, ""
+                if diffs is not None and (best is None or diffs < best[0]):
+                    best = (diffs, code)
+                first_why = first_why or why
+    if best and NEAR_DIR:
+        open(os.path.join(NEAR_DIR, f"{best[0]:03d}_{name}.c"), "w").write(best[1])
     return name, vram, size, None, first_why
 
 
-def init(rom, syms):
-    global ROM, SYMS
-    ROM, SYMS = rom, syms
+NEAR_DIR = None
+
+
+def init(rom, syms, near):
+    global ROM, SYMS, NEAR_DIR
+    ROM, SYMS, NEAR_DIR = rom, syms, near
 
 
 def main():
@@ -254,7 +298,9 @@ def main():
             if sz <= args.max_size and (not args.only or n in args.only) and sz > 4]
     found, reasons = [], {}
     import multiprocessing
-    with multiprocessing.Pool(args.j, initializer=init, initargs=(rom, syms)) as pool:
+    near = os.path.join(args.out, "near")
+    os.makedirs(near, exist_ok=True)
+    with multiprocessing.Pool(args.j, initializer=init, initargs=(rom, syms, near)) as pool:
         for name, vram, size, c, why in pool.imap_unordered(try_one, jobs, chunksize=4):
             if c:
                 found.append((vram, name, size))
