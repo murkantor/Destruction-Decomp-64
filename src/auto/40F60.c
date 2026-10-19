@@ -9,13 +9,13 @@ extern s32 D_800958A4;
 extern Entry D_800967E0[];
 extern Entry D_800967B0[];
 extern Slot D_80095904[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 
 void func_80040360(void) {
     s32 i;
 
-    func_8003EA7C(0x112B6, 0x112B7);
+    Ui_ResetScreen(0x112B6, 0x112B7);
     Ui_AddElement(gUi[0], 2, 0x3A);
     Ui_AddElement(gUi[0], 2, 0x87);
     D_80097350 = 3;

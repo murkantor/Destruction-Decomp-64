@@ -10,7 +10,7 @@ extern Vec3f D_800BA384;
 extern void *D_8011EEF8[];
 Controller *func_80062F14(void);
 void func_80063564(s32, s32);
-void func_800074EC(void *, Vec3f, Vec3f, s32);
+void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
 void func_8002D40C(void);
 
 s32 func_8003F644(Player *p) {
@@ -24,7 +24,7 @@ s32 func_8003F644(Player *p) {
     r = 0;
     if (c[idx].x10 & 0x2000) {
         func_80063564(0x20, 1);
-        func_800074EC(D_8011EEF8[0], a, b, 7);
+        Sound_PlayAt(D_8011EEF8[0], a, b, 7);
         r = 1;
     }
     if (idx == 0) {

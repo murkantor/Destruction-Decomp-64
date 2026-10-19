@@ -22,7 +22,7 @@ void func_8005AAC0(void *);
 void func_80063AAC(s32);
 void Mem_Free(void *);
 
-void func_800135AC(Obj *o) {
+void Obj_Free(Obj *o) {
     s32 i;
     s32 *p;
 

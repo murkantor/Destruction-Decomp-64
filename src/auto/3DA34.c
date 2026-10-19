@@ -11,14 +11,14 @@ extern char D_800B9F4C[];
 extern char D_800B9F74[];
 extern char D_800B9F8C[];
 extern char D_800B9FA4[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 
 void PakMenu_NoteExists(void) {
     s32 i;
 
-    func_8003EA7C(0x1159E, 0x1159F);
+    Ui_ResetScreen(0x1159E, 0x1159F);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);
     Ui_AddElement(gUi[0], 2, 0x130);

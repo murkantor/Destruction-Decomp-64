@@ -11,7 +11,7 @@ void func_80052370(u8 *buf, u32 n);
 #define NEEDBITS(n) { while (k < (n)) { s32 c = Inflate_GetByte(); if (c == 0x100) return 1; b |= ((u32)c) << k; k += 8; } }
 #define DUMPBITS(n) { b >>= (n); k -= (n); }
 
-s32 func_8005117C(void) {
+s32 Inflate_Stored(void) {
     s32 n;
     u32 w;
     u32 b;

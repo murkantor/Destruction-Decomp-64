@@ -20,7 +20,7 @@ extern f64 D_800B8B50;
 extern f64 D_800B8B58;
 extern f64 D_800B8B60;
 extern f32 D_80095624;
-void func_80039B70(f32, f32 *, f32 *);
+void Math_SinCos(f32, f32 *, f32 *);
 void Camera_UpdateBasis(Cam *);
 
 void func_8002205C(Cam *cam, Car *car, f32 speed, f32 *angle) {
@@ -28,7 +28,7 @@ void func_8002205C(Cam *cam, Car *car, f32 speed, f32 *angle) {
     f32 c;
 
     *angle -= (f32)(speed * D_800B8B50);
-    func_80039B70(*angle, &s, &c);
+    Math_SinCos(*angle, &s, &c);
     cam->x54 = car->x290;
     cam->x54.y += D_800B8B58;
     cam->x38 = car->x290.x + D_80095624 * s;

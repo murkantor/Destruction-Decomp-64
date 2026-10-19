@@ -12,7 +12,7 @@ extern u8 D_80097A0C[];
 extern char D_80123CEC[];
 extern char D_80096E4C[];
 extern u8 D_80096E6E;
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void func_8005F050(void *, UiElemDesc *);
 void func_8005D8B8(void *, s32, s32);
 void Ui_AddElement(void *, s32, s32);
@@ -23,7 +23,7 @@ void func_80042F2C(void) {
     UiElemDesc a = D_800BA674;
     UiElemDesc b = D_800BA6BC;
 
-    func_8003EA7C(0x112BA, 0x112BB);
+    Ui_ResetScreen(0x112BA, 0x112BB);
     b.x14 = D_800958A4 + 0x11506;
     func_8005F050(gUi[0], &b);
     func_8005D8B8(gUi[0], 2, 0x3B);

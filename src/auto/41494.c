@@ -7,12 +7,12 @@ extern s32 D_800958A4;
 extern s32 D_800958AC[];
 extern s32 D_800967B0[][3];
 extern s32 D_800967E0[][3];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 
 void PakMenu_ShowSlotOptions(void) {
     u32 i;
-    func_8003EA7C(0x112B6, 0x112B7);
+    Ui_ResetScreen(0x112B6, 0x112B7);
     Ui_AddElement(gUi[0], 2, 0x3A);
     Ui_AddElement(gUi[0], 2, 0x87);
     for (i = 0; i < 4; i++) {

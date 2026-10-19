@@ -11,7 +11,7 @@ extern char D_80096E2C[];
 extern u8 D_80097335[];
 extern u8 D_80097336;
 extern f64 D_800BA390, D_800BA398;
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_SetElementX(void *, s32, s32, f32);
@@ -22,7 +22,7 @@ void func_8003ECF8(void);
 
 void PakMenu_ShowSaveSlots(void) {
     s32 i;
-    func_8003EA7C(0x112B2, 0x112B3);
+    Ui_ResetScreen(0x112B2, 0x112B3);
     D_80097350 = 4;
     for (i = 0; i < D_80097350; i++) {
         Ui_AddElement(gUi[0], 2, D_80096750[i][0]);

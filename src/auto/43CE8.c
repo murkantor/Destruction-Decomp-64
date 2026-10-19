@@ -9,7 +9,7 @@ extern Menu48 D_800BA704;
 extern Pair3 D_800BA74C;
 extern Players D_800958A4;
 extern void *gUi[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void func_8005F050(void *, Menu48 *);
 void func_8005D8B8(void *, s32, s32);
 void TrackSelect_Update(void *, s32, s32);
@@ -19,7 +19,7 @@ void func_800430E8(void) {
     Pair3 t = D_800BA74C;
     s32 i;
 
-    func_8003EA7C(t.p[D_800958A4.n - 2].a, t.p[D_800958A4.n - 2].b);
+    Ui_ResetScreen(t.p[D_800958A4.n - 2].a, t.p[D_800958A4.n - 2].b);
     m.x14 = D_800958A4.n + 0x11506;
     func_8005F050(gUi[0], &m);
     func_8005D8B8(gUi[0], 2, 0x3B);

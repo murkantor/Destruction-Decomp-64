@@ -10,7 +10,7 @@ extern void *gUi[];
 extern s8 D_800D31CC;
 extern u8 D_80097337;
 extern Timer68 D_800958F8[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 s32 func_8003E644(u8 *, s32);
 void func_8005F050(void *, Menu48 *);
 void Ui_AddElement(void *, s32, s32);
@@ -22,7 +22,7 @@ void func_8004F3A8(void) {
     u8 *s;
     s32 i;
 
-    func_8003EA7C(0x112FE, 0x112FF);
+    Ui_ResetScreen(0x112FE, 0x112FF);
     s = D_80097338[0] + 0xC;
     D_800964F0 = func_8003E644(s, 0);
     m.x14 = s + 0x11371;

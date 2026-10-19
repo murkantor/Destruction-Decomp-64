@@ -32,7 +32,7 @@ s16 func_80064D70(void);
 u64 Time_Get(u64 *);
 s8 Pool_PushCopy(void *, SndReq *);
 
-s16 func_800072CC(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode) {
+s16 Sound_PlayCar(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode) {
     SndReq req;
     u64 t;
 

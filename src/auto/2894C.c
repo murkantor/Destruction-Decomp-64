@@ -31,7 +31,7 @@ extern Game *gGame;
 extern s32 D_800958B4;
 extern s32 D_80095FF8[];
 Vec3f func_8001FBA8(Car *);
-f32 func_800006A8(Vec3f, Vec3f, Vec3f);
+f32 Math_PointLineDist2D(Vec3f, Vec3f, Vec3f);
 
 s32 Car_CompareRacePosition(Car *a, Car *b) {
     s32 sa;
@@ -57,6 +57,6 @@ s32 Car_CompareRacePosition(Car *a, Car *b) {
         return 0;
     }
     segs = gGame->x1100->x30;
-    da = func_800006A8(segs[sa].a, segs[sa].b, func_8001FBA8(a));
-    return da < func_800006A8(segs[sb].a, segs[sb].b, func_8001FBA8(b));
+    da = Math_PointLineDist2D(segs[sa].a, segs[sa].b, func_8001FBA8(a));
+    return da < Math_PointLineDist2D(segs[sb].a, segs[sb].b, func_8001FBA8(b));
 }

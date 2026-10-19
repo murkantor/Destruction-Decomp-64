@@ -10,12 +10,12 @@ extern char D_800B9E04[];
 extern char D_800B9E20[];
 extern char D_800B9E40[];
 extern char D_800B9E54[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 int sprintf(char *, const char *, ...);
 
 void PakMenu_NoPak(void) {
-    func_8003EA7C(0x112C6, 0x112C7);
+    Ui_ResetScreen(0x112C6, 0x112C7);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);
     Ui_AddElement(gUi[0], 2, 0x130);

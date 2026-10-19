@@ -7,14 +7,14 @@ extern char D_800B9FC0[], D_800B9FE8[], D_800BA014[], D_800B9EB0[], D_800B9EAC[]
 extern void *gUi[];
 extern s32 D_80097350;
 extern Slot68 D_80095908[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 s32 sprintf(char *, const char *, ...);
 void Ui_AddElement(void *, s32, s32);
 
 void PakMenu_ConfirmOverwrite(void) {
     s32 i;
 
-    func_8003EA7C(0x115A0, 0x115A1);
+    Ui_ResetScreen(0x115A0, 0x115A1);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);
     Ui_AddElement(gUi[0], 2, 0x137);

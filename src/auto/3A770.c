@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80039B70(f32 x, f32 *s, f32 *c) {
+void Math_SinCos(f32 x, f32 *s, f32 *c) {
     f32 x2;
 
     if (x > 3.14159265) {

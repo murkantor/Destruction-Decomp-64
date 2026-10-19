@@ -9,7 +9,7 @@ extern s32 D_800BCA30;
 
 s32 Inflate_GetByte(void);
 s32 func_800514D0(void);
-s32 func_8005117C(void);
+s32 Inflate_Stored(void);
 s32 func_8005130C(void);
 void func_80052370(s32, u32);
 
@@ -47,7 +47,7 @@ static inline s32 InflateBlock(s32 *e) {
         return func_800514D0();
     }
     if (t == 0) {
-        return func_8005117C();
+        return Inflate_Stored();
     }
     if (t == 1) {
         return func_8005130C();

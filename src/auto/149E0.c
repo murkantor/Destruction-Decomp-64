@@ -24,7 +24,7 @@ extern Anim D_80124B20[];
 extern s32 D_80131380;
 extern s32 D_80131F28;
 
-void func_80013DE0(void) {
+void Tex_UpdateScrollAndAnim(void) {
     s8 i;
     s32 u, v;
     TexWord *p;

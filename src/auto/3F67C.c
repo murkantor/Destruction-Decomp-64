@@ -26,7 +26,7 @@ void func_8005DD20(Ui *, s32);
 void func_80060640(void *);
 void func_80063AAC(s32);
 
-void func_8003EA7C(s32 a, s32 b) {
+void Ui_ResetScreen(s32 a, s32 b) {
     s32 i;
 
     func_8005DC68(gUi[0]);

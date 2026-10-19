@@ -11,7 +11,7 @@ void Timer_Start(void *, s64);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 
-s32 func_80040614(Menu *m) {
+s32 Menu_NextOption(Menu *m) {
     u8 done = 0;
     s32 idx;
 

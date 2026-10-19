@@ -6,12 +6,12 @@ extern char gSaveSlotText[];
 extern char D_800BA764[];
 extern char D_800BA780[];
 extern s32 D_80097350;
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 int sprintf(char *, const char *, ...);
 
 void func_80043230(void) {
-    func_8003EA7C(0x112FC, 0x112FD);
+    Ui_ResetScreen(0x112FC, 0x112FD);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);
     sprintf(gSaveSlotText, D_800BA764);

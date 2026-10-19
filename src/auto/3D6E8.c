@@ -7,13 +7,13 @@ extern u8 D_8009734D;
 extern s32 D_80097350;
 extern char D_80123CBA[];
 extern char D_800B9EB4[], D_800B9ECC[], D_800B9EE8[], D_800B9EB0[], D_800B9EAC[], D_800B9F04[], D_800B9F28[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 int sprintf(char *, const char *, ...);
 
 void PakMenu_NoSaveWarning(void) {
-    func_8003EA7C(0x11580, 0x11581);
+    Ui_ResetScreen(0x11580, 0x11581);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);
     Ui_AddElement(gUi[0], 0, 0x17A);

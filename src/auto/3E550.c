@@ -18,7 +18,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 s32 sprintf(char *, const char *, ...);
 
-s32 func_8003D950(Menu *m) {
+s32 Menu_SaveGameState(Menu *m) {
     s32 pak;
 
     switch (m->x10) {

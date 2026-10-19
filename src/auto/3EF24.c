@@ -16,14 +16,14 @@ extern char D_800BA340[];
 extern s32 D_80097350;
 extern Slot3E324 D_80095908[];
 
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 
 void func_8003E324(void) {
     s8 i;
 
-    func_8003EA7C(0x11427, 0x11428);
+    Ui_ResetScreen(0x11427, 0x11428);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);
     Ui_AddElement(gUi[0], 2, 0x130);

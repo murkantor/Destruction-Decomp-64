@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_800135AC(M2C_UNK);                     /* extern */
+M2C_UNK Obj_Free(M2C_UNK);                     /* extern */
 s32 Array_Find(M2C_UNK, void *, s16);            /* extern */
 M2C_UNK Array_SwapRemove(void *, s32, s16);            /* extern */
 
@@ -15,7 +15,7 @@ void func_800241F4(void *arg0, M2C_UNK arg1) {
     M2C_FIELD(arg0, s16 *, 0xD12) = (s16) ((u16) M2C_FIELD(arg0, s16 *, 0xD12) - 1);
     Array_SwapRemove(temp_s1_2, Array_Find(arg1, temp_s1_2, M2C_FIELD(arg0, s16 *, 0xD1C)), M2C_FIELD(arg0, s16 *, 0xD1C));
     M2C_FIELD(arg0, s16 *, 0xD1C) = (s16) ((u16) M2C_FIELD(arg0, s16 *, 0xD1C) - 1);
-    func_800135AC(arg1);
+    Obj_Free(arg1);
 }
 
 s32 Array_Find(M2C_UNK, void *, s16);            /* extern */

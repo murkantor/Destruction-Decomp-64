@@ -19,7 +19,7 @@ extern char D_800BA0F8[];
 extern char D_800BA114[];
 extern char D_800BA128[];
 extern char D_800BA13C[];
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 void func_8005F050(void *, UiElemDesc *);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
@@ -29,7 +29,7 @@ void PakMenu_Busy(void) {
     UiElemDesc a = D_800BA068;
     UiElemDesc b = D_800BA0B0;
 
-    func_8003EA7C(0x11564, 0x11565);
+    Ui_ResetScreen(0x11564, 0x11565);
     if (D_8009734C) {
         func_8005F050(gUi[0], &a);
         Ui_AddElement(gUi[0], 2, 0xB1);

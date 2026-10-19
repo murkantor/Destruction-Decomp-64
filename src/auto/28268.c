@@ -6,7 +6,7 @@ typedef struct { Vec3f a; Vec3f b; } Seg;
 typedef struct { u8 pad[0x30]; Seg *x30; u8 pad2[4]; s32 x38; } Track;
 typedef struct { u8 pad[0x1100]; Track *x1100; } Game;
 extern Game *gGame;
-f32 func_800006A8(Vec3f, Vec3f, Vec3f);
+f32 Math_PointLineDist2D(Vec3f, Vec3f, Vec3f);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 
 s32 Track_FindNearestSegment(Vec3f pos) {
@@ -18,7 +18,7 @@ s32 Track_FindNearestSegment(Vec3f pos) {
     s32 dxz;
 
     for (i = 0; i < t->x38; i++) {
-        d = func_800006A8(pos, t->x30[i].a, t->x30[i].b);
+        d = Math_PointLineDist2D(pos, t->x30[i].a, t->x30[i].b);
         dxz = Vec3f_DistXZ(pos, t->x30[i].a);
         if ((f32)d < bestDist && dxz < 50) {
             bestDist = d;
