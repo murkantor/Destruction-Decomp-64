@@ -5,7 +5,7 @@ extern s32 D_800B04A8;
 extern s32 D_800B04A4;
 extern u32 D_80125C90;
 extern char D_800BBA88[], D_800BBAA8[], D_800BBAC8[], D_800BBAD4[], D_800BBAE0[];
-void func_80056408(void *);
+void Fb_CreateContext(void *);
 void Font_BlitString(void *, s32, s32, char *);
 s32 sprintf(char *, const char *, ...);
 void Pad_Read(void);
@@ -16,7 +16,7 @@ void Debug_AssertScreen(char *expr, char *file, s32 line) {
     char buf[0x80];
 
     if (D_800B04A8 != 0) {
-        func_80056408(ctx);
+        Fb_CreateContext(ctx);
         Font_BlitString(ctx, 30, 60, D_800BBA88);
         Font_BlitString(ctx, 30, 70, D_800BBAA8);
         sprintf(buf, D_800BBAC8, file);

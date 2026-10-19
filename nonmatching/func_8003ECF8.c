@@ -33,7 +33,7 @@ extern u8 D_80124360;
 extern void *D_800970F0;
 extern void *D_800970F4;
 extern void *D_800970F8;
-void func_8006417C(void *);
+void func_8006417C(void *, Outer *);
 void func_8005AAC0(void *);
 void func_80063AAC(s32);
 void Mem_Free(void *);
@@ -65,7 +65,7 @@ void func_8003ECF8(void) {
     for (i = 0; i < 4; i++) {
         if (D_800964F0[i] != NULL) {
             if (D_8011EEE4.x4 == gGame->xC) {
-                func_8006417C(D_8011EEE4.x0 + 0x334);
+                func_8006417C(D_8011EEE4.x0 + 0x334, D_800964F0[i]);
             }
             D_800964F0[i] = FreeOuter(D_800964F0[i]);
         }

@@ -70,7 +70,7 @@ extern f64 D_800B92E0; /* 1.0 */
 extern void *D_8011EEF8;
 extern s32 func_80011CCC(Vec3f);
 extern Vec3f Vec3f_TransformTransposed(Mtx3f *m, Vec3f *t, Vec3f *v);
-extern u8 func_80035818(f32, f32, f32, f32, f32, f32, f32, f32);
+extern u8 Seg2D_Intersects(f32, f32, f32, f32, f32, f32, f32, f32);
 extern void func_8002B7A0(Car *, Item *, s32);
 extern u8 func_800330A8(void *, void *, void *, s32, void *);
 extern void func_80006E8C(void *, Ev *);
@@ -158,7 +158,7 @@ void Car_CheckTriggersAndPickups(Car *car) {
                 f32 pz = pts[k].z;
                 f32 qx = pts[k + 5].x;
                 f32 qz = pts[k + 5].z;
-                if (func_80035818(px, pz, qx, qz, A, B, C, D)) {
+                if (Seg2D_Intersects(px, pz, qx, qz, A, B, C, D)) {
                     func_8002B7A0(car, item, (qz - pz) * (A - C) - (qx - px) * (B - D) > 0.0);
                 }
             }

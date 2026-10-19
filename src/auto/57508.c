@@ -22,7 +22,7 @@ extern s32 osRecvMesg(OSMesgQueue *, OSMesg *, s32);
 extern void osDpGetCounters(u32 *);
 extern void osDpSetStatus(u32);
 extern u32 osDpGetStatus(void);
-extern void func_80056408(void *);
+extern void Fb_CreateContext(void *);
 extern void Font_BlitString(void *, s32, s32, char *);
 extern s32 sprintf(char *, const char *, ...);
 extern void func_80055F70(void *);
@@ -45,7 +45,7 @@ Task *Gfx_BusyScreen(s32 *out, s32 n) {
                 D_800B0B70++;
                 if (count > 100) {
                     u32 status;
-                    func_80056408(ctx);
+                    Fb_CreateContext(ctx);
                     Font_BlitString(ctx, 30, 60, D_800BBBEC);
                     Font_BlitString(ctx, 30, 70, D_800BBC0C);
                     sprintf(buf, D_800BBC2C, count);

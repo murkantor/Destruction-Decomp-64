@@ -127,7 +127,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000BAC0` | `00C6C0` | 0x8 | `func_8000BAC0` | `src/auto/C6C0.c` | C (generated) |
 | `8000BAC8` | `00C6C8` | 0x8 | `func_8000BAC8` | `src/auto/C6C0.c` | C (generated) |
 | `8000BAD0` | `00C6D0` | 0x60 | `func_8000BAD0` | `src/auto/C6C0.c` | C (generated) |
-| `8000BB30` | `00C730` | 0x144 | `func_8000BB30` | `src/auto/C730.c` | C (generated) |
+| `8000BB30` | `00C730` | 0x144 | `Hud_DrawSpeed` | `src/auto/C730.c` | C (generated) |
 | `8000BC74` | `00C874` | 0x444 | `func_8000BC74` | `src/auto/C874.c` | C (generated) |
 | `8000C0B8` | `00CCB8` | 0x88 | `func_8000C0B8` | `src/auto/CCB8.c` | C (generated) |
 | `8000C140` | `00CD40` | 0xb34 | `Hud_UpdateScoreCounter` | `src/auto/CD40.c` | C (generated) |
@@ -472,7 +472,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8002F924` | `030524` | 0xfc | `Trigger_CheckCarsInZone` | `src/auto/30524.c` | C (generated) |
 | `8002FA20` | `030620` | 0xc | `func_8002FA20` | `src/auto/30620.c` | C (generated) |
 | `8002FA2C` | `03062C` | 0x9c | `Car_UpdateWheels` | `src/auto/3062C.c` | C (generated) |
-| `8002FAC8` | `0306C8` | 0x610 | `Car_CheckRamps` | `asm/306C8.s` | asm |
+| `8002FAC8` | `0306C8` | 0x610 | `Car_CheckRamps` | `src/auto/306C8.c` | C (generated) |
 | `800300D8` | `030CD8` | 0x10c | `func_800300D8` | `src/auto/30CD8.c` | C (generated) |
 | `800301E4` | `030DE4` | 0xf74 | `func_800301E4` | `asm/30DE4.s` | asm |
 | `80031158` | `031D58` | 0x1ec | `Line_ClosestPoints` | `src/auto/31D58.c` | C (generated) |
@@ -507,7 +507,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80035328` | `035F28` | 0x33c | `func_80035328` | `src/auto/35F28.c` | C (generated) |
 | `80035664` | `036264` | 0xe0 | `Track_GetFace` | `src/auto/36264.c` | C (generated) |
 | `80035744` | `036344` | 0xd4 | `func_80035744` | `src/auto/36344.c` | C (generated) |
-| `80035818` | `036418` | 0x1c4 | `func_80035818` | `asm/36418.s` | asm |
+| `80035818` | `036418` | 0x1c4 | `Seg2D_Intersects` | `src/auto/36418.c` | C (generated) |
 | `800359DC` | `0365DC` | 0x388 | `func_800359DC` | `src/auto/365DC.c` | C (generated) |
 | `80035D64` | `036964` | 0x114 | `Track_IsGridCellSolid` | `src/auto/36964.c` | C (generated) |
 | `80035E78` | `036A78` | 0x368 | `Seg_SphereSweepIntersect` | `asm/36A78.s` | asm |
@@ -645,7 +645,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80043390` | `043F90` | 0x128 | `Results_LoadBanner` | `src/auto/43F90.c` | C (generated) |
 | `800434B8` | `0440B8` | 0x2d4 | `Ui_SaveElements` | `src/auto/440B8.c` | C (generated) |
 | `8004378C` | `04438C` | 0x1e0 | `func_8004378C` | `src/auto/4438C.c` | C (generated) |
-| `8004396C` | `04456C` | 0xf4 | `func_8004396C` | `src/auto/4456C.c` | C (generated) |
+| `8004396C` | `04456C` | 0xf4 | `Race_PickRandomTrack` | `src/auto/4456C.c` | C (generated) |
 | `80043A60` | `044660` | 0x28 | `func_80043A60` | `src/auto/44660.c` | C (generated) |
 | `80043A88` | `044688` | 0x94 | `func_80043A88` | `src/auto/44688.c` | C (generated) |
 | `80043B1C` | `04471C` | 0x198 | `Lights_Cycle` | `src/auto/4471C.c` | C (generated) |
@@ -716,7 +716,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004CB3C` | `04D73C` | 0x748 | `Results_BuildStandings` | `src/auto/4D73C.c` | C (generated) |
 | `8004D284` | `04DE84` | 0x38 | `func_8004D284` | `src/auto/4DE84.c` | C (generated) |
 | `8004D2BC` | `04DEBC` | 0x2d4 | `Race_ProcessResult` | `src/auto/4DEBC.c` | C (generated) |
-| `8004D590` | `04E190` | 0x57c | `func_8004D590` | `src/auto/4E190.c` | C (generated) |
+| `8004D590` | `04E190` | 0x57c | `Results_BuildTable` | `src/auto/4E190.c` | C (generated) |
 | `8004DB0C` | `04E70C` | 0x78 | `func_8004DB0C` | `src/auto/4E70C.c` | C (generated) |
 | `8004DB84` | `04E784` | 0x5c0 | `Results_ShowLapTimes` | `src/auto/4E784.c` | C (generated) |
 | `8004E144` | `04ED44` | 0x394 | `Menu_ShowRecordRows` | `asm/4ED44.s` | asm |
@@ -841,7 +841,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800563A0` | `056FA0` | 0x50 | `func_800563A0` | `src/auto/56FA0.c` | C (generated) |
 | `800563F0` | `056FF0` | 0xc | `func_800563F0` | `src/auto/56FF0.c` | C (generated) |
 | `800563FC` | `056FFC` | 0xc | `func_800563FC` | `src/auto/56FFC.c` | C (generated) |
-| `80056408` | `057008` | 0x170 | `func_80056408` | `asm/57008.s` | asm |
+| `80056408` | `057008` | 0x170 | `Fb_CreateContext` | `src/auto/57008.c` | C (generated) |
 | `80056578` | `057178` | 0x8 | `func_80056578` | `src/auto/57178.c` | C (generated) |
 | `80056580` | `057180` | 0x8 | `func_80056580` | `src/auto/57178.c` | C (generated) |
 | `80056588` | `057188` | 0x30 | `func_80056588` | `src/auto/57178.c` | C (generated) |
@@ -864,7 +864,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80057C1C` | `05881C` | 0xf4 | `Gfx_WalkToCommand` | `src/auto/5881C.c` | C (generated) |
 | `80057D10` | `058910` | 0x21c | `Gfx_ReplaceCommand` | `src/auto/58910.c` | C (generated) |
 | `80057F2C` | `058B2C` | 0x118 | `Gfx_StripCommands` | `src/auto/58B2C.c` | C (generated) |
-| `80058044` | `058C44` | 0x1b0 | `func_80058044` | `src/auto/58C44.c` | C (generated) |
+| `80058044` | `058C44` | 0x1b0 | `Gfx_DedupeTexCmds` | `src/auto/58C44.c` | C (generated) |
 | `800581F4` | `058DF4` | 0x38 | `func_800581F4` | `src/auto/58DF4.c` | C (generated) |
 | `8005822C` | `058E2C` | 0x228 | `Gfx_CountCommandKind` | `src/auto/58E2C.c` | C (generated) |
 | `80058454` | `059054` | 0x17c | `Gfx_CopyDisplayList` | `src/auto/59054.c` | C (generated) |

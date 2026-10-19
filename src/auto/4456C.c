@@ -8,7 +8,7 @@ extern s32 D_800958B4;
 extern s32 D_800958C0;
 s32 rand(void);
 
-void func_8004396C(void) {
+void Race_PickRandomTrack(void) {
     s32 n;
     s32 sel = -1;
     s32 i;

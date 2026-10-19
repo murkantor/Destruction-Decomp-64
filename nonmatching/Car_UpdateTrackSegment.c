@@ -33,7 +33,7 @@ extern u8 D_80091B14[];
 extern s32 D_80091B18[];
 
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
-u8 func_80035818(f32, f32, f32, f32, f32, f32, f32, f32);
+u8 Seg2D_Intersects(f32, f32, f32, f32, f32, f32, f32, f32);
 s32 Racer_WrapNode(Car *, s32);
 void Race_AddNodeDistance(Car *, s32);
 void Ui_RemoveElement(void *, s32);
@@ -47,7 +47,7 @@ void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
      p0.z = w->segs[n].a.z + (w->segs[n].b.z - w->segs[n].a.z) / d * K,                   \
      p1.x = w->segs[n].b.x + (w->segs[n].a.x - w->segs[n].b.x) / d * K,                   \
      p1.z = w->segs[n].b.z + (w->segs[n].a.z - w->segs[n].b.z) / d * K,                   \
-     func_80035818(D_800D1B08[slot].x, D_800D1B08[slot].z, pos.x, pos.z, p0.x, p0.z, p1.x, p1.z))
+     Seg2D_Intersects(D_800D1B08[slot].x, D_800D1B08[slot].z, pos.x, pos.z, p0.x, p0.z, p1.x, p1.z))
 
 #define CROSS()                                                                                  \
     ca = D_800D1B08[slot].z - pos.z;                                                             \

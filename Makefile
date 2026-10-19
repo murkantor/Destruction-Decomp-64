@@ -72,7 +72,7 @@ FASTMATH := src/auto/5AFC0.c src/auto/5B048.c src/auto/5B098.c src/auto/5B130.c 
             src/auto/3A8FC.c src/auto/1224.c src/auto/3B0D8.c src/auto/10F0.c src/auto/1F00.c \
             src/auto/1B9C.c src/auto/12A8.c src/auto/22DC.c src/auto/16C8.c src/auto/2366C.c \
             src/auto/5680.c src/auto/1DC58.c src/auto/35AFC.c src/auto/5C9B8.c src/auto/38128.c \
-            src/auto/22D44.c
+            src/auto/22D44.c src/auto/306C8.c
 $(FASTMATH:%=$(BUILD_DIR)/%.o): OPTFLAGS += -ffast-math
 
 $(BUILD_DIR)/%.bin.o: %.bin

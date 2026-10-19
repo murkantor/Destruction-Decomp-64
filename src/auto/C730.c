@@ -18,7 +18,7 @@ Pos2 Ui_GetElementPos(void *, s32, s32);
 f32 func_8003EC70(char *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
-s32 func_8000BB30(s32 *arg0, s8 idx) {
+s32 Hud_DrawSpeed(s32 *arg0, s8 idx) {
     Pos2 pos;
     Pos2 unused;
     char sfx[2] = "\0";

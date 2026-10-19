@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { void *ptr; u32 size; } HeapBlock;
 typedef struct { u8 pad[4]; } Heap;
 
@@ -28,10 +31,10 @@ void Video_SetMode(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32
 void Heap_Alloc(Heap *heap, HeapBlock *out, u32 size, s32 alignMask, s32 alignOffset);
 void *HeapBlock_Ptr(HeapBlock *);
 void Heap_Free(Heap *heap, HeapBlock *blk);
-void func_80055F70(void);
+void func_80055F70(void *);
 void func_80056098(void *);
 
-Ctx func_80056408(void) {
+Ctx Fb_CreateContext(void) {
     void *p;
     Ctx c;
     HeapBlock blk;
@@ -41,11 +44,12 @@ Ctx func_80056408(void) {
     p = HeapBlock_Ptr(&blk);
     if (p == NULL) {
         p = D_800B0B58;
-    }
-    if (p == NULL) {
-        p = (u8 *)0x80400000 - D_800BCCF4;
+        if (p == NULL) {
+            p = (u8 *)0x80400000 - D_800BCCF4;
+        }
     }
     c.x88 = 0;
+    c.x8C = D_800BCC80;
     c.x90 = p;
     c.x94 = 0;
     c.x98 = 0;
@@ -56,12 +60,11 @@ Ctx func_80056408(void) {
     c.xAC = 0;
     c.xB4 = 0;
     c.xB8 = 0;
-    c.x8C = D_800BCC80;
     D_800B0B54 = &c;
     if (c.x90 != NULL) {
         D_800B0B58 = c.x90;
     }
-    func_80055F70();
+    func_80055F70(D_800BCC80);
     func_80056098(c.x90);
     Heap_Free(&gMainHeap, &blk);
     return c;

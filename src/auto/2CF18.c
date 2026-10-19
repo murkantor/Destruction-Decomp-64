@@ -90,7 +90,7 @@ void func_800635B0(void *, void *);
 void func_800638C8(void *);
 void func_800638C0(void *);
 void func_80064948(void *);
-void func_8004396C(void);
+void Race_PickRandomTrack(void);
 void Race_LoadTrackResources(s32);
 void List_BuildSorted(void *);
 s32 func_80062F9C(Player *);
@@ -145,7 +145,7 @@ void Race_Start(void) {
     case 2:
         sel = -1;
         if (gGame[0]->x10FC == 25) {
-            func_8004396C();
+            Race_PickRandomTrack();
         }
         D_800D31CC[0] = D_800958A4[0];
         if (gGame[0]->x10FC == 25) {

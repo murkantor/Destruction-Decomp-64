@@ -9,7 +9,7 @@ extern u32 D_800BD214;
 extern u32 D_800BD218;
 void *memset(void *, s32, u32);
 
-s32 func_80058044(Gfx *dl, s32 depth) {
+s32 Gfx_DedupeTexCmds(Gfx *dl, s32 depth) {
     s32 count = 0;
     Gfx g;
     Gfx nop;
@@ -25,7 +25,7 @@ s32 func_80058044(Gfx *dl, s32 depth) {
         switch (w0) {
         case 0xDE000000:
             if (depth != 0) {
-                count += func_80058044((Gfx *)w1, depth - 1);
+                count += Gfx_DedupeTexCmds((Gfx *)w1, depth - 1);
             }
             continue;
         case 0xDE010000:

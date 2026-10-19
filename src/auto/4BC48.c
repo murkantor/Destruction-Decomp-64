@@ -34,7 +34,7 @@ extern Desc D_800BAE38;
 extern Pos2 D_800BAE80;
 extern u64 Time_Get(u64 *);
 extern void Ui_ResetScreen(s32, s32);
-extern void func_8004396C(void);
+extern void Race_PickRandomTrack(void);
 extern void Ui_SaveElements(void);
 extern void Ctx_FreeAll(void *);
 extern void func_8005DD20(void *, s32);
@@ -70,7 +70,7 @@ void func_8004B048(void) {
     }
     if (mode == 0x19) {
         Ui_ResetScreen(0x112F0, 0x112F1);
-        func_8004396C();
+        Race_PickRandomTrack();
         sel = 0;
         D_80097350 = 0;
         labels = D_800958B4 >= 4;

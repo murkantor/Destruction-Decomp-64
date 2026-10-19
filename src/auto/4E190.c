@@ -37,7 +37,7 @@ void HiScore_DrawTable(void *, s32, s32);
 void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, s64);
 
-void func_8004D590(void) {
+void Results_BuildTable(void) {
     Str2 sfx;
     Ids ids;
     Str1 empty;
