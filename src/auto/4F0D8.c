@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 void func_8004E144(s32, s32);
-void func_80064B30(void *, s64);
+void Timer_Start(void *, s64);
 
 s32 func_8004E4D8(u8 *obj) {
     s32 n = *(s32 *)(obj + 0x10);
@@ -12,7 +12,7 @@ s32 func_8004E4D8(u8 *obj) {
     }
     *(s32 *)(obj + 0x10) = n - 1;
     func_8004E144(n, n - 1);
-    func_80064B30(obj, 300000000LL);
+    Timer_Start(obj, 300000000LL);
     return 1;
 }
 
@@ -25,6 +25,6 @@ s32 func_8004E52C(u8 *obj) {
     }
     *(s32 *)(obj + 0x10) = n + 1;
     func_8004E144(n, n + 1);
-    func_80064B30(obj, 300000000LL);
+    Timer_Start(obj, 300000000LL);
     return 1;
 }

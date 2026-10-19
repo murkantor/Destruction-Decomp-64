@@ -45,8 +45,6 @@ Each track is two MIPS ELF objects (`<track>.o`, `<track>_sdl.o`) with symbol ta
 
 ## Time
 
-These names are being added to `symbol_addrs.txt`; until then the functions are `func_80063738` and `func_80064B30`, and the clock is `D_800D31D0`.
-
 | Symbol | Notes |
 |---|---|
 | `gGameTime` (0x800D31D0) | The game clock, a `u64` |

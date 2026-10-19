@@ -240,3 +240,8 @@ D_80131F50 = 0x80131F50; // size:0x30
 D_801252F8 = 0x801252F8; // size:0x100
 osDpGetCounters = 0x8006C0A0; // type:func
 D_80125B70 = 0x80125B70; // size:0x60
+
+// timers: a u64 game clock and deadlines set from it
+gGameTime = 0x800D31D0; // size:0x8
+Time_Get = 0x80063738; // type:func
+Timer_Start = 0x80064B30; // type:func
