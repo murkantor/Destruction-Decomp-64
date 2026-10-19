@@ -233,3 +233,8 @@ __osAiDeviceBusy = 0x800745A0; // type:func
 osDpSetStatus = 0x8006C090; // type:func
 toupper = 0x8007A130; // type:func
 __osSumcalc = 0x80076620; // type:func
+__osIdCheckSum = 0x80076654; // type:func
+
+// array bases that C indexes from
+D_80131F50 = 0x80131F50; // size:0x30
+D_801252F8 = 0x801252F8; // size:0x100
