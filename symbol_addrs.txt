@@ -47,6 +47,7 @@ Pool_GetFree = 0x800558FC; // type:func
 Pool_Alloc = 0x80055930; // type:func
 Pool_Free = 0x80055960; // type:func
 Heap_Free = 0x80055680; // type:func
+Heap_Shrink = 0x800557E0; // type:func
 Heap_Alloc = 0x800553E4; // type:func
 gMainHeap = 0x800D2E60;
 

@@ -289,7 +289,7 @@ segments:
       - [0x559D0, asm]
       - [0x55F20, c, auto/55F20]
       - [0x55FB4, c, auto/55FB4]
-      - [0x55FE4, asm]
+      - [0x55FE4, c, heap]
       - [0x56498, c, pool]
       - [0x5658C, c, mem]
       - [0x566EC, asm]
