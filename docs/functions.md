@@ -1395,27 +1395,27 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006FCA0` | `0708A0` | 0x64 | `__osPfsSelectBank` | `src/auto/708A0.c` | C (generated) |
 | `8006FD10` | `070910` | 0xa4 | `__osSiRawStartDma` | `src/auto/70910.c` | C (generated) |
 | `8006FDC0` | `0709C0` | 0x1a0 | `osCreateViManager` | `src/auto/709C0.c` | C (generated) |
-| `8006FF60` | `070B60` | 0x1a0 | `viMgrMain` | `asm/70B60.s` | asm |
-| `80070100` | `070D00` | 0x310 | `__osViSwapContext` | `asm/70B60.s` | asm |
-| `80070410` | `071010` | 0x10 | `sqrtf` | `asm/70B60.s` | asm |
-| `80070420` | `071020` | 0x574 | `func_80070420` | `asm/70B60.s` | asm |
-| `80070994` | `071594` | 0xf0 | `func_80070994` | `asm/70B60.s` | asm |
-| `80070A84` | `071684` | 0x108 | `__osEnqueueAndYield` | `asm/70B60.s` | asm |
-| `80070B8C` | `07178C` | 0x48 | `__osEnqueueThread` | `asm/70B60.s` | asm |
-| `80070BD4` | `0717D4` | 0x10 | `__osPopThread` | `asm/70B60.s` | asm |
-| `80070BE4` | `0717E4` | 0x17c | `__osDispatchThread` | `asm/70B60.s` | asm |
-| `80070D60` | `071960` | 0x10 | `__osCleanupThread` | `asm/70B60.s` | asm |
-| `80070D70` | `071970` | 0x10 | `osGetCount` | `asm/70B60.s` | asm |
-| `80070D80` | `071980` | 0x10 | `__osGetSR` | `asm/70B60.s` | asm |
-| `80070D90` | `071990` | 0x20 | `__osDisableInt` | `asm/70B60.s` | asm |
-| `80070DB0` | `0719B0` | 0x20 | `__osRestoreInt` | `asm/70B60.s` | asm |
-| `80070DD0` | `0719D0` | 0xc0 | `__osProbeTLB` | `asm/70B60.s` | asm |
-| `80070E90` | `071A90` | 0xa0 | `osSetIntMask` | `asm/70B60.s` | asm |
-| `80070F30` | `071B30` | 0x10 | `__osSetCompare` | `asm/70B60.s` | asm |
-| `80070F40` | `071B40` | 0x10 | `__osSetFpcCsr` | `asm/70B60.s` | asm |
-| `80070F50` | `071B50` | 0x10 | `__osSetSR` | `asm/70B60.s` | asm |
-| `80070F60` | `071B60` | 0x60 | `osMapTLBRdb` | `asm/70B60.s` | asm |
-| `80070FC0` | `071BC0` | 0xd0 | `func_80070FC0` | `asm/70B60.s` | asm |
+| `8006FF60` | `070B60` | 0x198 | `viMgrMain` | `src/auto/70B60.c` | C (generated) |
+| `80070100` | `070D00` | 0x310 | `__osViSwapContext` | `asm/70CF8.s` | asm |
+| `80070410` | `071010` | 0x10 | `sqrtf` | `asm/70CF8.s` | asm |
+| `80070420` | `071020` | 0x574 | `func_80070420` | `asm/70CF8.s` | asm |
+| `80070994` | `071594` | 0xf0 | `func_80070994` | `asm/70CF8.s` | asm |
+| `80070A84` | `071684` | 0x108 | `__osEnqueueAndYield` | `asm/70CF8.s` | asm |
+| `80070B8C` | `07178C` | 0x48 | `__osEnqueueThread` | `asm/70CF8.s` | asm |
+| `80070BD4` | `0717D4` | 0x10 | `__osPopThread` | `asm/70CF8.s` | asm |
+| `80070BE4` | `0717E4` | 0x17c | `__osDispatchThread` | `asm/70CF8.s` | asm |
+| `80070D60` | `071960` | 0x10 | `__osCleanupThread` | `asm/70CF8.s` | asm |
+| `80070D70` | `071970` | 0x10 | `osGetCount` | `asm/70CF8.s` | asm |
+| `80070D80` | `071980` | 0x10 | `__osGetSR` | `asm/70CF8.s` | asm |
+| `80070D90` | `071990` | 0x20 | `__osDisableInt` | `asm/70CF8.s` | asm |
+| `80070DB0` | `0719B0` | 0x20 | `__osRestoreInt` | `asm/70CF8.s` | asm |
+| `80070DD0` | `0719D0` | 0xc0 | `__osProbeTLB` | `asm/70CF8.s` | asm |
+| `80070E90` | `071A90` | 0xa0 | `osSetIntMask` | `asm/70CF8.s` | asm |
+| `80070F30` | `071B30` | 0x10 | `__osSetCompare` | `asm/70CF8.s` | asm |
+| `80070F40` | `071B40` | 0x10 | `__osSetFpcCsr` | `asm/70CF8.s` | asm |
+| `80070F50` | `071B50` | 0x10 | `__osSetSR` | `asm/70CF8.s` | asm |
+| `80070F60` | `071B60` | 0x60 | `osMapTLBRdb` | `asm/70CF8.s` | asm |
+| `80070FC0` | `071BC0` | 0xd0 | `func_80070FC0` | `asm/70CF8.s` | asm |
 | `80071090` | `071C90` | 0x18 | `osGetThreadPri` | `src/libultra/osGetThreadPri.c` | C |
 | `800710B0` | `071CB0` | 0x134 | `osJamMesg` | `src/auto/71CB0.c` | C (generated) |
 | `800711F0` | `071DF0` | 0xa0 | `func_800711F0` | `asm/71DE4.s` | asm |
@@ -1458,7 +1458,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80074560` | `075160` | 0x34 | `alCopy` | `src/auto/75160.c` | C (generated) |
 | `800745A0` | `0751A0` | 0x14 | `__osAiDeviceBusy` | `src/libultra/__osAiDeviceBusy.c` | C |
 | `800745C0` | `0751C0` | 0x98 | `osDpSetNextBuffer` | `src/auto/751C0.c` | C (generated) |
-| `80074660` | `075260` | 0x20c | `osSpTaskLoad` | `asm/75258.s` | asm |
+| `80074660` | `075260` | 0x20c | `osSpTaskLoad` | `src/auto/75260.c` | C (generated) |
 | `8007486C` | `07546C` | 0x2c | `osSpTaskStartGo` | `src/libultra/osSpTaskStartGo.c` | C |
 | `800748A0` | `0754A0` | 0x1c | `osSpTaskYield` | `src/libultra/osSpTaskYield.c` | C |
 | `800748C0` | `0754C0` | 0x4c | `osSpTaskYielded` | `src/libultra/osSpTaskYielded.c` | C |

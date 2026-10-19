@@ -279,3 +279,5 @@ vi = 0x800B6BC0;
 osViModeNtscLan1 = 0x800B6C40;
 osViModePalLan1 = 0x800B6C90;
 osViModeMpalLan1 = 0x800B6CE0;
+retrace = 0x800CFE00;
+tmp_task = 0x800D1020;
