@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Turn tools/autodecomp.py matches into C files and dd64.yaml subsegments.
 
-Usage: python3 tools/apply_auto.py [--dir auto] [build/auto]
+Usage: python3 tools/apply_auto.py [--dir auto] [--fastmath] [build/auto]
 
 Consecutive matched functions go into one file, src/auto/<ROM offset>.c. When
 m2c's declarations in a group clash, the group is split into one file per
@@ -53,8 +53,12 @@ def merge(codes):
 def main():
     args = sys.argv[1:]
     subdir = "auto"
-    if args and args[0] == "--dir":
-        subdir, args = args[1], args[2:]
+    fastmath = False
+    while args and args[0] in ("--dir", "--fastmath"):
+        if args[0] == "--dir":
+            subdir, args = args[1], args[2:]
+        else:
+            fastmath, args = True, args[1:]
     auto = args[0] if args else os.path.join(ROOT, "build", "auto")
     matches = []
     rodata = {}  # function name -> (rom start, rom end) of its .rodata
@@ -179,6 +183,16 @@ def main():
             out.append(f"{indent}- [0x{pos:X}, rodata]")
         lines[sub[0][0]:sub[-1][0] + 1] = out
     open(yaml_path, "w").write("\n".join(lines) + "\n")
+    if fastmath and files:
+        # add the new files to the Makefile's -ffast-math list
+        mk_path = os.path.join(ROOT, "Makefile")
+        mk = open(mk_path).read()
+        m = re.search(r"^FASTMATH :=((?:[^\n]*\\\n)*[^\n]*)$", mk, re.M)
+        listed = m.group(1).replace("\\\n", " ").split()
+        listed += [f"src/{path}.c" for _, _, path in files if f"src/{path}.c" not in listed]
+        body = " \\\n            ".join(" ".join(listed[i:i + 5]) for i in range(0, len(listed), 5))
+        mk = mk[:m.start()] + "FASTMATH := " + body + mk[m.end():]
+        open(mk_path, "w").write(mk)
     print(f"{len(matches)} functions in {len(files)} files")
 
 

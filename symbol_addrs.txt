@@ -417,3 +417,4 @@ Vec3f_RotateX = 0x8005A78C; // type:func
 Vec3f_RotateY = 0x8005A824; // type:func
 Vec3f_RotateZ2 = 0x8005A8BC; // type:func
 Math_Atan2 = 0x80059B60; // type:func
+Math_SolveQuadratic = 0x80039CFC; // type:func

@@ -264,6 +264,7 @@ segments:
       - [0x35888, asm]
       - [0x3A3FC, c, auto/3A3FC]
       - [0x3A470, asm]
+      - [0x3A8FC, c, auto/3A8FC]
       - [0x3A9A4, c, auto/3A9A4]
       - [0x3A9C4, asm]
       - [0x3BCA8, c, auto/3BCA8]

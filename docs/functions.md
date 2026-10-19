@@ -522,7 +522,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80039870` | `03A470` | 0xe8 | `func_80039870` | `asm/3A470.s` | asm |
 | `80039958` | `03A558` | 0x218 | `func_80039958` | `asm/3A470.s` | asm |
 | `80039B70` | `03A770` | 0x18c | `func_80039B70` | `asm/3A470.s` | asm |
-| `80039CFC` | `03A8FC` | 0xa8 | `func_80039CFC` | `asm/3A470.s` | asm |
+| `80039CFC` | `03A8FC` | 0xa8 | `Math_SolveQuadratic` | `src/auto/3A8FC.c` | C (generated) |
 | `80039DA4` | `03A9A4` | 0x20 | `func_80039DA4` | `src/auto/3A9A4.c` | C (generated) |
 | `80039DC4` | `03A9C4` | 0x25c | `func_80039DC4` | `asm/3A9C4.s` | asm |
 | `8003A020` | `03AC20` | 0x25c | `func_8003A020` | `asm/3A9C4.s` | asm |

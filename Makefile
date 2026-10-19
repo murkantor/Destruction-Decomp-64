@@ -68,7 +68,8 @@ $(BUILD_DIR)/src/libc/%.c.o: OPTFLAGS := -O1
 # Game files built with -ffast-math (sqrt.s without the errno check, division
 # by a constant done as a multiply)
 FASTMATH := src/auto/5AFC0.c src/auto/5B048.c src/auto/5B098.c src/auto/5B130.c src/auto/5B240.c \
-            src/auto/5B2F4.c src/auto/5B38C.c src/auto/5B424.c src/auto/5B4BC.c src/auto/3F090.c
+            src/auto/5B2F4.c src/auto/5B38C.c src/auto/5B424.c src/auto/5B4BC.c src/auto/3F090.c \
+            src/auto/3A8FC.c
 $(FASTMATH:%=$(BUILD_DIR)/%.o): OPTFLAGS += -ffast-math
 
 $(BUILD_DIR)/%.bin.o: %.bin
