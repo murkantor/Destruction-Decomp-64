@@ -1303,15 +1303,15 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006B0DC` | `06BCDC` | 0x30 | `alUnlink` | `src/libultra/alUnlink.c` | C |
 | `8006B110` | `06BD10` | 0x34 | `func_8006B110` | `src/auto/6BD10.c` | C (generated) |
 | `8006B150` | `06BD50` | 0x48 | `alHeapDBAlloc` | `src/libultra/alHeapDBAlloc.c` | C |
-| `8006B1A0` | `06BDA0` | 0x2cc | `func_8006B1A0` | `asm/6BD98.s` | asm |
-| `8006B46C` | `06C06C` | 0x1b0 | `func_8006B46C` | `asm/6BD98.s` | asm |
+| `8006B1A0` | `06BDA0` | 0x2cc | `alSynNew` | `src/auto/6BDA0.c` | C (generated) |
+| `8006B46C` | `06C06C` | 0x1b0 | `alAudioFrame` | `src/auto/6C06C.c` | C (generated) |
 | `8006B61C` | `06C21C` | 0x2c | `__allocParam` | `src/libultra/__allocParam.c` | C |
 | `8006B648` | `06C248` | 0x18 | `__freeParam` | `src/auto/6C248.c` | C (generated) |
-| `8006B660` | `06C260` | 0x54 | `func_8006B660` | `src/auto/6C260.c` | C (generated) |
+| `8006B660` | `06C260` | 0x54 | `_collectPVoices` | `src/auto/6C260.c` | C (generated) |
 | `8006B6B4` | `06C2B4` | 0x40 | `_freePVoice` | `src/libultra/_freePVoice.c` | C |
-| `8006B6F4` | `06C2F4` | 0x48 | `func_8006B6F4` | `src/auto/6C2F4.c` | C (generated) |
+| `8006B6F4` | `06C2F4` | 0x48 | `_timeToSamplesNoRound` | `src/auto/6C2F4.c` | C (generated) |
 | `8006B73C` | `06C33C` | 0x4c | `_timeToSamples` | `src/auto/6C2F4.c` | C (generated) |
-| `8006B788` | `06C388` | 0xa8 | `func_8006B788` | `src/auto/6C388.c` | C (generated) |
+| `8006B788` | `06C388` | 0xa8 | `__nextSampleTime` | `src/auto/6C388.c` | C (generated) |
 | `8006B830` | `06C430` | 0x8 | `alSynDelete` | `src/auto/6C388.c` | C (generated) |
 | `8006B840` | `06C440` | 0x50 | `func_8006B840` | `src/auto/6C440.c` | C (generated) |
 | `8006B890` | `06C490` | 0x128 | `alSynAllocVoice` | `src/auto/6C490.c` | C (generated) |

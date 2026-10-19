@@ -5,7 +5,7 @@ M2C_UNK __assert(M2C_UNK *, M2C_UNK *, M2C_UNK); /* extern */
 extern M2C_UNK D_800BC190;
 extern M2C_UNK D_800BC194;
 
-s32 func_8006B788(void *arg0, void **arg1) {
+s32 __nextSampleTime(void *arg0, void **arg1) {
     s32 var_s1;
     void *var_a0;
 

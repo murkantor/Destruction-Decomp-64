@@ -4,7 +4,7 @@
 M2C_UNK alLink(s32, void *);                 /* extern */
 M2C_UNK alUnlink(s32);                         /* extern */
 
-void func_8006B660(void *arg0) {
+void _collectPVoices(void *arg0) {
     s32 var_s0;
     void *var_s1;
 
