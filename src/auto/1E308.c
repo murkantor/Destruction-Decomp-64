@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 x0, x4, x8, xC, x10; } Zone;
 typedef struct {
     u8 pad0[4];
@@ -130,23 +133,25 @@ extern s32 D_800D1C20[];
 
 void *Mem_Alloc(u32);
 s16 func_80064D70(void);
-f64 func_80079750(f64);
+f64 log(f64);
 void func_8001CCA0(void *, void *);
 void func_80012A20(void *);
 void func_80015714(void *);
 void Shadow_InitMgr(void *);
 void RigidBody_Init(void *, void *);
-void func_8001E1F4(Car *, CarStats *);
+void Car_BuildLightDisplayLists(Car *, CarStats *);
 void func_80063F88(void);
 s32 Res_Get(s32);
-ResObj *func_80063E28(s32);
+ResObj *Res_GetEnd(s32);
 void func_8005F9C0(void *, void *, void *, s32, s32, s32, f32);
 void func_8005A970(void *, s32, s32, s32);
 void func_8005AA68(void *, void *);
 void func_8005AB4C(void *, f32);
 
+typedef struct { s32 v[12]; } Base12;
+extern Base12 D_800B8978;
 Car *Car_Create(CarStats *s) {
-    s32 base[12] = { 0, 0, 0, 0, 50, 40, 43, 50, 45, 45, 45, 42 };
+    Base12 base = D_800B8978;
     u8 sp50[8];
     Car *car;
     CarFlags *flags;
@@ -206,7 +211,7 @@ Car *Car_Create(CarStats *s) {
     car->xB90 = s->x18;
     car->xB9C = s->x1C;
     car->xB94 = 1.0 / car->xB90;
-    car->xB98 = (func_80079750(car->xB90) + 1.21) * 0.4314063848144952;
+    car->xB98 = (log(car->xB90) + 1.21) * 0.4314063848144952;
     car->xBAC = 0;
     for (i = 0; i < 12; i++) {
         car->xB30[i] = 0;
@@ -364,10 +369,10 @@ Car *Car_Create(CarStats *s) {
             car->xA68[7].x4 = 80;
             car->xA68[7].x8 = 85;
         }
-        car->x50 = (base[D_800958B4[0]] + a) * 1000000000.0;
+        car->x50 = (base.v[D_800958B4[0]] + a) * 1000000000.0;
         if (D_800958B4[0] == 8) {
             s32 t = a + 6;
-            car->x50 = (base[D_800958B4[0]] + t) * 1000000000.0;
+            car->x50 = (base.v[D_800958B4[0]] + t) * 1000000000.0;
         }
         if (D_800958B4[0] >= 4) {
             car->x10 += b;
@@ -375,7 +380,7 @@ Car *Car_Create(CarStats *s) {
             car->x10 += c;
         }
     } else {
-        car->x50 = base[D_800958B4[0]] * 1000000000.0;
+        car->x50 = base.v[D_800958B4[0]] * 1000000000.0;
         if (D_800958B4[0] >= 4) {
             car->x10 += d;
         } else {
@@ -402,22 +407,22 @@ Car *Car_Create(CarStats *s) {
             car->xA68[k] = s->x1E8[k];
         }
     }
-    func_8001E1F4(car, s);
+    Car_BuildLightDisplayLists(car, s);
     i = car->x34;
     if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {
         func_80063F88();
     }
-    car->x190 = func_80063E28(Res_Get(D_800919F4[i]));
+    car->x190 = Res_GetEnd(Res_Get(D_800919F4[i]));
     func_8005F9C0(sp50, car->x160, car->x98, ((ResObj *)car->x190)->x20, 0, 0, 0.01f);
     if (D_80124360 == 0) {
         D_80124360 = 1;
-        func_8005A970(&D_80125C68, func_80063E28(Res_Get(0x4650))->x20, 0, 0);
+        func_8005A970(&D_80125C68, Res_GetEnd(Res_Get(0x4650))->x20, 0, 0);
     }
     for (model = 0; model < 4; model++) {
         func_8005AA68(&car->xC0[model], &D_80125C68);
         func_8005AB4C(&car->xC0[model], 0.01f);
     }
-    func_8005A970(car->x178, func_80063E28(Res_Get(D_80091A54[i]))->x20, 0, 0);
+    func_8005A970(car->x178, Res_GetEnd(Res_Get(D_80091A54[i]))->x20, 0, 0);
     if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {
         if (D_800D31CC == 2) {
             switch (gGame->race->numCars) {
@@ -447,5 +452,3 @@ Car *Car_Create(CarStats *s) {
     D_800D1C20[gGame->race->numCars] = car->x34;
     return car;
 }
-
-const u32 D_800B89F0[8] = { 0x0, 0x4000000, 0x4000400, 0x400, 0x4000000, 0x0, 0x4000400, 0x400 };

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { void *ptr; u32 size; } HeapBlock;
 typedef struct { s16 x0; s16 x2; s32 x4; s32 x8; } ResHdr;
 typedef struct { u8 pad[0xC]; s32 xC[0x3D]; s32 x100; u8 pad2[0x514 - 0x104]; f32 x514; u8 pad3[0x528 - 0x518]; u8 x528; } State;
@@ -15,30 +18,23 @@ extern s32 Sound_CountPlaying(s32);
 extern void Rom_Copy(s32, void *, s32);
 extern s32 func_80066194(void *, void *);
 extern s32 Sound_SetVolume(s32, s32);
-extern s32 func_80008310(s32, void *);
+extern s32 SoundEmitter_Init(s32, void *);
 extern void func_80064100(s32);
 
-s32 func_800084EC(s32 id) {
-    HeapBlock blk;
-    u32 size;
-    ResHdr *p;
-    s32 i;
-    s32 v;
-    s32 n;
-    f32 vol;
+s32 func_800084EC(ResHdr *p) {
+    HeapBlock blk; u32 size; s32 i; s32 n; f32 vol;
 
-    size = Res_GetSize(id);
+    size = Res_GetSize((s32)p);
     if (size != 0) {
         Heap_AllocAlt(gMainHeap, &blk, size, 7, 0);
-        p = HeapBlock_Ptr(&blk);
-        Res_Load(id, p);
+        { ResHdr *q = p; p = HeapBlock_Ptr(&blk); Res_Load((s32)q, p); }
         switch (p->x0) {
         case 0:
             break;
         case 0x3F4:
             n = size / 44;
             for (i = 0; i < n; i++) {
-                func_80064100(func_80008310(D_8011EEF8->xC[D_8011EEF8->x100], p));
+                func_80064100(SoundEmitter_Init(D_8011EEF8->xC[D_8011EEF8->x100], p));
                 p = (ResHdr *)((u8 *)p + 44);
             }
             break;

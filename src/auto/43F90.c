@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { void *ptr; u32 size; } HeapBlock;
 typedef struct { s32 id; void *x4; u8 pad8[0x14]; } UiElem;
 typedef struct {
@@ -22,6 +25,7 @@ void func_80063564(s32, s32);
 void func_80043390(Obj *o, s32 arg1) {
     void *p;
     void *t;
+    UiElem *e = NULL;
     s32 i;
     s32 n;
     s32 size;
@@ -32,16 +36,14 @@ void func_80043390(Obj *o, s32 arg1) {
     Heap_AllocAlt(gMainHeap, t, size, 7, 0);
     p = HeapBlock_Ptr(t);
     Res_Load(0x11424, p);
-    i = 0;
-    t = NULL;
-    for (; i < gUi[0]->count; i++) {
-        t = &gUi[0]->elems[i];
-        if (((UiElem *)t)->id == 0x11424) {
+    for (i = 0; i < gUi[0]->count; i++) {
+        e = &gUi[0]->elems[i];
+        if (e->id == 0x11424) {
             break;
         }
     }
-    D_800BCA00 = ((UiElem *)t)->x4;
-    ((UiElem *)t)->x4 = p;
+    D_800BCA00 = e->x4;
+    e->x4 = p;
     Ui_AddElement(gUi[0], 2, 0x39);
     func_80063564(0x1F, 1);
     o->x10 = arg1;

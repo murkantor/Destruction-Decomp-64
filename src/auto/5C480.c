@@ -1,5 +1,8 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 x0; s32 x4; s32 x8; } Cfg;
-typedef struct { u8 pad[0x10]; } HeapBlock;
+typedef struct { u8 pad[0x8]; } HeapBlock;
 extern s32 D_80130250;
 extern s32 gControllersLatched;
 extern void *D_801238E4;
@@ -26,6 +29,19 @@ void func_800575A0(void *);
 void func_8005A960(void *);
 void Pad_InitAll(void *);
 
+static inline void DM_Init(void *a) { DebugMenu_Init(a); }
+static inline void Heap_Init(void *a, s32 b, s32 c) { func_80055390(a, b, c); }
+static inline void Vi_Init(void *a, u8 b) { Vi_InitConfig(a, b); }
+static inline void F70(void *a) { func_80055F70(a); }
+static inline void D30(void *a) { func_80053D30(a); }
+static inline void BV(void *a) { DebugMenu_BuildVideo(a); }
+static inline void BF(void *a) { DebugMenu_BuildFrameSetup(a); }
+static inline void A0(void *a) { func_800575A0(a); }
+static inline void A960(void *a) { func_8005A960(a); }
+static inline void PI(void *a) { Pad_InitAll(a); }
+static inline void *HBP(HeapBlock *b) { return HeapBlock_Ptr(b); }
+static inline u32 S7C(HeapBlock *b) { return func_8005537C(b); }
+static inline void HA(void *a, HeapBlock *b, u32 c, s32 d, s32 e) { Heap_Alloc(a, b, c, d, e); }
 s32 func_8005B880(s32 pri, Cfg *cfg) {
     HeapBlock blk;
     switch (cfg->x8) {
@@ -42,21 +58,21 @@ s32 func_8005B880(s32 pri, Cfg *cfg) {
     D_801238E4 = osScGetCmdQ(&D_80130250);
     func_80055FFC(1);
     func_80055320();
-    DebugMenu_Init(&D_80131BA0);
-    func_80055390(&gMainHeap, cfg->x0, 0x80400000 - cfg->x0);
+    DM_Init(&D_80131BA0);
+    Heap_Init(&gMainHeap, cfg->x0, 0x80400000 - cfg->x0);
     if (cfg->x4 > 0) {
         void *ptr;
         Heap_Alloc(&gMainHeap, &blk, cfg->x4 << 6, 0xF, 0);
         ptr = HeapBlock_Ptr(&blk);
         Pool_Init(&gParticlePool, 0x40, ptr, func_8005537C(&blk));
     }
-    Vi_InitConfig(&D_80123328, ((u8 *)cfg)[0xB]);
-    func_80055F70(&D_80123328);
-    func_80053D30(&D_80131BA0);
-    DebugMenu_BuildVideo(&D_80131BA0);
-    DebugMenu_BuildFrameSetup(&D_80131BA0);
-    func_800575A0(&D_80131BA0);
-    func_8005A960(&D_80131BA0);
-    Pad_InitAll(&D_80131BA0);
+    Vi_Init(&D_80123328, ((u8 *)cfg)[0xB]);
+    F70(&D_80123328);
+    D30(&D_80131BA0);
+    BV(&D_80131BA0);
+    BF(&D_80131BA0);
+    A0(&D_80131BA0);
+    A960(&D_80131BA0);
+    PI(&D_80131BA0);
     return 0;
 }

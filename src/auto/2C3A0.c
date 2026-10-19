@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad[0x10]; s8 x10; } CarInfo;
 typedef struct {
     u8 pad[0x28]; s32 x28; u8 pad2C[4]; s32 x30; s32 x34; u8 pad38[4]; CarInfo *x3C; u8 x40;
@@ -8,6 +11,7 @@ typedef struct { u8 pad[0x10FC]; s16 x10FC; } Game;
 extern Game *gGame;
 extern void *gUi;
 extern s32 D_800958A8;
+extern volatile s32 D_800958A8_v __asm__("D_800958A8");
 extern s32 D_800958B4;
 extern s32 D_80095850[];
 extern u8 D_80091B14[];
@@ -93,7 +97,7 @@ void func_8002B7A0(Car *car, Event *ev, u8 flag) {
             !D_80091B14[car->x3C->x10]) {
             D_80091B14[car->x3C->x10] = 1;
             Ui_AddElement(gUi, 2, car->x3C->x10 + 0xE2);
-            if (D_800958A8 != 3 && gGame->x10FC == 0x1C) {
+            if (D_800958A8_v != 3 && gGame->x10FC == 0x1C) {
                 list[0] = 0x86;
                 list[1] = 0x87;
                 if (D_800958A8 == 2) {

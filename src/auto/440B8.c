@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     s32 x4;
@@ -18,7 +21,7 @@ typedef struct {
     u8 x8B68;
 } UiMgr;
 typedef struct { s32 x0; s32 x4; f32 x8; f32 xC; s32 x10; s32 x14; } UiSave;
-extern UiMgr *gUi[];
+extern UiMgr *volatile gUi;
 extern s32 gMainHeap;
 extern s32 D_800BC9E8;
 extern s32 D_800BC9F0;
@@ -28,11 +31,13 @@ void Heap_AllocAlt(void *, void *, s32, s32, s32);
 void *HeapBlock_Ptr(void *);
 void func_8005F884(void *);
 
-static inline s32 UiSave_Fill(UiMgr *ui, UiSave *dst) {
+static inline s32 UiSave_Fill(UiMgr *ui, UiSave *p) {
     UiNode *node;
     s32 count;
+    UiSave *dst;
     node = ui->list;
     count = 0;
+    dst = p;
     while (node != NULL) {
         UiItem *it = node->item;
         dst->x0 = it->x0;
@@ -68,19 +73,19 @@ static inline s32 UiSave_Fill(UiMgr *ui, UiSave *dst) {
 void func_800434B8(void) {
     D_800BCA04 = 0;
     D_800BCA08 = 0;
-    if (gUi[0]->list != NULL) {
+    if (gUi->list != NULL) {
         UiMgr *ui;
         UiSave *dst;
         Heap_AllocAlt(&gMainHeap, &D_800BC9E8, 0x960, 7, 0);
-        ui = gUi[0];
+        ui = gUi;
         dst = HeapBlock_Ptr(&D_800BC9E8);
         D_800BCA04 = UiSave_Fill(ui, dst);
-        if (gUi[0]->x8B68) {
+        if (gUi->x8B68) {
             UiMgr *ui2;
             UiSave *dst2;
-            func_8005F884(gUi[0]);
+            func_8005F884(gUi);
             Heap_AllocAlt(&gMainHeap, &D_800BC9F0, 0x960, 7, 0);
-            ui2 = gUi[0];
+            ui2 = gUi;
             dst2 = HeapBlock_Ptr(&D_800BC9F0);
             D_800BCA08 = UiSave_Fill(ui2, dst2);
         }

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 
 typedef struct {
@@ -50,6 +53,7 @@ s32 rand(void);
 
 void func_800363C4(Car *car, f32 dt) {
     Race *race;
+    Vec3f *p;
     Vec3f *pos;
     Vec3f *vel;
     Vec3f *target;
@@ -61,13 +65,13 @@ void func_800363C4(Car *car, f32 dt) {
     f32 dx, dy, dz;
     f32 r;
 
+    p = &car->pos;
     dx = car->target.x - car->pos.x;
     dy = car->target.y - car->pos.y;
     dz = car->target.z - car->pos.z;
-    vel = &car->pos;
-    pos = vel;
-    target = &car->target;
+    pos = p;
     race = gGame->race;
+    target = &car->target;
     if (dx * dx + dy * dy + dz * dz < 64.0) {
         idx = car->x28 + car->x58 * 2;
         n = race->x38;
@@ -90,7 +94,7 @@ void func_800363C4(Car *car, f32 dt) {
     }
     Vec3f_Sub(&dir, target, pos);
     Vec3f_Normalize(&dir, &dir);
-    vel = pos + 1;
+    vel = p + 1;
     Vec3f_Scale(vel, &dir, race->x34[car->xBBC].x0 * car->xBC4);
     Vec3f_Scale(&step, vel, dt);
     Vec3f_Add(pos, pos, &step);

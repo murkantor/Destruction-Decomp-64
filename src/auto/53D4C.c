@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad0[0x10]; u32 x10; u8 pad14[4]; u32 x18; u8 pad1C[0x14]; u8 *x30; } ZipEntry;
 typedef struct { void *x0; void *x4; u8 pad8[4]; void *xC; u8 pad10[4]; void *x14; u8 pad18[0x34]; void *x4C; } Zip;
 extern char D_800BBA5C[];
@@ -32,6 +35,7 @@ s32 func_8005314C(void *arg0, u8 *name, void **outBuf, u32 *outSize) {
     u8 *path;
     void *data;
     s32 match;
+    s32 c;
 
     z = Zip_Open(arg0);
     if (z == NULL) {
@@ -48,12 +52,13 @@ top:
         } else {
             q++;
         }
-        while (*p != 0) {
-            if (toupper(*p) != toupper(*q)) {
-                break;
+        if ((c = *p) != 0) {
+        cmp:
+            if (toupper(c) == toupper(*q)) {
+                p++;
+                q++;
+                if ((c = *p) != 0) goto cmp;
             }
-            p++;
-            q++;
         }
         match = (*p == 0 && *q == 0);
         if (match || strcmp(buf, name) == 0) {

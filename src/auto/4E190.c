@@ -1,4 +1,7 @@
-typedef struct { char x0[0x14]; char x14[0xA]; char x1E[0xA]; char x28[0xA]; s8 x32; } Row;
+#include "common.h"
+#include "m2c.h"
+
+typedef struct { u8 x0[0x14]; char x14[0xA]; char x1E[0xA]; char x28[0xA]; s8 x32; } Row;
 typedef struct { char first[0xB]; char last[0xB]; } Name;
 typedef struct { s32 x0; u8 pad[0xC]; } Score;
 typedef struct { u8 pad[0xC]; s32 xC; s32 x10; u8 pad14[0x68 - 0x14]; } Timer68;
@@ -31,7 +34,7 @@ s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
 char *strcpy(char *, const char *);
 void func_80048B30(void *, s32, s32);
-void func_80048FD8(f32, void *, s32);
+void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, s64);
 
 void func_8004D590(void) {
@@ -57,7 +60,7 @@ void func_8004D590(void) {
     }
     Ui_AddElement(gUi[0], 2, 0x41);
     Ui_AddElement(gUi[0], 2, 0xC0);
-    for (j = 0; j < (D_80096038[D_800958B4] > 6 ? 6 : D_80096038[D_800958B4]); j++) {
+    for (j = 0; (D_80096038[D_800958B4] < 7) ? (j < D_80096038[D_800958B4]) : (j < 6); j++) {
         Ui_AddElement(gUi[0], 0, D_80097224[j]);
         for (l = 0; l < 2; l++) {
             Ui_AddElement(gUi[0], 0, D_800971DC[j][l]);
@@ -85,9 +88,9 @@ void func_8004D590(void) {
             }
         } while (busy);
         n = func_8001B2F4(i);
-        sprintf(D_801238F0[rank].x0, D_80096510[n].first);
-        strcat(D_801238F0[rank].x0, sfx.c);
-        strcat(D_801238F0[rank].x0, D_80096510[n].last);
+        sprintf((char *)D_801238F0[rank].x0, D_80096510[n].first);
+        strcat((char *)D_801238F0[rank].x0, sfx.c);
+        strcat((char *)D_801238F0[rank].x0, D_80096510[n].last);
         sprintf(D_801238F0[rank].x14, D_800BAF68, D_80126188[i].x0);
         sprintf(D_801238F0[rank].x1E, D_800BAF68, D_80095CD4[i] + D_80126188[i].x0);
         n = func_8001B2F4(i);
@@ -103,14 +106,14 @@ void func_8004D590(void) {
         }
     }
     for (i = D_80096038[D_800958B4]; i < 12; i++) {
-        strcpy(D_801238F0[i].x0, empty.c);
+        strcpy((char *)D_801238F0[i].x0, empty.c);
         strcpy(D_801238F0[i].x14, empty.c);
         strcpy(D_801238F0[i].x1E, empty.c);
         strcpy(D_801238F0[i].x28, empty.c);
         D_801238F0[i].x32 = -1;
     }
     func_80048B30(D_800972A0, 2, 1);
-    func_80048FD8(25.0f, D_800972A8, 1);
+    Menu_LayoutResultRows(25.0f, D_800972A8, 1);
     for (i = 0; i < 4; i++) {
         D_800958F8[i].xC = 2;
         D_800958F8[i].x10 = 0;

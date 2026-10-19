@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f a; Vec3f b; } TrackPt;
 typedef struct { u8 pad[0x30]; TrackPt *pts; u8 pad34[4]; s32 count; } Track;
@@ -46,8 +49,9 @@ void func_800361E0(Obj *o) {
     o->xBD0 = 0;
     o->xBC8 = 1.0f;
     o->xBCC = 0.1f;
-    o->xBC0 = rand() * (1.0f / 32767.0f) * 0.64 + 0.18;
-    Vec3f_Set(&o->x2A8, 0.0f, 0.0f, 0.0f);
+    { Vec3f *v = &o->x2A8;
+    o->xBC0 = rand() * (1.0f / 32767.0f) * (0.82 - 0.18) + 0.18;
+    Vec3f_Set(v, 0.0f, 0.0f, 0.0f); }
     for (i = 3; i >= 0; i--) {
         o->subs[i].x1A0 = 0;
     }

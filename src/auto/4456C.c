@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 extern u8 D_80096ED0[12];
 extern s32 D_800958A4;
 extern s32 D_800958A8;
@@ -11,10 +14,7 @@ void func_8004396C(void) {
     s32 i;
     s32 k;
     n = rand() % 8;
-
-    if (n == 0) {
-        n = 1;
-    }
+    if (n == 0) n = 1;
     k = n;
     do {
         for (i = 0; i < 12; i++) {
@@ -32,5 +32,6 @@ void func_8004396C(void) {
     D_800958A4 = 1;
     D_800958A8 = 1;
     D_800958B4 = sel;
-    D_800958C0 = rand() % 12;
+    n = rand() % 12;
+    D_800958C0 = n;
 }

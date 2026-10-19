@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 x0; s32 x4; u8 pad[0x60]; } Ent68;
 typedef struct { u8 pad[0x40]; s32 x40; u8 pad44[0xC]; } Ent50;
 typedef struct { s16 x0; s32 x4; } Ent8;
@@ -33,11 +36,11 @@ extern EntC D_8007EE00[];
 
 void *Mem_Alloc(s32);
 u64 Time_Get(u64 *);
-void func_8005C7D0(Settings *);
+void Game_SaveItems(Settings *);
 s32 Sound_CountPlaying(s32);
 void func_800084EC(s32);
-void func_8005CB8C(Obj96F4 *);
-void func_80006A20(Settings *);
+void Owner_AllocSlotBuffers(Obj96F4 *);
+void Sound_StartCarLoops(Settings *);
 
 void func_800096F4(Obj96F4 *obj) {
     s32 i;
@@ -45,6 +48,8 @@ void func_800096F4(Obj96F4 *obj) {
     Ent50 *e;
     s32 snd;
     s32 st;
+    s32 *tbl;
+    Settings *set;
 
     for (i = 0; i < 4; i++) {
         D_8009592C[i].x0 = 0;
@@ -69,26 +74,26 @@ void func_800096F4(Obj96F4 *obj) {
     }
     switch (gGame->xC) {
     case 0:
-        func_8005C7D0(D_8011EEF8[0]);
+        Game_SaveItems(D_8011EEF8[0]);
         break;
     case 1:
-        func_8005C7D0(D_8011EEF8[0]);
+        Game_SaveItems(D_8011EEF8[0]);
         if (D_8011EEF8[0]->x530 == 0 && gGame->x10FC != 3 && Sound_CountPlaying(2) == 0) {
             func_800084EC(0x75A0);
             D_8011EEF8[0]->x520 = 13;
         }
         break;
     case 2:
-        func_8005CB8C(obj);
-        func_800084EC(D_8011EEF8[0]->x50C[D_800958B4]);
-        func_8005C7D0(D_8011EEF8[0]);
+        Owner_AllocSlotBuffers(obj);
+        tbl = D_8011EEF8[0]->x50C; func_800084EC(tbl[D_800958B4]);
+        Game_SaveItems(D_8011EEF8[0]);
         if (D_8011EEF8[0]->x530 == 0) {
             if (gGame->x10FC == 25) {
                 snd = 0x759E;
                 st = 12;
                 D_8011EEF8[0]->x530 = 1;
             } else {
-                snd = D_8011EEF8[0]->x510[D_800958B4];
+                tbl = D_8011EEF8[0]->x510; snd = tbl[D_800958B4];
                 st = D_800958B4;
             }
             if (Sound_CountPlaying(2) != 0) {
@@ -99,7 +104,7 @@ void func_800096F4(Obj96F4 *obj) {
                 D_8011EEF8[0]->x520 = st;
             }
         }
-        func_80006A20(D_8011EEF8[0]);
+        Sound_StartCarLoops(D_8011EEF8[0]);
         for (i = 0; i < 4; i++) {
             D_8007EDD8[i].x0 = 0;
             D_8007EDD8[i].x4 = 0;

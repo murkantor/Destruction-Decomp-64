@@ -891,3 +891,4 @@ System_InitHeaps = 0x8005BA84; // type:func
 Ai_UpdateDriver = 0x80004E00; // type:func
 Race_LoadCarResources = 0x8001FDFC; // type:func
 Debris_Spawn = 0x8000A574; // type:func
+D_80124594 = 0x80124594;
