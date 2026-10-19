@@ -24,7 +24,7 @@ C_FILES   := $(shell find src -name '*.c' 2>/dev/null)
 BIN_FILES := $(shell find assets -name '*.bin' 2>/dev/null)
 O_FILES   := $(S_FILES:%=$(BUILD_DIR)/%.o) $(C_FILES:%=$(BUILD_DIR)/%.o) $(BIN_FILES:%=$(BUILD_DIR)/%.o)
 
-.PHONY: all extract check clean distclean progress
+.PHONY: all extract check clean distclean progress docs
 .DEFAULT_GOAL := check
 
 all: $(ROM)
@@ -67,6 +67,10 @@ $(BUILD_DIR)/%.bin.o: %.bin
 
 progress:
 	@python3 tools/progress.py
+
+# docs/functions.md and docs/files.md, from the last build
+docs: $(ROM)
+	python3 tools/gen_docs.py
 
 clean:
 	rm -rf $(BUILD_DIR)/asm $(BUILD_DIR)/src $(BUILD_DIR)/assets $(ELF) $(ROM)

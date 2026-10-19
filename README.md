@@ -63,6 +63,7 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `tools/autodecomp.py`, `tools/apply_auto.py` | Generate matching C with m2c and add it to the build |
 | `tools/permute_setup.py`, `tools/permute_collect.py` | Run decomp-permuter on near misses and collect the matches |
 | `tools/rename.py` | Apply names from `symbol_addrs.txt` to the C |
+| `tools/gen_docs.py` | Write the function and file lists in `docs/` |
 | `tools/diff_func.py` | Show a hand-written function's code next to the original |
 | `tools/check_c.py` | Check hand-written functions against the ROM before `apply_auto.py` adds them |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
@@ -134,3 +135,5 @@ When you clean up a file in `src/auto/`, give it real types and names and move i
 | libultra | 2.0I, built 31 Jul 1998, with asserts |
 
 See [docs/rom.md](docs/rom.md) for the ROM layout and what is known about the data, and [docs/prototype.md](docs/prototype.md) for what a prototype build adds.
+
+[docs/functions.md](docs/functions.md) lists every function with its address, size, file and state, and [docs/files.md](docs/files.md) lists the source files. `make docs` regenerates both from the current build.
