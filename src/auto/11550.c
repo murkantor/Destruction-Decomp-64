@@ -36,7 +36,7 @@ void func_800109B0(void *arg0, s32 arg1, s32 arg2) {
     M2C_FIELD(arg0, s32 *, 0x18) = arg2;
 }
 
-M2C_UNK func_80055960(M2C_UNK *, M2C_UNK *);        /* extern */
+M2C_UNK Pool_Free(M2C_UNK *, M2C_UNK *);        /* extern */
 extern M2C_UNK D_80125C48;
 
 void func_800109E0(void *arg0) {
@@ -47,7 +47,7 @@ void func_800109E0(void *arg0) {
         do {
             temp_a1 = M2C_FIELD(arg0, M2C_UNK **, 8);
             M2C_FIELD(arg0, M2C_UNK **, 8) = (M2C_UNK *) *temp_a1;
-            func_80055960(&D_80125C48, temp_a1);
+            Pool_Free(&D_80125C48, temp_a1);
             M2C_FIELD(arg0, s32 *, 0xC) = (s32) (M2C_FIELD(arg0, s32 *, 0xC) - 1);
         } while (M2C_FIELD(arg0, M2C_UNK **, 8) != NULL);
     }
@@ -55,7 +55,7 @@ void func_800109E0(void *arg0) {
         do {
             temp_a1_2 = M2C_FIELD(arg0, M2C_UNK **, 0);
             M2C_FIELD(arg0, M2C_UNK **, 0) = (M2C_UNK *) *temp_a1_2;
-            func_80055960(&D_80125C48, temp_a1_2);
+            Pool_Free(&D_80125C48, temp_a1_2);
             M2C_FIELD(arg0, s32 *, 4) = (s32) (M2C_FIELD(arg0, s32 *, 4) - 1);
         } while (M2C_FIELD(arg0, M2C_UNK **, 0) != NULL);
     }

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void *func_80055A60(s32, M2C_UNK, M2C_UNK);         /* extern */
+void *Mem_AllocAlignedAlt(s32, M2C_UNK, M2C_UNK);         /* extern */
 M2C_UNK Mem_Free(void *);                      /* extern */
 s32 func_80063A20(s32);                             /* extern */
 M2C_UNK func_80063B54(s32);                         /* extern */
@@ -20,7 +20,7 @@ s32 func_80025238(s32 arg0) {
     s32 temp_a0_9;
     void *temp_v0;
 
-    temp_v0 = func_80055A60(func_80063D6C(), 0x3F, 0);
+    temp_v0 = Mem_AllocAlignedAlt(func_80063D6C(), 0x3F, 0);
     func_80063BFC(arg0, temp_v0);
     temp_a0 = M2C_FIELD(temp_v0, s32 *, 0);
     if (temp_a0 != -1) {

@@ -3,7 +3,7 @@
 
 M2C_UNK func_80024BA0(s32, s32, s32);               /* extern */
 M2C_UNK func_80024CC8(s32, s32);                    /* extern */
-s32 func_80055A0C(s32, M2C_UNK, M2C_UNK);           /* extern */
+s32 Mem_AllocAligned(s32, M2C_UNK, M2C_UNK);           /* extern */
 M2C_UNK func_80063BFC(s32, s32);                    /* extern */
 s32 func_80063D6C();                                /* extern */
 s32 func_80063D8C(s32);                             /* extern */
@@ -14,7 +14,7 @@ s32 func_80024FD4(s32 arg0) {
     s32 temp_s2;
     s32 temp_v0;
 
-    temp_v0 = func_80055A0C(func_80063D6C(), 0x3F, 0);
+    temp_v0 = Mem_AllocAligned(func_80063D6C(), 0x3F, 0);
     func_80063BFC(arg0, temp_v0);
     temp_s2 = func_80063D8C(arg0);
     temp_s0 = (func_80063DAC(arg0) - temp_s2) + temp_v0;
@@ -24,7 +24,7 @@ s32 func_80024FD4(s32 arg0) {
 }
 
 M2C_UNK func_80019390(M2C_UNK *, void *, s32);      /* extern */
-s32 func_80055A0C(s32, M2C_UNK, M2C_UNK);           /* extern */
+s32 Mem_AllocAligned(s32, M2C_UNK, M2C_UNK);           /* extern */
 M2C_UNK func_80063BFC(s32, s32);                    /* extern */
 s32 func_80063D6C();                                /* extern */
 s32 func_80063D8C(s32);                             /* extern */
@@ -37,7 +37,7 @@ s32 func_80025064(s32 arg0) {
     s32 temp_v0;
     void *temp_s0;
 
-    temp_v0 = func_80055A0C(func_80063D6C(), 0x3F, 0);
+    temp_v0 = Mem_AllocAligned(func_80063D6C(), 0x3F, 0);
     func_80063BFC(arg0, temp_v0);
     temp_s1 = func_80063D8C(arg0);
     temp_s0 = (func_80063DAC(arg0) - temp_s1) + temp_v0;

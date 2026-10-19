@@ -145,7 +145,9 @@ def matches(o, name, vram, size, rom, syms):
                 return False, f"unknown symbol {sym}"
             syms[sym] = int(m.group(1), 16)
         if kind == "R_MIPS_26":
-            if (a & 0xFC000000) != (b & 0xFC000000) or (b & 0x3FFFFFF) << 2 != syms[sym] & 0x0FFFFFFC or a & 0x3FFFFFF:
+            # the instruction may hold an addend (KMC's assembler does this for local jumps)
+            target = (syms[sym] + ((a & 0x3FFFFFF) << 2)) & 0x0FFFFFFC
+            if (a & 0xFC000000) != (b & 0xFC000000) or (b & 0x3FFFFFF) << 2 != target:
                 return False, f"+{k:#x} call"
         elif kind in ("R_MIPS_HI16", "R_MIPS_LO16"):
             if (a & 0xFFFF0000) != (b & 0xFFFF0000):

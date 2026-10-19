@@ -43,7 +43,7 @@ void func_8005AB4C(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s8 *, 8) = 1;
 }
 
-s32 func_80055930(M2C_UNK *);                       /* extern */
+s32 Pool_Alloc(M2C_UNK *);                       /* extern */
 M2C_UNK func_80057334(s32);                         /* extern */
 M2C_UNK guMtxF2L(M2C_UNK, s32);                /* extern */
 M2C_UNK osWritebackDCache(s32, M2C_UNK);                /* extern */
@@ -53,7 +53,7 @@ void func_8005AB5C(void *arg0, M2C_UNK arg1) {
     s32 temp_v0;
 
     func_80057334(M2C_FIELD(arg0, s32 *, 4));
-    temp_v0 = func_80055930(&D_80125C48);
+    temp_v0 = Pool_Alloc(&D_80125C48);
     M2C_FIELD(arg0, s32 *, 4) = temp_v0;
     guMtxF2L(arg1, temp_v0);
     osWritebackDCache(M2C_FIELD(arg0, s32 *, 4), 4);
