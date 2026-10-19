@@ -551,9 +551,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003BB40` | `03C740` | 0x30 | `func_8003BB40` | `src/auto/3C740.c` | C (generated) |
 | `8003BB70` | `03C770` | 0x2c | `func_8003BB70` | `src/auto/3C740.c` | C (generated) |
 | `8003BB9C` | `03C79C` | 0x38 | `func_8003BB9C` | `src/auto/3C79C.c` | C (generated) |
-| `8003BBD4` | `03C7D4` | 0x168 | `func_8003BBD4` | `asm/3C7D4.s` | asm |
-| `8003BD3C` | `03C93C` | 0x164 | `func_8003BD3C` | `asm/3C7D4.s` | asm |
-| `8003BEA0` | `03CAA0` | 0x424 | `func_8003BEA0` | `asm/3C7D4.s` | asm |
+| `8003BBD4` | `03C7D4` | 0x168 | `SaveMenu_PrevSlot` | `src/auto/3C7D4.c` | C (generated) |
+| `8003BD3C` | `03C93C` | 0x164 | `SaveMenu_NextSlot` | `src/auto/3C93C.c` | C (generated) |
+| `8003BEA0` | `03CAA0` | 0x424 | `func_8003BEA0` | `asm/3CAA0.s` | asm |
 | `8003C2C4` | `03CEC4` | 0x124 | `func_8003C2C4` | `src/auto/3CEC4.c` | C (generated) |
 | `8003C3E8` | `03CFE8` | 0x98 | `func_8003C3E8` | `asm/3CFE8.s` | asm |
 | `8003C480` | `03D080` | 0xc4 | `func_8003C480` | `src/auto/3D080.c` | C (generated) |
