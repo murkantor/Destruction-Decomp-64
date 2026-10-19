@@ -2,8 +2,8 @@
 #include "m2c.h"
 
 M2C_UNK osSendMesg(M2C_UNK *, M2C_UNK, M2C_UNK); /* extern */
-extern M2C_UNK D_80131F10;
+extern M2C_UNK __osSiAccessQueue;
 
 void __osSiRelAccess(void) {
-    osSendMesg(&D_80131F10, 0, 0);
+    osSendMesg(&__osSiAccessQueue, 0, 0);
 }

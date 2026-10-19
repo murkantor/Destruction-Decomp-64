@@ -261,3 +261,6 @@ alSavePull = 0x80074430; // type:func
 __osViCurr = 0x800B6C20;
 alGlobals = 0x800B56E0;
 __osPiDevMgr = 0x800B5720;
+__osSiAccessQueueEnabled = 0x800B6C30;
+__osSiAccessQueue = 0x80131F10;
+siAccessBuf = 0x800D1060;
