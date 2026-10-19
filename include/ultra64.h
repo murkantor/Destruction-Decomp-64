@@ -23,8 +23,17 @@ typedef s32 OSPri;
 typedef s32 OSId;
 
 typedef struct OSThread_s {
-    /* 0x000 */ u8 pad[0x1B0];
-} OSThread;
+    /* 0x000 */ struct OSThread_s *next;
+    /* 0x004 */ OSPri priority;
+    /* 0x008 */ struct OSThread_s **queue;
+    /* 0x00C */ struct OSThread_s *tlnext;
+    /* 0x010 */ u16 state;
+    /* 0x012 */ u16 flags;
+    /* 0x014 */ OSId id;
+    /* 0x018 */ s32 fp;
+    /* 0x01C */ void *thprof;
+    /* 0x020 */ u8 context[0x190];
+} OSThread; /* size = 0x1B0 */
 
 #define OS_READ 0
 #define OS_WRITE 1
