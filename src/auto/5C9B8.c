@@ -86,7 +86,7 @@ extern f64 fabs(f64);
 
 #define CLAMP256(v) if ((v) > 256) (v) = 256; else if ((v) < 0) (v) = 0
 
-void func_8005BDB8(World *w) {
+void World_UpdateSounds(World *w) {
     s32 dl[5] = { 0, 0, 0, 0, 0 };
     s32 dl0 = 0;
     s32 vol;

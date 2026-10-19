@@ -37,7 +37,7 @@ extern void Announcer_Request(s32 id, s32 arg1, s32 check);
 extern void func_80029A18(Car *, Car *, s32, s32);
 extern void func_800045B0(Car *, s32, s32, Car *, s32, s32);
 
-void func_80029378(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
+void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
     s32 dmgA;
     s32 dmgB;
     s32 num;

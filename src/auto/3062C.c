@@ -15,7 +15,7 @@ typedef struct {
     Body body;
 } CarW;
 extern f32 D_800D2E78;
-void func_8002FAC8(CarW *, Wheel *);
+void Car_CheckRamps(CarW *, Wheel *);
 
 void Car_UpdateWheels(CarW *car) {
     Body *b = &car->body;
@@ -27,6 +27,6 @@ void Car_UpdateWheels(CarW *car) {
         } else {
             b->wheels[i].x19C += D_800D2E78;
         }
-        func_8002FAC8(car, &b->wheels[i]);
+        Car_CheckRamps(car, &b->wheels[i]);
     }
 }

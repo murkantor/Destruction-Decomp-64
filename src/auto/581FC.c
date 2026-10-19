@@ -4,7 +4,7 @@
 typedef struct { u32 w0; u32 w1; } Gfx;
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (b); }
 
-Gfx *func_800575FC(Gfx *gfx) {
+Gfx *Gfx_InitRenderState(Gfx *gfx) {
     GFX2(gfx, 0xDB060000, 0);
     GFX2(gfx, 0xD9C0F9FB, 0);
     GFX2(gfx, 0xD7000000, 0);

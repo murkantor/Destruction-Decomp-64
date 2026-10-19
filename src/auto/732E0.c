@@ -35,16 +35,16 @@ typedef struct { u8 drvr[1]; } ALGlobals;
 extern ALGlobals *alGlobals;
 extern s16 D_800B6AA0[];
 extern void __assert(const char *, const char *, s32);
+extern char D_800BC370[];
+extern char D_800BC374[];
 extern Acmd *_pullSubFrame(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p);
 extern f32 func_80073384(f32 ivol, s32 samples, s16 ratem, u16 ratel);
 extern void _freePVoice(void *drvr, void *pvoice);
 extern void __freeParam(ALParam *param);
 
-extern char D_800BC370[];
-extern char D_800BC374[];
 #define assert(EX) ((EX) ? ((void)0) : __assert(D_800BC370, D_800BC374, __LINE__))
 
-Acmd *func_800726E0(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alEnvmixerPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     ALEnvMixer *e = (ALEnvMixer *)filter;
     s16 inp;

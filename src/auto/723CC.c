@@ -27,12 +27,12 @@ typedef struct {
 
 extern void alFilterNew(void *f, void *pull, void *param, s32 type);
 extern void *alHeapDBAlloc(u8 *file, s32 line, void *hp, s32 num, s32 size);
-extern s32 func_800726E0();
+extern s32 alEnvmixerPull();
 extern s32 alEnvmixerParam();
 
 void alEnvmixerNew(ALEnvMixer *e, void *hp)
 {
-    alFilterNew(e, func_800726E0, alEnvmixerParam, 4);
+    alFilterNew(e, alEnvmixerPull, alEnvmixerParam, 4);
     e->state = alHeapDBAlloc(0, 0, hp, 1, 0x50);
     e->first = 1;
     e->motion = 0;

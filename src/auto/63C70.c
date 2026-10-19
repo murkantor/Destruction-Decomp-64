@@ -3,7 +3,7 @@
 
 M2C_UNK func_800084EC(s32);                         /* extern */
 M2C_UNK func_80057308();                            /* extern */
-M2C_UNK func_8005BDB8(void *);                      /* extern */
+M2C_UNK World_UpdateSounds(void *);                      /* extern */
 M2C_UNK func_8005FAE4(s32);                         /* extern */
 M2C_UNK func_800633A0(s32);                         /* extern */
 M2C_UNK func_80063404(s32);                         /* extern */
@@ -43,5 +43,5 @@ void func_80063070(void *arg0) {
     }
     func_800633A0(M2C_FIELD(arg0, s32 *, 0x4BD24));
     func_8005FAE4(D_8011EEF0);
-    func_8005BDB8(D_8011EEF8);
+    World_UpdateSounds(D_8011EEF8);
 }

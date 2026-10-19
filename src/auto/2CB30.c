@@ -21,7 +21,7 @@ void func_80064304(void *);
 f32 func_80062F40(void);
 void World_UpdateEffects(void *, f32);
 void func_8002EB00(void *, f32);
-void func_8001B308(void);
+void Announcer_UpdateRace(void);
 void Anim_UpdateTimers(void);
 void func_8002104C(Slot68 *);
 
@@ -62,7 +62,7 @@ void World_Update(World *w) {
                 }
             }
             if (gGame[0]->x10FC == 0x1C) {
-                func_8001B308();
+                Announcer_UpdateRace();
             }
             Anim_UpdateTimers();
         }

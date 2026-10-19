@@ -53,7 +53,7 @@ extern L5 D_800B8890;  /* 0x88..0x8C */
 extern f64 D_800B88A8; /* 5000000000.0 */
 extern f64 D_800B88B0; /* 10000000000.0 */
 
-void func_8001B308(void) {
+void Announcer_UpdateRace(void) {
     L11 tbl;
     L5 lines;
     L4 lines4;

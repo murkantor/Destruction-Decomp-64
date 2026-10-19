@@ -60,7 +60,7 @@ static inline void aim(Car *car, Target t) {
     ai->x68 = func_800005C8(q, d);
 }
 
-void func_80005DCC(Car *car) {
+void Ai_Update(Car *car) {
     Target t = { -1.0f, -1.0f, -1.0f, -1.0f, 0 };
     Ai *ai = car->x38;
 

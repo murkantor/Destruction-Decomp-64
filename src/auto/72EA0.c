@@ -34,7 +34,7 @@ typedef struct {
     s32 memin;
 } ALLoadFilter;
 
-extern s32 func_80071AC0();
+extern s32 alAdpcmPull();
 extern s32 func_80071F04();
 void alCopy(void *src, void *dest, s32 len);
 
@@ -49,7 +49,7 @@ void alLoadParam(void *filter, s32 paramID, void *param)
             a->sample = 0;
             switch (a->table->type) {
                 case 0:
-                    a->handler = func_80071AC0;
+                    a->handler = alAdpcmPull;
                     a->table->len = 9 * ((s32)(a->table->len / 9));
                     a->bookSize = 2 * a->table->waveInfo.adpcmWave.book->order *
                         a->table->waveInfo.adpcmWave.book->npredictors * 8;

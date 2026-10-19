@@ -18,12 +18,12 @@ typedef struct {
 
 extern void alFilterNew(void *f, void *pull, void *param, s32 type);
 extern void *alHeapDBAlloc(u8 *file, s32 line, void *hp, s32 num, s32 size);
-extern s32 func_80071AC0();
+extern s32 alAdpcmPull();
 extern s32 alLoadParam();
 
 void alLoadNew(ALLoadFilter *f, ALDMANew dmaNew, void *hp)
 {
-    alFilterNew(f, func_80071AC0, alLoadParam, 0);
+    alFilterNew(f, alAdpcmPull, alLoadParam, 0);
     f->state = alHeapDBAlloc(0, 0, hp, 1, 32);
     f->lstate = alHeapDBAlloc(0, 0, hp, 1, 32);
     f->dma = dmaNew(&f->dmaState);

@@ -62,7 +62,7 @@ extern void Vec3f_Cross(Vec3f *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Scale(Vec3f *out, Vec3f *v, f32 s);
 extern void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 extern void Mtx3_MulVec3fTransposed(Vec3f *out, Vec3f *m, Vec3f *v);
-extern void func_8003672C(Vec3f *out, Car *car, Wheel *w, f32 load, Vec3f *p, s32 *slot, s32 i);
+extern void Wheel_ComputeTireForce(Vec3f *out, Car *car, Wheel *w, f32 load, Vec3f *p, s32 *slot, s32 i);
 
 void Car_ApplyWheelForces(Car *car, Vec3f *force, Vec3f *torque, s32 *slots)
 {
@@ -127,7 +127,7 @@ void Car_ApplyWheelForces(Car *car, Vec3f *force, Vec3f *torque, s32 *slots)
         vel.x += bvel->x;
         vel.y += bvel->y;
         vel.z += bvel->z;
-        func_8003672C(&F, car, w, g * 0.25, &p, &slots[i], i);
+        Wheel_ComputeTireForce(&F, car, w, g * 0.25, &p, &slots[i], i);
         Vec3f_Dot(&vel2, &vel, &vel);
         if (w->xC4 == 0.0f && vel2 == 0.0f) {
             Vec3f_Length(&fLen, &F);
