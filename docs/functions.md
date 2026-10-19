@@ -902,26 +902,26 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80059A94` | `05A694` | 0x38 | `func_80059A94` | `src/auto/5A694.c` | C (generated) |
 | `80059ACC` | `05A6CC` | 0x44 | `func_80059ACC` | `src/auto/5A6CC.c` | C (generated) |
 | `80059B10` | `05A710` | 0x50 | `func_80059B10` | `src/auto/5A710.c` | C (generated) |
-| `80059B60` | `05A760` | 0x670 | `func_80059B60` | `asm/5A760.s` | asm |
-| `8005A1D0` | `05ADD0` | 0x1c | `func_8005A1D0` | `src/auto/5ADD0.c` | C (generated) |
-| `8005A1EC` | `05ADEC` | 0x10 | `func_8005A1EC` | `src/auto/5ADD0.c` | C (generated) |
-| `8005A1FC` | `05ADFC` | 0x48 | `func_8005A1FC` | `src/auto/5ADFC.c` | C (generated) |
-| `8005A244` | `05AE44` | 0x4c | `func_8005A244` | `src/auto/5AE44.c` | C (generated) |
-| `8005A290` | `05AE90` | 0x30 | `func_8005A290` | `src/auto/5AE90.c` | C (generated) |
-| `8005A2C0` | `05AEC0` | 0x34 | `func_8005A2C0` | `src/auto/5AEC0.c` | C (generated) |
-| `8005A2F4` | `05AEF4` | 0x64 | `func_8005A2F4` | `src/auto/5AEC0.c` | C (generated) |
-| `8005A358` | `05AF58` | 0x34 | `func_8005A358` | `src/auto/5AEC0.c` | C (generated) |
-| `8005A38C` | `05AF8C` | 0x34 | `func_8005A38C` | `src/auto/5AEC0.c` | C (generated) |
-| `8005A3C0` | `05AFC0` | 0x88 | `func_8005A3C0` | `asm/5AFC0.s` | asm |
-| `8005A448` | `05B048` | 0x50 | `func_8005A448` | `asm/5AFC0.s` | asm |
-| `8005A498` | `05B098` | 0x98 | `func_8005A498` | `asm/5AFC0.s` | asm |
-| `8005A530` | `05B130` | 0xe0 | `func_8005A530` | `asm/5AFC0.s` | asm |
-| `8005A610` | `05B210` | 0x30 | `func_8005A610` | `src/auto/5B210.c` | C (generated) |
-| `8005A640` | `05B240` | 0xb4 | `func_8005A640` | `asm/5B240.s` | asm |
-| `8005A6F4` | `05B2F4` | 0x98 | `func_8005A6F4` | `asm/5B240.s` | asm |
-| `8005A78C` | `05B38C` | 0x98 | `func_8005A78C` | `asm/5B240.s` | asm |
-| `8005A824` | `05B424` | 0x98 | `func_8005A824` | `asm/5B240.s` | asm |
-| `8005A8BC` | `05B4BC` | 0xa4 | `func_8005A8BC` | `asm/5B240.s` | asm |
+| `80059B60` | `05A760` | 0x670 | `Math_Atan2` | `asm/5A760.s` | asm |
+| `8005A1D0` | `05ADD0` | 0x1c | `Vec3f_Copy` | `src/auto/5ADD0.c` | C (generated) |
+| `8005A1EC` | `05ADEC` | 0x10 | `Vec3f_Set` | `src/auto/5ADD0.c` | C (generated) |
+| `8005A1FC` | `05ADFC` | 0x48 | `Vec3f_FromAngleXY` | `src/auto/5ADFC.c` | C (generated) |
+| `8005A244` | `05AE44` | 0x4c | `Vec3f_FromAngleXZ` | `src/auto/5AE44.c` | C (generated) |
+| `8005A290` | `05AE90` | 0x30 | `Vec3f_Scale` | `src/auto/5AE90.c` | C (generated) |
+| `8005A2C0` | `05AEC0` | 0x34 | `Vec3f_Dot` | `src/auto/5AEC0.c` | C (generated) |
+| `8005A2F4` | `05AEF4` | 0x64 | `Vec3f_Cross` | `src/auto/5AEC0.c` | C (generated) |
+| `8005A358` | `05AF58` | 0x34 | `Vec3f_Add` | `src/auto/5AEC0.c` | C (generated) |
+| `8005A38C` | `05AF8C` | 0x34 | `Vec3f_Sub` | `src/auto/5AEC0.c` | C (generated) |
+| `8005A3C0` | `05AFC0` | 0x88 | `Vec3f_Normalize` | `src/auto/5AFC0.c` | C (generated) |
+| `8005A448` | `05B048` | 0x50 | `Vec3f_Length` | `src/auto/5B048.c` | C (generated) |
+| `8005A498` | `05B098` | 0x98 | `Vec3f_SetLength` | `src/auto/5B098.c` | C (generated) |
+| `8005A530` | `05B130` | 0xe0 | `Vec3f_CosAngle` | `src/auto/5B130.c` | C (generated) |
+| `8005A610` | `05B210` | 0x30 | `Vec3f_AngleXY` | `src/auto/5B210.c` | C (generated) |
+| `8005A640` | `05B240` | 0xb4 | `Vec3f_FromAngleXYScaled` | `src/auto/5B240.c` | C (generated) |
+| `8005A6F4` | `05B2F4` | 0x98 | `Vec3f_RotateZ` | `src/auto/5B2F4.c` | C (generated) |
+| `8005A78C` | `05B38C` | 0x98 | `Vec3f_RotateX` | `src/auto/5B38C.c` | C (generated) |
+| `8005A824` | `05B424` | 0x98 | `Vec3f_RotateY` | `src/auto/5B424.c` | C (generated) |
+| `8005A8BC` | `05B4BC` | 0x98 | `Vec3f_RotateZ2` | `src/auto/5B4BC.c` | C (generated) |
 | `8005A960` | `05B560` | 0x8 | `func_8005A960` | `src/auto/5B560.c` | C (generated) |
 | `8005A968` | `05B568` | 0x8 | `func_8005A968` | `src/auto/5B560.c` | C (generated) |
 | `8005A970` | `05B570` | 0x7c | `func_8005A970` | `src/auto/5B570.c` | C (generated) |

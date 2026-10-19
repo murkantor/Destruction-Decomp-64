@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Show a hand-written function's compiled code next to the original.
 
-Usage: python3 tools/diff_func.py [--opt -O1] FILE.c [NAME]
+Usage: python3 tools/diff_func.py [--opt -O1] [--flags -ffast-math] FILE.c [NAME]
 
 FILE.c holds the function without the includes, as for check_c.py. NAME
 defaults to the file name. Lines that differ are marked with *.
@@ -35,8 +35,11 @@ def disasm(blob, vram):
 
 def main():
     args = sys.argv[1:]
-    if args[0] == "--opt":
-        autodecomp.CFLAGS[autodecomp.OPT_INDEX] = args[1]
+    while args[0] in ("--opt", "--flags"):
+        if args[0] == "--opt":
+            autodecomp.CFLAGS[autodecomp.OPT_INDEX] = args[1]
+        else:
+            autodecomp.CFLAGS.extend(args[1].split())
         args = args[2:]
     path = args[0]
     name = args[1] if len(args) > 1 else os.path.basename(path)[:-2]
