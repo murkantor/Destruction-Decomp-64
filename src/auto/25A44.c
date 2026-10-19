@@ -1,0 +1,53 @@
+#include "common.h"
+#include "m2c.h"
+
+typedef struct { void *x0; u8 pad4[0x20]; void *x24; u8 pad28[0x18]; } Ent40;
+typedef struct Node { struct Node *next; } Node;
+typedef struct { u8 pad0[4]; u8 x4; u8 x5; u8 pad6[0x1E]; u8 x24; u8 pad25[3]; Ent40 *x28; Node **x2C; } Lvl;
+typedef struct { u8 pad0[0xC]; Lvl *xC; u8 pad10[8]; void *x18; } Obj;
+typedef struct { u8 pad0[0x10]; s32 x10; u8 pad14[0x18]; s32 x2C; } Sub;
+typedef struct { u8 pad0[0x1100]; Sub *x1100; } Game;
+extern Game *gGame;
+void func_8002BED4(void);
+void func_80012958(void);
+void func_80063B54(void *);
+void func_8000217C(s32);
+void func_80002074(void);
+void func_80002148(void);
+void func_80014048(void);
+void func_8002DCBC(void);
+void func_80063FEC(Node **, Node *);
+void Mem_Free(void *);
+
+void func_80024E44(Obj *arg0) {
+    s32 i;
+    Sub *s;
+
+    func_8002BED4();
+    func_80012958();
+    for (i = 0; i < arg0->xC->x24; i++) {
+        if (arg0->xC->x28[i].x24 != NULL) {
+            func_80063B54(arg0->xC->x28[i].x24);
+        }
+        func_80063B54(arg0->xC->x28[i].x0);
+    }
+    s = gGame->x1100;
+    if (s->x10 == 1) {
+        func_8000217C(s->x2C);
+    } else {
+        func_80002074();
+        func_80002148();
+    }
+    func_80014048();
+    func_8002DCBC();
+    for (i = 0; i < arg0->xC->x4 * arg0->xC->x5; i++) {
+        while (arg0->xC->x2C[i] != NULL) {
+            func_80063FEC(&arg0->xC->x2C[i], arg0->xC->x2C[i]->next);
+        }
+    }
+    Mem_Free(arg0->xC->x2C);
+    arg0->xC->x2C = NULL;
+    Mem_Free(arg0->x18);
+    arg0->x18 = NULL;
+    Mem_Free(arg0);
+}
