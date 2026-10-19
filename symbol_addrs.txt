@@ -534,3 +534,4 @@ __osPfsInodeCacheBank = 0x800B6D94;
 Pad_InitAll = 0x80058950; // type:func
 gContStatus = 0x80131388;
 _log_frac = 0x80079660; // type:func
+Gfx_IsCommandKind = 0x80057A48; // type:func

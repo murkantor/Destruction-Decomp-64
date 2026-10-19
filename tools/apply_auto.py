@@ -50,7 +50,7 @@ def merge(codes):
     return "\n".join(out).rstrip() + "\n"
 
 
-def shared_rodata(rodata):
+def shared_rodata(rodata, auto):
     """(function, symbol, other user) for rodata symbols that other functions also use.
 
     A function's rodata becomes local to its C file, so a symbol in that range
@@ -74,7 +74,10 @@ def shared_rodata(rodata):
                 users.setdefault(sym, set()).add(func)
     out = []
     for name, (start, end) in rodata.items():
+        src = open(os.path.join(auto, name + ".c")).read()
         for rom, sym in syms:
+            if re.search(r"\b%s\b\s*(\[[^\]]*\])?\s*=" % sym, src):
+                continue  # the C file defines it, so the other users still find it
             if start <= rom < end:
                 for user in sorted(users.get(sym, set()) - {name}):
                     out.append((name, sym, user))
@@ -98,7 +101,7 @@ def main():
         matches.append((int(p[0], 16), int(p[1], 16), p[2]))
         if len(p) == 5:
             rodata[p[2]] = (int(p[3], 16) - ROM_BASE, int(p[3], 16) - ROM_BASE + int(p[4], 16))
-    shared = shared_rodata(rodata)
+    shared = shared_rodata(rodata, auto)
     if shared:
         for name, sym, user in shared:
             print(f"skipping {name}: its rodata {sym} is also used by {user}")
