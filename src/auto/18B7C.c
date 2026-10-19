@@ -1,0 +1,13 @@
+#include "common.h"
+#include "m2c.h"
+
+void func_80017F7C(void *arg0) {
+    if (M2C_FIELD(arg0, u8 *, 0) == 0) {
+        M2C_FIELD(arg0, u8 *, 0) = 1U;
+        M2C_FIELD(arg0, s32 *, 4) = 0;
+    }
+}
+
+void func_80017F98(s8 *arg0) {
+    *arg0 = 0;
+}

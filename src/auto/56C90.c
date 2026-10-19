@@ -1,0 +1,25 @@
+#include "common.h"
+#include "m2c.h"
+
+void func_80056090(void) {
+
+}
+
+M2C_UNK osViSwapBuffer();                            /* extern */
+M2C_UNK osViBlack(M2C_UNK);                     /* extern */
+
+void func_80056098(void) {
+    osViSwapBuffer();
+    osViBlack(0);
+}
+
+s32 osViGetCurrentFramebuffer();                                /* extern */
+s32 osViGetNextFramebuffer();                                /* extern */
+
+void func_800560BC(void) {
+    s32 temp_s0;
+
+    do {
+        temp_s0 = osViGetCurrentFramebuffer();
+    } while (temp_s0 != osViGetNextFramebuffer());
+}

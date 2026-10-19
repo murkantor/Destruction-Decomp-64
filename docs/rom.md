@@ -37,3 +37,13 @@ The main segment is about 0.75 MB, so IPL3 loads all of it. The extra DMA in `bo
 | airport, city, coastal, death, desert, glacier, ground_zero, industrial, jungle, pit, sewer, swamp | `<track>.o`, `<track>_sdl.o` |
 
 The zip entries are dated 25 Aug 1999.
+
+## Main structures
+
+| Symbol | Type | Notes |
+|---|---|---|
+| `gGame` (0x8011EEE4) | `Game *` | The most used global. `gGame->race` (0x1100) is read over 300 times |
+| `Race` | struct | `cars[12]` at 0x74, `numCars` at 0xA4 |
+| `Car` | struct, 0xEA0 bytes | Allocated by `Car_Create`; see [prototype.md](prototype.md#car-fields) |
+
+Headers: `include/game.h`, `include/car.h`.

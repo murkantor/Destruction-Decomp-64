@@ -17,3 +17,5 @@
 __pycache__/
 .venv/
 venv/
+/tools/m2c/
+/tools/permuter/
