@@ -47,13 +47,13 @@ s32 Pool_Alloc(M2C_UNK *);                       /* extern */
 M2C_UNK func_80057334(s32);                         /* extern */
 M2C_UNK guMtxF2L(M2C_UNK, s32);                /* extern */
 M2C_UNK osWritebackDCache(s32, M2C_UNK);                /* extern */
-extern M2C_UNK D_80125C48;
+extern M2C_UNK gParticlePool;
 
 void func_8005AB5C(void *arg0, M2C_UNK arg1) {
     s32 temp_v0;
 
     func_80057334(M2C_FIELD(arg0, s32 *, 4));
-    temp_v0 = Pool_Alloc(&D_80125C48);
+    temp_v0 = Pool_Alloc(&gParticlePool);
     M2C_FIELD(arg0, s32 *, 4) = temp_v0;
     guMtxF2L(arg1, temp_v0);
     osWritebackDCache(M2C_FIELD(arg0, s32 *, 4), 4);
