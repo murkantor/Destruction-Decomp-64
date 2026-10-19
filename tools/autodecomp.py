@@ -164,26 +164,71 @@ def matches(o, name, vram, size, rom, syms):
                     return False, f"+{k:#x} address"
         else:
             return False, f"reloc {kind}"
-    return True, ""
+    return True, size
+
+
+def repair(code, err):
+    """Fix two common m2c slips that stop the output compiling."""
+    # a callee prototype guessed from one call site that another call site contradicts
+    for callee in set(re.findall(r"too few arguments to function `(\w+)'", err)):
+        code = re.sub(r"^(.*\b" + callee + r")\(.*\);(.*)$", r"\1();\2", code, count=1, flags=re.M)
+    # a stack variable that m2c uses but never declares
+    missing = sorted(set(re.findall(r"`(sp[0-9A-F]+)' undeclared", err)))
+    if missing:
+        decl = "".join(f"    M2C_UNK {v};\n" for v in missing)
+        code = re.sub(r"^(\w[^\n]*\)\s*\{\n)", lambda m: m.group(1) + decl, code, count=1, flags=re.M)
+    return code
+
+
+# m2c option sets to try in turn; different C shapes lead GCC to different code
+VARIANTS = [
+    [],
+    ["--reg-vars", "saved"],
+    ["--no-andor"],
+    ["--reg-vars", "saved", "--no-andor"],
+    ["--void"],
+    ["--reg-vars", "saved", "--void"],
+]
 
 
 def try_one(job):
     name, vram, size, text, m2c = job
+    first_why = None
     with tempfile.TemporaryDirectory() as work:
         asm = os.path.join(work, name + ".s")
         open(asm, "w").write(text)
-        r = subprocess.run([sys.executable, os.path.join(m2c, "m2c.py"), "--target", "mips-gcc-c", "--valid-syntax", asm],
-                           capture_output=True, text=True)
-        if r.returncode or "M2C_ERROR" in r.stdout or not r.stdout.strip():
-            return name, vram, size, None, "m2c failed"
-        src = '#include "common.h"\n#include "m2c.h"\n\n' + r.stdout
-        o, err = compile_c(src, work)
-        if not o:
-            return name, vram, size, None, "compile error"
-        ok, why = matches(o, name, vram, size, ROM, SYMS)
-        if ok:
-            return name, vram, size, r.stdout, ""
-        return name, vram, size, None, ("code differs" if why.startswith("+") else why)
+        seen = set()
+        for opts in VARIANTS:
+            r = subprocess.run([sys.executable, os.path.join(m2c, "m2c.py"), "--target", "mips-gcc-c", "--valid-syntax", *opts, asm],
+                               capture_output=True, text=True)
+            if r.returncode or "M2C_ERROR" in r.stdout or not r.stdout.strip():
+                why = "m2c failed"
+            elif r.stdout in seen:
+                continue
+            else:
+                seen.add(r.stdout)
+                code = r.stdout
+                o, err = compile_c('#include "common.h"\n#include "m2c.h"\n\n' + code, work)
+                for _ in range(3):
+                    if o:
+                        break
+                    fixed = repair(code, err)
+                    if fixed == code:
+                        break
+                    code = fixed
+                    o, err = compile_c('#include "common.h"\n#include "m2c.h"\n\n' + code, work)
+                if not o:
+                    why = "compile error"
+                    if os.environ.get("AUTODECOMP_ERRORS"):
+                        line = next((l for l in err.splitlines() if ":" in l and "warning" not in l and "In function" not in l), err[:80])
+                        why += ": " + re.sub(r"^.*?:\d+: ", "", line)[:70]
+                else:
+                    ok, why = matches(o, name, vram, size, ROM, SYMS)
+                    if ok:
+                        return name, vram, size, code, ""
+                    why = "code differs" if why.startswith("+") else why
+            first_why = first_why or why
+    return name, vram, size, None, first_why
 
 
 def init(rom, syms):
@@ -204,8 +249,9 @@ def main():
     syms = load_symbols()
     os.makedirs(args.out, exist_ok=True)
     files = [os.path.join(ROOT, "asm", f) for f in sorted(os.listdir(os.path.join(ROOT, "asm"))) if f.endswith(".s") and f != "entry.s"]
+    # a lone nop is padding after the last function of a file, not a function
     jobs = [(n, v, sz, t, args.m2c) for path in files for n, v, sz, t in functions(path)
-            if sz <= args.max_size and (not args.only or n in args.only)]
+            if sz <= args.max_size and (not args.only or n in args.only) and sz > 4]
     found, reasons = [], {}
     import multiprocessing
     with multiprocessing.Pool(args.j, initializer=init, initargs=(rom, syms)) as pool:
@@ -220,7 +266,7 @@ def main():
         for vram, name, size in found:
             f.write(f"{vram:08X} {size:#06x} {name}\n")
     print(f"tried {len(jobs)}, matched {len(found)}")
-    for k, v in sorted(reasons.items(), key=lambda x: -x[1])[:10]:
+    for k, v in sorted(reasons.items(), key=lambda x: -x[1])[:int(os.environ.get("AUTODECOMP_TOP", "10"))]:
         print(f"  {v:4d} {k}")
 
 
