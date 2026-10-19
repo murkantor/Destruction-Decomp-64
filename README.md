@@ -2,7 +2,7 @@
 
 A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
 
-Status: the ROM builds and matches. 377 of about 1550 functions are in C: the boot path in `src/main/boot.c`, and 372 generated ones in `src/auto/` that still need real types and names.
+Status: the ROM builds and matches. 383 of about 1550 functions are in C: the boot path in `src/main/boot.c`, and 378 generated or hand-fixed ones in `src/auto/` that still need real types and names.
 
 You need your own copy of the ROM. It is not included and must never be committed.
 
@@ -62,6 +62,7 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `tools/autodecomp.py`, `tools/apply_auto.py` | Generate matching C with m2c and add it to the build |
 | `tools/permute_setup.py`, `tools/permute_collect.py` | Run decomp-permuter on near misses and collect the matches |
 | `tools/rename.py` | Apply names from `symbol_addrs.txt` to the C |
+| `tools/check_c.py` | Check hand-written functions against the ROM before `apply_auto.py` adds them |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
 | `asm/`, `assets/`, `build/` | Generated, not committed |
 
