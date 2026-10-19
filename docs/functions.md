@@ -871,7 +871,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800585D0` | `0591D0` | 0x230 | `func_800585D0` | `asm/58E2C.s` | asm |
 | `80058800` | `059400` | 0x48 | `func_80058800` | `src/auto/59400.c` | C (generated) |
 | `80058848` | `059448` | 0x108 | `func_80058848` | `asm/59448.s` | asm |
-| `80058950` | `059550` | 0xf0 | `func_80058950` | `asm/59448.s` | asm |
+| `80058950` | `059550` | 0xf0 | `Pad_InitAll` | `src/auto/59550.c` | C (generated) |
 | `80058A40` | `059640` | 0x1c | `func_80058A40` | `src/auto/59640.c` | C (generated) |
 | `80058A5C` | `05965C` | 0xc | `func_80058A5C` | `src/auto/59640.c` | C (generated) |
 | `80058A68` | `059668` | 0xc | `func_80058A68` | `src/auto/59640.c` | C (generated) |
@@ -1259,8 +1259,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80068C70` | `069870` | 0x98 | `guMtxF2L` | `src/auto/69870.c` | C (generated) |
 | `80068D08` | `069908` | 0xa8 | `guMtxL2F` | `src/auto/69908.c` | C (generated) |
 | `80068DB0` | `0699B0` | 0x50 | `guMtxIdentF` | `src/auto/699B0.c` | C (generated) |
-| `80068E00` | `069A00` | 0xf0 | `func_80068E00` | `asm/69A00.s` | asm |
-| `80068EF0` | `069AF0` | 0xdc | `func_80068EF0` | `asm/69A00.s` | asm |
+| `80068E00` | `069A00` | 0xf0 | `guMtxIdent` | `src/auto/69A00.c` | C (generated) |
+| `80068EF0` | `069AF0` | 0xdc | `func_80068EF0` | `asm/69AF0.s` | asm |
 | `80068FCC` | `069BCC` | 0xac | `func_80068FCC` | `src/auto/69BCC.c` | C (generated) |
 | `80069080` | `069C80` | 0xa8 | `guNormalize` | `src/libultra/guNormalize.c` | C |
 | `80069130` | `069D30` | 0x1b0 | `guPerspectiveF` | `src/auto/69D30.c` | C (generated) |
@@ -1492,7 +1492,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80077290` | `077E90` | 0x200 | `__osContRamWrite` | `asm/77298.s` | asm |
 | `80077490` | `078090` | 0x6c | `__osContAddressCrc` | `src/auto/78090.c` | C (generated) |
 | `800774FC` | `0780FC` | 0x7c | `__osContDataCrc` | `src/auto/780FC.c` | C (generated) |
-| `80077580` | `078180` | 0xec | `func_80077580` | `asm/78178.s` | asm |
+| `80077580` | `078180` | 0xec | `__osPfsGetStatus` | `src/auto/78180.c` | C (generated) |
 | `8007766C` | `07826C` | 0x90 | `__osPfsRequestOneChannel` | `src/auto/7826C.c` | C (generated) |
 | `800776FC` | `0782FC` | 0x80 | `__osPfsGetOneChannelData` | `src/auto/782FC.c` | C (generated) |
 | `80077780` | `078380` | 0x48 | `__osResetGlobalIntMask` | `src/libultra/__osResetGlobalIntMask.c` | C |
