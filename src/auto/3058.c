@@ -19,7 +19,7 @@ typedef struct {
 } GameState;
 extern GameState *gGame;
 void *Mem_Alloc(u32);
-s32 func_80063A20(s32);
+s32 Res_Get(s32);
 
 Pair *func_80002458(Pair *src) {
     RaceState *r = gGame->race;
@@ -28,7 +28,7 @@ Pair *func_80002458(Pair *src) {
 
     for (i = 0; i < r->track->count; i++) {
         dst[i].a = src[i].a;
-        dst[i].b = func_80063A20(src[i].b);
+        dst[i].b = Res_Get(src[i].b);
     }
     return dst;
 }

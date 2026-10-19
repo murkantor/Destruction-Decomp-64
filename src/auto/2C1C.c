@@ -19,14 +19,14 @@ typedef struct {
 } Game;
 extern Game *gGame;
 
-u32 func_80063D6C(s32);
+u32 Res_GetSize(s32);
 void *Mem_AllocAligned(u32, s32, s32);
-void func_80063BFC(s32, void *);
+void Res_Load(s32, void *);
 
 void *func_8000201C(s32 id) {
-    void *p = Mem_AllocAligned(func_80063D6C(id), 7, 0);
+    void *p = Mem_AllocAligned(Res_GetSize(id), 7, 0);
 
-    func_80063BFC(id, p);
+    Res_Load(id, p);
     gGame->race->unk34 = p;
     return p;
 }

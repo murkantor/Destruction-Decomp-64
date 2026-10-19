@@ -3,3 +3,6 @@ _mainSegmentStart = 0x80000450;
 _mainSegmentRomStart = 0x1050;
 _mainSegmentRomEnd = 0xBD4A0;
 gHeapStart = 0x80137170;
+
+/* Res_Load subtracts this from the resource offsets; it is 0 in the original link. */
+D_00000000 = 0x0;

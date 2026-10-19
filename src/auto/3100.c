@@ -21,22 +21,22 @@ extern GameState *gGame;
 void *Mem_Alloc(u32);
 void *Mem_AllocAlignedAlt(u32, u32, u32);
 void Mem_Free(void *);
-s32 func_80063A20(s32);
-void func_80063BFC(s32, void *);
-u32 func_80063D6C(s32);
+s32 Res_Get(s32);
+void Res_Load(s32, void *);
+u32 Res_GetSize(s32);
 
 Pair *func_80002500(s32 id) {
-    Pair *src = Mem_AllocAlignedAlt(func_80063D6C(id), 7, 0);
+    Pair *src = Mem_AllocAlignedAlt(Res_GetSize(id), 7, 0);
     RaceState *r;
     Pair *dst;
     s32 i;
 
-    func_80063BFC(id, src);
+    Res_Load(id, src);
     r = gGame->race;
     dst = Mem_Alloc(r->track->count * sizeof(Pair));
     for (i = 0; i < r->track->count; i++) {
         dst[i].a = src[i].a;
-        dst[i].b = func_80063A20(src[i].b);
+        dst[i].b = Res_Get(src[i].b);
     }
     Mem_Free(src);
     return dst;

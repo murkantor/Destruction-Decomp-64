@@ -16,19 +16,19 @@ typedef struct {
     RaceState *race;
 } GameState;
 extern GameState *gGame;
-u32 func_80063D6C(s32);
+u32 Res_GetSize(s32);
 void *Mem_AllocAligned(u32, u32, u32);
-void func_80063BFC(s32, void *);
+void Res_Load(s32, void *);
 
 Entry *func_800020B4(s32 id) {
-    u32 size = func_80063D6C(id);
+    u32 size = Res_GetSize(id);
     Entry *e = Mem_AllocAligned(size, 7, 0);
     RaceState *r;
     u32 n;
     s32 i;
     char unused[1];
 
-    func_80063BFC(id, e);
+    Res_Load(id, e);
     r = gGame->race;
     n = size >> 4;
     r->x3C = e;

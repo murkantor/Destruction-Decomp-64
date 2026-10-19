@@ -1,14 +1,14 @@
 #include "common.h"
 #include "m2c.h"
 
-void *func_80063E78();                              /* extern */
+void *Res_Find();                              /* extern */
 M2C_UNK func_80063FEC(void *, s32);                 /* extern */
 
 void func_80063AAC(void) {
     s32 *temp_a0;
     void *temp_v0;
 
-    temp_v0 = func_80063E78();
+    temp_v0 = Res_Find();
     if (temp_v0 != NULL) {
         if (M2C_FIELD(temp_v0, s32 *, 0x1C) >= 2) {
             temp_a0 = M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x14), s32 **, 4);

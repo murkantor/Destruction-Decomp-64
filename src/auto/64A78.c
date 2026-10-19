@@ -8,7 +8,7 @@ typedef struct {
 extern s32 D_800B0330;
 extern Entry20 D_80097D90[];
 
-Entry20 *func_80063E78(s32 id) {
+Entry20 *Res_Find(s32 id) {
     Entry20 *found = NULL;
     s32 i;
 

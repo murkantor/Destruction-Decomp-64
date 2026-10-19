@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 void *Mem_Alloc(M2C_UNK);                           /* extern */
-s32 func_80063A20(s32);                             /* extern */
+s32 Res_Get(s32);                             /* extern */
 extern void *gGame;
 
 void func_80002220(void *arg0) {
@@ -25,8 +25,8 @@ void func_80002220(void *arg0) {
     if (temp_a0 == 0) {
         M2C_FIELD(temp_v0, s32 *, 0x10) = 0;
     } else {
-        M2C_FIELD(temp_v0, s32 *, 0x10) = func_80063A20(temp_a0);
+        M2C_FIELD(temp_v0, s32 *, 0x10) = Res_Get(temp_a0);
     }
-    M2C_FIELD(temp_v0, s32 *, 0x18) = func_80063A20(M2C_FIELD(arg0, s32 *, 0x20));
+    M2C_FIELD(temp_v0, s32 *, 0x18) = Res_Get(M2C_FIELD(arg0, s32 *, 0x20));
     M2C_FIELD(M2C_FIELD(gGame, void **, 0x1100), void **, 0x2C) = temp_v0;
 }
