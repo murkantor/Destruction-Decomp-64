@@ -1431,7 +1431,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80071F04` | `072B04` | 0x39c | `func_80071F04` | `asm/726BC.s` | asm |
 | `800722A0` | `072EA0` | 0x1ac | `alLoadParam` | `asm/726BC.s` | asm |
 | `8007244C` | `07304C` | 0x184 | `func_8007244C` | `asm/726BC.s` | asm |
-| `800725D0` | `0731D0` | 0xdc | `alAuxBusPull` | `asm/726BC.s` | asm |
+| `800725D0` | `0731D0` | 0xdc | `alAuxBusPull` | `src/auto/731D0.c` | C (generated) |
 | `800726AC` | `0732AC` | 0x30 | `alAuxBusParam` | `src/libultra/alAuxBusParam.c` | C |
 | `800726E0` | `0732E0` | 0x54c | `func_800726E0` | `asm/732DC.s` | asm |
 | `80072C2C` | `07382C` | 0xd4 | `alEnvmixerParam` | `asm/732DC.s` | asm |
@@ -1441,7 +1441,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80073104` | `073D04` | 0x280 | `func_80073104` | `asm/73D04.s` | asm |
 | `80073384` | `073F84` | 0x84 | `func_80073384` | `src/auto/73F84.c` | C (generated) |
 | `80073410` | `074010` | 0x1c | `alFilterNew` | `src/libultra/alFilterNew.c` | C |
-| `80073430` | `074030` | 0x140 | `alMainBusPull` | `asm/7402C.s` | asm |
+| `80073430` | `074030` | 0x140 | `alMainBusPull` | `src/auto/74030.c` | C (generated) |
 | `80073570` | `074170` | 0x30 | `alMainBusParam` | `src/libultra/alMainBusParam.c` | C |
 | `800735A0` | `0741A0` | 0x1ec | `func_800735A0` | `asm/741A0.s` | asm |
 | `8007378C` | `07438C` | 0xc4 | `alResampleParam` | `asm/741A0.s` | asm |
@@ -1453,7 +1453,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8007418C` | `074D8C` | 0x170 | `func_8007418C` | `asm/74814.s` | asm |
 | `800742FC` | `074EFC` | 0x9c | `func_800742FC` | `asm/74814.s` | asm |
 | `80074398` | `074F98` | 0x98 | `func_80074398` | `asm/74814.s` | asm |
-| `80074430` | `075030` | 0x100 | `alSavePull` | `asm/74814.s` | asm |
+| `80074430` | `075030` | 0x100 | `alSavePull` | `src/auto/75030.c` | C (generated) |
 | `80074530` | `075130` | 0x28 | `alSaveParam` | `src/auto/75130.c` | C (generated) |
 | `80074560` | `075160` | 0x34 | `alCopy` | `src/auto/75160.c` | C (generated) |
 | `800745A0` | `0751A0` | 0x14 | `__osAiDeviceBusy` | `src/libultra/__osAiDeviceBusy.c` | C |
