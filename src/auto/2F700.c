@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f a; Vec3f b; } Seg;
 typedef struct {
@@ -81,15 +84,15 @@ extern u8 D_800960C0;
 extern s32 D_800958B4;
 void func_8002FA20(Car *);
 void Model_TransformVerts(Body *);
-void func_80023340(Car *);
-void func_8002F924(void *);
+void Car_ResolveTrackCollision(Car *);
+void Trigger_CheckCarsInZone(void *);
 void func_8002F66C(void *);
 void Cars_CheckCollisions(void *);
 void Car_UpdateWheels(Car *);
 void func_80031EC0(Car *, s32);
 void func_800301E4(Body *, void *, s32 *);
-void func_80034EFC(Car *, Body *);
-void func_8002DDD0(Car *);
+void Car_ApplyContactImpulses(Car *, Body *);
+void Car_CheckTriggersAndPickups(Car *);
 void func_8002E740(void);
 void func_800288A4(void);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
@@ -98,7 +101,7 @@ f32 Vec3f_DistXZ(Vec3f, Vec3f);
 void Basis_Orthonormalize(Vec3f *);
 f64 fabs(f64);
 
-void func_8002EB00(void *w, f32 dt) {
+void Car_PhysicsStep(void *w, f32 dt) {
     Buf180 buf1[12];
     Buf180 buf2[12];
     u8 buf3[0x12C0];
@@ -140,10 +143,10 @@ void func_8002EB00(void *w, f32 dt) {
         Car *c2 = ((World *)w)->x40C[i];
         switch (c2->x0) {
         case 9:
-            func_80023340(c2);
+            Car_ResolveTrackCollision(c2);
             break;
         case 6:
-            func_8002F924(c2->x38);
+            Trigger_CheckCarsInZone(c2->x38);
             break;
         case 15:
         case 17:
@@ -166,9 +169,9 @@ void func_8002EB00(void *w, f32 dt) {
                 func_80031EC0(c, i);
             }
             func_800301E4(b, buf3, &cnt);
-            func_80034EFC(c, b);
+            Car_ApplyContactImpulses(c, b);
         }
-        func_8002DDD0(c);
+        Car_CheckTriggersAndPickups(c);
     }
     func_8002E740();
     func_800288A4();

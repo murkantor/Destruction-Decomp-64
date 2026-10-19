@@ -855,3 +855,4 @@ Records_Draw = 0x80049528; // type:func
 Results_DrawStandings = 0x8004C340; // type:func
 Results_DrawTeamScores = 0x8004EC08; // type:func
 Bg_Draw = 0x80061648; // type:func
+Car_PhysicsStep = 0x8002EB00; // type:func

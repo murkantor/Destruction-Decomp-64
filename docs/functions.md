@@ -466,7 +466,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8002DD58` | `02E958` | 0x74 | `func_8002DD58` | `src/auto/2E958.c` | C (generated) |
 | `8002DDD0` | `02E9D0` | 0x970 | `Car_CheckTriggersAndPickups` | `src/auto/2E9D0.c` | C (generated) |
 | `8002E740` | `02F340` | 0x3c0 | `func_8002E740` | `src/auto/2F340.c` | C (generated) |
-| `8002EB00` | `02F700` | 0xb6c | `func_8002EB00` | `asm/2F700.s` | asm |
+| `8002EB00` | `02F700` | 0xb6c | `Car_PhysicsStep` | `src/auto/2F700.c` | C (generated) |
 | `8002F66C` | `03026C` | 0x208 | `func_8002F66C` | `src/auto/3026C.c` | C (generated) |
 | `8002F874` | `030474` | 0xb0 | `Cars_CheckCollisions` | `src/auto/30474.c` | C (generated) |
 | `8002F924` | `030524` | 0xfc | `Trigger_CheckCarsInZone` | `src/auto/30524.c` | C (generated) |

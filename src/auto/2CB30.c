@@ -20,7 +20,7 @@ s32 Clock_GetFrames(Clock *);
 void func_80064304(void *);
 f32 func_80062F40(void);
 void World_UpdateEffects(void *, f32);
-void func_8002EB00(void *, f32);
+void Car_PhysicsStep(void *, f32);
 void Announcer_UpdateRace(void);
 void Anim_UpdateTimers(void);
 void func_8002104C(Slot68 *);
@@ -57,7 +57,7 @@ void World_Update(World *w) {
                         dt = func_80062F40() * n;
                     }
                     World_UpdateEffects(w->x334, dt);
-                    func_8002EB00(w->x334, dt);
+                    Car_PhysicsStep(w->x334, dt);
                     n -= step;
                 }
             }

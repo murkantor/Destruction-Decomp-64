@@ -92,7 +92,7 @@ void func_8005F884(void *);
 void func_80001BB0(void);
 void Race_PlaceCarsOnGrid(void);
 void World_UpdateEffects(void *, f32);
-void func_8002EB00(void *, f32);
+void Car_PhysicsStep(void *, f32);
 void func_80062FF0(Plr *);
 void func_8000A39C(void);
 void func_8002BF08(void);
@@ -262,7 +262,7 @@ void Race_Setup(void) {
         gGame[0]->x10FC = 0x1C;
         for (i = 0; i < 60; i++) {
             World_UpdateEffects(gGame[0]->x334, dt);
-            func_8002EB00(gGame[0]->x334, dt);
+            Car_PhysicsStep(gGame[0]->x334, dt);
         }
         D_80095894 = 0;
         for (i = 0; i < gGame[0]->x1100->xA4; i++) {

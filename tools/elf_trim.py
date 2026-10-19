@@ -83,6 +83,13 @@ def trim_rodata(data, shoff, shentsize, sections, name):
     def sym_section(k):
         return struct.unpack(">H", data[symtab[4] + k * 16 + 14:symtab[4] + k * 16 + 16])[0]
     end = 0
+    tables = set()  # offsets of jump tables (the targets of R_MIPS_32 entries in .rodata)
+    for s in sections:
+        if s[1] == 9 and s[7] == ro:
+            for k in range(s[4], s[4] + s[5], 8):
+                offset, info = struct.unpack(">II", data[k:k + 8])
+                if info & 0xFF == 2:
+                    tables.add(offset)
     for s in sections:
         if s[1] != 9:  # SHT_REL
             continue
@@ -96,8 +103,10 @@ def trim_rodata(data, shoff, shentsize, sections, name):
                 insn, = struct.unpack(">I", data[sections[text][4] + offset:sections[text][4] + offset + 4])
                 imm = insn & 0xFFFF
                 width = WIDTH.get(insn >> 26, 4)
-                if insn >> 26 == 0x09:  # addiu: the address of a table or string; keep everything
-                    return
+                if insn >> 26 == 0x09:  # addiu: the address of a table or string
+                    if imm in tables:
+                        continue  # a jump table; its R_MIPS_32 entries give its end
+                    return  # anything else: keep everything
                 end = max(end, imm + width)
     end = (end + 7) & ~7  # the original objects kept .rodata 8-byte aligned
     if 0 < end < sections[ro][5]:
