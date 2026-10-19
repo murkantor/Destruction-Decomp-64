@@ -576,11 +576,11 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003D6B8` | `03E2B8` | 0x40 | `func_8003D6B8` | `src/auto/3E2B8.c` | C (generated) |
 | `8003D6F8` | `03E2F8` | 0x34 | `func_8003D6F8` | `src/auto/3E2F8.c` | C (generated) |
 | `8003D72C` | `03E32C` | 0x38 | `func_8003D72C` | `src/auto/3E2F8.c` | C (generated) |
-| `8003D764` | `03E364` | 0xf4 | `func_8003D764` | `asm/3E364.s` | asm |
-| `8003D858` | `03E458` | 0xf8 | `func_8003D858` | `asm/3E364.s` | asm |
-| `8003D950` | `03E550` | 0x1bc | `func_8003D950` | `asm/3E364.s` | asm |
-| `8003DB0C` | `03E70C` | 0x260 | `PakMenu_PakFull` | `asm/3E364.s` | asm |
-| `8003DD6C` | `03E96C` | 0xf4 | `func_8003DD6C` | `asm/3E364.s` | asm |
+| `8003D764` | `03E364` | 0xf4 | `func_8003D764` | `src/auto/3E364.c` | C (generated) |
+| `8003D858` | `03E458` | 0xf8 | `func_8003D858` | `asm/3E458.s` | asm |
+| `8003D950` | `03E550` | 0x1bc | `func_8003D950` | `asm/3E458.s` | asm |
+| `8003DB0C` | `03E70C` | 0x260 | `PakMenu_PakFull` | `asm/3E458.s` | asm |
+| `8003DD6C` | `03E96C` | 0xf4 | `func_8003DD6C` | `src/auto/3E96C.c` | C (generated) |
 | `8003DE60` | `03EA60` | 0xac | `func_8003DE60` | `src/auto/3EA60.c` | C (generated) |
 | `8003DF0C` | `03EB0C` | 0x128 | `func_8003DF0C` | `asm/3EB0C.s` | asm |
 | `8003E034` | `03EC34` | 0xc0 | `func_8003E034` | `asm/3EB0C.s` | asm |
@@ -1523,8 +1523,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80079430` | `07A030` | 0x170 | `func_80079430` | `asm/79D5C.s` | asm |
 | `800795A0` | `07A1A0` | 0x1c | `func_800795A0` | `src/auto/7A1A0.c` | C (generated) |
 | `800795BC` | `07A1BC` | 0xa4 | `atoi` | `asm/7A1BC.s` | asm |
-| `80079660` | `07A260` | 0xf0 | `func_80079660` | `asm/7A1BC.s` | asm |
-| `80079750` | `07A350` | 0xe8 | `func_80079750` | `asm/7A1BC.s` | asm |
+| `80079660` | `07A260` | 0xf0 | `_log_frac` | `src/libc/7A260.c` | C |
+| `80079750` | `07A350` | 0xe8 | `func_80079750` | `asm/7A350.s` | asm |
 | `80079838` | `07A438` | 0x28 | `func_80079838` | `src/auto/7A438.c` | C (generated) |
 | `80079860` | `07A460` | 0x140 | `func_80079860` | `asm/7A460.s` | asm |
 | `800799A0` | `07A5A0` | 0xa0 | `memset` | `src/libc/7A5A0.c` | C |
