@@ -10,7 +10,7 @@ extern Game *gGame;
 Vec3f func_8001FBA8(Car *);
 void func_8001FC08(Vec3f *, Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
-s32 func_80020E58(Car *, s32);
+s32 Racer_WrapNode(Car *, s32);
 int abs(int);
 
 s32 func_80003450(Car *car)
@@ -34,7 +34,7 @@ s32 func_80003450(Car *car)
     b1.z = s->b.z - pos.z;
     angA = Vec3f_AngleBetween(fwd, a1);
     angB = Vec3f_AngleBetween(fwd, b1);
-    idx = func_80020E58(car, idx + car->x58);
+    idx = Racer_WrapNode(car, idx + car->x58);
     s = (Seg *)(idx * sizeof(Seg) + (u32)segs);
     a2.x = s->a.x - pos.x;
     a2.y = s->a.y - pos.y;
@@ -45,7 +45,7 @@ s32 func_80003450(Car *car)
     newA = Vec3f_AngleBetween(fwd, a2);
     newB = Vec3f_AngleBetween(fwd, b2);
     while ((newA < angA) & (newB < angB)) {
-        idx = func_80020E58(car, idx + car->x58);
+        idx = Racer_WrapNode(car, idx + car->x58);
         s = (Seg *)(idx * sizeof(Seg) + (u32)segs);
         a2.x = s->a.x - pos.x;
         a2.y = s->a.y - pos.y;
@@ -59,7 +59,7 @@ s32 func_80003450(Car *car)
         newB = Vec3f_AngleBetween(fwd, b2);
     }
     if (abs(idx - car->x28) < 2) {
-        idx = func_80020E58(car, idx + car->x58 * 2);
+        idx = Racer_WrapNode(car, idx + car->x58 * 2);
     }
     return idx;
 }

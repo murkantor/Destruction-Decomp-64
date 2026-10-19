@@ -9,7 +9,7 @@ typedef struct {
 
 Res *Res_FindType(s32);
 
-s32 func_80063E28(s32 id) {
+s32 Res_GetEnd(s32 id) {
     s32 end = Res_FindType(id)->end;
     s32 start = Res_FindType(id)->start;
 

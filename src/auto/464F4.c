@@ -37,7 +37,7 @@ void Ui_RemoveElement(void *, s32);
 void Ui_AddSpriteElement(void *, UiDesc *);
 void Ui_AddElement(void *, s32, s32);
 void func_800087C8(void);
-u8 func_800086AC(void);
+u8 Game_TimeBefore(void);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 void Msg_Queue(s32 id, s32 arg1, u8 force, u8 once);
 void func_80063380(s32);
@@ -76,7 +76,7 @@ s32 Race_UpdateFinish(void) {
     if (D_80096EBC == 0) {
         return 1;
     }
-    if (func_800086AC() != 0) {
+    if (Game_TimeBefore() != 0) {
         return 1;
     }
     if (D_800958A8 == 2) {

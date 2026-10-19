@@ -25,7 +25,7 @@ void idle(void *arg);
 void mainproc(void *arg);
 void func_80058800(void);
 void func_8005B880(s32, GameInitConfig *);
-void func_80000470(void);
+void Boot_LoadData(void);
 
 void boot(void) {
     u32 size = _mainSegmentRomEnd - _mainSegmentRomStart;
@@ -79,7 +79,7 @@ void mainproc(void *arg) {
 
     func_80058800();
     func_8005B880(120, &gInitConfig);
-    func_80000470();
+    Boot_LoadData();
 }
 
 s16 func_80064D70(void) {

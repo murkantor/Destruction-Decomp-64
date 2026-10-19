@@ -6,7 +6,7 @@ typedef struct {
     s32 key;
 } ObjK;
 
-ObjK *func_80001294(ObjK *a, ObjK *b) {
+ObjK *Obj_MaxByKey10(ObjK *a, ObjK *b) {
     if (b == NULL) return a;
     if (a->key > b->key) return a;
     return b;

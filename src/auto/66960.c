@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 active;
     u8 pad4[8];
@@ -26,21 +29,14 @@ extern Voice *gVoices;
 void Sound_FadeOutAll(s32 mask, s32 frames) {
     s32 steps = frames;
     s32 i;
-    s32 n;
     Voice *v;
 
     if (frames == 0) {
         steps = 1;
     }
-    n = gNumVoices;
     v = gVoices;
-    for (i = 0; i < n; i++, v++) {
-        if (v->isMusic) {
-            if (mask & 1) {
-                v->fadeTime = frames;
-                v->fadeSteps = steps;
-            }
-        } else if (mask & 2) {
+    for (i = 0; i < gNumVoices; i++, v++) {
+        if ((v->isMusic && (mask & 1)) || (!v->isMusic && (mask & 2))) {
             v->fadeTime = frames;
             v->fadeSteps = steps;
         }

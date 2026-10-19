@@ -22,7 +22,7 @@ extern Game *gGame[];
 extern u64 gGameTime;
 u64 Time_Get(u64 *);
 
-u64 func_80009514(void) {
+u64 Game_GetTime(void) {
     if (gGame[0]->mode != 2 || gGame[0]->unk10FC == 0x1F) {
         return Time_Get(&gGameTime);
     }

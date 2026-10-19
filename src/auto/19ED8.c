@@ -3,7 +3,7 @@
 
 typedef struct Node { struct Node *prev; struct Node *next; u32 key; } Node;
 
-void func_800192D8(Node *l, Node *n) {
+void List_InsertSorted(Node *l, Node *n) {
     Node *nx;
 
     while (l->next != NULL) {

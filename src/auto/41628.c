@@ -9,7 +9,7 @@ extern s32 D_80125BE4[];
 void Timer_Start(void *, s64);
 void func_80040FD8(s32, s32);
 
-s32 func_80040A28(MenuItem *item) {
+s32 Menu_Prev(MenuItem *item) {
     s32 i;
     s32 j;
 

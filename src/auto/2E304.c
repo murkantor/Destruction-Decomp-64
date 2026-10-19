@@ -9,7 +9,7 @@ typedef struct {
 
 Entry *func_80062F14(void);
 
-s32 func_8002D704(void) {
+s32 AnyEntryFlag10(void) {
     s32 found = 0;
     Entry *p = func_80062F14();
     s32 i;

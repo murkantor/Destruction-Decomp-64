@@ -55,7 +55,7 @@ void *Mem_Alloc(s32);
 s16 func_80064D70(void);
 void Res_Load(s32, void *);
 s32 Res_Get(s32);
-ResObj *func_80063E28(s32);
+ResObj *Res_GetEnd(s32);
 void RigidBody_Init(void *, void *);
 void func_8005F9C0(void *, void *, void *, s32, s32, s32, f32);
 void func_8005A970(void *, s32, s32, s32);
@@ -92,7 +92,7 @@ Obj14 *func_8003E644(s32 id, s32 slot) {
     car->x30 = 1;
     car->xB80 = 0;
     RigidBody_Init((u8 *)car + 0x1EC, buf.x78);
-    res = func_80063E28(Res_Get(D_800919F4[car->x34]));
+    res = Res_GetEnd(Res_Get(D_800919F4[car->x34]));
     r = 0xFA;
     if (gGame->x10FC == 24) {
         if (id != -1) {
@@ -121,7 +121,7 @@ Obj14 *func_8003E644(s32 id, s32 slot) {
     func_8005F9C0(col, (u8 *)car + 0x160, (u8 *)car + 0x98, res->x20, 0, 0, 0.01f);
     if (!D_80124360) {
         D_80124360 = 1;
-        func_8005A970(D_80125C68, func_80063E28(Res_Get(0x4650))->x20, 0, 0);
+        func_8005A970(D_80125C68, Res_GetEnd(Res_Get(0x4650))->x20, 0, 0);
     }
     for (i = 0; i < 4; i++) {
         func_8005AA68((u8 *)car + 0xC0 + i * 0x28, D_80125C68);

@@ -36,7 +36,7 @@ extern Anim D_800D1190[];
 extern s32 D_8011F048[];
 void *Mem_AllocAligned(u32, s32, s32);
 s32 Res_Get(s32);
-Res *func_80063E28(s32);
+Res *Res_GetEnd(s32);
 void func_8005A970(Anim *, s32, s32, s32);
 void func_8005AA68(void *, Anim *);
 void func_8005AB4C(void *, f32);
@@ -114,7 +114,7 @@ Obj *func_8001325C(Spawn *sp) {
         return NULL;
     }
     if (D_80125578[kind] == NULL) {
-        D_80125578[kind] = func_80063E28(Res_Get(sp->x4));
+        D_80125578[kind] = Res_GetEnd(Res_Get(sp->x4));
         func_8005A970(&D_800D1190[kind], D_80125578[kind]->x20, 0, 0);
     }
     obj->xC = &D_800D1190[kind];

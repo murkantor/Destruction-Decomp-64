@@ -34,7 +34,7 @@ typedef struct {
 } Car;
 extern Game *gGame;
 extern s32 D_8007EAE0[][20];
-s32 func_80020E58(Car *, s32);
+s32 Racer_WrapNode(Car *, s32);
 Vec3f func_8001FC08(Car *);
 Vec3f func_8001FBA8(Car *);
 f32 func_800005C8(Vec3f, Vec3f);
@@ -56,7 +56,7 @@ void Ai_UpdateTargetPoint(Car *car) {
     race = gGame->race;
     segs = race->x30;
     nodes = race->x34;
-    idx = func_80020E58(car, car->x28 - car->x58 * 2);
+    idx = Racer_WrapNode(car, car->x28 - car->x58 * 2);
     if (car->x40) {
         if (idx < race->x3C[car->x44].x4) {
             idx = race->x3C[car->x44].x0;

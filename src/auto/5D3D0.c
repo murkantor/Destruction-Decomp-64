@@ -14,7 +14,7 @@ typedef struct {
 } ItemList;
 
 
-s32 func_8005C7D0(ItemList *list) {
+s32 Game_SaveItems(ItemList *list) {
     s32 i;
 
     for (i = gGame[0]->numSaved; i < 60; i++) {

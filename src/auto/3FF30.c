@@ -22,7 +22,7 @@ extern s32 D_80097A14;
 extern u8 D_801253F9;
 extern s32 gControllers;
 extern s32 D_80125D30;
-u8 func_8002D704(void);
+u8 AnyEntryFlag10(void);
 void func_800505DC(void);
 void func_80063564(s32, s32);
 void func_8002D0E0(s32);
@@ -34,7 +34,7 @@ s32 func_8003F330(Obj *o) {
     s32 r;
     s32 a;
 
-    if (func_8002D704()) {
+    if (AnyEntryFlag10()) {
         return 0;
     }
     D_800958A8[0] = o->x10;

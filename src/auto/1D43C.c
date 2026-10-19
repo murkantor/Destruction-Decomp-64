@@ -6,7 +6,7 @@ typedef struct { u8 pad[0x16]; u8 x16; u8 pad17; Ent1C83C *x18; } Obj1C83C;
 typedef struct { s32 x0[5]; s8 x14; u8 pad[0x1B]; } Grp1C83C;
 extern u8 D_80091B28;
 extern Grp1C83C D_80091B44[];
-Obj1C83C *func_80063E28(void *);
+Obj1C83C *Res_GetEnd(void *);
 void func_80063AAC(s32);
 void func_80063B54(s32);
 void Mem_Free(void *);
@@ -17,7 +17,7 @@ void Model_Free(void *arg0) {
     s32 i;
     s32 k;
 
-    obj = func_80063E28(arg0);
+    obj = Res_GetEnd(arg0);
     if (obj != NULL) {
         if (!D_80091B28) {
             D_80091B28 = 1;

@@ -3,7 +3,7 @@
 
 M2C_UNK func_80019790(u8, void *, s32);             /* extern */
 s32 Res_Get(s32);                             /* extern */
-s32 func_80063E28(s32);                             /* extern */
+s32 Res_GetEnd(s32);                             /* extern */
 extern s8 D_80083AE8;
 extern M2C_UNK D_80083AEC;
 extern u8 D_800958A1;
@@ -33,7 +33,7 @@ void func_800123C0(void) {
         if (D_800958A8 != 3) {
             func_80019790(D_800958A1, temp_a1, D_800958A8);
         }
-        D_801244D0 = func_80063E28(Res_Get(*((__typeof__(D_80083AEC) *)((s8 *)&D_80083AEC + (D_80130248 * 4)))));
+        D_801244D0 = Res_GetEnd(Res_Get(*((__typeof__(D_80083AEC) *)((s8 *)&D_80083AEC + (D_80130248 * 4)))));
         D_801242B8 = 0;
         D_80083AE8 = 1;
     }

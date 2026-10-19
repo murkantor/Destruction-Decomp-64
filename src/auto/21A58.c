@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     s32 start;
@@ -25,17 +28,19 @@ typedef struct {
 } Racer;
 extern GameState *gGame;
 
-s32 func_80020E58(Racer *c, s32 node) {
+s32 Racer_WrapNode(Racer *c, s32 node) {
     RaceState *r = gGame->race;
     s32 ret = node;
     Shortcut *s;
 
     if (c->onShortcut != 0 && c->x30 == 1) {
-        s = c->shortcut + r->shortcuts;
+        s32 off = c->shortcut << 4;
+
+        s = (Shortcut *)(off + (s32)r->shortcuts);
         if (node >= s->start + s->length) {
+            c->node = s->exit;
             c->onShortcut = 0;
             c->shortcut = -1;
-            c->node = s->exit;
             ret = c->node;
         } else if (node < s->start) {
             ret = s->start;
