@@ -21,7 +21,7 @@ extern u16 D_80097D66;
 extern s32 D_80097D68;
 extern M2C_UNK D_80097D6C;
 extern M2C_UNK D_80097D7C;
-extern M2C_UNK D_800D2E40;
+extern M2C_UNK gSiMesgQueue;
 
 void func_8004FE4C(s32 *arg0) {
     s32 *temp_s1;
@@ -49,9 +49,9 @@ void func_8004FE4C(s32 *arg0) {
             D_80097D58 = 1;
             if (D_80097D4C != 0) {
                 D_80097D4C = 0;
-                *arg0 = func_80059650(D_80097D66, D_80097D68, &D_80097D6C, &D_80097D7C, &D_800D2E40);
+                *arg0 = func_80059650(D_80097D66, D_80097D68, &D_80097D6C, &D_80097D7C, &gSiMesgQueue);
             } else {
-                temp_v0_2 = func_8005969C(&D_800D2E40);
+                temp_v0_2 = func_8005969C(&gSiMesgQueue);
                 *arg0 = temp_v0_2;
                 if (temp_v0_2 == 0) {
                     func_80050684(arg0);

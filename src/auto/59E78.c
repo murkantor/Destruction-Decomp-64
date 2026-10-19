@@ -1,13 +1,13 @@
 #include "common.h"
 #include "m2c.h"
 
-extern s32 D_800B0BA8;
+extern s32 gRumbleRetry;
 
-void func_80059278(void) {
-    D_800B0BA8 = 1;
+void Rumble_AllowRetry(void) {
+    gRumbleRetry = 1;
 }
 
 
-void func_80059288(void) {
-    D_800B0BA8 = 0;
+void Rumble_DisallowRetry(void) {
+    gRumbleRetry = 0;
 }

@@ -878,21 +878,21 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80058A74` | `059674` | 0xe4 | `func_80058A74` | `asm/59674.s` | asm |
 | `80058B58` | `059758` | 0x20 | `func_80058B58` | `src/auto/59758.c` | C (generated) |
 | `80058B78` | `059778` | 0x1f0 | `func_80058B78` | `asm/59778.s` | asm |
-| `80058D68` | `059968` | 0x100 | `func_80058D68` | `asm/59778.s` | asm |
-| `80058E68` | `059A68` | 0xa0 | `func_80058E68` | `asm/59778.s` | asm |
-| `80058F08` | `059B08` | 0x238 | `func_80058F08` | `asm/59778.s` | asm |
-| `80059140` | `059D40` | 0xf0 | `func_80059140` | `asm/59778.s` | asm |
-| `80059230` | `059E30` | 0x48 | `func_80059230` | `src/auto/59E30.c` | C (generated) |
-| `80059278` | `059E78` | 0x10 | `func_80059278` | `src/auto/59E78.c` | C (generated) |
-| `80059288` | `059E88` | 0xc | `func_80059288` | `src/auto/59E78.c` | C (generated) |
-| `80059294` | `059E94` | 0x84 | `func_80059294` | `asm/59E94.s` | asm |
-| `80059318` | `059F18` | 0xa0 | `func_80059318` | `asm/59E94.s` | asm |
-| `800593B8` | `059FB8` | 0x188 | `func_800593B8` | `asm/59E94.s` | asm |
-| `80059540` | `05A140` | 0x68 | `func_80059540` | `asm/59E94.s` | asm |
-| `800595A8` | `05A1A8` | 0xa8 | `func_800595A8` | `asm/59E94.s` | asm |
-| `80059650` | `05A250` | 0x4c | `func_80059650` | `asm/59E94.s` | asm |
-| `8005969C` | `05A29C` | 0xe0 | `func_8005969C` | `asm/59E94.s` | asm |
-| `8005977C` | `05A37C` | 0x60 | `func_8005977C` | `asm/59E94.s` | asm |
+| `80058D68` | `059968` | 0x100 | `Pad_ReadAll` | `src/auto/59968.c` | C (generated) |
+| `80058E68` | `059A68` | 0xa0 | `Pad_Init` | `src/auto/59A68.c` | C (generated) |
+| `80058F08` | `059B08` | 0x238 | `Pad_Update` | `src/auto/59B08.c` | C (generated) |
+| `80059140` | `059D40` | 0xf0 | `Pad_Rumble` | `src/auto/59D40.c` | C (generated) |
+| `80059230` | `059E30` | 0x48 | `Pad_Clear` | `src/auto/59E30.c` | C (generated) |
+| `80059278` | `059E78` | 0x10 | `Rumble_AllowRetry` | `src/auto/59E78.c` | C (generated) |
+| `80059288` | `059E88` | 0xc | `Rumble_DisallowRetry` | `src/auto/59E78.c` | C (generated) |
+| `80059294` | `059E94` | 0x84 | `Rumble_Restart` | `src/auto/59E94.c` | C (generated) |
+| `80059318` | `059F18` | 0xa0 | `Rumble_Stop` | `src/auto/59F18.c` | C (generated) |
+| `800593B8` | `059FB8` | 0x188 | `func_800593B8` | `asm/59FB8.s` | asm |
+| `80059540` | `05A140` | 0x68 | `func_80059540` | `asm/59FB8.s` | asm |
+| `800595A8` | `05A1A8` | 0xa8 | `func_800595A8` | `asm/59FB8.s` | asm |
+| `80059650` | `05A250` | 0x4c | `func_80059650` | `asm/59FB8.s` | asm |
+| `8005969C` | `05A29C` | 0xe0 | `func_8005969C` | `asm/59FB8.s` | asm |
+| `8005977C` | `05A37C` | 0x60 | `func_8005977C` | `asm/59FB8.s` | asm |
 | `800597DC` | `05A3DC` | 0x80 | `func_800597DC` | `src/auto/5A3DC.c` | C (generated) |
 | `8005985C` | `05A45C` | 0x84 | `func_8005985C` | `src/auto/5A3DC.c` | C (generated) |
 | `800598E0` | `05A4E0` | 0x7c | `func_800598E0` | `src/auto/5A3DC.c` | C (generated) |
@@ -1377,8 +1377,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006DE38` | `06EA38` | 0x9c | `func_8006DE38` | `asm/6EA38.s` | asm |
 | `8006DED4` | `06EAD4` | 0xbc | `func_8006DED4` | `asm/6EA38.s` | asm |
 | `8006DF90` | `06EB90` | 0x140 | `func_8006DF90` | `asm/6EA38.s` | asm |
-| `8006E0D0` | `06ECD0` | 0x144 | `func_8006E0D0` | `asm/6EA38.s` | asm |
-| `8006E214` | `06EE14` | 0x24c | `func_8006E214` | `asm/6EA38.s` | asm |
+| `8006E0D0` | `06ECD0` | 0x144 | `__osMotorAccess` | `asm/6EA38.s` | asm |
+| `8006E214` | `06EE14` | 0x24c | `osMotorInit` | `asm/6EA38.s` | asm |
 | `8006E460` | `06F060` | 0x30c | `func_8006E460` | `asm/6EA38.s` | asm |
 | `8006E76C` | `06F36C` | 0x124 | `func_8006E76C` | `asm/6EA38.s` | asm |
 | `8006E890` | `06F490` | 0x460 | `func_8006E890` | `asm/6EA38.s` | asm |
