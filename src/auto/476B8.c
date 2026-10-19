@@ -56,7 +56,7 @@ void Ui_AddSpriteElement(void *, UiElemDesc *);
 void Ctx_FreeAll(void *);
 void Race_GetLapTimeLimits(s32 *);
 void func_8005DD20(void *, s32);
-void func_8000FAD4(void *);
+void MapUi_Init(void *);
 void func_8004378C(void);
 void Heap_Free(void *, void *);
 f32 Time_ToSeconds(void *);
@@ -114,7 +114,7 @@ void Race_End(void)
         Race_GetLapTimeLimits(lim);
         func_8005DD20(gUi[0], lim[0]);
         func_8005DD20(gUi[0], lim[1]);
-        func_8000FAD4(gUi[0]);
+        MapUi_Init(gUi[0]);
         if (D_80125C38 == 0x1A) {
             AddSprites();
         }

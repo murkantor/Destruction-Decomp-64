@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad[0x28];
 } Clock;
@@ -69,10 +72,7 @@ extern s32 D_800958A8[];
 extern s32 D_800958AC[];
 extern s32 D_800958B0[];
 extern s32 D_800958B4;
-extern s32 D_800958C0;
-extern s32 D_800958C4;
-extern s32 D_800958C8;
-extern s32 D_800958CC;
+extern s32 D_800958C0[];
 extern Player D_800958D0[];
 extern s32 D_800958DC[];
 extern Player D_800958F8[];
@@ -101,7 +101,7 @@ static inline void Clock_Start(s32 idx, void *src) {
     func_800635B0(&gGame[0]->clocks[idx], src);
 }
 
-void func_8002C318(void) {
+void Race_Start(void) {
     Race *race;
     s32 i;
     s32 sel;
@@ -132,11 +132,11 @@ void func_8002C318(void) {
             D_800958A8[0] = 0;
             D_800958AC[0] = 0;
             D_800958B0[0] = 0;
-            D_800958C8 = 2;
-            D_800958C0 = 0;
-            D_800958C4 = 1;
-            D_800958CC = 3;
             D_800958B4 = D_80095CA8[0]->x0;
+            D_800958C0[2] = 2;
+            D_800958C0[0] = 0;
+            D_800958C0[1] = 1;
+            D_800958C0[3] = 3;
         }
         D_80095908 = D_800958A8[0];
         func_80064948(D_800958A0 + 0x58);

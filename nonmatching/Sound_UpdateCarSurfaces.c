@@ -1,3 +1,4 @@
+/* near: regs match with the while-loop form; original has an extra "j" after the id==0 test and the k-loop "counts.v[k]=1; break" block placed there (loop.c block move). 8 bytes short. */
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct {
     u8 pad0[0x1A8];
@@ -97,22 +98,15 @@ void Sound_UpdateCarSurfaces(void *pool)
             }
             func_8001FB88(&vel, car);
             func_8001FBA8(&pos, car);
-            if (D_8007EDD8[i].id != 0) {
-                if (D_8007EDD8[i].type == type) {
-                    goto update;
-                }
+            while (D_8007EDD8[i].id != 0) {
+                if (D_8007EDD8[i].type == type) goto update;
                 List_RemoveById(pool, D_8007EDD8[i].id);
+                break;
             }
-            D_8007EDD8[i].id = Sound_PlayCar(pool, &pos, &vel, type, vol, mode);
-            D_8007EDD8[i].type = type;
+            D_8007EDD8[i].id = Sound_PlayCar(pool, &pos, &vel, type, vol, mode); D_8007EDD8[i].type = type;
             goto done;
         update:
-            e = func_8005CC00(pool, D_8007EDD8[i].id);
-            if (e != NULL) {
-                e->x18 = pos;
-                e->x24 = vel;
-                e->x14 = D_801320C8[e->x10] * vol;
-            }
+            e = func_8005CC00(pool, D_8007EDD8[i].id); if (e != NULL) { e->x18 = pos; e->x24 = vel; e->x14 = D_801320C8[e->x10] * vol; }
         done:;
         }
         if (!any) {

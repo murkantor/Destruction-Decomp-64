@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 
 typedef struct {
@@ -50,19 +53,17 @@ u64 Time_Get(u64 *);
 Vec3f func_8001FBA8(Car *);
 Vec3f func_8001FB88(Car *);
 
-s16 func_80008080(s32 idx, s32 kind, Obj *obj) {
+s16 CarEffect_Init(s32 idx, s32 kind, Obj *obj) {
     Car *car = gGame->x1100->x74[idx];
-    u64 *t;
     u64 v;
 
     obj->x0 = 0x3F4;
     obj->x4 = 0;
     obj->x2 = func_80064D70();
-    t = &D_80131F90[kind];
     obj->x10 = kind;
     obj->x14 = D_8007EECC;
-    if (*t != (u64)-1) {
-        v = *t + Time_Get(&gGame->x1058);
+    if (D_80131F90[kind] != (u64)-1) {
+        v = D_80131F90[kind] + Time_Get(&gGame->x1058);
     } else {
         v = -1;
     }

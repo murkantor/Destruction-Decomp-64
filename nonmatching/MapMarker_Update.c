@@ -27,7 +27,7 @@ extern u8 D_800958A1[];
 void Ui_RemoveElement(void *, s32);
 void func_8001FBA8(Vec3f *);
 
-s32 func_8000E178(Marker *m) {
+s32 MapMarker_Update(Marker *m) {
     Car *car;
     Widget *w = NULL;
     UiNode *node;

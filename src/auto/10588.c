@@ -11,7 +11,7 @@ extern s8 D_800D31CC[];
 extern A28 D_80125FE8[];
 extern A50 D_8011EF11[];
 extern A20 D_8007EF70[2][10];
-void func_8000FAD4(s32);
+void MapUi_Init(s32);
 void Hud_ResetTimeStrings(void);
 void Race_GetLapTimeLimits(s32);
 
@@ -35,7 +35,7 @@ void func_8000F988(s32 a0, s32 a1) {
     if (gGame->x10FC == 0x19) {
         goto end;
     }
-    func_8000FAD4(a0);
+    MapUi_Init(a0);
     Hud_ResetTimeStrings();
     for (i = 0; i < D_800D31CC[0]; i++) {
         D_80125FE8[i].x0 = 0;

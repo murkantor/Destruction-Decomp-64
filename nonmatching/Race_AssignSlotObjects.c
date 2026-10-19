@@ -7,7 +7,7 @@ extern s32 D_800958A8[];
 extern void InitLookupTables(void);
 extern void Ai_PickTarget(void);
 
-void func_80001BB0(void) {
+void Race_AssignSlotObjects(void) {
     Obj *list[12];
     s32 i;
     s32 j;

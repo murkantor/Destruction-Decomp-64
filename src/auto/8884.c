@@ -22,7 +22,7 @@ extern Game *gGame;
 extern Track D_801311D0[];
 extern s32 D_801320C8[];
 extern f32 D_8007EEC0, D_8007EEC4, D_8007EEC8;
-extern s32 func_80008080(s32, s32, Rec *);
+extern s32 CarEffect_Init(s32, s32, Rec *);
 extern s8 Pool_PushCopy(void *, Rec *);
 extern Ent *func_8005CC00(void *, s16);
 extern f32 func_80063718(u64 *);
@@ -40,7 +40,7 @@ void EngineSfx_Crossfade(void *list, s32 i, s32 snd) {
     f32 v;
 
     if (t->xC) {
-        id = (s16)func_80008080(i, snd, &rec);
+        id = (s16)CarEffect_Init(i, snd, &rec);
         if (!Pool_PushCopy(list, &rec)) {
             return;
         }

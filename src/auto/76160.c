@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     union {
         long long ll;
@@ -14,7 +17,7 @@ typedef struct {
     int width;
     u32 nchar;
     unsigned int flags;
-    char qual;
+    u8 qual;
 } _Pft;
 typedef char *va_list;
 typedef void *(*outfun)(void *, const char *, u32);
@@ -24,10 +27,10 @@ extern const char D_800BC530[];
 extern const int D_800BC538[];
 extern const char D_800BC550[];
 const char *strchr(const char *, int);
-void _Putfld(_Pft *, va_list *, char, char *);
+void _Putfld(_Pft *, va_list *, u8, char *);
 
-#define isdigit(x) ((unsigned)((x) - '0') < 10)
-#define va_arg(ap, type) (((type *)(ap = (char *)(((int)(ap) + 3) & -4) + 4))[-1])
+#define isdigit(x) ((x >= '0' && x <= '9'))
+#define va_arg(ap, type) (*((type *)(ap = (char *)(((int)(ap) + 3) & -4) + 4) - 1))
 #define ATOI(dst, src)                  \
     for (dst = 0; isdigit(*src); ++src) \
     {                                   \
@@ -59,8 +62,7 @@ int _Printf(outfun pfn, char *arg, const u8 *fmt, va_list ap)
     x.nchar = 0;
     for (;;)
     {
-        const u8 *s;
-        u8 c;
+        const u8 *s; u8 c;
         const char *t;
         char ac[32];
         s = fmt;

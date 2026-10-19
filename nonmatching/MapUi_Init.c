@@ -40,7 +40,7 @@ void Heap_AllocAlt(void *, HeapBlock *, s32, s32, s32);
 void *HeapBlock_Ptr(HeapBlock *);
 void Heap_Free(void *, HeapBlock *);
 
-s32 func_8000FAD4(void *ui) {
+s32 MapUi_Init(void *ui) {
     UiDesc48 descs[15];
     HeapBlock blk;
     u32 count;

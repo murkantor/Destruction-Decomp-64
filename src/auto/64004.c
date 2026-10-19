@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_8002C318(s32);                         /* extern */
+M2C_UNK Race_Start(s32);                         /* extern */
 M2C_UNK Race_Setup();                            /* extern */
 M2C_UNK func_8005C780(s32);                         /* extern */
 M2C_UNK func_8005D81C(s32);                         /* extern */
@@ -19,7 +19,7 @@ extern s32 D_8011EEF8;
 void func_80063404(s32 arg0) {
     Res_FreeAll();
     func_80063578(D_8011EEEA, D_8011EEEC);
-    func_8002C318(arg0);
+    Race_Start(arg0);
     Pad_LatchAll();
     func_80063890(&gGameTime);
     func_80063890(gGame + 0x1058);

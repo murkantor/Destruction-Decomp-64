@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     u8 pad4[0x10 - 0x4];
@@ -39,12 +42,8 @@ void Menu_BuildIdList(void) {
     case 0:
     case 1:
         D_80125BE0.n = 12;
-        for (i = 0; i < n; i++) {
-            D_80125BE0.items[i] = list++->x0;
-        }
-        for (j = n; j < 12; j++) {
-            D_80125BE0.items[j] = D_80095BE8[j].x0;
-        }
+        for (j = 0; j < n; j++) { D_80125BE0.items[j] = list++->x0; }
+        for (j = n; j < 12; j++) { D_80125BE0.items[j] = D_80095BE8[j].x0; }
         break;
     case 2: {
         s32 k = 0;

@@ -89,7 +89,7 @@ s32 func_8001B298(s32);
 void Standings_Resort(void *, Car *);
 void func_80014DC0(void);
 void func_8005F884(void *);
-void func_80001BB0(void);
+void Race_AssignSlotObjects(void);
 void Race_PlaceCarsOnGrid(void);
 void World_UpdateEffects(void *, f32);
 void Car_PhysicsStep(void *, f32);
@@ -255,7 +255,7 @@ void Race_Setup(void) {
         }
         func_80014DC0();
         func_8005F884(gGame[4]);
-        func_80001BB0();
+        Race_AssignSlotObjects();
         Race_PlaceCarsOnGrid();
         saved = gGame[0]->x10FC;
         D_80095894 = 1;

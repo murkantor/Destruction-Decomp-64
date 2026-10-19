@@ -19,12 +19,15 @@ void osWritebackDCacheAll(void);
 void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     Disp *d = o->x8C;
     s32 bpp = d->x71;
-    u8 *base = o->x90 + (s32)(x * 0.003125f * d->x5C) * bpp + d->x64 * (s32)(y * (1.0f / 240.0f) * d->x60);
+    u8 *base;
     s32 off;
     s32 row, k;
     u8 *dst;
     u8 *src;
     s32 c, q, r;
+    s32 xx, yy, pp;
+    u8 *b0;
+    b0 = o->x90; pp = d->x64; xx = (s32)(x * 0.003125f * d->x5C) * bpp; yy = (s32)(y * (1.0f / 240.0f) * d->x60); base = b0 + (yy * pp + xx);
 
     for (off = 0; str[off] != 0; off++) {
         c = str[off] - 0x20;

@@ -19,7 +19,7 @@ typedef struct {
 } SelState;
 extern Setup D_800958A4;
 extern SelState D_80097340;
-extern Player D_80095904[];
+extern s32 D_80095908, D_80095970, D_800959D8, D_80095A40;
 extern u8 D_80095CC8[];
 extern s32 D_80125BE4[];
 extern s32 D_80096EA0;
@@ -27,7 +27,7 @@ void Timer_Start(void *, s64);
 void Ui_RemapTextures(void);
 void func_80063564(s32, s32);
 
-s32 func_80040C0C(Menu *m) {
+s32 Menu_ConfirmTrackSelect(Menu *m) {
     s32 i, j;
     s32 v;
     u8 again;
@@ -53,32 +53,32 @@ s32 func_80040C0C(Menu *m) {
             if (D_800958A4.mode == 2 && D_800958A4.count == 4) {
                 switch (i) {
                     case 0:
-                        D_80095904[0].x4 = v;
+                        D_80095908 = v;
                         D_80097340.flags[0] = 0;
                         break;
                     case 1:
                         D_80097340.flags[1] = 0;
-                        D_80095904[1].x4 = D_800958A4.players[0].x4;
+                        D_80095970 = D_800958A4.players[0].x4;
                         D_800958A4.sel[1] = D_800958A4.sel[0];
                         break;
                     case 2:
                         if (D_800958A4.sel[0] == v) {
                             v = (v + 1) % D_80097340.numCars;
                         }
-                        D_80095904[2].x4 = v;
+                        D_800959D8 = v;
                         D_800958A4.sel[2] = v;
                         D_80097340.flags[2] = 0;
                         break;
                     case 3:
                         D_80097340.flags[3] = 0;
-                        D_80095904[3].x4 = D_800958A4.players[2].x4;
+                        D_80095A40 = D_800958A4.players[2].x4;
                         D_800958A4.sel[3] = D_800958A4.sel[2];
                         break;
                 }
             } else {
                 do {
                     for (j = 0; j < D_800958A4.count; j++) {
-                        if (i != j && D_800958A4.sel[j] == v) {
+                        if (D_800958A4.sel[j] == v && i != j) {
                             v = (v + 1) % D_80097340.numCars;
                             break;
                         }
