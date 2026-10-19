@@ -282,6 +282,22 @@ def shift_call(code, fname, site, k):
     return re.sub(r"^(\w[\w \*]*?\b" + re.escape(fname) + r")\(([^()]*)\)(\s*\{)", fix, code, count=1, flags=re.M)
 
 
+def flip_tail_if(code):
+    """Rewrite a function ending in `if (c) { body } return y;` as `if (!c) { return y; } body`.
+
+    KMC GCC lays out an if that returns after the code that follows it, so the
+    two forms give different code; try whichever m2c did not write.
+    """
+    m = re.search(r"\n    if \((.*)\) \{\n((?:        .*\n|\n)*?)    \}\n    return (.*);\n\}\n?$", code)
+    if not m:
+        return code
+    cond, body, ret = m.group(1), m.group(2), m.group(3)
+    body = "".join(l[4:] + "\n" if l.strip() else "\n" for l in body.splitlines())
+    if not body.rstrip().endswith(";") or "return" not in body.splitlines()[-1]:
+        body += f"    return {ret};\n"
+    return code[:m.start()] + f"\n    if (!({cond})) {{\n        return {ret};\n    }}\n" + body + "}\n"
+
+
 # m2c option sets to try in turn; different C shapes lead GCC to different code
 VARIANTS = [
     [],
@@ -331,7 +347,8 @@ def try_one(job):
             if r.returncode or "M2C_ERROR" in r.stdout or not r.stdout.strip():
                 first_why = first_why or "m2c failed"
                 continue
-            for code in dict.fromkeys((r.stdout, byte_offsets(r.stdout), leading_args(r.stdout), leading_args(byte_offsets(r.stdout)))):
+            base_codes = (r.stdout, byte_offsets(r.stdout), leading_args(r.stdout), leading_args(byte_offsets(r.stdout)))
+            for code in dict.fromkeys(base_codes + tuple(flip_tail_if(c) for c in base_codes)):
                 if code in seen:
                     continue
                 seen.add(code)
