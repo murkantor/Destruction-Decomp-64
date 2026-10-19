@@ -915,3 +915,7 @@ Seq_ResetVoice = 0x80067594; // type:func
 Seq_UpdateVolPan = 0x80066950; // type:func
 Seg_SphereSweepIntersect = 0x80035E78; // type:func
 Sound_UpdateCarSurfaces = 0x800078C0; // type:func
+CarAI_InitTarget = 0x800361E0; // type:func
+CarAI_SteerToTarget = 0x800363C4; // type:func
+Ui_SaveElements = 0x800434B8; // type:func
+Zip_ReadFileByName = 0x8005314C; // type:func

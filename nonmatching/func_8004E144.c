@@ -34,6 +34,7 @@ void func_8004E144(s32 prev, s32 first) {
     s32 i;
     s32 j;
     s32 id;
+    s32 k;
 
     for (i = 0; i < 4; i++) {
         strcpy(gSaveSlotText[i], D_80131D88[D_800972F4[first + i]].name);
@@ -47,17 +48,17 @@ void func_8004E144(s32 prev, s32 first) {
     if (prev == -1) {
         i = 0;
         while (1) {
-            id = i + 0x139;
-            id = first + id;
+            k = i + 0x139;
+            id = first + k;
             Ui_AddElement(gUi[0], 2, id);
             Ui_SetElementPos(gUi[0], 2, id, pos.v[i][0], pos.v[i][1]);
             if (++i >= 4) return;
         }
     } else {
         for (i = 0; i < 4; i++) {
-            id = i + 0x139;
-            Ui_RemoveElement(gUi[0], prev + id);
-            id = first + id;
+            k = i + 0x139;
+            Ui_RemoveElement(gUi[0], prev + k);
+            id = first + k;
             Ui_AddElement(gUi[0], 2, id);
             Ui_SetElementPos(gUi[0], 2, id, pos.v[i][0], pos.v[i][1]);
         }

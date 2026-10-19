@@ -511,8 +511,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800359DC` | `0365DC` | 0x388 | `func_800359DC` | `src/auto/365DC.c` | C (generated) |
 | `80035D64` | `036964` | 0x114 | `Track_IsGridCellSolid` | `src/auto/36964.c` | C (generated) |
 | `80035E78` | `036A78` | 0x368 | `Seg_SphereSweepIntersect` | `asm/36A78.s` | asm |
-| `800361E0` | `036DE0` | 0x1e4 | `func_800361E0` | `src/auto/36DE0.c` | C (generated) |
-| `800363C4` | `036FC4` | 0x368 | `func_800363C4` | `src/auto/36FC4.c` | C (generated) |
+| `800361E0` | `036DE0` | 0x1e4 | `CarAI_InitTarget` | `src/auto/36DE0.c` | C (generated) |
+| `800363C4` | `036FC4` | 0x368 | `CarAI_SteerToTarget` | `src/auto/36FC4.c` | C (generated) |
 | `8003672C` | `03732C` | 0xdfc | `Wheel_ComputeTireForce` | `asm/3732C.s` | asm |
 | `80037528` | `038128` | 0x828 | `Car_ApplyWheelForces` | `src/auto/38128.c` | C (generated) |
 | `80037D50` | `038950` | 0x40c | `func_80037D50` | `asm/38950.s` | asm |
@@ -643,7 +643,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80043230` | `043E30` | 0xb0 | `func_80043230` | `src/auto/43E30.c` | C (generated) |
 | `800432E0` | `043EE0` | 0xa4 | `func_800432E0` | `src/auto/43EE0.c` | C (generated) |
 | `80043390` | `043F90` | 0x128 | `Results_LoadBanner` | `src/auto/43F90.c` | C (generated) |
-| `800434B8` | `0440B8` | 0x2d4 | `func_800434B8` | `src/auto/440B8.c` | C (generated) |
+| `800434B8` | `0440B8` | 0x2d4 | `Ui_SaveElements` | `src/auto/440B8.c` | C (generated) |
 | `8004378C` | `04438C` | 0x1e0 | `func_8004378C` | `src/auto/4438C.c` | C (generated) |
 | `8004396C` | `04456C` | 0xf4 | `func_8004396C` | `src/auto/4456C.c` | C (generated) |
 | `80043A60` | `044660` | 0x28 | `func_80043A60` | `src/auto/44660.c` | C (generated) |
@@ -771,7 +771,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80052F18` | `053B18` | 0xd8 | `Arc_SeekToEntryData` | `src/auto/53B18.c` | C (generated) |
 | `80052FF0` | `053BF0` | 0x60 | `func_80052FF0` | `src/auto/53BF0.c` | C (generated) |
 | `80053050` | `053C50` | 0xfc | `func_80053050` | `src/auto/53C50.c` | C (generated) |
-| `8005314C` | `053D4C` | 0x1f0 | `func_8005314C` | `src/auto/53D4C.c` | C (generated) |
+| `8005314C` | `053D4C` | 0x1f0 | `Zip_ReadFileByName` | `src/auto/53D4C.c` | C (generated) |
 | `8005333C` | `053F3C` | 0x234 | `func_8005333C` | `asm/53F3C.s` | asm |
 | `80053570` | `054170` | 0x21c | `Elf_FindSymbol` | `src/auto/54170.c` | C (generated) |
 | `8005378C` | `05438C` | 0x174 | `Elf_ResolveSymbols` | `src/auto/5438C.c` | C (generated) |

@@ -33,7 +33,7 @@ extern Game *gGame;
 s32 rand(void);
 void Vec3f_Set(Vec3f *, f32, f32, f32);
 
-void func_800361E0(Obj *o) {
+void CarAI_InitTarget(Obj *o) {
     s32 n = gGame->track->count;
     s32 i;
     TrackPt *p;

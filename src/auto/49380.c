@@ -37,7 +37,7 @@ extern char D_800BA87C[];
 extern s32 D_800BC9E4;
 extern Slot D_80095908[];
 
-void func_800434B8(void);
+void Ui_SaveElements(void);
 void Ctx_FreeAll(void *);
 void func_8005DD20(void *, s32);
 void Sound_SetVolume(s32, s32);
@@ -71,7 +71,7 @@ void func_80048780(void) {
         mode = 0x13;
     }
     if (mode == 0x1F) {
-        func_800434B8();
+        Ui_SaveElements();
     }
     Ctx_FreeAll(gUi[0]);
     func_8005DD20(gUi[0], 0x11330);

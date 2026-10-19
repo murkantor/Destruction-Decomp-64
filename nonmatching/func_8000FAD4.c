@@ -20,7 +20,7 @@ typedef struct { u8 pad[0x10]; Img *x10; u8 pad14[0x88 - 0x14]; s32 x88; s32 x8C
 typedef struct { s32 a; s32 b; u8 pad8[0x20]; f32 pos[4][2]; u8 pad48[0]; } PosEnt;
 
 extern Game *gGame;
-extern s8 D_800D31CC;
+extern s8 D_800D31CC[];
 extern Mode D_800958A4;
 extern s32 D_800958C0[];
 extern s32 D_8007F288[];
@@ -67,7 +67,7 @@ s32 func_8000FAD4(void *ui) {
         if (car->xC == 0) {
             continue;
         }
-        for (j = 0; j < D_800D31CC; j++) {
+        for (j = 0; j < D_800D31CC[0]; j++) {
             if (D_800958A4.a8 == 3 && D_800958A4.ac == 2) {
                 if (D_800958A4.a4 == 2) {
                     if (i == 0 && j == 0) {
@@ -98,7 +98,7 @@ s32 func_8000FAD4(void *ui) {
                 break;
             }
         }
-        if (D_800958A4.a8 == 3 && D_800958A4.ac == 2 && D_800D31CC == 2 && (i == 1 || i == 2)) {
+        if (D_800958A4.a8 == 3 && D_800958A4.ac == 2 && D_800D31CC[0] == 2 && (i == 1 || i == 2)) {
             d->x14 = 0x11310;
             d->x18 = 0x11311;
         }
@@ -111,8 +111,8 @@ s32 func_8000FAD4(void *ui) {
     Res_Load(0x1129D, descs);
     descs[0].x14 = D_8007F2C4[D_800958B4].a;
     descs[0].x18 = D_8007F2C4[D_800958B4].b;
-    descs[0].x1C = D_8007F2C4[D_800958B4].pos[D_800D31CC - 1][0];
-    descs[0].x20 = D_8007F2C4[D_800958B4].pos[D_800D31CC - 1][1];
+    descs[0].x1C = D_8007F2C4[D_800958B4].pos[D_800D31CC[0] - 1][0];
+    descs[0].x20 = D_8007F2C4[D_800958B4].pos[D_800D31CC[0] - 1][1];
     d = descs;
     if (D_800958A1) {
         Heap_AllocAlt(gMainHeap, &blk, Res_GetSize(descs[0].x14), 7, 0);

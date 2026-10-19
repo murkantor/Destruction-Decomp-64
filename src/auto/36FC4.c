@@ -51,7 +51,7 @@ void Vec3f_Normalize(Vec3f *, Vec3f *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 s32 rand(void);
 
-void func_800363C4(Car *car, f32 dt) {
+void CarAI_SteerToTarget(Car *car, f32 dt) {
     Race *race;
     Vec3f *p;
     Vec3f *pos;

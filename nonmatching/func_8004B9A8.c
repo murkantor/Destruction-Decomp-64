@@ -11,6 +11,7 @@ s32 sprintf(char *, const char *, ...);
 
 void func_8004B9A8(void) {
     char *text;
+    char *t2;
     s32 place;
 
     Ui_ResetScreen(0x112F2, 0x112F3);
@@ -38,8 +39,8 @@ void func_8004B9A8(void) {
     } else {
         sprintf(text + 200, "OR BETTER IN RACE STANDINGS");
     }
-    text = D_80123CBA;
-    sprintf(text, "TO ADVANCE");
+    t2 = D_80123CBA;
+    sprintf(t2, "TO ADVANCE");
     switch (place) {
         case 1:
             sprintf(D_80123C56, "1ST");

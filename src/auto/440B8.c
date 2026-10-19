@@ -70,7 +70,7 @@ static inline s32 UiSave_Fill(UiMgr *ui, UiSave *p) {
     return count;
 }
 
-void func_800434B8(void) {
+void Ui_SaveElements(void) {
     D_800BCA04 = 0;
     D_800BCA08 = 0;
     if (gUi->list != NULL) {

@@ -35,7 +35,7 @@ extern Pos2 D_800BAE80;
 extern u64 Time_Get(u64 *);
 extern void Ui_ResetScreen(s32, s32);
 extern void func_8004396C(void);
-extern void func_800434B8(void);
+extern void Ui_SaveElements(void);
 extern void Ctx_FreeAll(void *);
 extern void func_8005DD20(void *, s32);
 extern void Ui_AddModeLabels(s32);
@@ -79,7 +79,7 @@ void func_8004B048(void) {
         D_8007EF20.flag = 0;
         D_8007EF20.t = Time_Get(&gGame->x1058) + 52000000.0;
     } else {
-        func_800434B8();
+        Ui_SaveElements();
         Ctx_FreeAll(gUi[0]);
         func_8005DD20(gUi[0], 0x112F0);
         func_8005DD20(gUi[0], 0x112F1);

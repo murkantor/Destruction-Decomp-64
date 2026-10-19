@@ -468,8 +468,8 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0365DC` | `800359DC` | 0x388 | `src/auto/365DC.c` | C (generated) | 1 |  |
 | `036964` | `80035D64` | 0x114 | `src/auto/36964.c` | C (generated) | 1 | `Track_IsGridCellSolid` |
 | `036A78` | `80035E78` | 0x368 | `asm/36A78.s` | asm | 1 | `Seg_SphereSweepIntersect` |
-| `036DE0` | `800361E0` | 0x1e4 | `src/auto/36DE0.c` | C (generated) | 1 |  |
-| `036FC4` | `800363C4` | 0x368 | `src/auto/36FC4.c` | C (generated) | 1 |  |
+| `036DE0` | `800361E0` | 0x1e4 | `src/auto/36DE0.c` | C (generated) | 1 | `CarAI_InitTarget` |
+| `036FC4` | `800363C4` | 0x368 | `src/auto/36FC4.c` | C (generated) | 1 | `CarAI_SteerToTarget` |
 | `03732C` | `8003672C` | 0xdfc | `asm/3732C.s` | asm | 1 | `Wheel_ComputeTireForce` |
 | `038128` | `80037528` | 0x828 | `src/auto/38128.c` | C (generated) | 1 | `Car_ApplyWheelForces` |
 | `038950` | `80037D50` | 0x1900 | `asm/38950.s` | asm | 2 |  |
@@ -593,7 +593,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `043E30` | `80043230` | 0xb0 | `src/auto/43E30.c` | C (generated) | 1 |  |
 | `043EE0` | `800432E0` | 0xa4 | `src/auto/43EE0.c` | C (generated) | 1 |  |
 | `043F90` | `80043390` | 0x128 | `src/auto/43F90.c` | C (generated) | 1 | `Results_LoadBanner` |
-| `0440B8` | `800434B8` | 0x2d4 | `src/auto/440B8.c` | C (generated) | 1 |  |
+| `0440B8` | `800434B8` | 0x2d4 | `src/auto/440B8.c` | C (generated) | 1 | `Ui_SaveElements` |
 | `04438C` | `8004378C` | 0x1e0 | `src/auto/4438C.c` | C (generated) | 1 |  |
 | `04456C` | `8004396C` | 0xf4 | `src/auto/4456C.c` | C (generated) | 1 |  |
 | `044660` | `80043A60` | 0x28 | `src/auto/44660.c` | C (generated) | 1 |  |
@@ -711,7 +711,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `053B18` | `80052F18` | 0xd8 | `src/auto/53B18.c` | C (generated) | 1 | `Arc_SeekToEntryData` |
 | `053BF0` | `80052FF0` | 0x60 | `src/auto/53BF0.c` | C (generated) | 1 |  |
 | `053C50` | `80053050` | 0xfc | `src/auto/53C50.c` | C (generated) | 1 |  |
-| `053D4C` | `8005314C` | 0x1f0 | `src/auto/53D4C.c` | C (generated) | 1 |  |
+| `053D4C` | `8005314C` | 0x1f0 | `src/auto/53D4C.c` | C (generated) | 1 | `Zip_ReadFileByName` |
 | `053F3C` | `8005333C` | 0x234 | `asm/53F3C.s` | asm | 1 |  |
 | `054170` | `80053570` | 0x21c | `src/auto/54170.c` | C (generated) | 1 | `Elf_FindSymbol` |
 | `05438C` | `8005378C` | 0x174 | `src/auto/5438C.c` | C (generated) | 1 | `Elf_ResolveSymbols` |

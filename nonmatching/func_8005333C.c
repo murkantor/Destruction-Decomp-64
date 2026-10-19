@@ -25,17 +25,16 @@ s32 RomFile_Close(void *);
 u8 *strrchr(const u8 *, int);
 int toupper(int);
 
-#define Zip_Close(z)                 \
-    {                                \
-        Mem_Free((z)->x4C);          \
-        Mem_Free((z)->x14);          \
-        Mem_Free((z)->xC);           \
-        if ((z)->x4 != NULL) {       \
-            RomFile_Close((z)->x4);  \
-        }                            \
-        Mem_Free((z)->x0);           \
-        Mem_Free(z);                 \
+static inline void Zip_Close(Zip *z) {
+    Mem_Free(z->x4C);
+    Mem_Free(z->x14);
+    Mem_Free(z->xC);
+    if (z->x4 != NULL) {
+        RomFile_Close(z->x4);
     }
+    Mem_Free(z->x0);
+    Mem_Free(z);
+}
 
 s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
     Zip *z;
@@ -44,6 +43,7 @@ s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
     u8 *s;
     s32 match;
     u8 *fn;
+    s32 c;
 
     z = Zip_Open(path);
     if (z != NULL) {
@@ -57,9 +57,13 @@ s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
         } else {
             s = fn;
         }
-        while (*p != 0 && toupper(*p) == toupper(*s)) {
-            p++;
-            s++;
+        if ((c = *p) != 0) {
+        cmp:
+            if (toupper(c) == toupper(*s)) {
+                p++;
+                s++;
+                if ((c = *p) != 0) goto cmp;
+            }
         }
         match = (*p == 0 && *s == 0);
         if (match) {

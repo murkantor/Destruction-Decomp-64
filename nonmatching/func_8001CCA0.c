@@ -12,6 +12,7 @@ void func_8001CCA0(Spline *out, Spline *in) {
     f32 y4;
     f32 x4;
     f32 inv;
+    f32 t;
 
     *out = *in;
     x = in->x4;
@@ -24,9 +25,10 @@ void func_8001CCA0(Spline *out, Spline *in) {
     y3 = y2 * y;
     y4 = y3 * y;
     x4 = x3 * x;
+    t = -3.0f * x2;
     inv = 1.0f / (x2 * y3 * (y2 - 2.0f * x * y + x2));
     out->x18 = a;
-    out->xC = (2.0f * b * x3 - (a * (-3.0f * x2) * y + 2.0f * a * x3 + a * y3 + b * (3.0f * x2) * y)) * inv;
+    out->xC = (2.0f * b * x3 - (a * t * y + 2.0f * a * x3 + a * y3 + b * (3.0f * x2) * y)) * inv;
     out->x10 = 2.0f * (a * (-2.0f * x2) * y2 + a * x4 + a * y4 + 2.0f * b * x2 * y2 - b * x4) * inv;
     out->x14 = (b * (3.0f * x4) - (a * (-4.0f * x3) * y + a * (3.0f * x4) + a * y4 + b * (4.0f * x3) * y)) * inv * y3 / y2;
 }

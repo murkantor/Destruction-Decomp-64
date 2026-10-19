@@ -26,7 +26,7 @@ static inline void Zip_Close(Zip *z) {
     Mem_Free(z);
 }
 
-s32 func_8005314C(void *arg0, u8 *name, void **outBuf, u32 *outSize) {
+s32 Zip_ReadFileByName(void *arg0, u8 *name, void **outBuf, u32 *outSize) {
     Zip *z;
     ZipEntry *e;
     char buf[12];

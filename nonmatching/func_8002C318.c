@@ -107,12 +107,12 @@ void func_8002C318(void) {
     s32 sel;
     s8 j;
     Player *p;
+    s32 k;
 
     Clock_Start(1, &gGameTime);
     func_800638C8(&gGame[0]->clocks[1]);
     D_80095830 = 0;
-    p = D_800958F8;
-    for (i = 0; i < 4; i++) {
+    for (k = 0, p = D_800958F8; k < 4; k++) {
         gGame[0]->x740[gGame[0]->x1046++] = p++;
     }
     race = gGame[0]->race;
