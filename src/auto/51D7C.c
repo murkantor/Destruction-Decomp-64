@@ -63,11 +63,11 @@ extern u16 D_800B03CC[];
 extern u16 D_800B040C[];
 extern u16 D_800B0448[];
 
-s32 func_80051C98(u32 *b, u32 n, u32 s, u16 *d, u16 *e, struct huft **t, s32 *m);
-s32 func_80052334(struct huft *t);
-s32 func_80050D80(struct huft *tl, struct huft *td, s32 bl, s32 bd);
+s32 huft_build(u32 *b, u32 n, u32 s, u16 *d, u16 *e, struct huft **t, s32 *m);
+s32 huft_free(struct huft *t);
+s32 inflate_codes(struct huft *tl, struct huft *td, s32 bl, s32 bd);
 
-s32 func_8005130C(void) {
+s32 inflate_fixed(void) {
     s32 i;
     u32 l[288];
 
@@ -85,7 +85,7 @@ s32 func_8005130C(void) {
             l[i] = 8;
         }
         D_800BCA1C.bl = 7;
-        if ((i = func_80051C98(l, 288, 257, D_800B038C, D_800B03CC, &D_800BCA1C.tl, &D_800BCA1C.bl)) != 0) {
+        if ((i = huft_build(l, 288, 257, D_800B038C, D_800B03CC, &D_800BCA1C.tl, &D_800BCA1C.bl)) != 0) {
             D_800BCA1C.tl = NULL;
             return i;
         }
@@ -93,11 +93,11 @@ s32 func_8005130C(void) {
             l[i] = 5;
         }
         D_800BCA1C.bd = 5;
-        if ((i = func_80051C98(l, 30, 0, D_800B040C, D_800B0448, &D_800BCA1C.td, &D_800BCA1C.bd)) > 1) {
-            func_80052334(D_800BCA1C.tl);
+        if ((i = huft_build(l, 30, 0, D_800B040C, D_800B0448, &D_800BCA1C.td, &D_800BCA1C.bd)) > 1) {
+            huft_free(D_800BCA1C.tl);
             D_800BCA1C.tl = NULL;
             return i;
         }
     }
-    return func_80050D80(D_800BCA1C.tl, D_800BCA1C.td, D_800BCA1C.bl, D_800BCA1C.bd) != 0;
+    return inflate_codes(D_800BCA1C.tl, D_800BCA1C.td, D_800BCA1C.bl, D_800BCA1C.bd) != 0;
 }

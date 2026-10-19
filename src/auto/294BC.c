@@ -9,7 +9,7 @@ extern double D_800B9050;
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Length(f32 *, Vec3f *);
 
-void func_800288BC(Vec3f pos, Pt *p, s32 n, f32 scale, Bounds *b) {
+void Track_ScaleVertsByDistance(Vec3f pos, Pt *p, s32 n, f32 scale, Bounds *b) {
     Vec3f v;
     Vec3f d;
     f32 len;

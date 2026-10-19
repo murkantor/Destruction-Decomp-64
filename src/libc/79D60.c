@@ -4,7 +4,7 @@
 extern s64 D_800B6DE0[];
 extern f64 D_800BC780;
 
-void func_80079160(s64 x0, s64 y, f64 *out) {
+void _atan_cordic(s64 x0, s64 y, f64 *out) {
     s64 x = x0;
     s64 z = 0;
     s64 nx;

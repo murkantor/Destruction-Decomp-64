@@ -37,7 +37,7 @@ typedef struct {
 
 extern Game *gGame;
 
-void func_8001AB10(s32 *out, Vec3f *pos, s32 *list, s32 n) {
+void Track_FindPolyUnder(s32 *out, Vec3f *pos, s32 *list, s32 n) {
     f32 best = 100000.0f;
     Vert *a = NULL;
     Vert *b;

@@ -3,7 +3,7 @@
 
 M2C_UNK Mem_Free(void *);
 
-s32 func_80052334(s32 arg0)
+s32 huft_free(s32 arg0)
 {
   s32 temp_s0;
   s32 var_a0;

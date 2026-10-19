@@ -10,7 +10,7 @@ extern s32 D_800BCA30;
 s32 Inflate_GetByte(void);
 s32 func_800514D0(void);
 s32 Inflate_Stored(void);
-s32 func_8005130C(void);
+s32 inflate_fixed(void);
 void func_80052370(s32, u32);
 
 #define NEEDBITS(n)                  \
@@ -50,7 +50,7 @@ static inline s32 InflateBlock(s32 *e) {
         return Inflate_Stored();
     }
     if (t == 1) {
-        return func_8005130C();
+        return inflate_fixed();
     }
     return 2;
 }

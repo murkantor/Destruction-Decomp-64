@@ -22,7 +22,7 @@ f32 func_80062F40(void);
 void World_UpdateEffects(void *, f32);
 void func_8002EB00(void *, f32);
 void func_8001B308(void);
-void func_80013BB0(void);
+void Anim_UpdateTimers(void);
 void func_8002104C(Slot68 *);
 
 void World_Update(World *w) {
@@ -64,7 +64,7 @@ void World_Update(World *w) {
             if (gGame[0]->x10FC == 0x1C) {
                 func_8001B308();
             }
-            func_80013BB0();
+            Anim_UpdateTimers();
         }
         for (j = 0; j < D_800D31CC; j++) {
             func_8002104C(&D_800958D0[j]);

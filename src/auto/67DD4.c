@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-f32 func_800671D4(f32 x) {
+f32 Math_Exp2f(f32 x) {
     f32 x2;
     f32 x4;
 

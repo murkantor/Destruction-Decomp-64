@@ -8,7 +8,7 @@ void Vec3f_Length(f32 *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 f64 acos(f64);
 
-s32 func_8005CF70(Vec3f *a, Vec3f *b, Vec3f *c) {
+s32 Vec3f_HeadingAngleXZ(Vec3f *a, Vec3f *b, Vec3f *c) {
     Vec3f v;
     Vec3f d;
     f32 lenV;

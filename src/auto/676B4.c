@@ -21,7 +21,7 @@ extern f64 D_800BBFA8;
 extern f64 D_800BBFB0;
 extern u8 *D_800CCA9C;
 extern u8 D_8011F2B8[];
-f32 func_800671D4(f32);
+f32 Math_Exp2f(f32);
 void alSynSetPitch(void *, void *, f32);
 
 void AudioVoice_UpdatePitch(Voice *v, s32 idx, f32 f) {
@@ -38,7 +38,7 @@ void AudioVoice_UpdatePitch(Voice *v, s32 idx, f32 f) {
     v->xB2 = 0;
     if (cur != v->x24) {
         v->x24 = cur;
-        cur = func_800671D4(cur * D_800BBFA8);
+        cur = Math_Exp2f(cur * D_800BBFA8);
         if (cur > D_800BBFB0) {
             cur = 2.0f;
             v->xB3 = 0;

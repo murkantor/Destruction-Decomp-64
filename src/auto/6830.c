@@ -7,7 +7,7 @@ typedef struct { u8 pad0[0x10A8]; u8 x10A8[8]; } Game;
 extern Game *gGame;
 extern s32 D_800958B4;
 extern s32 D_80095FF8[];
-u8 func_800016DC(Car *);
+u8 AI_FindTargetAhead(Car *);
 u8 Ai_AdjustLaneFromNeighbour(Car *);
 void Ai_CheckStuck(Car *);
 u64 Time_Get(void *);
@@ -18,7 +18,7 @@ void func_80005C30(Car *arg0) {
 
     switch (s->x10) {
     case 7:
-        if (func_800016DC(arg0)) {
+        if (AI_FindTargetAhead(arg0)) {
             s->x10 = 8;
         }
         if (Ai_AdjustLaneFromNeighbour(arg0)) {

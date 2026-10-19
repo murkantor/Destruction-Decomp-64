@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80079160(u64, u64, f64 *);
+void _atan_cordic(u64, u64, f64 *);
 
 f64 atan(f64 x) {
     s32 sign;
@@ -23,7 +23,7 @@ f64 atan(f64 x) {
             num = 0x1000000000000000ULL;
             den = (u64)(x * 1152921504606846976.0);
         }
-        func_80079160(num, den, &r);
+        _atan_cordic(num, den, &r);
     } else {
         r = x;
     }

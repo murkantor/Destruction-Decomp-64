@@ -9,8 +9,8 @@ s32 func_80054B48(void) {
     return (((u32) D_80125C90 >> 0xC) & 1) ^ 1;
 }
 
-M2C_UNK func_80054804();                            /* extern */
+M2C_UNK DebugMenu_Draw();                            /* extern */
 
 void func_80054B78(void) {
-    func_80054804();
+    DebugMenu_Draw();
 }
