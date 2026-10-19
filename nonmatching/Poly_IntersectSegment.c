@@ -10,7 +10,7 @@ u8 Poly_StraddlesPlane(Poly *poly, Vec3f *p, Vec3f *n);
 void Poly_ClipAgainstPlane(Poly *poly, Vec3f *pt, Vec3f *nrm, f32 *minOut, Vec3f *out);
 extern const double D_800B9540;
 
-s32 func_80033CBC(Poly *a, f32 *minA, Poly *b, f32 *minB, Vec3f *out)
+s32 Poly_IntersectSegment(Poly *a, f32 *minA, Poly *b, f32 *minB, Vec3f *out)
 {
     Vec3f d;
     Vec3f s1[2];

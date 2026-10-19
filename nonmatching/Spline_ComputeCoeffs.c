@@ -1,6 +1,6 @@
 typedef struct { u8 pad0[4]; s32 x4; u8 pad8[4]; f32 xC; f32 x10; f32 x14; f32 x18; u8 pad1C[0x3C]; } Spline;
 
-void func_8001CCA0(Spline *out, Spline *in) {
+void Spline_ComputeCoeffs(Spline *out, Spline *in) {
     f32 x;
     f32 y;
     f32 a;

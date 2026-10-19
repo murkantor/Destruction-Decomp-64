@@ -39,7 +39,7 @@ extern const f64 D_800B94F8;
 extern const f64 D_800B9500;
 extern const f64 D_800B9508;
 extern f32 D_800D2E78;
-u8 func_80033CBC(Poly *, f32 *, Poly *, f32 *, Vec3f *);
+u8 Poly_IntersectSegment(Poly *, f32 *, Poly *, f32 *, Vec3f *);
 void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Set(Vec3f *, f32, f32, f32);
@@ -99,7 +99,7 @@ u8 func_8003225C(Car *a, Car *b) {
             for (k = 0; k < pb.count; k++) {
                 pb.v[k] = verts[fc->idx[k]];
             }
-            if (!func_80033CBC(&pa, &da, &pb, &db, pts)) {
+            if (!Poly_IntersectSegment(&pa, &da, &pb, &db, pts)) {
                 continue;
             }
             posA = A->pos;

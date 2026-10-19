@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 pad[0x10]; s8 x10; } Car;
 typedef struct {
@@ -38,13 +41,13 @@ extern void *D_8011EEF8[];
 extern u64 gGameTime;
 extern Vec3f D_800BBF60;
 extern Vec3f D_800BBF6C;
-void func_80024840(void);
+void func_80024840(Car *);
 u64 Time_Get(u64 *);
 void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
 void func_80064948(Player *);
 void func_800649B8(Player *);
 
-void func_800644C0(Player *arg0) {
+void Rules_UpdatePlayer(Player *arg0) {
     u8 r = 0;
     Vec3f a = D_800BBF60;
     Vec3f b = D_800BBF6C;
@@ -52,7 +55,7 @@ void func_800644C0(Player *arg0) {
     RuleHandlers *h;
 
     if (D_8011EEFC == 0 && D_8011EEEA == gGame->x10FC && p->x28->x10 <= D_800958A4 - 1) {
-    func_80024840();
+    func_80024840(p->x28);
     h = &D_80097330[gGame->x10FC];
     if (gGame->x10FE && h->x20) {
         h->x20();

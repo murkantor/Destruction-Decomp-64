@@ -39,7 +39,7 @@ void Shadow_ClipAndEmitFaces(Shadow *, s32 *, s32);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-void func_800158EC(Shadow *s, Mtx3 *m) {
+void Shadow_Build(Shadow *s, Mtx3 *m) {
     s32 items[200];
     Vec3f ab[2];
     Vec3f unused;

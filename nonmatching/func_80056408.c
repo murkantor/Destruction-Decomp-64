@@ -24,7 +24,7 @@ extern u8 D_800BCC80[];
 extern void *D_800B0B58;
 extern s32 D_800BCCF4;
 extern Ctx *D_800B0B54;
-void func_80055CD0(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
+void Video_SetMode(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
 void Heap_Alloc(Heap *heap, HeapBlock *out, u32 size, s32 alignMask, s32 alignOffset);
 void *HeapBlock_Ptr(HeapBlock *);
 void Heap_Free(Heap *heap, HeapBlock *blk);
@@ -36,7 +36,7 @@ Ctx func_80056408(void) {
     Ctx c;
     HeapBlock blk;
 
-    func_80055CD0(D_800BCC80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.0f, 1.0f);
+    Video_SetMode(D_800BCC80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.0f, 1.0f);
     Heap_Alloc(&gMainHeap, &blk, 0x25800, 0x3F, 0);
     p = HeapBlock_Ptr(&blk);
     if (p == NULL) {

@@ -134,7 +134,7 @@ extern s32 D_800D1C20[];
 void *Mem_Alloc(u32);
 s16 func_80064D70(void);
 f64 log(f64);
-void func_8001CCA0(void *, void *);
+void Spline_ComputeCoeffs(void *, void *);
 void func_80012A20(void *);
 void func_80015714(void *);
 void Shadow_InitMgr(void *);
@@ -216,7 +216,7 @@ Car *Car_Create(CarStats *s) {
     for (i = 0; i < 12; i++) {
         car->xB30[i] = 0;
     }
-    func_8001CCA0(car->x194, s->x20);
+    Spline_ComputeCoeffs(car->x194, s->x20);
     for (n = 0; n < D_800D31CC; n++) {
         found = 0;
         if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {

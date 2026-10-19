@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f pos; u8 pad[0xC]; } Node;
 typedef struct { u8 pad[0x30]; Node *x30; } Race;
@@ -16,9 +19,8 @@ extern void Ui_AddElement(void *, s32, s32);
 extern void Msg_Queue(s32, s32, s32, s32);
 extern void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
 
-void func_80020098(Obj *o, s32 idx) {
+void Race_AddNodeDistance(Obj *o, s32 idx) {
     Race *race = gGame[0]->x1100;
-    s32 msg[2];
     s16 mode;
 
     if (o->x30 == 0) {
@@ -29,8 +31,8 @@ void func_80020098(Obj *o, s32 idx) {
                 if (o->x3C->xC->xB4 == 7) {
                     return;
                 }
-                msg[0] = 0x86;
-                msg[1] = 0x87;
+                {
+                s32 msg[2] = {0x86, 0x87};
                 if (gGame[0]->x10FC != 25 && !D_80091B14[o->x3C->x10]) {
                     D_80091B14[o->x3C->x10] = 1;
                     Ui_AddElement(gUi, 2, o->x3C->x10 + 0xE2);
@@ -41,6 +43,7 @@ void func_80020098(Obj *o, s32 idx) {
                             Announcer_QueueRandom(msg, 2, 0, 1, 0);
                         }
                     }
+                }
                 }
             }
         }

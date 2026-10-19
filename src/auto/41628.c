@@ -7,7 +7,7 @@ typedef struct {
 } MenuItem;
 extern s32 D_80125BE4[];
 void Timer_Start(void *, s64);
-void func_80040FD8(s32, s32);
+void PakMenu_SelectSlot(s32, s32);
 
 s32 Menu_Prev(MenuItem *item) {
     s32 i;
@@ -19,7 +19,7 @@ s32 Menu_Prev(MenuItem *item) {
         return 0;
     }
     j = i - 1;
-    func_80040FD8(D_80125BE4[i], D_80125BE4[j]);
+    PakMenu_SelectSlot(D_80125BE4[i], D_80125BE4[j]);
     item->value = j;
     return 1;
 }

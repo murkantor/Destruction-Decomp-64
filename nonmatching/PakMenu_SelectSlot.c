@@ -33,15 +33,15 @@ void PakMenu_FormatSlotText(s32);
 s32 Font_GetStringWidth(char *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
-void func_80040FD8(s32 prev, s32 slot) {
+void PakMenu_SelectSlot(s32 prev, s32 slot) {
     s32 ids[3] = { 0xB4, 0x3F, 0xB5 };
-    ResEnt *ent = NULL;
+    ResEnt *ent;
     s32 i;
     s32 mode;
     f32 x;
 
-    if (prev != -1) {
-        for (i = 0; i < gUi[0]->count; i++) {
+ent = NULL; i = 0;    if (prev != -1) {
+        for (; i < gUi[0]->count; i++) {
             if (prev + 0x112D0 == gUi[0]->res[i].id) {
                 ent = &gUi[0]->res[i];
                 break;

@@ -39,7 +39,7 @@ void Ui_AddSpriteElement(void *, UiElemDesc *);
 void Ui_AddElement(void *, s32, s32);
 s32 func_8001B2F4(s32);
 int sprintf(char *, const char *, ...);
-void func_8004E144(s32, s32);
+void Menu_ShowRecordRows(s32, s32);
 void Timer_Start(void *, u64);
 
 void Results_Init(void)
@@ -118,10 +118,10 @@ void Results_Init(void)
     mode = 0;
     if (D_80131D88[D_800972F4[0]].x1C != -1 || D_80131D88[D_800972F4[1]].x1C != -1 ||
         D_80131D88[D_800972F4[2]].x1C != -1 || D_80131D88[D_800972F4[3]].x1C != -1) {
-        func_8004E144(-1, 0);
+        Menu_ShowRecordRows(-1, 0);
     } else {
         mode = 4;
-        func_8004E144(-1, 4);
+        Menu_ShowRecordRows(-1, 4);
     }
 
     if (D_80131D88[D_800972F4[0]].x1C != -1 && D_800958BC[0] == 3 &&

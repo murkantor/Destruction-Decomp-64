@@ -35,7 +35,7 @@ extern s32 D_80091B18[];
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 u8 func_80035818(f32, f32, f32, f32, f32, f32, f32, f32);
 s32 Racer_WrapNode(Car *, s32);
-void func_80020098(Car *, s32);
+void Race_AddNodeDistance(Car *, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
@@ -112,7 +112,7 @@ void Car_UpdateTrackSegment(Car *car)
             }
             car->seg = n;
         } else {
-            func_80020098(car, seg);
+            Race_AddNodeDistance(car, seg);
         }
         flag = 1;
     }
@@ -137,7 +137,7 @@ void Car_UpdateTrackSegment(Car *car)
                 }
                 car->seg = n;
             } else {
-                func_80020098(car, n);
+                Race_AddNodeDistance(car, n);
             }
             flag = 1;
         }

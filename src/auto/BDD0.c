@@ -59,7 +59,7 @@ Gfx *func_8000A894(Car *, Gfx *);
 Gfx *Debris_UpdateDraw(Car *, Gfx *);
 Gfx *Gfx_SetViewport2(Gfx *, s32);
 Gfx *func_80015624(void *, Gfx *);
-void func_800158EC(void *, f32 m[4][4]);
+void Shadow_Build(void *, f32 m[4][4]);
 void Particle_DrawAt(void *);
 Gfx *func_80017E8C(void *, Gfx *);
 void func_800187D4(void *);
@@ -98,7 +98,7 @@ static inline Gfx *DrawParticle(Car *car, Gfx *gfx, f32 m[4][4])
     if (car->xB6C) {
         g = func_80015624(car->xB6C, gfx);
         if (!D_8012455C) {
-            func_800158EC(car->xB6C, m);
+            Shadow_Build(car->xB6C, m);
         }
         Particle_DrawAt(car->xB6C);
     }

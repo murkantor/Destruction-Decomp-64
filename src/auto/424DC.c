@@ -20,7 +20,7 @@ void Ui_ResetScreen(s32, s32);
 void Menu_BuildIdList(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDef *);
-void func_80040FD8(s32, s32);
+void PakMenu_SelectSlot(s32, s32);
 void func_8003ECF8(void);
 
 void func_800418DC(void) {
@@ -65,6 +65,6 @@ void func_800418DC(void) {
     Ui_AddElement(gUi[0], 0, 0x17A);
     Ui_AddElement(gUi[0], 0, 0x17B);
     Ui_AddElement(gUi[0], 0, 0x17C);
-    func_80040FD8(-1, D_800958B4[0]);
+    PakMenu_SelectSlot(-1, D_800958B4[0]);
     func_8003ECF8();
 }

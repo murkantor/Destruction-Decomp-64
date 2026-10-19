@@ -27,7 +27,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
-void func_8004E144(s32 prev, s32 first) {
+void Menu_ShowRecordRows(s32 prev, s32 first) {
     PosTbl pos = D_800BB280;
     ColTbl xs = D_800BB2A0;
     RowTbl ys = D_800BB2AC;
@@ -46,14 +46,7 @@ void func_8004E144(s32 prev, s32 first) {
         }
     }
     if (prev == -1) {
-        i = 0;
-        while (1) {
-            k = i + 0x139;
-            id = first + k;
-            Ui_AddElement(gUi[0], 2, id);
-            Ui_SetElementPos(gUi[0], 2, id, pos.v[i][0], pos.v[i][1]);
-            if (++i >= 4) return;
-        }
+        i = 0; while (1) { Ui_AddElement(gUi[0], 2, first + i + 0x139); Ui_SetElementPos(gUi[0], 2, first + i + 0x139, pos.v[i][0], pos.v[i][1]); if (++i >= 4) return; }
     } else {
         for (i = 0; i < 4; i++) {
             k = i + 0x139;

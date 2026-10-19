@@ -22,7 +22,7 @@ extern s32 D_800B0B08[];
 extern s32 D_800B0AF0[];
 extern s32 D_800B0AFC[];
 
-void func_80055CD0(Video *v, s32 a1, s32 tv, s32 a3, s32 lo, s32 hi, s32 aa, s32 dith, s32 gamma, s32 div, f32 sx, f32 sy) {
+void Video_SetMode(Video *v, s32 a1, s32 tv, s32 a3, s32 lo, s32 hi, s32 aa, s32 dith, s32 gamma, s32 div, f32 sx, f32 sy) {
     s32 flags;
     s32 idx;
 

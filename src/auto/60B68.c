@@ -23,7 +23,7 @@ extern InitConfig gInitConfig;
 extern u8 gMainHeap[];
 extern s32 D_80124350;
 u16 func_80064D70(void);
-void func_80055CD0(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
+void Video_SetMode(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
 void Heap_Alloc(void *heap, HeapBlock *out, u32 size, s32 alignMask, s32 alignOffset);
 
 s32 Audio_Init(AudioObj *o) {
@@ -33,7 +33,7 @@ s32 Audio_Init(AudioObj *o) {
     o->x4 = o;
     o->x56C = 0;
     D_80124350 = 0;
-    func_80055CD0(o->x10, gInitConfig.x8, 0, 1, 0, 0, 0, 0, 1, 0, 1.0f, 1.0f);
+    Video_SetMode(o->x10, gInitConfig.x8, 0, 1, 0, 0, 0, 0, 1, 0, 1.0f, 1.0f);
     Heap_Alloc(gMainHeap, &o->x150, o->x88, 0x3F, 0);
     for (i = 0; i < 2; i++) {
         Heap_Alloc(gMainHeap, &o->x158[i], o->x84, 0x3F, 0);
