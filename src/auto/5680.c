@@ -13,7 +13,7 @@ Vec3f func_8001FBA8(Obj *);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 f32 sqrtf(f32);
 
-void func_80004A80(Obj *obj) {
+void Car_UpdateTrackSection(Obj *obj) {
     Obj *o = obj->x38;
     s32 idx = obj->x28;
     Seg *segs = gGame->x1100->x30;

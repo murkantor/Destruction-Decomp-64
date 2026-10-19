@@ -29,7 +29,7 @@ void func_80063380(s32);
 void func_80063564(s32, s32);
 void func_80063AAC(s32);
 
-s32 func_8004F694(Obj *obj) {
+s32 Credits_Update(Obj *obj) {
     Str2 sfx = D_800BAF30;
     u64 now;
     s32 i;

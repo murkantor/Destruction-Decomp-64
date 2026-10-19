@@ -28,7 +28,7 @@ extern Vec3f func_8001FBA8(Car *);
 extern Vec3f func_8001FB88(Car *);
 extern Vec3f func_8001FC08(Car *);
 extern f32 func_800005C8(Vec3f, Vec3f);
-extern void func_80004A80(Car *);
+extern void Car_UpdateTrackSection(Car *);
 extern void func_80002D10(Car *);
 extern void Ai_UpdateTargetPoint(Car *);
 extern void func_80003780(Car *);
@@ -95,7 +95,7 @@ void func_80005DCC(Car *car) {
         ai->x6C = 0;
         break;
     case 8:
-        func_80004A80(car);
+        Car_UpdateTrackSection(car);
         func_80002D10(car);
         ai->x10 = 7;
         break;

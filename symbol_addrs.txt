@@ -830,3 +830,7 @@ Track_LoadGridObjects = 0x8002BC98; // type:func
 Race_PlaceCarsOnGrid = 0x80026990; // type:func
 Car_DeformMeshAtImpact = 0x80028A4C; // type:func
 Obb_Overlap = 0x80033168; // type:func
+Lights_Cycle = 0x80043B1C; // type:func
+Race_CheckFinishHud = 0x80044F3C; // type:func
+Credits_Update = 0x8004F694; // type:func
+Car_UpdateTrackSection = 0x80004A80; // type:func

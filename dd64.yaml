@@ -669,7 +669,7 @@ segments:
       - [0x45884, c, auto/45884]
       - [0x45A04, c, auto/45A04]
       - [0x45B08, c, auto/45B08]
-      - [0x45B3C, asm]
+      - [0x45B3C, c, auto/45B3C]
       - [0x463E4, c, auto/463E4]
       - [0x464B8, c, auto/464B8]
       - [0x464F4, c, auto/464F4]

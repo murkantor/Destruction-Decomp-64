@@ -10,7 +10,7 @@ extern u8 D_80096ED0[];
 void func_80063380(s32);
 void func_80063564(s32, s32);
 
-s32 func_80043B1C(void) {
+s32 Lights_Cycle(void) {
     u64 lim = 30000000000ULL;
     u8 ret = 0;
 
