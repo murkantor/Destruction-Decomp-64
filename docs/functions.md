@@ -1167,8 +1167,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80064DAC` | `0659AC` | 0x30 | `func_80064DAC` | `src/auto/659AC.c` | C (generated) |
 | `80064DDC` | `0659DC` | 0x20 | `func_80064DDC` | `src/auto/659DC.c` | C (generated) |
 | `80064DFC` | `0659FC` | 0xc | `func_80064DFC` | `src/auto/659FC.c` | C (generated) |
-| `80064E08` | `065A08` | 0x128 | `func_80064E08` | `asm/65A08.s` | asm |
-| `80064F30` | `065B30` | 0xe4 | `func_80064F30` | `asm/65A08.s` | asm |
+| `80064E08` | `065A08` | 0x128 | `Seq_ReadEnvelope` | `src/auto/65A08.c` | C (generated) |
+| `80064F30` | `065B30` | 0xe4 | `Seq_SetTempo` | `src/auto/65B30.c` | C (generated) |
 | `80065014` | `065C14` | 0x14 | `func_80065014` | `src/auto/65C14.c` | C (generated) |
 | `80065028` | `065C28` | 0x24 | `func_80065028` | `src/auto/65C28.c` | C (generated) |
 | `8006504C` | `065C4C` | 0x48 | `func_8006504C` | `src/auto/65C4C.c` | C (generated) |

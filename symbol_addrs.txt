@@ -490,3 +490,5 @@ ObjList_Reset = 0x80064364; // type:func
 Players_Reset = 0x80064A70; // type:func
 Array_Find = 0x80064428; // type:func
 Array_SwapRemove = 0x80064464; // type:func
+Seq_ReadEnvelope = 0x80064E08; // type:func
+Seq_SetTempo = 0x80064F30; // type:func
