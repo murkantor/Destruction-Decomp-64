@@ -1,0 +1,72 @@
+name: Destruction Derby 64 (USA)
+sha1: a2c0799e13566d1b723299592cfcac9387f25fa7
+options:
+  basename: dd64
+  target_path: baserom.z64
+  elf_path: build/dd64.elf
+  base_path: .
+  platform: n64
+  compiler: GCC
+
+  ld_script_path: build/dd64.ld
+  ld_dependencies: True
+  undefined_funcs_auto_path: build/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/undefined_syms_auto.txt
+  symbol_addrs_path: symbol_addrs.txt
+
+  asm_path: asm
+  src_path: src
+  build_path: build
+  asset_path: assets
+  extensions_path: tools/splat_ext
+
+  find_file_boundaries: True
+  header_encoding: ASCII
+  create_undefined_funcs_auto: True
+  create_undefined_syms_auto: True
+  generate_asm_macros_files: True
+  use_legacy_include_asm: False
+  libultra_symbols: True
+  hardware_regs: True
+  gp_value: 0
+  subalign: 4
+
+segments:
+  - name: header
+    type: header
+    start: 0x0
+
+  - name: ipl3
+    type: bin
+    start: 0x40
+
+  - name: main
+    type: code
+    start: 0x1000
+    vram: 0x80000400
+    bss_size: 0x756F0
+    subsegments:
+      - [0x1000, hasm, entry]
+      - [0x1050, asm]
+      - [0x65790, c, main/boot]
+      - [0x659AC, asm]
+      # rspboot, F3DEX 2.07 and S2DEX 2.07 microcode text
+      - [0x7B9D0, textbin, rsp_text]
+      - [0x7F510, data]
+      - [0xB8960, rodata]
+      - { start: 0xBD4A0, type: bss, vram: 0x800BC8A0 }
+
+  - name: assets_bd4a0
+    type: bin
+    start: 0xBD4A0
+
+  # zippeddata.zip: deflated MIPS ELF objects with track data
+  - name: zippeddata
+    type: bin
+    start: 0xDCAF50
+
+  - name: padding
+    type: bin
+    start: 0xF94834
+
+  - [0x1000000]

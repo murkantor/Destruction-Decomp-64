@@ -1,0 +1,4 @@
+/* Hand-placed symbols the linker script does not define. */
+_mainSegmentStart = 0x80000450;
+_mainSegmentRomStart = 0x1050;
+_mainSegmentRomEnd = 0xBD4A0;

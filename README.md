@@ -1,0 +1,80 @@
+# DD64
+
+A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
+
+Status: the ROM builds and matches. 5 of about 1550 functions are in C (`src/main/boot.c`).
+
+You need your own copy of the ROM. It is not included and must never be committed.
+
+| ROM | Value |
+|---|---|
+| File | Destruction Derby 64 (USA).z64 |
+| SHA1 | `a2c0799e13566d1b723299592cfcac9387f25fa7` |
+
+## Requirements
+
+- Linux (or WSL) with `make`, `curl`, `sha1sum` and Python 3.
+- MIPS binutils: `mips-linux-gnu-as`, `ld`, `objcopy`, `objdump`.
+- KMC GCC 2.7.2, the compiler the game was built with. `tools/setup.sh` downloads it.
+
+On Debian or Ubuntu:
+
+```sh
+sudo apt install make curl python3-venv binutils-mips-linux-gnu
+```
+
+## Build
+
+1. Copy your ROM to `baserom.z64` in the repo root.
+2. Set up Python and the compiler:
+   ```sh
+   python3 -m venv .venv
+   . .venv/bin/activate
+   pip install -r requirements.txt
+   tools/setup.sh
+   ```
+3. Split the ROM into assembly and data:
+   ```sh
+   make extract
+   ```
+4. Build and check the result:
+   ```sh
+   make
+   ```
+   A matching build prints `build/dd64.z64: OK`.
+
+Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make distclean` removes everything generated.
+
+## Layout
+
+| Path | Contents |
+|---|---|
+| `dd64.yaml` | splat config: where each segment of the ROM starts |
+| `symbol_addrs.txt` | Names for functions and data, fed to splat |
+| `linker_syms.txt` | Symbols defined at link time, such as segment ROM addresses |
+| `src/` | Decompiled C |
+| `include/` | Headers. `hardware_syms.ld` holds hardware register and libultra low-memory addresses |
+| `tools/` | Compiler setup and the `move` fix for the assembler |
+| `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
+| `asm/`, `assets/`, `build/` | Generated, not committed |
+
+## Decompiling a function
+
+1. Find the function in `asm/`. To work on it in C, give the file a `c` subsegment in `dd64.yaml`, run `make extract`, and splat writes a C file with an `INCLUDE_ASM` line per function.
+2. Replace one `INCLUDE_ASM` line with C.
+3. Compare against the original with asm-differ:
+   ```sh
+   python3 path/to/asm-differ/diff.py -m boot
+   ```
+4. `make` must still print `OK` before you commit.
+
+## Compiler
+
+| Setting | Value |
+|---|---|
+| Compiler | KMC GCC 2.7.2 |
+| Flags | `-O2 -G0 -mips3 -mgp32 -mfp32` |
+| Assembler | Modern GNU as. KMC's assembler encodes `move` as `addu`, so `tools/fix_move.sed` rewrites it in the compiler output first |
+| libultra | 2.0I, built 31 Jul 1998, with asserts |
+
+See [docs/rom.md](docs/rom.md) for the ROM layout and what is known about the data.

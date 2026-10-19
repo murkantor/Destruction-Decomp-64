@@ -1,0 +1,23 @@
+// main entry
+entrypoint = 0x80000400; // type:func
+boot = 0x80064B90; // type:func
+idle = 0x80064C70; // type:func
+mainproc = 0x80064CDC; // type:func
+
+// libultra
+osPiGetStatus = 0x8006CA80; // type:func
+osPiRawReadIo = 0x8006CAA0; // type:func
+osPiRawStartDma = 0x8006CB30; // type:func
+osSetThreadPri = 0x8006AAC0; // type:func
+osInitialize = 0x8006A5F0; // type:func
+osCreateThread = 0x8006A490; // type:func
+osStartThread = 0x8006AB90; // type:func
+
+// boot data
+sIdleThread = 0x800C0710; // size:0x1B0
+sMainThread = 0x800C08C0; // size:0x1B0
+sIdleStackTop = 0x800C4A70;
+sMainStackTop = 0x800CCA70;
+gInitConfig = 0x801311C0; // size:0xC
+gHeapStart = 0x80137170;
+gBuildVersion = 0x8007E910;
