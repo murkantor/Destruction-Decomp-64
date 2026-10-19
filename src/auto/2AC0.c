@@ -3,7 +3,7 @@
 
 s32 func_80001D78(s32);                             /* extern */
 s32 func_80055374(M2C_UNK *);                       /* extern */
-M2C_UNK func_80055530(M2C_UNK *, M2C_UNK *, M2C_UNK, M2C_UNK, s32); /* extern */
+M2C_UNK Heap_AllocAlt(M2C_UNK *, M2C_UNK *, M2C_UNK, M2C_UNK, s32); /* extern */
 M2C_UNK Heap_Free(M2C_UNK *, M2C_UNK *);        /* extern */
 M2C_UNK func_80063BFC(s32, s32);                    /* extern */
 M2C_UNK func_80064100(s32);                         /* extern */
@@ -14,7 +14,7 @@ s32 func_80001EC0(s32 arg0) {
     s32 temp_v0;
     s32 temp_v0_2;
 
-    func_80055530(&gMainHeap, &sp18, 0x3C, 7, 0);
+    Heap_AllocAlt(&gMainHeap, &sp18, 0x3C, 7, 0);
     temp_v0_2 = func_80055374(&sp18);
     func_80063BFC(arg0, temp_v0_2);
     temp_v0 = func_80001D78(temp_v0_2);

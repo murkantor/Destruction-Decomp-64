@@ -184,3 +184,17 @@ PakMenu_ConfirmOverwrite = 0x8003D0D8; // type:func
 PakMenu_Busy = 0x8003D4D4; // type:func
 PakMenu_PakFull = 0x8003DB0C; // type:func
 Race_WaitForOthers = 0x80045C94; // type:func
+
+// zip reader over the zippeddata.zip ROM area (Info-ZIP style)
+RomFile_Open = 0x80050B40; // type:func
+RomFile_Read = 0x80050B70; // type:func
+RomFile_Seek = 0x80050CC0; // type:func
+RomFile_Tell = 0x80050D24; // type:func
+RomFile_Close = 0x80050D34; // type:func
+Zip_ReadEndOfCentralDir = 0x80052728; // type:func
+Zip_Open = 0x80052870; // type:func
+strcpy = 0x80053D00; // type:func
+Mem_AllocAlt = 0x800559CC; // type:func
+Heap_AllocAlt = 0x80055530; // type:func
+gRomFile = 0x8011F30C;
+gInflateMaskBits = 0x800BB7E4;

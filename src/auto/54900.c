@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-u8 *func_80053D00(u8 *arg0, u8 *arg1) {
+u8 *strcpy(u8 *arg0, u8 *arg1) {
     u8 *var_a1;
     u8 *var_v1;
     u8 temp_v0;

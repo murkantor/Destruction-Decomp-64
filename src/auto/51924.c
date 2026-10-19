@@ -1,11 +1,11 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_80050D24(void *arg0) {
+s32 RomFile_Tell(void *arg0) {
     return M2C_FIELD(arg0, s32 *, 8) - M2C_FIELD(arg0, s32 *, 0);
 }
 
-s32 func_80050D34(void *arg0) {
+s32 RomFile_Close(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0) = 0;
     M2C_FIELD(arg0, s32 *, 4) = 0;
     M2C_FIELD(arg0, s32 *, 8) = 0;
