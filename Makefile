@@ -14,7 +14,8 @@ KMC_DIR := tools/kmc
 CC      := COMPILER_PATH=$(KMC_DIR) $(KMC_DIR)/gcc
 
 ASFLAGS := -EB -march=vr4300 -mabi=32 -G0 --no-pad-sections -I include -I .
-CFLAGS  := -G0 -mips3 -mgp32 -mfp32 -O2 -B $(KMC_DIR)/ -I include -I .
+OPTFLAGS := -O2
+CFLAGS  = -G0 -mips3 -mgp32 -mfp32 $(OPTFLAGS) -B $(KMC_DIR)/ -I include -I .
 LDFLAGS := -T $(LD_SCRIPT) -T $(BUILD_DIR)/undefined_syms_auto.txt \
            -T $(BUILD_DIR)/undefined_funcs_auto.txt -T linker_syms.txt -T include/hardware_syms.ld \
            -Map $(BUILD_DIR)/$(TARGET).map --no-check-sections
@@ -60,6 +61,9 @@ $(BUILD_DIR)/%.c.o: %.c
 		echo "$(CC) -c $(CFLAGS) $<"; \
 		$(CC) -c $(CFLAGS) -o $@ $< && python3 tools/elf_trim.py $@; \
 	fi
+
+# libc and libm were built with -O1
+$(BUILD_DIR)/src/libc/%.c.o: OPTFLAGS := -O1
 
 $(BUILD_DIR)/%.bin.o: %.bin
 	@mkdir -p $(@D)

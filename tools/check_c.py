@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Check hand-written functions against the ROM and get them ready for apply_auto.py.
 
-Usage: python3 tools/check_c.py DIR
-       python3 tools/apply_auto.py DIR
+Usage: python3 tools/check_c.py [--opt -O1] DIR
+       python3 tools/apply_auto.py [--dir libc] DIR
 
 DIR holds one <function name>.c per function, without the includes. Each is
 compiled and compared the same way as in autodecomp.py, and the ones that
 match are listed in DIR/matches.txt, with the place of their .rodata if
-they have any.
+they have any. --opt sets the optimization flag (libc and libm are -O1;
+put those in src/libc/ with apply_auto.py --dir libc, which the Makefile
+builds with -O1).
 """
 import glob
 import os
@@ -20,7 +22,11 @@ import autodecomp  # noqa: E402
 
 
 def main():
-    d = sys.argv[1]
+    args = sys.argv[1:]
+    if args[0] == "--opt":
+        autodecomp.CFLAGS[autodecomp.OPT_INDEX] = args[1]
+        args = args[2:]
+    d = args[0]
     autodecomp.init(open(os.path.join(ROOT, "baserom.z64"), "rb").read(), autodecomp.load_symbols(), None)
     info = {}
     for path in glob.glob(os.path.join(ROOT, "asm", "**", "*.s"), recursive=True):

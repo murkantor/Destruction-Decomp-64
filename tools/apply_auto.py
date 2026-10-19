@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Turn tools/autodecomp.py matches into C files and dd64.yaml subsegments.
 
-Usage: python3 tools/apply_auto.py [build/auto]
+Usage: python3 tools/apply_auto.py [--dir auto] [build/auto]
 
 Consecutive matched functions go into one file, src/auto/<ROM offset>.c. When
 m2c's declarations in a group clash, the group is split into one file per
@@ -51,7 +51,11 @@ def merge(codes):
 
 
 def main():
-    auto = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "build", "auto")
+    args = sys.argv[1:]
+    subdir = "auto"
+    if args and args[0] == "--dir":
+        subdir, args = args[1], args[2:]
+    auto = args[0] if args else os.path.join(ROOT, "build", "auto")
     matches = []
     rodata = {}  # function name -> (rom start, rom end) of its .rodata
     for line in open(os.path.join(auto, "matches.txt")):
@@ -116,9 +120,9 @@ def main():
         groups = [run] if compiles(HEADER + merge(codes)) else [[f] for f in run]
         for g in groups:
             start, end = g[0][0] - ROM_BASE, g[-1][0] + g[-1][1] - ROM_BASE
-            path = f"auto/{start:X}"
+            path = f"{subdir}/{start:X}"
             src = HEADER + merge([open(os.path.join(auto, n + ".c")).read() for _, _, n in g])
-            os.makedirs(os.path.join(ROOT, "src", "auto"), exist_ok=True)
+            os.makedirs(os.path.join(ROOT, "src", subdir), exist_ok=True)
             open(os.path.join(ROOT, "src", path + ".c"), "w").write(src)
             files.append((start, end, path))
             if g[0][2] in rodata:

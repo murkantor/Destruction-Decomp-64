@@ -24,6 +24,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM_BASE = 0x80000400 - 0x1000  # main segment: vram - rom
 KMC = os.path.join(ROOT, "tools", "kmc")
 CFLAGS = ["-G0", "-mips3", "-mgp32", "-mfp32", "-O2", "-B", KMC + "/", "-I", os.path.join(ROOT, "include"), "-I", ROOT]
+OPT_INDEX = CFLAGS.index("-O2")  # check_c.py --opt changes this entry
 ASFLAGS = ["-EB", "-march=vr4300", "-mabi=32", "-G0", "--no-pad-sections"]
 
 
@@ -439,8 +440,10 @@ def main():
     ap.add_argument("--max-size", type=lambda x: int(x, 0), default=0x100000)
     ap.add_argument("--out", default=os.path.join(ROOT, "build", "auto"))
     ap.add_argument("--only", nargs="*")
+    ap.add_argument("--opt", default="-O2", help="optimization flag, -O1 for libc and libm")
     ap.add_argument("-j", type=int, default=os.cpu_count())
     args = ap.parse_args()
+    CFLAGS[OPT_INDEX] = args.opt
 
     rom = open(os.path.join(ROOT, "baserom.z64"), "rb").read()
     syms = load_symbols()

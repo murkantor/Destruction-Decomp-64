@@ -1530,7 +1530,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800799A0` | `07A5A0` | 0xa0 | `func_800799A0` | `asm/7A460.s` | asm |
 | `80079A40` | `07A640` | 0x24 | `func_80079A40` | `src/auto/7A640.c` | C (generated) |
 | `80079A70` | `07A670` | 0x150 | `func_80079A70` | `asm/7A664.s` | asm |
-| `80079BC0` | `07A7C0` | 0x34 | `func_80079BC0` | `asm/7A664.s` | asm |
+| `80079BC0` | `07A7C0` | 0x34 | `rand` | `src/libc/7A7C0.c` | C |
 | `80079BF4` | `07A7F4` | 0xc | `func_80079BF4` | `src/auto/7A7F4.c` | C (generated) |
 | `80079C00` | `07A800` | 0x220 | `func_80079C00` | `asm/7A800.s` | asm |
 | `80079E20` | `07AA20` | 0xb0 | `func_80079E20` | `asm/7A800.s` | asm |
@@ -1540,7 +1540,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8007A130` | `07AD30` | 0x24 | `toupper` | `src/auto/7AD30.c` | C (generated) |
 | `8007A160` | `07AD60` | 0x70 | `func_8007A160` | `asm/7AD54.s` | asm |
 | `8007A1D0` | `07ADD0` | 0x74 | `__cmpdi2` | `asm/7AD54.s` | asm |
-| `8007A244` | `07AE44` | 0x34 | `func_8007A244` | `asm/7AD54.s` | asm |
+| `8007A244` | `07AE44` | 0x34 | `__muldi3` | `asm/7AD54.s` | asm |
 | `8007A278` | `07AE78` | 0xfc | `func_8007A278` | `asm/7AD54.s` | asm |
 | `8007A374` | `07AF74` | 0xcc | `func_8007A374` | `asm/7AD54.s` | asm |
 | `8007A440` | `07B040` | 0x170 | `__divdi3` | `asm/7AD54.s` | asm |
@@ -1552,6 +1552,6 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8007A920` | `07B520` | 0x100 | `func_8007A920` | `asm/7AD54.s` | asm |
 | `8007AA20` | `07B620` | 0x100 | `func_8007AA20` | `asm/7AD54.s` | asm |
 | `8007AB20` | `07B720` | 0x190 | `func_8007AB20` | `asm/7AD54.s` | asm |
-| `8007ACB0` | `07B8B0` | 0x60 | `func_8007ACB0` | `asm/7AD54.s` | asm |
+| `8007ACB0` | `07B8B0` | 0x60 | `frexp` | `src/libc/7B8B0.c` | C |
 | `8007AD10` | `07B910` | 0x8 | `func_8007AD10` | `src/auto/7B910.c` | C (generated) |
-| `8007AD20` | `07B920` | 0xb0 | `func_8007AD20` | `asm/7B918.s` | asm |
+| `8007AD20` | `07B920` | 0xa4 | `modf` | `src/libc/7B920.c` | C |
