@@ -57,10 +57,12 @@ s32 func_8004845C(MenuItem *it) {
         TexSlot *t;
         void *p;
         s32 i;
-        func_8005DC68(gUi);
+        s32 st;
         t = NULL;
+        func_8005DC68(gUi);
         Heap_AllocAlt(&gMainHeap, &D_800BC9F8, Res_GetSize(0x11424), 7, 0);
         p = HeapBlock_Ptr(&D_800BC9F8);
+        st = 2;
         Res_Load(0x11424, p);
         for (i = 0; i < gUi->nTex; i++) {
             t = &gUi->tex[i];
@@ -72,7 +74,7 @@ s32 func_8004845C(MenuItem *it) {
         t->x4 = p;
         Ui_AddElement(gUi, 2, 0x39);
         func_80063564(0x1F, 1);
-        it->x10 = 2;
+        it->x10 = st;
         Sound_SetVolume(D_8011EEE0, 0);
         return 1;
     } else {

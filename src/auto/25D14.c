@@ -8,7 +8,7 @@ typedef struct { u8 pad[0x1100]; Unk1100 *x1100; } Game;
 extern Game *gGame;
 extern s32 D_801245A4;
 s32 Res_Get(s32);
-void func_8001FDFC(void);
+void Race_LoadCarResources(void);
 void func_80001F60(void);
 s32 func_80010730(void);
 void func_80064100(s32);
@@ -26,7 +26,7 @@ void Race_LoadTrackResources(u32 idx) {
     } else {
         u->x10 = 0;
     }
-    func_8001FDFC();
+    Race_LoadCarResources();
     func_80001F60();
     D_801245A4 = func_80010730();
     func_80064100(D_801245A4);

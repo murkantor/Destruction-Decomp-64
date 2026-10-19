@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u32 w0; u32 w1; } Acmd;
 typedef struct ALFilter_s {
     struct ALFilter_s *source;
@@ -43,7 +46,7 @@ Acmd *_filterBuffer(ALLowPass *lp, s32 buff, s32 count, Acmd *p);
 #define aSetBuffer(pkt, f, i, o, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = (_SHIFTL(8, 24, 8) | _SHIFTL(f, 16, 8) | _SHIFTL(i, 0, 16)); _a->w1 = _SHIFTL(o, 16, 16) | _SHIFTL(c, 0, 16); }
 #define aMix(pkt, f, g, i, o) { Acmd *_a = (Acmd *)pkt; _a->w0 = (_SHIFTL(12, 24, 8) | _SHIFTL(f, 16, 8) | _SHIFTL(g, 0, 16)); _a->w1 = _SHIFTL(i, 16, 16) | _SHIFTL(o, 0, 16); }
 #define aClearBuffer(pkt, d, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = _SHIFTL(2, 24, 8) | _SHIFTL(d, 0, 24); _a->w1 = (unsigned int)(c); }
-#define aDMEMMove(pkt, i, o, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = _SHIFTL(10, 24, 8) | (u16)(i); _a->w1 = _SHIFTL(o, 16, 16) | _SHIFTL(c, 0, 16); }
+#define aDMEMMove(pkt, i, o, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = _SHIFTL(10, 24, 8) | _SHIFTL(i, 0, 24); _a->w1 = _SHIFTL(o, 16, 16) | _SHIFTL(c, 0, 16); }
 #define SWAP(in, out) { s16 t = out; out = in; in = t; }
 
 Acmd *alFxPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p)
@@ -110,7 +113,7 @@ Acmd *alFxPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p)
     if (r->input > &r->base[r->length])
         r->input -= r->length;
 
-        aDMEMMove(ptr++, output, input, outCount << 1);
+        aDMEMMove(ptr++, output, 0x6C0, outCount << 1);
 
     return ptr;
 }

@@ -44,7 +44,7 @@ void func_80021700(Cam *cam, f32 dt) {
         lo = 0.0f;
         if (car->x2C4 < 0.0) {
             h = car->x2C4;
-            y = car->x2C4 + 1.1f;
+            y += h;
         }
         func_80021A64(cam, car, lo, lo, y, w, h);
         break;

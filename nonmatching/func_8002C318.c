@@ -65,9 +65,9 @@ typedef struct {
 extern u8 D_800958A0[];
 extern u8 D_800958A1;
 extern s32 D_800958A4[];
-extern s32 D_800958A8;
-extern s32 D_800958AC;
-extern s32 D_800958B0;
+extern s32 D_800958A8[];
+extern s32 D_800958AC[];
+extern s32 D_800958B0[];
 extern s32 D_800958B4;
 extern s32 D_800958C0;
 extern s32 D_800958C4;
@@ -129,16 +129,16 @@ void func_8002C318(void) {
         if (D_800958A0[0]) {
             D_800958A0[0] = 0;
             D_800958A4[0] = 1;
-            D_800958A8 = 0;
-            D_800958AC = 0;
-            D_800958B0 = 0;
+            D_800958A8[0] = 0;
+            D_800958AC[0] = 0;
+            D_800958B0[0] = 0;
             D_800958C8 = 2;
             D_800958C0 = 0;
             D_800958C4 = 1;
             D_800958CC = 3;
             D_800958B4 = D_80095CA8[0]->x0;
         }
-        D_80095908 = D_800958A8;
+        D_80095908 = D_800958A8[0];
         func_80064948(D_800958A0 + 0x58);
         D_800958A1 = 0;
         break;
@@ -151,12 +151,12 @@ void func_8002C318(void) {
         if (gGame[0]->x10FC == 25) {
             goto clear;
         }
-        if (D_800958A8 == 0) {
+        if (D_800958A8[0] == 0) {
             sel = D_801252F4;
         }
-        if (D_800958A8 == 1) {
-            for (i = 0; i < D_80095CB8[D_800958B0]; i++) {
-                if (D_80095CA8[D_800958B0][i].x0 == D_800958A4[4]) {
+        if (D_800958A8[0] == 1) {
+            for (i = 0; i < D_80095CB8[D_800958B0[0]]; i++) {
+                if (D_80095CA8[D_800958B0[0]][i].x0 == D_800958A4[4]) {
                     sel = i;
                     break;
                 }
@@ -165,15 +165,19 @@ void func_8002C318(void) {
         if (sel == -1) {
             goto clear;
         }
-        switch (D_80095CA8[D_800958B0][sel].x4) {
+        switch ((u32)D_80095CA8[D_800958B0[0]][sel].x4) {
+        case 2:
+            D_800958A1 = 1;
+            break;
+        case 3:
+            D_800958A1 = 1;
+            break;
         case 0:
+            D_800958A1 = 0;
+            break;
         case 1:
         clear:
             D_800958A1 = 0;
-            break;
-        case 2:
-        case 3:
-            D_800958A1 = 1;
             break;
         }
         Race_LoadTrackResources(D_800958B4);
@@ -186,7 +190,7 @@ void func_8002C318(void) {
         break;
     }
     for (j = 0; j < D_800D31CC[0]; j++) {
-        D_800958DC[j * (sizeof(Player) / 4)] = func_80062F9C(&D_800958D0[j]);
+        D_800958D0[j].xC = func_80062F9C(&D_800958D0[j]);
     }
     func_80062FD4(gGame[0]->x334);
 }

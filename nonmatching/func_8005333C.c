@@ -46,51 +46,45 @@ s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
     u8 *fn;
 
     z = Zip_Open(path);
-    if (z == NULL) {
-        return -1;
-    }
-    goto next1;
-loop1:
-    fn = e->x30;
-    s = strrchr(fn, '/');
-    if (s != NULL) {
-        s++;
-    } else {
-        s = fn;
-    }
-    while (*p != 0 && toupper(*p) == toupper(*s)) {
-        p++;
-        s++;
-    }
-    match = (*p == 0 && *s == 0);
-    if (match) {
-        goto found;
-    }
-next1:
-    e = func_80052AE0(z);
-    p = name;
-    if (e != NULL) {
-        goto loop1;
-    }
-    Zip_Close(z);
-    z = Zip_Open(path);
-    if (z == NULL) {
-        return -1;
-    }
-    goto next2;
-loop2:
-    if (*outOffset != 0 && e->x10 == *outOffset) {
-    found:
-        *outSize = e->x18;
-        *outOffset = e->x10;
+    if (z != NULL) {
+        goto next1;
+        do {
+        p = name;
+        fn = e->x30;
+        s = strrchr(fn, '/');
+        if (s != NULL) {
+            s++;
+        } else {
+            s = fn;
+        }
+        while (*p != 0 && toupper(*p) == toupper(*s)) {
+            p++;
+            s++;
+        }
+        match = (*p == 0 && *s == 0);
+        if (match) {
+            goto found;
+        }
+    next1:
+        e = func_80052AE0(z);
+        } while (e != NULL);
         Zip_Close(z);
-        return 0;
+        z = Zip_Open(path);
+        if (z != NULL) {
+            goto next2;
+            do {
+            if (*outOffset != 0 && e->x10 == *outOffset) {
+            found:
+                *outSize = e->x18;
+                *outOffset = e->x10;
+                Zip_Close(z);
+                return 0;
+            }
+        next2:
+            e = func_80052AE0(z);
+            } while (e != NULL);
+            Zip_Close(z);
+        }
     }
-next2:
-    e = func_80052AE0(z);
-    if (e != NULL) {
-        goto loop2;
-    }
-    Zip_Close(z);
     return -1;
 }

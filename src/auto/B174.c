@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 
 typedef struct Debris {
@@ -47,9 +50,9 @@ static inline s32 GetCount(s32 amount) {
     }
 }
 
-void func_8000A574(Car *car, Vec3f pos, s32 amount) {
+void Debris_Spawn(Car *car, Vec3f pos, s32 amount) {
     s8 idx;
-    u8 n;
+    s8 n;
     s8 i;
     Debris *p;
     void *q;
@@ -57,8 +60,8 @@ void func_8000A574(Car *car, Vec3f pos, s32 amount) {
     if (D_800D31CC >= 3) {
         return;
     }
-    pos.y += 1.0;
     idx = car->x34;
+    pos.y += 1.0;
     n = GetCount(amount);
     for (i = 0; i < n; i++) {
         if (D_80125C58 <= 0x2000) {

@@ -45,16 +45,18 @@ void func_8004E144(s32 prev, s32 first) {
         }
     }
     if (prev == -1) {
-        for (i = 0; i < 4; i++) {
+        i = 0;
+        while (1) {
             id = i + 0x139;
             id = first + id;
             Ui_AddElement(gUi[0], 2, id);
             Ui_SetElementPos(gUi[0], 2, id, pos.v[i][0], pos.v[i][1]);
+            if (++i >= 4) return;
         }
     } else {
         for (i = 0; i < 4; i++) {
-            Ui_RemoveElement(gUi[0], prev + i + 0x139);
             id = i + 0x139;
+            Ui_RemoveElement(gUi[0], prev + id);
             id = first + id;
             Ui_AddElement(gUi[0], 2, id);
             Ui_SetElementPos(gUi[0], 2, id, pos.v[i][0], pos.v[i][1]);

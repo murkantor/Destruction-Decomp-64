@@ -61,13 +61,13 @@ void func_800363C4(Car *car, f32 dt) {
     f32 dx, dy, dz;
     f32 r;
 
+    dx = car->target.x - car->pos.x;
+    dy = car->target.y - car->pos.y;
+    dz = car->target.z - car->pos.z;
     vel = &car->pos;
     pos = vel;
     target = &car->target;
     race = gGame->race;
-    dx = car->target.x - car->pos.x;
-    dy = car->target.y - car->pos.y;
-    dz = car->target.z - car->pos.z;
     if (dx * dx + dy * dy + dz * dz < 64.0) {
         idx = car->x28 + car->x58 * 2;
         n = race->x38;
@@ -77,7 +77,8 @@ void func_800363C4(Car *car, f32 dt) {
         } else if (idx < 0) {
             car->xBBC = idx + n;
         }
-        e = &gGame->race->x30[car->xBBC];
+        e = gGame->race->x30;
+        e += car->xBBC;
         car->target.x = e->a.x * car->xBC0 + e->b.x * (1.0 - car->xBC0);
         car->target.y = e->a.y * car->xBC0 + e->b.y * (1.0 - car->xBC0);
         car->target.z = e->a.z * car->xBC0 + e->b.z * (1.0 - car->xBC0);
@@ -89,7 +90,7 @@ void func_800363C4(Car *car, f32 dt) {
     }
     Vec3f_Sub(&dir, target, pos);
     Vec3f_Normalize(&dir, &dir);
-    vel++;
+    vel = pos + 1;
     Vec3f_Scale(vel, &dir, race->x34[car->xBBC].x0 * car->xBC4);
     Vec3f_Scale(&step, vel, dt);
     Vec3f_Add(pos, pos, &step);

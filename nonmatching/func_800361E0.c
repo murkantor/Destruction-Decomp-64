@@ -51,7 +51,8 @@ void func_800361E0(Obj *o) {
     for (i = 3; i >= 0; i--) {
         o->subs[i].x1A0 = 0;
     }
-    p = &gGame->track->pts[o->xBBC];
+    p = gGame->track->pts;
+    p += o->xBBC;
     o->xBB0 = p->a.x * o->xBC0 + p->b.x * (1.0 - o->xBC0);
     o->xBB4 = p->a.y * o->xBC0 + p->b.y * (1.0 - o->xBC0);
     o->xBB8 = p->a.z * o->xBC0 + p->b.z * (1.0 - o->xBC0);

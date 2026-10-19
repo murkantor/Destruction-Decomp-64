@@ -889,3 +889,5 @@ Menu_SelectNext = 0x80040B24; // type:func
 Gfx_SetViewport2 = 0x800191C0; // type:func
 System_InitHeaps = 0x8005BA84; // type:func
 Ai_UpdateDriver = 0x80004E00; // type:func
+Race_LoadCarResources = 0x8001FDFC; // type:func
+Debris_Spawn = 0x8000A574; // type:func

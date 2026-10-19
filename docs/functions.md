@@ -114,7 +114,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000A0E8` | `00ACE8` | 0x2b4 | `Debris_UpdateDraw` | `src/auto/ACE8.c` | C (generated) |
 | `8000A39C` | `00AF9C` | 0x58 | `func_8000A39C` | `src/auto/AF9C.c` | C (generated) |
 | `8000A3F4` | `00AFF4` | 0x180 | `Car_SpawnSpark` | `src/auto/AFF4.c` | C (generated) |
-| `8000A574` | `00B174` | 0x320 | `func_8000A574` | `asm/B174.s` | asm |
+| `8000A574` | `00B174` | 0x320 | `Debris_Spawn` | `src/auto/B174.c` | C (generated) |
 | `8000A894` | `00B494` | 0x144 | `func_8000A894` | `src/auto/B494.c` | C (generated) |
 | `8000A9D8` | `00B5D8` | 0x368 | `func_8000A9D8` | `src/auto/B5D8.c` | C (generated) |
 | `8000AD40` | `00B940` | 0x490 | `func_8000AD40` | `src/auto/B940.c` | C (generated) |
@@ -150,7 +150,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000E960` | `00F560` | 0x50 | `func_8000E960` | `src/auto/F560.c` | C (generated) |
 | `8000E9B0` | `00F5B0` | 0x138 | `Fade_Step` | `src/auto/F5B0.c` | C (generated) |
 | `8000EAE8` | `00F6E8` | 0x6dc | `Hud_UpdateBlinkElements` | `src/auto/F6E8.c` | C (generated) |
-| `8000F1C4` | `00FDC4` | 0x330 | `func_8000F1C4` | `asm/FDC4.s` | asm |
+| `8000F1C4` | `00FDC4` | 0x330 | `func_8000F1C4` | `src/auto/FDC4.c` | C (generated) |
 | `8000F4F4` | `0100F4` | 0x244 | `Ui_UpdateFadeBlink` | `src/auto/100F4.c` | C (generated) |
 | `8000F738` | `010338` | 0x60 | `func_8000F738` | `src/auto/10338.c` | C (generated) |
 | `8000F798` | `010398` | 0x28 | `func_8000F798` | `src/auto/10398.c` | C (generated) |
@@ -332,9 +332,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8001FC94` | `020894` | 0x74 | `func_8001FC94` | `src/auto/20894.c` | C (generated) |
 | `8001FD08` | `020908` | 0x8 | `func_8001FD08` | `src/auto/20908.c` | C (generated) |
 | `8001FD10` | `020910` | 0xec | `Mtx3_SetRotation` | `src/auto/20910.c` | C (generated) |
-| `8001FDFC` | `0209FC` | 0x29c | `func_8001FDFC` | `asm/209FC.s` | asm |
-| `80020098` | `020C98` | 0x1f4 | `func_80020098` | `asm/209FC.s` | asm |
-| `8002028C` | `020E8C` | 0xbcc | `Car_UpdateTrackSegment` | `asm/209FC.s` | asm |
+| `8001FDFC` | `0209FC` | 0x29c | `Race_LoadCarResources` | `src/auto/209FC.c` | C (generated) |
+| `80020098` | `020C98` | 0x1f4 | `func_80020098` | `asm/20C98.s` | asm |
+| `8002028C` | `020E8C` | 0xbcc | `Car_UpdateTrackSegment` | `asm/20C98.s` | asm |
 | `80020E58` | `021A58` | 0xa4 | `Racer_WrapNode` | `src/auto/21A58.c` | C (generated) |
 | `80020F00` | `021B00` | 0x70 | `func_80020F00` | `src/auto/21B00.c` | C (generated) |
 | `80020F70` | `021B70` | 0x24 | `func_80020F70` | `src/auto/21B00.c` | C (generated) |
@@ -1445,7 +1445,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80073570` | `074170` | 0x30 | `alMainBusParam` | `src/libultra/alMainBusParam.c` | C |
 | `800735A0` | `0741A0` | 0x1ec | `alResamplePull` | `src/auto/741A0.c` | C (generated) |
 | `8007378C` | `07438C` | 0xc0 | `alResampleParam` | `src/auto/7438C.c` | C (generated) |
-| `80073850` | `074450` | 0x3b0 | `alFxPull` | `asm/7444C.s` | asm |
+| `80073850` | `074450` | 0x3b0 | `alFxPull` | `src/auto/74450.c` | C (generated) |
 | `80073C00` | `074800` | 0x14 | `alFxParam` | `src/libultra/alFxParam.c` | C |
 | `80073C14` | `074814` | 0x1f0 | `alFxParamHdl` | `src/auto/74814.c` | C (generated) |
 | `80073E04` | `074A04` | 0x218 | `_loadOutputBuffer` | `src/auto/74A04.c` | C (generated) |
