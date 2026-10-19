@@ -10,7 +10,7 @@ void Timer_Start(void *, s64);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 
-s32 func_8003FF78(MenuItem *it) {
+s32 PakMenu_CycleOption(MenuItem *it) {
     s32 old = it->x10;
     s32 n;
     s32 (*tbl)[3] = D_800967E0;

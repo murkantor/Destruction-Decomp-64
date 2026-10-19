@@ -38,7 +38,7 @@ void func_800603CC(void *, s32, s32);
 void func_800603E4(void *);
 void func_8005E7FC(void *, s32, s32);
 
-void func_8005E06C(SpriteMgr *m, SpriteDesc *d) {
+void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
     s32 n = m->nSpr;
     SpriteEnt *e;
     TexSlot *t;

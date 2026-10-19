@@ -20,7 +20,7 @@ s32 func_80010288(char *, s32);
 void func_8002D3B8(s32);
 void func_8003ECF8(void);
 
-void func_8003F738(void) {
+void PakMenu_ShowSaveSlots(void) {
     s32 i;
     func_8003EA7C(0x112B2, 0x112B3);
     D_80097350 = 4;

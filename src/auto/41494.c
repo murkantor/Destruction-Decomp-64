@@ -10,7 +10,7 @@ extern s32 D_800967E0[][3];
 void func_8003EA7C(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 
-void func_80040894(void) {
+void PakMenu_ShowSlotOptions(void) {
     u32 i;
     func_8003EA7C(0x112B6, 0x112B7);
     Ui_AddElement(gUi[0], 2, 0x3A);

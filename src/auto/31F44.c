@@ -12,7 +12,7 @@ void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
 void func_80018DAC(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 void Track_GetFace(void *o, s32 i);
 
-s32 func_80031344(Vec3f *p, f32 r, FaceEntry *out) {
+s32 Track_GetFacesInRadius(Vec3f *p, f32 r, FaceEntry *out) {
     s32 buf[128];
     s32 x0, z0, x1, z1;
     s32 count;

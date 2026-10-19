@@ -7,7 +7,7 @@ extern Arr9 D_800B7DB0;
 extern s32 D_8007E950[];
 extern s32 D_8007EAE0[9][20];
 
-void func_80002630(void) {
+void InitLookupTables(void) {
     Pair pairs[5];
     Arr9 vals = D_800B7DB0;
     s32 k, j, i, v, step;

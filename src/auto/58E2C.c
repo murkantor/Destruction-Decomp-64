@@ -71,7 +71,7 @@ static inline Gfx *DlWalker_Next2(DlWalker *w) {
     }
 }
 
-s32 func_8005822C(Gfx *dl, u32 maxDepth, s32 kind) {
+s32 Gfx_CountCommandKind(Gfx *dl, u32 maxDepth, s32 kind) {
     DlFrame frames[10];
     DlWalker w;
     Gfx *g;

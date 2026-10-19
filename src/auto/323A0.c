@@ -10,7 +10,7 @@ extern Game *gGame;
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
 void func_80018DAC(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 
-s32 func_800317A0(Vec3f *a, Vec3f *b, s32 *out, s32 max) {
+s32 Track_GetCellsInBox(Vec3f *a, Vec3f *b, s32 *out, s32 max) {
     s32 x0, z0, x1, z1;
     s32 count;
     TrackGrid *g = gGame->level->info->grid;

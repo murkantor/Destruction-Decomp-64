@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s16 func_8005822C(s32, M2C_UNK, M2C_UNK);
+s16 Gfx_CountCommandKind(s32, M2C_UNK, M2C_UNK);
 
 u16 func_8005A970(void *arg0, s32 arg1, u16 (*arg2)(M2C_UNK, void *, void *), int arg3)
 {
@@ -13,7 +13,7 @@ u16 func_8005A970(void *arg0, s32 arg1, u16 (*arg2)(M2C_UNK, void *, void *), in
   *((s32 *) (((s8 *) arg0) + 0x14)) = arg3;
   if ((*((s32 *) (((s8 *) arg0) + 0xC))) != 0)
   {
-    *((s16 *) (((s8 *) arg0) + 2)) = func_8005822C(*((s32 *) (((s8 *) arg0) + 0xC)), 0xA, 0);
+    *((s16 *) (((s8 *) arg0) + 2)) = Gfx_CountCommandKind(*((s32 *) (((s8 *) arg0) + 0xC)), 0xA, 0);
   }
   else
   {
@@ -44,7 +44,7 @@ u16 func_8005A9EC(void *arg0, s32 arg1, u16 (*arg2)(M2C_UNK, void *, void *), s3
   *((s32 *) (((s8 *) arg0) + 0x14)) = arg3;
   if ((*((s32 *) (((s8 *) arg0) + 0xC))) != 0)
   {
-    *((s16 *) (((s8 *) arg0) + 2)) = func_8005822C(*((s32 *) (((s8 *) arg0) + 0xC)), 0xA, 0);
+    *((s16 *) (((s8 *) arg0) + 2)) = Gfx_CountCommandKind(*((s32 *) (((s8 *) arg0) + 0xC)), 0xA, 0);
   }
   else
   {

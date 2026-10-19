@@ -12,7 +12,7 @@ typedef struct {
     Vec3f verts[1];
 } Poly;
 
-u8 func_800348F8(Vec3f *, Vec3f *, f32, void *, void *, void *, Vec3f *, void *);
+u8 Plane_IntersectSegment(Vec3f *, Vec3f *, f32, void *, void *, void *, Vec3f *, void *);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Normalize(Vec3f *, Vec3f *);
@@ -44,7 +44,7 @@ static inline u8 InsidePoly(Poly *p, f32 tol, Vec3f *pt) {
 }
 
 u8 func_80034794(Poly *p, f32 tol, void *a2, void *a3, void *a4, Vec3f *pt, void *a6) {
-    if (func_800348F8(p->verts, &p->normal, tol, a2, a3, a4, pt, a6)) {
+    if (Plane_IntersectSegment(p->verts, &p->normal, tol, a2, a3, a4, pt, a6)) {
         if (InsidePoly(p, tol, pt)) {
             return 1;
         }

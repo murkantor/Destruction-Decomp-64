@@ -5,7 +5,7 @@ typedef struct { f32 x, y, z; } Vec3f;
 extern f64 D_800B9558;
 double fabs(double);
 
-s32 func_800348F8(Vec3f *p, Vec3f *n, f32 d, Vec3f *a, Vec3f *b, Vec3f *out1, Vec3f *out2, f32 *t) {
+s32 Plane_IntersectSegment(Vec3f *p, Vec3f *n, f32 d, Vec3f *a, Vec3f *b, Vec3f *out1, Vec3f *out2, f32 *t) {
     Vec3f v;
     f32 d1, d2, tt;
     v.x = a->x - p->x;

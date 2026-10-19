@@ -3,7 +3,7 @@
 
 s32 *Mem_Alloc(M2C_UNK);                            /* extern */
 M2C_UNK func_8002D0E0(s32);                         /* extern */
-M2C_UNK func_800500CC(s32 *);                       /* extern */
+M2C_UNK Save_CopyToGlobal(s32 *);                       /* extern */
 M2C_UNK func_80050684(s32 *);                       /* extern */
 M2C_UNK Mem_Free(s32 *);                       /* extern */
 M2C_UNK Cont_ReadAll();                            /* extern */
@@ -63,7 +63,7 @@ void func_8004FE4C(s32 *arg0) {
             if (D_80097D58 == 0) {
                 func_80058B58();
             }
-            func_800500CC(temp_s1);
+            Save_CopyToGlobal(temp_s1);
             func_8002D0E0(D_80097A14);
         }
         Mem_Free(temp_s1);

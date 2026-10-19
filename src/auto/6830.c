@@ -8,7 +8,7 @@ extern Game *gGame;
 extern s32 D_800958B4;
 extern s32 D_80095FF8[];
 u8 func_800016DC(Car *);
-u8 func_800019C0(Car *);
+u8 Ai_AdjustLaneFromNeighbour(Car *);
 void func_800067E0(Car *);
 u64 Time_Get(void *);
 
@@ -21,7 +21,7 @@ void func_80005C30(Car *arg0) {
         if (func_800016DC(arg0)) {
             s->x10 = 8;
         }
-        if (func_800019C0(arg0)) {
+        if (Ai_AdjustLaneFromNeighbour(arg0)) {
             s->x10 = 9;
         }
         if (arg0->x88 == D_80095FF8[D_800958B4]) {
@@ -32,7 +32,7 @@ void func_80005C30(Car *arg0) {
     case 8:
         break;
     case 9:
-        if (!func_800019C0(arg0)) {
+        if (!Ai_AdjustLaneFromNeighbour(arg0)) {
             s->x10 = 7;
         }
         break;

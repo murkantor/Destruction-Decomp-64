@@ -14,7 +14,7 @@ static inline f32 cross_y(Vec3f a, Vec3f b) {
     return a.z * b.x - a.x * b.z;
 }
 
-s32 func_800019C0(Car *car) {
+s32 Ai_AdjustLaneFromNeighbour(Car *car) {
     s32 i;
     for (i = 0; i < gGame->level->xA4; i++) {
         Car *c = gGame->level->x74[i];

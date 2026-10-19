@@ -25,7 +25,7 @@ typedef struct {
 } SaveData;
 extern SaveData D_80097A10;
 
-void func_800500CC(SaveData *s) {
+void Save_CopyToGlobal(SaveData *s) {
     s32 i, j;
     D_80097A10.x0 = s->x0;
     D_80097A10.x4 = s->x4;

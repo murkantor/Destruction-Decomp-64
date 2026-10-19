@@ -57,7 +57,7 @@ extern f64 D_800B9BA8, D_800B9BB0, D_800B9BB8, D_800B9BC0, D_800B9BC8, D_800B9BD
 extern f64 D_800B9BD8, D_800B9BE0, D_800B9BE8, D_800B9BF0, D_800B9BF8, D_800B9C00;
 extern f64 D_800B9C08, D_800B9C10, D_800B9C18, D_800B9C20, D_800B9C28, D_800B9C30;
 
-void func_8003A27C(Vec3f *m, f32 angle) {
+void Mtx2x3_RotateY(Vec3f *m, f32 angle) {
     Vec3f r0, r1;
     f32 sc[2];
     f64 x = angle;
