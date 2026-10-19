@@ -18,6 +18,7 @@ sMainThread = 0x800C08C0; // size:0x1B0
 sIdleStackTop = 0x800C4A70;
 sMainStackTop = 0x800CCA70;
 gInitConfig = 0x801311C0; // size:0xC
+gGame = 0x8011EEE4;
 gHeapStart = 0x80137170; // absolute:True
 gBuildVersion = 0x8007E910;
 

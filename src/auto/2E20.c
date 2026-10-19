@@ -3,7 +3,7 @@
 
 void *Mem_Alloc(M2C_UNK);                           /* extern */
 s32 func_80063A20(s32);                             /* extern */
-extern void *D_8011EEE4;
+extern void *gGame;
 
 void func_80002220(void *arg0) {
     s32 temp_a0;
@@ -20,7 +20,7 @@ void func_80002220(void *arg0) {
     M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x1C), f32 *, 4) = (f32) M2C_FIELD(arg0, f32 *, 0x10);
     M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x1C), f32 *, 8) = (f32) M2C_FIELD(arg0, f32 *, 0x14);
     M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x1C), f32 *, 0xC) = (f32) M2C_FIELD(arg0, f32 *, 0x18);
-    M2C_FIELD(M2C_FIELD(D_8011EEE4, void **, 0x1100), void **, 0x2C) = temp_v0;
+    M2C_FIELD(M2C_FIELD(gGame, void **, 0x1100), void **, 0x2C) = temp_v0;
     temp_a0 = M2C_FIELD(arg0, s32 *, 0x1C);
     if (temp_a0 == 0) {
         M2C_FIELD(temp_v0, s32 *, 0x10) = 0;
@@ -28,5 +28,5 @@ void func_80002220(void *arg0) {
         M2C_FIELD(temp_v0, s32 *, 0x10) = func_80063A20(temp_a0);
     }
     M2C_FIELD(temp_v0, s32 *, 0x18) = func_80063A20(M2C_FIELD(arg0, s32 *, 0x20));
-    M2C_FIELD(M2C_FIELD(D_8011EEE4, void **, 0x1100), void **, 0x2C) = temp_v0;
+    M2C_FIELD(M2C_FIELD(gGame, void **, 0x1100), void **, 0x2C) = temp_v0;
 }

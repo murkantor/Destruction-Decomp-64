@@ -3,7 +3,7 @@
 
 M2C_UNK Mem_Free(void *);                      /* extern */
 f32 func_80063744(s32);                             /* extern */
-extern s32 D_8011EEE4;
+extern s32 gGame;
 extern void *D_8011EEF4;
 extern f32 D_80125BD4;
 
@@ -36,7 +36,7 @@ void func_8005F884(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x8B54) = 0;
     M2C_FIELD(arg0, u8 *, 0x8B68) = 1U;
     M2C_FIELD(arg0, s32 *, 0x8B6C) = temp_v0_2;
-    D_80125BD4 = func_80063744(D_8011EEE4 + 0x1058);
+    D_80125BD4 = func_80063744(gGame + 0x1058);
 }
 
 void func_8005F980(void *arg0, s16 arg1) {

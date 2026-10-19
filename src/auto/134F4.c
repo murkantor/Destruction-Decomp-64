@@ -7,10 +7,10 @@ void func_800128F4(void *arg0) {
     func_80011CCC(M2C_FIELD(arg0, s32 *, 0x290), M2C_FIELD(arg0, s32 *, 0x294), M2C_FIELD(arg0, s32 *, 0x298));
 }
 
-extern void *D_8011EEE4;
+extern void *gGame;
 
 s16 func_8001291C(void) {
-    return M2C_FIELD(D_8011EEE4, s16 *, 0xC);
+    return M2C_FIELD(gGame, s16 *, 0xC);
 }
 
 s32 Mem_Alloc(s32);                                 /* extern */

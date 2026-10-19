@@ -13,7 +13,7 @@ M2C_UNK func_80065D60(M2C_UNK, M2C_UNK);            /* extern */
 s32 func_80065DE0(M2C_UNK);                         /* extern */
 M2C_UNK __osSpSetPc(M2C_UNK);                     /* extern */
 extern u8 D_800D31F8;
-extern void *D_8011EEE4;
+extern void *gGame;
 extern s32 D_8011EEF0;
 extern void *D_8011EEF8;
 
@@ -28,9 +28,9 @@ void func_80063070(void *arg0) {
         __osSpSetPc(0);
         return;
     }
-    if ((M2C_FIELD(arg0, s16 *, 0x4BD28) != M2C_FIELD(D_8011EEE4, s16 *, 0xC)) || (M2C_FIELD(arg0, u8 *, 0x4BD3C) != 0)) {
+    if ((M2C_FIELD(arg0, s16 *, 0x4BD28) != M2C_FIELD(gGame, s16 *, 0xC)) || (M2C_FIELD(arg0, u8 *, 0x4BD3C) != 0)) {
         func_80057308();
-        if (M2C_FIELD(D_8011EEE4, s16 *, 0xC) != -1) {
+        if (M2C_FIELD(gGame, s16 *, 0xC) != -1) {
             func_80063504(M2C_FIELD(arg0, s32 *, 0x4BD24));
         }
         M2C_FIELD(arg0, u8 *, 0x4BD3C) = 0U;

@@ -3,11 +3,11 @@
 
 s32 func_80011CCC(s32, s32, s32);                   /* extern */
 M2C_UNK func_80063FA0(s32, s32);                    /* extern */
-extern void *D_8011EEE4;
+extern void *gGame;
 
 void func_8003B0A8(s32 arg0, void *arg1) {
     void *temp_s0;
 
-    temp_s0 = M2C_FIELD(M2C_FIELD(M2C_FIELD(D_8011EEE4, void **, 0x1100), void **, 0x70), void **, 0xC);
+    temp_s0 = M2C_FIELD(M2C_FIELD(M2C_FIELD(gGame, void **, 0x1100), void **, 0x70), void **, 0xC);
     func_80063FA0(M2C_FIELD(temp_s0, s32 *, 0x2C) + (func_80011CCC(M2C_FIELD(arg1, s32 *, 0), M2C_FIELD(arg1, s32 *, 4), M2C_FIELD(arg1, s32 *, 8)) * 4), arg0);
 }

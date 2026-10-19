@@ -8,7 +8,7 @@ M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
 extern u8 D_80095898;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
-extern void *D_8011EEE4;
+extern void *gGame;
 extern s16 D_8011EEEA;
 
 s32 func_8003C2C4(void) {
@@ -17,7 +17,7 @@ s32 func_8003C2C4(void) {
 
     if (func_8004FD80(&sp10) & 0xFF) {
         if (func_80050910(sp10) & 0xFF) {
-            if (M2C_FIELD(D_8011EEE4, s16 *, 0xC) != 1) {
+            if (M2C_FIELD(gGame, s16 *, 0xC) != 1) {
                 func_80063380(1);
             }
             if (D_80095898 == 0) {
@@ -34,8 +34,8 @@ s32 func_8003C2C4(void) {
             }
             goto block_13;
         }
-        if (M2C_FIELD(D_8011EEE4, s16 *, 0x10FC) == D_8011EEEA) {
-            if (M2C_FIELD(D_8011EEE4, s16 *, 0xC) != 1) {
+        if (M2C_FIELD(gGame, s16 *, 0x10FC) == D_8011EEEA) {
+            if (M2C_FIELD(gGame, s16 *, 0xC) != 1) {
                 func_80063380(1);
             }
             func_80063564(6, 1);
@@ -47,7 +47,7 @@ block_13:
         }
     } else {
         var_a0 = 6;
-        if (M2C_FIELD(D_8011EEE4, s16 *, 0xC) != 1) {
+        if (M2C_FIELD(gGame, s16 *, 0xC) != 1) {
             func_80063380(1);
 block_16:
             var_a0 = 6;

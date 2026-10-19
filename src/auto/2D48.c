@@ -2,12 +2,12 @@
 #include "m2c.h"
 
 M2C_UNK Mem_Free(s32);                         /* extern */
-extern void *D_8011EEE4;
+extern void *gGame;
 
 void func_80002148(void) {
     void *temp_s0;
 
-    temp_s0 = M2C_FIELD(D_8011EEE4, void **, 0x1100);
+    temp_s0 = M2C_FIELD(gGame, void **, 0x1100);
     Mem_Free(M2C_FIELD(temp_s0, s32 *, 0x3C));
     M2C_FIELD(temp_s0, s32 *, 0x3C) = 0;
 }
