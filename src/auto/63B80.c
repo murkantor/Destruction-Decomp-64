@@ -7,10 +7,10 @@ void func_80062F80(void) {
     func_800215CC();
 }
 
-M2C_UNK func_80021070();                            /* extern */
+M2C_UNK Obj_Create();                            /* extern */
 
 void func_80062F9C(void) {
-    func_80021070();
+    Obj_Create();
 }
 
 M2C_UNK func_80021334();                            /* extern */

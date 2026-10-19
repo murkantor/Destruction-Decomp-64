@@ -11,7 +11,7 @@ extern void *D_8011EEF8[];
 Controller *func_80062F14(void);
 void func_80063564(s32, s32);
 void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
-void func_8002D40C(void);
+void Cheat_UpdateInput(void);
 
 s32 func_8003F644(Player *p) {
     Vec3f a = D_800BA378;
@@ -28,7 +28,7 @@ s32 func_8003F644(Player *p) {
         r = 1;
     }
     if (idx == 0) {
-        func_8002D40C();
+        Cheat_UpdateInput();
     }
     return r;
 }

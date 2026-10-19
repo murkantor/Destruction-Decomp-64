@@ -55,7 +55,7 @@ s32 Menu_PrevPage(Menu *m) {
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
 extern const f64 D_800BAD38;
 
-s32 func_8004764C(Obj *arg0) {
+s32 OptionsMenu_Next(Obj *arg0) {
     u32 next;
     u32 cur;
     Arr5 t;

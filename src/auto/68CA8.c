@@ -58,7 +58,7 @@ Acmd *alAudioFrame(Acmd *, s32 *, s16 *, s32);
 OSMesgQueue *osScGetCmdQ(void *);
 s32 osSendMesg(OSMesgQueue *, OSMesg, s32);
 
-u32 func_800680A8(AudioInfo *info, AudioInfo *lastInfo) {
+u32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo) {
     s16 *audioPtr;
     Acmd *cmdp;
     s32 cmdLen;
