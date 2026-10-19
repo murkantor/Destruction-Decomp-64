@@ -2,18 +2,18 @@
 #include "m2c.h"
 
 M2C_UNK func_80058B78();                            /* extern */
-M2C_UNK func_8006CF60(M2C_UNK *, M2C_UNK *);        /* extern */
+M2C_UNK sprintf(M2C_UNK *, M2C_UNK *);        /* extern */
 extern M2C_UNK D_800BBAF8;
 extern M2C_UNK D_800BBB34;
 extern M2C_UNK D_800D1090;
 extern s32 D_80125C8C;
 
 void func_80053EA8(void) {
-    func_8006CF60(&D_800D1090, &D_800BBAF8);
+    sprintf(&D_800D1090, &D_800BBAF8);
     do {
         func_80058B78();
     } while (!(D_80125C8C & 0x1000));
-    func_8006CF60(&D_800D1090, &D_800BBB34);
+    sprintf(&D_800D1090, &D_800BBB34);
 }
 
 void DebugMenu_Init(void *arg0) {

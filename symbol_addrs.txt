@@ -198,3 +198,10 @@ Mem_AllocAlt = 0x800559CC; // type:func
 Heap_AllocAlt = 0x80055530; // type:func
 gRomFile = 0x8011F30C;
 gInflateMaskBits = 0x800BB7E4;
+
+// libultra printf and libgcc helpers n64sym did not find
+sprintf = 0x8006CF60; // type:func
+proutSprintf = 0x8006CFB8; // type:func
+_Printf = 0x80075560; // type:func
+__floatdidf = 0x8007A730; // type:func
+__cmpdi2 = 0x8007A1D0; // type:func
