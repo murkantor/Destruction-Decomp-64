@@ -14,7 +14,7 @@ typedef struct {
     u8 pad6C[0x20];
     s32 frame;
 } Model;
-void func_80068D08(Mtx *, s32);
+void guMtxL2F(Mtx *, s32);
 Gfx *func_800112EC(Model *, Mtx *, Gfx *);
 
 void func_80016A04(Model *m, s32 *arg, s32 layer) {
@@ -26,7 +26,7 @@ void func_80016A04(Model *m, s32 *arg, s32 layer) {
         m->frame = (m->frame + 1) % 2;
     }
     buf = m->frame;
-    func_80068D08(&mtx, *arg);
+    guMtxL2F(&mtx, *arg);
     g = func_800112EC(m, &mtx, m->dl[layer][buf]);
     g->w0 = 0xDF000000;
     g->w1 = 0;

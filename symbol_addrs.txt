@@ -524,3 +524,5 @@ asin = 0x80078FE0; // type:func
 atoi = 0x800795BC; // type:func
 _ctype = 0x800B6FE0;
 Poly_ContainsXZ = 0x80034390; // type:func
+guMtxL2F = 0x80068D08; // type:func
+D_800964E1 = 0x800964E1;

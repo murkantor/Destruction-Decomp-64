@@ -286,7 +286,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800196D8` | `01A2D8` | 0xb8 | `func_800196D8` | `asm/1A2D8.s` | asm |
 | `80019790` | `01A390` | 0x3fc | `func_80019790` | `asm/1A2D8.s` | asm |
 | `80019B8C` | `01A78C` | 0x5e8 | `func_80019B8C` | `asm/1A2D8.s` | asm |
-| `8001A174` | `01AD74` | 0xac | `func_8001A174` | `asm/1A2D8.s` | asm |
+| `8001A174` | `01AD74` | 0xac | `func_8001A174` | `src/auto/1AD74.c` | C (generated) |
 | `8001A220` | `01AE20` | 0xc | `func_8001A220` | `src/auto/1AE20.c` | C (generated) |
 | `8001A22C` | `01AE2C` | 0x10 | `func_8001A22C` | `src/auto/1AE20.c` | C (generated) |
 | `8001A240` | `01AE40` | 0xe8 | `func_8001A240` | `src/auto/1AE40.c` | C (generated) |
@@ -581,12 +581,12 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003D950` | `03E550` | 0x1bc | `func_8003D950` | `asm/3E364.s` | asm |
 | `8003DB0C` | `03E70C` | 0x260 | `PakMenu_PakFull` | `asm/3E364.s` | asm |
 | `8003DD6C` | `03E96C` | 0xf4 | `func_8003DD6C` | `asm/3E364.s` | asm |
-| `8003DE60` | `03EA60` | 0xac | `func_8003DE60` | `asm/3E364.s` | asm |
-| `8003DF0C` | `03EB0C` | 0x128 | `func_8003DF0C` | `asm/3E364.s` | asm |
-| `8003E034` | `03EC34` | 0xc0 | `func_8003E034` | `asm/3E364.s` | asm |
-| `8003E0F4` | `03ECF4` | 0xcc | `func_8003E0F4` | `asm/3E364.s` | asm |
-| `8003E1C0` | `03EDC0` | 0x164 | `func_8003E1C0` | `asm/3E364.s` | asm |
-| `8003E324` | `03EF24` | 0x16c | `func_8003E324` | `asm/3E364.s` | asm |
+| `8003DE60` | `03EA60` | 0xac | `func_8003DE60` | `src/auto/3EA60.c` | C (generated) |
+| `8003DF0C` | `03EB0C` | 0x128 | `func_8003DF0C` | `asm/3EB0C.s` | asm |
+| `8003E034` | `03EC34` | 0xc0 | `func_8003E034` | `asm/3EB0C.s` | asm |
+| `8003E0F4` | `03ECF4` | 0xcc | `func_8003E0F4` | `asm/3EB0C.s` | asm |
+| `8003E1C0` | `03EDC0` | 0x164 | `func_8003E1C0` | `asm/3EB0C.s` | asm |
+| `8003E324` | `03EF24` | 0x16c | `func_8003E324` | `asm/3EB0C.s` | asm |
 | `8003E490` | `03F090` | 0xa0 | `func_8003E490` | `src/auto/3F090.c` | C (generated) |
 | `8003E530` | `03F130` | 0x34 | `func_8003E530` | `src/auto/3F130.c` | C (generated) |
 | `8003E564` | `03F164` | 0xe0 | `func_8003E564` | `asm/3F164.s` | asm |
@@ -1257,7 +1257,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80068560` | `069160` | 0x380 | `guLookAtF` | `src/auto/69160.c` | C (generated) |
 | `800688E0` | `0694E0` | 0x384 | `guLookAt` | `src/auto/694E0.c` | C (generated) |
 | `80068C70` | `069870` | 0x98 | `guMtxF2L` | `src/auto/69870.c` | C (generated) |
-| `80068D08` | `069908` | 0xa8 | `func_80068D08` | `asm/69908.s` | asm |
+| `80068D08` | `069908` | 0xa8 | `guMtxL2F` | `src/auto/69908.c` | C (generated) |
 | `80068DB0` | `0699B0` | 0x50 | `guMtxIdentF` | `src/auto/699B0.c` | C (generated) |
 | `80068E00` | `069A00` | 0xf0 | `func_80068E00` | `asm/69A00.s` | asm |
 | `80068EF0` | `069AF0` | 0xdc | `func_80068EF0` | `asm/69A00.s` | asm |
