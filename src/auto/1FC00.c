@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad[0xB4]; u8 xB4; } Model;
 typedef struct { u8 pad[0xC]; Model *xC; } CarRes;
 typedef struct Car {
@@ -25,15 +28,17 @@ void func_8001F000(Car *car, u8 flag, s32 target) {
     s32 adj;
     s32 d;
     u64 now;
-    f64 t;
     Race *race;
 
     if (car->x30 == 0) {
+        adj = 0;
         D_80124597[0] = 0;
         D_80124598[0] = 0;
         if (car->x3C->xC->xB4 == 7) {
             return;
         }
+    } else {
+        adj = 0;
     }
     switch (D_800958B0) {
     case 0:
@@ -57,7 +62,11 @@ void func_8001F000(Car *car, u8 flag, s32 target) {
             adj = -20;
         }
     }
-    d = target - adj - (car->x5C < 6 ? car->x5C * 2 : car->x5C * 3);
+    if (car->x5C < 6) {
+        d = target - adj - car->x5C * 2;
+    } else {
+        d = target - adj - car->x5C * 3;
+    }
     if (d < 0) {
         d = 1;
     }
@@ -67,11 +76,10 @@ void func_8001F000(Car *car, u8 flag, s32 target) {
             if (car->x5C < car->x8C) {
                 now = Time_Get(&gGame->x10A8);
                 if (now >= car->x50) {
-                    t = now;
+                    car->x50 = (f64)now + d * D_800B8A30;
                 } else {
-                    t = car->x50;
+                    car->x50 = (f64)car->x50 + d * D_800B8A30;
                 }
-                car->x50 = t + d * D_800B8A30;
                 car->x5C++;
                 car->x1C += 0x14;
                 if (car->x30 == 0) {
@@ -90,11 +98,10 @@ void func_8001F000(Car *car, u8 flag, s32 target) {
             if (car->x5C < car->x8C) {
                 now = Time_Get(&gGame->x10A8);
                 if (now >= car->x50) {
-                    t = now;
+                    car->x50 = (f64)now + d * D_800B8A40;
                 } else {
-                    t = car->x50;
+                    car->x50 = (f64)car->x50 + d * D_800B8A40;
                 }
-                car->x50 = t + d * D_800B8A40;
                 car->x5C++;
                 car->x1C += 0x14;
                 if (car->x30 == 0) {
@@ -111,7 +118,7 @@ void func_8001F000(Car *car, u8 flag, s32 target) {
     race = gGame->x1100;
     if (race->x0 == 1 && race->x14->x0 == car && car->x30 == 0) {
         race->x8 = 0;
-        car->x30 = race->x0;
+        car->x30 = 1;
         func_80023CE0(car->x3C->xC);
     }
 }

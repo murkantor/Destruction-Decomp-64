@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u32 w0; u32 w1; } Gfx;
 
 extern u32 D_800BD20C;
@@ -12,10 +15,12 @@ s32 func_80058044(Gfx *dl, s32 depth) {
     Gfx nop;
     u32 w0;
     u32 w1;
+    Gfx *next;
 
     for (;;) {
         g = *dl++;
         w1 = g.w1;
+        next = (Gfx *)w1;
         w0 = g.w0;
         switch (w0) {
         case 0xDE000000:
@@ -24,7 +29,7 @@ s32 func_80058044(Gfx *dl, s32 depth) {
             }
             continue;
         case 0xDE010000:
-            dl = (Gfx *)w1;
+            dl = next;
             continue;
         case 0xDF000000:
             return count;

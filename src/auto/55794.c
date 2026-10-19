@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad[0x74]; u32 x74; } Buf;
 typedef struct { u8 pad[0x8C]; Buf *x8C; u64 *x90; } Obj;
 typedef struct { void *next; OSMesgQueue *mq; } OSScClient;
@@ -37,8 +40,9 @@ void DebugMenu_Run(Obj *obj) {
             func_80056098(obj->x90);
         }
         flag = func_800540C0();
-        i = D_80125C90;
+        /* p reused as the exit flag; needed for register allocation */
+        p = (u64 *)((D_80125C90 >> 12) & 1);
         D_800B04B0++;
-    } while (!(((u32)i >> 12) & 1));
+    } while (!p);
     osScRemoveClient(D_80130250, &client);
 }

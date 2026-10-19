@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 type;
     s32 channel;
@@ -47,36 +50,28 @@ extern u8 gPakFs[];
 s32 osPfsInitPak(OSMesgQueue *, void *, s32);
 
 s32 Pak_Init(OSMesgQueue *mq) {
-    s32 tries = 5;
     s32 ret;
+    s32 tries;
 
+    tries = 5;
     gPakReady[0] = 0;
     do {
         ret = osPfsInitPak(mq, gPakFs, 0);
         tries--;
     } while (ret == 1 && tries != 0);
     switch (ret) {
-        case 2:
-            ret = osPfsInitPak(mq, gPakFs, 0);
-            if (ret != 0) {
-                goto rumble;
-            }
         case 0:
             gPakReady[0] = 1;
-            return ret;
-        rumble:
+            break;
+        case 2:
+            ret = osPfsInitPak(mq, gPakFs, 0);
+            if (ret == 0) {
+                gPakReady[0] = 1;
+                break;
+            }
             gControllers[0].status = osMotorInit(mq, gControllers[0].pfs, 0);
             break;
-        case 1:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
+        case 1: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
             break;
     }
     return ret;

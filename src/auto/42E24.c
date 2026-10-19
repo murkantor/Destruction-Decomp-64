@@ -1,4 +1,7 @@
-typedef struct { u8 pad0[0x34]; s32 x34; s32 x38; u8 pad3C[0x2C]; } Player;
+#include "common.h"
+#include "m2c.h"
+
+typedef struct { u8 pad0[0xC]; s32 xC; s32 x10; u8 pad14[0x54]; } Player;
 typedef struct {
     s32 x0;
     s32 x4;
@@ -8,6 +11,7 @@ typedef struct {
     s32 x14;
     s32 x18;
     s32 x1C[4];
+    u8 pad2C[0x28];
     Player p[4];
 } Glob;
 typedef struct { s32 count; u8 flags[4]; } Slots;
@@ -31,6 +35,8 @@ s32 func_80042224(Obj *o) {
     s32 *ids;
     s32 i;
     Glob *g = &D_800958A4;
+    Player *pl;
+    s32 *q;
 
     if (p >= D_800958A4.x0) {
         return 0;
@@ -76,9 +82,12 @@ s32 func_80042224(Obj *o) {
     if (D_800958A4.x0 != 1 && D_80097340.count != 0) {
         return 1;
     }
+    pl = g->p;
+    q = g->x1C;
     for (i = 0; i < 4; i++) {
-        g->p[i].x34 = 2;
-        g->x1C[i] = g->p[i].x38;
+        pl[i].xC = 2;
+        val = pl[i].x10;
+        q[i] = val;
         if (D_80097340.flags[i]) {
             D_80097340.flags[i] = 0;
             D_80097340.count--;
