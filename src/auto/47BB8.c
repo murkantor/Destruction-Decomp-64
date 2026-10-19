@@ -17,7 +17,7 @@ void Ui_SetElementPos(void *, s32, s32, f32, f32);
 void func_800100BC(s32, s32);
 int sprintf(char *, const char *, ...);
 
-void func_80046FB8(void) {
+void Menu_ShowExitConfirm(void) {
     s8 i;
 
     Ui_RemoveElement(gUi[0], 0x1A7);

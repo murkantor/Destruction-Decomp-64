@@ -27,7 +27,7 @@ typedef struct {
     u8 xC5;
 } Env;
 
-void func_80066C5C(Env *e) {
+void Env_Update(Env *e) {
     s32 t;
 
     if (e->x8 >= e->x50 && e->xBB < 4) {

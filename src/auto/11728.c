@@ -40,7 +40,7 @@ typedef struct {
 extern Pool gParticlePool;
 void *Pool_Alloc(Pool *pool);
 
-Particle *func_80010B28(ParticleList *list, Vec3f pos, Vec3f vel, Vec3f acc, f32 f28, f32 f2C,
+Particle *Particle_Spawn(ParticleList *list, Vec3f pos, Vec3f vel, Vec3f acc, f32 f28, f32 f2C,
                         u16 b30, u8 b31, u8 b32, u8 b3A, u8 b33, u8 b34) {
     Particle *p;
     Particle *prev;

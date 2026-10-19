@@ -9,7 +9,7 @@ extern s32 D_800C070C;
 u64 osGetTime(void);
 s32 func_80062F34(void);
 
-void func_80062BB0(void) {
+void Fps_Update(void) {
     u64 now;
     u64 x;
     u64 delta;

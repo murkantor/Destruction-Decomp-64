@@ -34,7 +34,7 @@ typedef struct {
 
 extern Game *gGame[];
 u64 Time_Get(u64 *);
-void func_80000F9C(Ent *);
+void Ai_PickTarget(Ent *);
 
 void func_80004620(Ent *a, s32 amt, Ent *b, s32 kind) {
     Tracker *t = b->x38;
@@ -46,7 +46,7 @@ void func_80004620(Ent *a, s32 amt, Ent *b, s32 kind) {
         t->x30 += amt;
         if (t->x30 >= t->x1C * 2) {
             t->x30 = 0;
-            func_80000F9C(b);
+            Ai_PickTarget(b);
         }
         if (gGame[0]->x1100->x10 == 1 && (kind == 0 || kind == 4 || kind == 1)) {
             t->x70 = Time_Get(&gGame[0]->x10A8) + 3000000000.0;

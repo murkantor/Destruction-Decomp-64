@@ -36,7 +36,7 @@ static inline void SinCos(f32 a, f32 *s, f32 *c) {
     *s = a * (x2 * (x2 * (x2 * (x2 * (D_800B9B60 - x2 * D_800B9B50) + D_800B9B70) + D_800B9B80) + D_800B9B90) + D_800B9BA0);
 }
 
-void func_8003A020(Mtx3 *m, f32 angle) {
+void Mtx3_RotateY(Mtx3 *m, f32 angle) {
     Vec3f r2;
     Vec3f r0;
     f32 s;

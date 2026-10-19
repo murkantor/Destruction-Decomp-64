@@ -33,7 +33,7 @@ void Res_Load(s32, void *);
 void *Res_Get(s32);
 void func_80060370(void *, void *, s32, s32, s32, s32, s32);
 void *func_80060470(void);
-void func_80060DA8(void *, s32, void *, s32);
+void Sprite2D_InitObjs(void *, s32, void *, s32);
 void func_800603CC(void *, s32, s32);
 void func_800603E4(void *);
 void func_8005E7FC(void *, s32, s32);
@@ -81,7 +81,7 @@ void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
     e->x38 = 0;
     e->x3C = e->x10->xC;
     e->x40 = e->x10->x10;
-    func_80060DA8(e->x14, 3, e->x10, 0);
+    Sprite2D_InitObjs(e->x14, 3, e->x10, 0);
     if (d->x3C) {
         func_800603CC(e->x14, d->x40, d->x44);
     } else {

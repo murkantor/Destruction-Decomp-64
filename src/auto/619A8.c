@@ -75,7 +75,7 @@ typedef struct {
     s32 x8;
 } Opt;
 
-void func_80060DA8(Obj *o, s32 arg1, Cfg *c, Opt *opt) {
+void Sprite2D_InitObjs(Obj *o, s32 arg1, Cfg *c, Opt *opt) {
     S1 *s1;
     S2 *s2;
     S3 *s3;

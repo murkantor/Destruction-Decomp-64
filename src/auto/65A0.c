@@ -23,7 +23,7 @@ typedef struct { u8 pad[0x10A8]; u64 time; u8 pad10B0[0x1100 - 0x10B0]; s32 *lev
 extern Game *gGame;
 Vec3f func_8001FBA8(void *);
 f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
-void func_80000F9C(AiCar *);
+void Ai_PickTarget(AiCar *);
 void func_800067E0(AiCar *);
 u64 Time_Get(u64 *);
 s32 __cmpdi2(s64, s64);
@@ -53,7 +53,7 @@ void Ai_UpdateState(AiCar *car) {
         }
         if (*lvl < 5 && ctrl->x4C != 6) {
             ctrl->x4C = 6;
-            func_80000F9C(car);
+            Ai_PickTarget(car);
         }
         func_800067E0(car);
         break;
@@ -61,7 +61,7 @@ void Ai_UpdateState(AiCar *car) {
     case 1:
         if (*lvl < 6) {
             ctrl->x10 = 0;
-            func_80000F9C(car);
+            Ai_PickTarget(car);
         }
         if (flag) {
             ctrl->x10 = 3;
@@ -81,7 +81,7 @@ void Ai_UpdateState(AiCar *car) {
     case 3:
         if (*lvl >= 7) {
             ctrl->x10 = 0;
-            func_80000F9C(car);
+            Ai_PickTarget(car);
         }
         break;
     case 5:

@@ -20,7 +20,7 @@ s32 Sound_SetVolume(s32, s32);
 void Sound_FadeOutAll(s32, s32);
 s32 Sound_CountPlaying(s32);
 
-s32 func_800474C8(Menu *m) {
+s32 Menu_PrevPage(Menu *m) {
     s32 next;
     s32 cur;
     Arr5 ids;

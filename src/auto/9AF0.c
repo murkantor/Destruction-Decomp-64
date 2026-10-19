@@ -14,7 +14,7 @@ extern u64 gGameTime;
 u64 Time_Get(u64 *);
 int rand(void);
 
-void func_80008EF0(s32 *list, s32 n, s32 arg2, u8 arg3) {
+void Commentary_PickRandom(s32 *list, s32 n, s32 arg2, u8 arg3) {
     s32 sel;
     s32 i;
     s32 idx;

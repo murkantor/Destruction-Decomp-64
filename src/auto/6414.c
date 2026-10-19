@@ -29,7 +29,7 @@ typedef struct {
 extern Game *gGame;
 extern Ent **D_80096074;
 u64 Time_Get(u64 *);
-void func_80000F9C(Ent *);
+void Ai_PickTarget(Ent *);
 void func_800067E0(Ent *);
 
 void func_80005814(Ent *e) {
@@ -48,7 +48,7 @@ void func_80005814(Ent *e) {
             t->x50 = 1;
             t->x54 = 2;
             t->x58 = 2;
-            func_80000F9C(e);
+            Ai_PickTarget(e);
         }
     tail:
         if (t->x6C != 0) {
@@ -63,7 +63,7 @@ void func_80005814(Ent *e) {
             t->x50 = 1;
             t->x54 = 2;
             t->x58 = 2;
-            func_80000F9C(e);
+            Ai_PickTarget(e);
         }
         break;
     case 5:
@@ -78,7 +78,7 @@ void func_80005814(Ent *e) {
             t->x54 = 2;
             t->x58 = 2;
             t->x6D = 0;
-            func_80000F9C(e);
+            Ai_PickTarget(e);
         }
         break;
     }

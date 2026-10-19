@@ -21,7 +21,7 @@ typedef struct {
     s32 x160;
 } Model;
 
-void func_80032BD8(Model *m) {
+void Model_TransformVerts(Model *m) {
     s32 i;
     Vec3f *t = &m->trans;
     Vec3f *r0 = &m->r0;

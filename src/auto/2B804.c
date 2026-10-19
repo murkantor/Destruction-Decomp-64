@@ -23,7 +23,7 @@ void func_8002AE70(void);
 s32 func_8001B298(s32);
 int rand(void);
 
-void func_8002AC04(void) {
+void Race_AwardPot(void) {
     Race *race;
     s32 i;
     s32 r;
