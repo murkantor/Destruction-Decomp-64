@@ -232,3 +232,4 @@ osDpGetStatus = 0x8006C080; // type:func
 __osAiDeviceBusy = 0x800745A0; // type:func
 osDpSetStatus = 0x8006C090; // type:func
 toupper = 0x8007A130; // type:func
+__osSumcalc = 0x80076620; // type:func
