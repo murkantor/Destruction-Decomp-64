@@ -15,7 +15,7 @@ names = {}
 for m in re.finditer(r"^(\w+)\s*=\s*0x([0-9A-Fa-f]+);", open(os.path.join(ROOT, "symbol_addrs.txt")).read(), re.M):
     names[int(m.group(2), 16)] = m.group(1)
 
-pattern = re.compile(r"\b(?:func|D)_([0-9A-F]{8})\b")
+pattern = re.compile(r"\b(?:func|D)_([0-9A-F]{5,8})\b")
 changed = 0
 for d, _, files in os.walk(os.path.join(ROOT, "src")):
     for f in files:
