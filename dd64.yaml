@@ -813,6 +813,8 @@ segments:
       - [0x741A0, asm]
       - [0x74800, c, libultra/alFxParam]
       - [0x74814, asm]
+      - [0x74EFC, c, auto/74EFC]
+      - [0x74F98, asm]
       - [0x75030, c, auto/75030]
       - [0x75130, c, auto/75130]
       - [0x75158, asm]

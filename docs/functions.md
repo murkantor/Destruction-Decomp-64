@@ -1443,16 +1443,16 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80073410` | `074010` | 0x1c | `alFilterNew` | `src/libultra/alFilterNew.c` | C |
 | `80073430` | `074030` | 0x140 | `alMainBusPull` | `src/auto/74030.c` | C (generated) |
 | `80073570` | `074170` | 0x30 | `alMainBusParam` | `src/libultra/alMainBusParam.c` | C |
-| `800735A0` | `0741A0` | 0x1ec | `func_800735A0` | `asm/741A0.s` | asm |
+| `800735A0` | `0741A0` | 0x1ec | `alResamplePull` | `asm/741A0.s` | asm |
 | `8007378C` | `07438C` | 0xc4 | `alResampleParam` | `asm/741A0.s` | asm |
-| `80073850` | `074450` | 0x3b0 | `func_80073850` | `asm/741A0.s` | asm |
+| `80073850` | `074450` | 0x3b0 | `alFxPull` | `asm/741A0.s` | asm |
 | `80073C00` | `074800` | 0x14 | `alFxParam` | `src/libultra/alFxParam.c` | C |
 | `80073C14` | `074814` | 0x1f0 | `func_80073C14` | `asm/74814.s` | asm |
-| `80073E04` | `074A04` | 0x218 | `func_80073E04` | `asm/74814.s` | asm |
-| `8007401C` | `074C1C` | 0x170 | `func_8007401C` | `asm/74814.s` | asm |
-| `8007418C` | `074D8C` | 0x170 | `func_8007418C` | `asm/74814.s` | asm |
-| `800742FC` | `074EFC` | 0x9c | `func_800742FC` | `asm/74814.s` | asm |
-| `80074398` | `074F98` | 0x98 | `func_80074398` | `asm/74814.s` | asm |
+| `80073E04` | `074A04` | 0x218 | `_loadOutputBuffer` | `asm/74814.s` | asm |
+| `8007401C` | `074C1C` | 0x170 | `_loadBuffer` | `asm/74814.s` | asm |
+| `8007418C` | `074D8C` | 0x170 | `_saveBuffer` | `asm/74814.s` | asm |
+| `800742FC` | `074EFC` | 0x9c | `_filterBuffer` | `src/auto/74EFC.c` | C (generated) |
+| `80074398` | `074F98` | 0x98 | `_doModFunc` | `asm/74F98.s` | asm |
 | `80074430` | `075030` | 0x100 | `alSavePull` | `src/auto/75030.c` | C (generated) |
 | `80074530` | `075130` | 0x28 | `alSaveParam` | `src/auto/75130.c` | C (generated) |
 | `80074560` | `075160` | 0x34 | `alCopy` | `src/auto/75160.c` | C (generated) |
