@@ -22,7 +22,7 @@ extern HiSmall D_80097CC8[];
 extern s32 D_80097D48;
 extern Entry4A574 D_80097D18[];
 
-void func_800502D4(void) {
+void HiScore_ApplyNewEntries(void) {
     s32 i;
     s32 j;
     s32 k;

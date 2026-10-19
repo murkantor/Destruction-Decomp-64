@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s8 h; s8 m; s8 s; s32 frac; } TimeHMS;
 
 typedef struct {
@@ -47,14 +50,14 @@ s32 func_8000DAE0(s32 a0, s8 idx) {
     if (gGame[0]->x10FC == 0x1F) {
         return 0;
     }
-    slot = &D_800958F0[idx];
+    slot = &D_800958F0[idx]; /* unused, but needed to match */
     now = Time_Get(&gGame[0]->x10A8);
-    r = slot->x0;
+    r = D_800958F0[idx].x0;
     rem = r->x50 - now;
     if (gGame[0]->x10FC == 0x1B) {
         rem = r->x50;
     }
-    if (!(now < r->x50 && r->xD != 0)) {
+    if (!(now < r->x50 && r->xD == 0)) {
         rem = 0;
     }
     if ((f64)rem > (f64)now + D_800B8250) {
@@ -62,7 +65,7 @@ s32 func_8000DAE0(s32 a0, s8 idx) {
         rem = D_800958F0[idx].x0->x50;
     }
     ts = Time_Split(rem);
-    sprintf(D_8007F834[idx], D_800B81A0, ts.m * 60 + ts.s);
+    sprintf(D_8007F834[idx], D_800B81A0, ts.s + ts.m * 60);
     if (ts.s < 10 && ts.m == 0) {
         D_8007F834[idx][0] = '0';
     }
@@ -74,12 +77,13 @@ s32 func_8000DAE0(s32 a0, s8 idx) {
         if (D_8007EED0[idx] == 0) {
             D_8007EED0[idx] = 1;
             func_800100BC(idx + 0x200, 0x111D4);
-            return 0;
+        } else {
+            D_8007EED0[idx] = 0;
+            func_800100BC(idx + 0x200, 0x111D6);
         }
-    } else if (D_8007EED0[idx] == 0) {
-        return 0;
+    } else if (D_8007EED0[idx] != 0) {
+        D_8007EED0[idx] = 0;
+        func_800100BC(idx + 0x200, 0x111D6);
     }
-    D_8007EED0[idx] = 0;
-    func_800100BC(idx + 0x200, 0x111D6);
     return 0;
 }

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f a; Vec3f b; } Seg;
 typedef struct { Vec3f a; Vec3f b; s32 x18; } GridSlot;
@@ -107,7 +110,7 @@ void Race_PlaceCarsOnGrid(void)
     s32 k;
     f32 f;
     f32 len;
-    s32 gap = 2;
+    s32 gap;
     s32 q, t;
 
     track = gGame[0]->track;
@@ -217,6 +220,7 @@ void Race_PlaceCarsOnGrid(void)
                 }
             }
         }
+        gap = 2;
         for (i = 0; i < n2; i++) {
             if (D_800958A4[1] != 3 && gGame[0]->x10FC != 25) {
                 t = D_80095CA8[D_800958A4[3]][start].x4;

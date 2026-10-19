@@ -20,7 +20,7 @@ void func_80063380(s32);
 void func_80063564(s32, s32);
 void func_800100BC(s32, s32);
 
-s32 func_8000D824(s32 arg0, s8 idx) {
+s32 Hud_UpdateRaceTime(s32 arg0, s8 idx) {
     u64 t = 0;
     char buf[0x10];
     TimeHMS hms;

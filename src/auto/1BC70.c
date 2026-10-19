@@ -24,7 +24,7 @@ void func_8001FBA8(Vec3f *, void *);
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
 void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 void Track_FindPolyUnder(s32 *idx, Vec3f *pos, s32 *list, s32 n);
-void func_8001ACE8(Color3f *out, f32 x, f32 z, void *tri);
+void Track_SampleFaceColor(Color3f *out, f32 x, f32 z, void *tri);
 
 void Car_SetPrimColorFromTrack(Obj *o) {
     Vec3f pos;
@@ -41,7 +41,7 @@ void Car_SetPrimColorFromTrack(Obj *o) {
         Track_CollectCellItems(list, &n, 32, cx, cz, cx, cz);
         Track_FindPolyUnder(&idx, &pos, list, n);
         if (idx != -1) {
-            func_8001ACE8(&c, pos.x, pos.z, gGame->track->x70->xC->x5C + idx * 0x18);
+            Track_SampleFaceColor(&c, pos.x, pos.z, gGame->track->x70->xC->x5C + idx * 0x18);
             g = o->x190->x10;
             g->w0 = 0xFA000000;
             g->w1 = (((u32)c.r & 0xFF) << 24) | (((u32)c.g & 0xFF) << 16) | (((u32)c.b & 0xFF) << 8);

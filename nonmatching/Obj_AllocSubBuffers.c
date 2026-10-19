@@ -14,7 +14,7 @@ void Heap_Alloc(void *heap, HeapBlock *out, u32 size, u32 alignMask, u32 alignOf
 void *HeapBlock_Ptr(HeapBlock *);
 void func_80018D70(void);
 
-void func_80015714(Obj **arg0) {
+void Obj_AllocSubBuffers(Obj **arg0) {
     Sub *s;
 
     *arg0 = Mem_Alloc(sizeof(Obj));

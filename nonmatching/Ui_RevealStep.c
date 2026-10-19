@@ -24,21 +24,18 @@ extern u8 D_8007EF33;
 u64 Time_Get(u64 *);
 void Ui_AddElement(void *, s32, s32);
 
-s32 func_8000E6E0(Target *t) {
+s32 Ui_RevealStep(Target *t) {
     s32 i;
     u16 *dst;
     u16 *src;
     u64 now;
 
     if (D_800D1AE8.idx < 11 && Time_Get(&gGame->x1058) >= D_800D1AE8.next) {
-        i = D_800D1AE8.idx;
-        dst = *t->x10;
-        src = D_800D1AE8.src;
+        src = D_800D1AE8.src; dst = *t->x10; i = D_800D1AE8.idx;
         for (; i < D_800D1AE8.total; i += 11) {
             dst[i] = src[i];
         }
-        now = Time_Get(&gGame->x1058);
-        D_800D1AE8.next = D_800D1AE8.interval + now;
+        D_800D1AE8.next = D_800D1AE8.interval + Time_Get(&gGame->x1058);
         D_800D1AE8.idx++;
         return 0;
     }

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { f32 x; f32 y; f32 z; u8 c[4]; } Vert;
 typedef struct { u8 pad0[0x60]; Vert *x60; } Mesh;
@@ -9,7 +12,7 @@ extern Game *gGame;
 
 #define VERTS (gGame->race->x70->xC->x60)
 
-void func_8001ACE8(f32 *out, f32 x, f32 z, Face *f) {
+void Track_SampleFaceColor(f32 *out, f32 x, f32 z, Face *f) {
     Vert *v[3];
     Vec3f e1;
     Vec3f e2;
@@ -53,10 +56,12 @@ void func_8001ACE8(f32 *out, f32 x, f32 z, Face *f) {
         return;
     }
     for (i = 0; i < 3; i++) {
-        f32 d2 = (f32)v[2]->c[i] - (f32)v[0]->c[i];
-        f32 d1 = (f32)v[1]->c[i] - (f32)v[0]->c[i];
+        u8 c0 = v[0]->c[i];
+        f32 d2 = (f32)v[2]->c[i] - (f32)c0;
+        f32 d1 = (f32)v[1]->c[i] - (f32)c0;
         f32 A = (d2 * e1.z - d1 * e2.z) / det;
-        f32 B = (d1 * e2.x - d2 * e1.x) / det;
+        f32 t = d2 * e1.x;
+        f32 B = (d1 * e2.x - t) / det;
         f32 C = (f32)v[0]->c[i] - A * v[0]->x - B * v[0]->z;
         out[i] = A * x + B * z + C;
         if (out[i] < 0.0f) {

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s8 h; s8 m; s8 s; s32 frac; } TimeHMS;
 typedef struct { char c[8]; } Str8;
 typedef struct { s32 v[12]; } Ids;
@@ -59,11 +62,10 @@ void Time_Format(TimeHMS t, char *buf, s32 len);
 s32 func_8001B298(s32);
 void Msg_Queue(s32, s32, s32, s32);
 
-void func_80043E4C(void) {
+void Results_Setup(void) {
     TimeHMS ts;
     Str8 buf = D_800BA7C0;
     Ids msgs = D_800BA7C8;
-    PlayerSlot *pl;
     s32 track;
     s32 n;
     s32 v;
@@ -74,10 +76,9 @@ void func_80043E4C(void) {
     Rumble_DisallowRetry();
     st = (Setup *)&D_800958B4;
     track = st->track;
-    pl = st->pl;
-    for (i = 0; i < D_800D31CC; i++, pl++) {
-        pl->x0->xB4 = 6;
-        func_80062FF0(pl->x0);
+    for (i = 0; i < D_800D31CC; i++) {
+        gPlayers[i].x0->xB4 = 6;
+        func_80062FF0(gPlayers[i].x0);
     }
     func_80044B44(track);
     Ui_AddElement(gUi[0], 2, 0xDF);
