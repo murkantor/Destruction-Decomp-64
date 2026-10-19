@@ -587,7 +587,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003E0F4` | `03ECF4` | 0xcc | `func_8003E0F4` | `asm/3E364.s` | asm |
 | `8003E1C0` | `03EDC0` | 0x164 | `func_8003E1C0` | `asm/3E364.s` | asm |
 | `8003E324` | `03EF24` | 0x16c | `func_8003E324` | `asm/3E364.s` | asm |
-| `8003E490` | `03F090` | 0xa0 | `func_8003E490` | `asm/3E364.s` | asm |
+| `8003E490` | `03F090` | 0xa0 | `func_8003E490` | `src/auto/3F090.c` | C (generated) |
 | `8003E530` | `03F130` | 0x34 | `func_8003E530` | `src/auto/3F130.c` | C (generated) |
 | `8003E564` | `03F164` | 0xe0 | `func_8003E564` | `asm/3F164.s` | asm |
 | `8003E644` | `03F244` | 0x358 | `func_8003E644` | `asm/3F164.s` | asm |

@@ -280,6 +280,7 @@ segments:
       - [0x3E2B8, c, auto/3E2B8]
       - [0x3E2F8, c, auto/3E2F8]
       - [0x3E364, asm]
+      - [0x3F090, c, auto/3F090]
       - [0x3F130, c, auto/3F130]
       - [0x3F164, asm]
       - [0x3F59C, c, auto/3F59C]

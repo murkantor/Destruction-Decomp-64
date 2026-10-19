@@ -441,9 +441,11 @@ def main():
     ap.add_argument("--out", default=os.path.join(ROOT, "build", "auto"))
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--opt", default="-O2", help="optimization flag, -O1 for libc and libm")
+    ap.add_argument("--flags", default="", help="extra compiler flags, for example -ffast-math")
     ap.add_argument("-j", type=int, default=os.cpu_count())
     args = ap.parse_args()
     CFLAGS[OPT_INDEX] = args.opt
+    CFLAGS.extend(args.flags.split())
 
     rom = open(os.path.join(ROOT, "baserom.z64"), "rb").read()
     syms = load_symbols()
