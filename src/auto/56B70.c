@@ -1,8 +1,8 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_8006C1F0(s32);                         /* extern */
-M2C_UNK func_8006C360(f32);                         /* extern */
+M2C_UNK osViSetSpecialFeatures(s32);                         /* extern */
+M2C_UNK osViSetXScale(f32);                         /* extern */
 M2C_UNK func_8006C430(f32);                         /* extern */
 M2C_UNK osViBlack(M2C_UNK);                         /* extern */
 M2C_UNK osViSetMode(void *);                        /* extern */
@@ -18,8 +18,8 @@ void func_80055F70(void *arg0) {
         } else {
             osViBlack(0);
             osViSetMode(arg0);
-            func_8006C1F0(M2C_FIELD(arg0, s32 *, 0x50));
-            func_8006C360(M2C_FIELD(arg0, f32 *, 0x54));
+            osViSetSpecialFeatures(M2C_FIELD(arg0, s32 *, 0x50));
+            osViSetXScale(M2C_FIELD(arg0, f32 *, 0x54));
             func_8006C430(M2C_FIELD(arg0, f32 *, 0x58));
         }
         D_800B0B14 = arg0;

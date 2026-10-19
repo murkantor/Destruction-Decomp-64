@@ -7,7 +7,7 @@ extern s32 __osSiAccessQueueEnabled;
 extern M2C_UNK siAccessBuf;
 extern M2C_UNK __osSiAccessQueue;
 
-void func_80074AB0(void) {
+void __osSiCreateAccessQueue(void) {
     __osSiAccessQueueEnabled = 1;
     osCreateMesgQueue(&__osSiAccessQueue, &siAccessBuf, 1);
     osSendMesg(&__osSiAccessQueue, 0, 0);
