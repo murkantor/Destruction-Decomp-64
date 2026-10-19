@@ -51,7 +51,42 @@ Each track is two MIPS ELF objects (`<track>.o`, `<track>_sdl.o`) with symbol ta
 | `Time_Get` | Reads a `u64` time |
 | `Timer_Start(obj, ticks)` | Sets `obj` + 0x18 to now plus `ticks`; callers pass 300,000,000 |
 
-## 2D screens
+## Controllers and rumble
+
+| Symbol | Notes |
+|---|---|
+| `gControllers` (0x80125C80) | Four 0xB0-byte states: buttons, pressed, stick and stick delta, rumble timer, Pak handle at 0x48 |
+| `gContPads` | The `OSContPad` array `osContGetReadData` fills |
+| `Pad_Read`, `Pad_ReadAll` | Wait for the SI read, update each plugged-in controller, start the next read. `Pad_ReadAll` also turns the D-pad into stick values |
+| `Pad_Update`, `Pad_Clear`, `Pad_Init` | Per-controller state |
+| `Pad_Rumble(channel, frames, strength)` | Strength 0 to 1 sets the on/off duty cycle of the motor |
+| `Rumble_Restart`, `Rumble_Stop` | `osMotorInit` and `__osMotorAccess`; re-initialised about once a second while rumbling |
+
+## Controller Pak
+
+| Symbol | Notes |
+|---|---|
+| `Pak_SetGameInfo`, `Pak_Init` | Company and game code, note names; `osPfsInitPak` with retries |
+| `Pak_FindFile`, `Pak_AllocateFile`, `Pak_DeleteFile`, `Pak_ReadFile`, `Pak_WriteFile`, `Pak_FreeBlocks`, `Pak_Check` | One-line wrappers over `osPfs*` for a channel, -1 if that Pak is not ready |
+| `SaveMenu_PrevSlot`, `SaveMenu_NextSlot` | Step through the 16 save slots in `gSaveSlots`, skipping empty ones |
+
+## Sound
+
+| Symbol | Notes |
+|---|---|
+| `gVoices`, `gNumVoices` | 0x120-byte voices; `id` at 0x40, `isMusic` at 0x9E |
+| `Sound_FadeOut(id, frames)`, `Sound_FadeOutAll(mask, frames)` | Mask bit 0 is music, bit 1 is effects |
+| `Sound_CountPlaying(mask)`, `Sound_CountVoices(id)` | |
+| `Sound_SetVolume`, `Sound_SetPitch`, `Sound_SetFieldA8` | Set a field on every voice with that id |
+
+## Maths
+
+| Symbol | Notes |
+|---|---|
+| `Vec3f_*` | Copy, set, add, subtract, scale, dot, cross, length, normalize, rotate about X, Y or Z |
+| `Math_Atan2`, `Math_SolveQuadratic` | |
+| `rand` | The usual LCG (1103515245, 12345) |
+
 
 | Symbol | Notes |
 |---|---|
@@ -67,4 +102,12 @@ Display lists are built with the standard F3DEX 2.07 and S2DEX 2.07 microcode (t
 
 ## SDK
 
-libultra 2.0I, libc and the audio library. Named functions are in `symbol_addrs.txt`; decompiled ones are in `src/libultra/`. Some, such as `osGetCount` and `__osDisableInt`, were hand-written assembly in the SDK and stay as assembly.
+libultra 2.0I, libc and the audio library. Named functions are in `symbol_addrs.txt`; decompiled ones are in `src/libultra/`, `src/libc/` and `src/auto/`. Some, such as `osGetCount` and `__osDisableInt`, were hand-written assembly in the SDK and stay as assembly. The game uses the SDK scheduler (`osCreateScheduler`, `__scMain`) and the Rumble Pak (`osMotorInit`).
+
+## Build flags
+
+| Code | Flags |
+|---|---|
+| Game and libultra | `-O2` |
+| libc and libm (`src/libc/`) | `-O1` |
+| Some game files (Makefile `FASTMATH`) | `-O2 -ffast-math`: `sqrtf` becomes a bare `sqrt.s` |
