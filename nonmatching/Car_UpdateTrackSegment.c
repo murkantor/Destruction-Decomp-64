@@ -34,7 +34,7 @@ extern s32 D_80091B18[];
 
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 u8 func_80035818(f32, f32, f32, f32, f32, f32, f32, f32);
-s32 func_80020E58(Car *, s32);
+s32 Racer_WrapNode(Car *, s32);
 void func_80020098(Car *, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
@@ -63,7 +63,7 @@ void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
     if (D_800958B4 == 8 && seg >= 0x51 && seg < 0x145)                                 \
         cross ^= 1;
 
-void func_8002028C(Car *car)
+void Car_UpdateTrackSegment(Car *car)
 {
     s32 dir = car->dir;
     s32 seg = car->seg;
@@ -96,7 +96,7 @@ void func_8002028C(Car *car)
     if (CHECK(seg, D_800B8AB0)) {
         CROSS()
         if ((cross & (dir == 1)) || (!cross & (dir == -1))) {
-            n = func_80020E58(car, car->seg + car->dir);
+            n = Racer_WrapNode(car, car->seg + car->dir);
             if (car->x30 == 0) {
                 if (gGame->x10FC != 0x19) {
                     if (D_80091B14[car->x3C->x10]) {
@@ -118,7 +118,7 @@ void func_8002028C(Car *car)
     }
 
     if (car->x30 == 0 && !flag) {
-        n = func_80020E58(car, seg - dir);
+        n = Racer_WrapNode(car, seg - dir);
         if (CHECK(n, D_800B8AB8)) {
             CROSS()
             if ((cross & (dir == 1)) || (!cross & (dir == -1))) {
@@ -143,9 +143,9 @@ void func_8002028C(Car *car)
         }
     }
     if (!flag && !car->x40) {
-        n = func_80020E58(car, seg + dir * 3);
+        n = Racer_WrapNode(car, seg + dir * 3);
         if (CHECK(n, D_800B8AC0)) {
-            car->seg = func_80020E58(car, n + dir);
+            car->seg = Racer_WrapNode(car, n + dir);
             if (gGame->x10FC != 0x19) {
                 if (D_80091B14[car->x3C->x10]) {
                     D_80091B14[car->x3C->x10] = 0;
@@ -157,7 +157,7 @@ void func_8002028C(Car *car)
         }
     }
     if (!flag && !car->x40) {
-        n = func_80020E58(car, seg - dir * 3);
+        n = Racer_WrapNode(car, seg - dir * 3);
         if (CHECK(n, D_800B8AC8)) {
             car->seg = n;
             ids[0] = 0x86;

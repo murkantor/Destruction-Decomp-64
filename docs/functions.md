@@ -202,7 +202,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80012984` | `013584` | 0x84 | `func_80012984` | `src/auto/13584.c` | C (generated) |
 | `80012A08` | `013608` | 0x18 | `func_80012A08` | `src/auto/13608.c` | C (generated) |
 | `80012A20` | `013620` | 0x7c | `func_80012A20` | `src/auto/13608.c` | C (generated) |
-| `80012A9C` | `01369C` | 0x6d8 | `Light_UpdateVertexColors` | `asm/1369C.s` | asm |
+| `80012A9C` | `01369C` | 0x6d8 | `Light_UpdateVertexColors` | `src/auto/1369C.c` | C (generated) |
 | `80013174` | `013D74` | 0x44 | `func_80013174` | `src/auto/13D74.c` | C (generated) |
 | `800131C0` | `013DC0` | 0x9c | `func_800131C0` | `src/auto/13DC0.c` | C (generated) |
 | `8001325C` | `013E5C` | 0x350 | `func_8001325C` | `src/auto/13E5C.c` | C (generated) |
@@ -429,7 +429,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80027ECC` | `028ACC` | 0x3c | `func_80027ECC` | `src/auto/28ACC.c` | C (generated) |
 | `80027F08` | `028B08` | 0x74 | `ItemList_IndexOf` | `src/auto/28B08.c` | C (generated) |
 | `80027F7C` | `028B7C` | 0xec | `Race_GetPlayerPosition` | `src/auto/28B7C.c` | C (generated) |
-| `80028070` | `028C70` | 0x63c | `Car_OnCollision2` | `asm/28C68.s` | asm |
+| `80028070` | `028C70` | 0x63c | `Car_OnCollision2` | `src/auto/28C70.c` | C (generated) |
 | `800286AC` | `0292AC` | 0x1f8 | `func_800286AC` | `src/auto/292AC.c` | C (generated) |
 | `800288A4` | `0294A4` | 0x18 | `func_800288A4` | `src/auto/294A4.c` | C (generated) |
 | `800288BC` | `0294BC` | 0x190 | `Track_ScaleVertsByDistance` | `src/auto/294BC.c` | C (generated) |
@@ -723,7 +723,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004E4D8` | `04F0D8` | 0x54 | `func_8004E4D8` | `src/auto/4F0D8.c` | C (generated) |
 | `8004E52C` | `04F12C` | 0x58 | `func_8004E52C` | `src/auto/4F0D8.c` | C (generated) |
 | `8004E584` | `04F184` | 0x94 | `func_8004E584` | `src/auto/4F184.c` | C (generated) |
-| `8004E618` | `04F218` | 0x59c | `Results_Init` | `asm/4F218.s` | asm |
+| `8004E618` | `04F218` | 0x59c | `Results_Init` | `src/auto/4F218.c` | C (generated) |
 | `8004EBB4` | `04F7B4` | 0x54 | `func_8004EBB4` | `src/auto/4F7B4.c` | C (generated) |
 | `8004EC08` | `04F808` | 0x6a0 | `Results_DrawTeamScores` | `src/auto/4F808.c` | C (generated) |
 | `8004F2A8` | `04FEA8` | 0x100 | `func_8004F2A8` | `src/auto/4FEA8.c` | C (generated) |

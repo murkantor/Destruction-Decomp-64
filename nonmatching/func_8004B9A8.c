@@ -6,14 +6,14 @@ extern s32 D_80095CB8[];
 extern s32 D_801252F4;
 extern s32 D_80097360;
 extern s32 D_80097350;
-void func_8003EA7C(s32, s32);
+void Ui_ResetScreen(s32, s32);
 s32 sprintf(char *, const char *, ...);
 
 void func_8004B9A8(void) {
     char *text;
     s32 place;
 
-    func_8003EA7C(0x112F2, 0x112F3);
+    Ui_ResetScreen(0x112F2, 0x112F3);
     text = gSaveSlotText[0];
     sprintf(text, "TRY AGAIN");
     sprintf(text + 50, "QUIT");

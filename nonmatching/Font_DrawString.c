@@ -14,7 +14,7 @@ void __assert(const char *, const char *, int);
 
 #define GFX2(g,a,b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_80054EDC(Font *font, s32 x0, s32 y0, u8 *str, Gfx *g) {
+Gfx *Font_DrawString(Font *font, s32 x0, s32 y0, u8 *str, Gfx *g) {
     s32 x;
     s32 y;
     u8 c;

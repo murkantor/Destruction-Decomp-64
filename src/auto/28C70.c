@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 pad0[0x10]; s8 x10; } PadInfo;
 typedef struct {
@@ -31,14 +34,14 @@ void Car_ApplyDamage(Car *, s32, f32, s32);
 void Particles_EmitTrail(void *, Vec3f, Car *);
 s32 func_80008004(s32, s32);
 void func_80006E8C(s32, HitMsg *);
-void func_80029378(Car *, s32, Car *, s32, f32);
-void func_80028A4C(Car *, s32, Vec3f, s32);
-void func_8000A574(Car *, Vec3f, s32);
+void Car_OnCollision(Car *, s32, Car *, s32, f32);
+void Car_DeformMeshAtImpact(Car *, s32, Vec3f, s32);
+void Debris_Spawn(Car *, Vec3f, s32);
 void Pad_Rumble(s32, s32, f32);
 
-void func_80028070(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 forceArg)
+void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
 {
-    f32 force;
+
     Car *carA = NULL;
     Car *carB = NULL;
     s32 zoneA = 0;
@@ -48,10 +51,11 @@ void func_80028070(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 forceArg)
     s32 hpA;
     s32 hpB;
     s32 level = 0;
+    f32 str;
     HitMsg msg;
     Coll *c;
 
-    force = forceArg;
+
     if (gGame->x10FC != 0x1C && gGame->x10FC != 0x19)
         return;
     if (D_80095894 != 0)
@@ -124,13 +128,13 @@ void func_80028070(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 forceArg)
         if (!carA->xD && !carB->xD) {
             hpA = carA->x10;
             hpB = carB->x10;
-            func_80029378(carA, zoneA, carB, zoneB, force / D_80095840);
-            func_80028A4C(carA, hpA - carA->x10, posA, zoneA);
-            func_80028A4C(carB, hpB - carB->x10, posB, zoneB);
+            Car_OnCollision(carA, zoneA, carB, zoneB, force / D_80095840);
+            Car_DeformMeshAtImpact(carA, hpA - carA->x10, posA, zoneA);
+            Car_DeformMeshAtImpact(carB, hpB - carB->x10, posB, zoneB);
             if (zoneA != 0 && zoneA != 7 && !(zoneA == 8 || zoneA == 9) && zoneB != 0 &&
                 !(zoneB == 7 || zoneB == 8) && zoneB != 9) {
-                func_8000A574(carA, posA, hpA - carA->x10);
-                func_8000A574(carB, posB, hpB - carB->x10);
+                Debris_Spawn(carA, posA, hpA - carA->x10);
+                Debris_Spawn(carB, posB, hpB - carB->x10);
                 flag = 0;
             } else {
                 flag = 1;
@@ -147,24 +151,24 @@ void func_80028070(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 forceArg)
 
     if (force < 10.0f) {
         level = 5;
-        force = 0.5f;
+        str = 0.5f;
     } else if (force < 15.0f) {
         level = 6;
-        force = 0.6f;
+        str = 0.6f;
     } else if (force < 20.0f) {
         level = 7;
-        force = 0.7f;
+        str = 0.7f;
     } else if (force < 25.0f) {
         level = 8;
-        force = 0.85f;
+        str = 0.85f;
     } else {
-        force = 0.9f;
+        str = 0.9f;
         level = 10;
     }
     if (gGame->x10FC == 0x1C) {
         if (carA->x30 == 0 && !carA->xD)
-            Pad_Rumble(carA->x3C->x10, level, force);
+            Pad_Rumble(carA->x3C->x10, level, str);
         if (carB->x30 == 0 && !carB->xD && carA != carB)
-            Pad_Rumble(carB->x3C->x10, level, force);
+            Pad_Rumble(carB->x3C->x10, level, str);
     }
 }

@@ -37,7 +37,7 @@ void func_8006417C(void *);
 void func_8005AAC0(void *);
 void func_80063AAC(s32);
 void Mem_Free(void *);
-void func_800135AC(void *);
+void Obj_Free(void *);
 
 static inline Outer *FreeOuter(Outer *o) {
     Inner *in;
@@ -88,15 +88,15 @@ void func_8003ECF8(void) {
         func_80063AAC(0x4650);
     }
     if (D_800970F0 != NULL) {
-        func_800135AC(D_800970F0);
+        Obj_Free(D_800970F0);
         D_800970F0 = NULL;
     }
     if (D_800970F4 != NULL) {
-        func_800135AC(D_800970F4);
+        Obj_Free(D_800970F4);
         D_800970F4 = NULL;
     }
     if (D_800970F8 != NULL) {
-        func_800135AC(D_800970F8);
+        Obj_Free(D_800970F8);
         D_800970F8 = NULL;
     }
 }

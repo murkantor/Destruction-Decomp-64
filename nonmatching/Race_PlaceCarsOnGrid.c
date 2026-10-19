@@ -51,7 +51,7 @@ extern f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 extern s32 Track_FindNearestSegment(Vec3f p);
 extern s32 func_8001B298(s32 id);
 
-void func_80026990(void)
+void Race_PlaceCarsOnGrid(void)
 {
     s32 n2 = 0;
     s32 sign = 0;

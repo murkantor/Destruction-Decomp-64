@@ -44,7 +44,7 @@ static inline void deform(DVtx *verts, s32 count, s32 *box, Vec3f *cp, f32 stren
     }
 }
 
-void func_80028A4C(Player *p, s32 n, Vec3f pos, s32 type)
+void Car_DeformMeshAtImpact(Player *p, s32 n, Vec3f pos, s32 type)
 {
     s32 box[4];
     Vec3f c;

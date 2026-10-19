@@ -7,7 +7,7 @@ typedef struct {
 extern Handler D_80095630[];
 extern s32 D_80095810;
 
-void func_80023DDC(void *arg, s16 *id) {
+void Handler_CallX8ById(void *arg, s16 *id) {
     char unused[1];
     s32 i;
 

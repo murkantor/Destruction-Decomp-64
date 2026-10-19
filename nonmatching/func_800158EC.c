@@ -35,7 +35,7 @@ void Points_BoundsXZ(f32 *, f32 *, f32 *, f32 *, Vec3f *, s32);
 void Track_PosToCell(s32 *, s32 *, f32, f32);
 void Track_CollectCellItems(s32 *, s32 *, s32, s32, s32, s32, s32);
 Gfx *func_80019050(Gfx *);
-void func_80014FF4(Shadow *, s32 *, s32);
+void Shadow_ClipAndEmitFaces(Shadow *, s32 *, s32);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
@@ -133,7 +133,7 @@ void func_800158EC(Shadow *s, Mtx3 *m) {
     GFX2(buf->x18, 0xD9FFFFFF, 0x200005);
     GFX2(buf->x18, 0xFC121824, 0xFF33FFFF);
     GFX2(buf->x18, 0xE200001C, 0x5049D8);
-    func_80014FF4(s, items, count);
+    Shadow_ClipAndEmitFaces(s, items, count);
     if (D_800BC9B0) {
         D_800BC9B0->w0 = 0x01000000 | ((D_800BC9AC & 0xFF) << 12) | ((D_800BC9AC & 0x7F) << 1);
         D_800BC9B0->w1 = (u32)buf->x1C;

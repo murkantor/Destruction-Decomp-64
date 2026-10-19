@@ -14,7 +14,7 @@ extern s32 D_800958A8;
 extern f32 Vec3f_DistXZ(Vec3f, Vec3f);
 extern void Ui_AddElement(void *, s32, s32);
 extern void Msg_Queue(s32, s32, s32, s32);
-extern void func_80008BB8(s32 *, s32, s32, s32, s32);
+extern void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
 
 void func_80020098(Obj *o, s32 idx) {
     Race *race = gGame[0]->x1100;
@@ -38,7 +38,7 @@ void func_80020098(Obj *o, s32 idx) {
                         if (D_800958A8 == 2) {
                             Msg_Queue(0x87, 0, 1, 0);
                         } else {
-                            func_80008BB8(msg, 2, 0, 1, 0);
+                            Announcer_QueueRandom(msg, 2, 0, 1, 0);
                         }
                     }
                 }

@@ -39,7 +39,7 @@ void func_80063AAC(s32);
 void Mem_Free(void *);
 void func_80063564(s32, s32);
 void Players_Reset(void);
-u8 func_800429F4(s32);
+u8 Menu_ToggleHelpOverlay(s32);
 
 static inline void FreeItem(Item42894 *item, s32 *tbl) {
     Inner42894 *in = item->xC;
@@ -61,5 +61,5 @@ s32 func_80042894(Obj42894 *obj) {
     s32 *tbl;
 
 tbl = D_800919F4; p = D_80096500; do { if (*p != NULL) { FreeItem(*p, tbl); *p = NULL; } p++; } while ((s32)p < (s32)(D_80096500 + 4));
-limit = (D_800958AC == 2 && D_800958A4 == 4) ? 2 : D_800958A4; if (D_80097340 == limit) { D_800958BC = 0; func_80063564(0xF, 1); Players_Reset(); return 1; } if (obj->x28->x10 < D_800958A4) { if (limit == 1) goto call; } return 0; call: return func_800429F4(obj->x10);
+limit = (D_800958AC == 2 && D_800958A4 == 4) ? 2 : D_800958A4; if (D_80097340 == limit) { D_800958BC = 0; func_80063564(0xF, 1); Players_Reset(); return 1; } if (obj->x28->x10 < D_800958A4) { if (limit == 1) goto call; } return 0; call: return Menu_ToggleHelpOverlay(obj->x10);
 }

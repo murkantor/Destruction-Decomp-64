@@ -38,12 +38,12 @@ extern f64 D_800B8710;
 void guMtxL2F(f32 mf[4][4], s32 m);
 void func_80068FCC(f32 mf[4][4], f32, f32, f32, f32 *, f32 *, f32 *);
 u8 Track_LineOfSight(void *, Vec3f *);
-Gfx *func_80061648(Spr *, Gfx *, s32);
+Gfx *Bg_Draw(Spr *, Gfx *, s32);
 
 #define FTOU(x) ((x) > 0.0f ? (u32)(x) : 0)
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_800160C4(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
+Gfx *Gfx_DrawLensFlare(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
 {
     Sun *sun;
     Vp *vp;
@@ -142,7 +142,7 @@ Gfx *func_800160C4(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
         q->xC = y0 * 4;
         q->x1C = sx;
         q->x1E = sy;
-        gfx = func_80061648(spr, gfx, 1);
+        gfx = Bg_Draw(spr, gfx, 1);
     }
     if (dist < 0.8f) {
         u32 v = (0.8f - dist) * 150.0f;

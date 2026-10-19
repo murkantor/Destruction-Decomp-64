@@ -43,7 +43,7 @@ u8 func_80033CBC(Poly *, f32 *, Poly *, f32 *, Vec3f *);
 void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Set(Vec3f *, f32, f32, f32);
-void func_800319F0(Car *, Car *, Hit *);
+void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
 f32 sqrtf(f32);
 
 u8 func_8003225C(Car *a, Car *b) {
@@ -172,7 +172,7 @@ u8 func_8003225C(Car *a, Car *b) {
         }
     }
     if (found) {
-        func_800319F0(a, b, &hit);
+        Car_ApplyCollisionImpulse(a, b, &hit);
     }
     return found;
 }

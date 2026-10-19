@@ -40,7 +40,7 @@ extern Vec3f D_800BBF60;
 extern Vec3f D_800BBF6C;
 void func_80024840(void);
 u64 Time_Get(u64 *);
-void func_800074EC(void *, Vec3f, Vec3f, s32);
+void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
 void func_80064948(Player *);
 void func_800649B8(Player *);
 
@@ -64,31 +64,31 @@ void func_800644C0(Player *arg0) {
     if (Time_Get(&gGameTime) >= p->x18) {
         if (p->x21) {
             if (h->x10 && (r = h->x10(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 6);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 6);
             }
         } else if (p->x22) {
             if (h->x14 && (r = h->x14(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 5);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 5);
             }
         } else if (p->x23) {
             if (h->x0 && (r = h->x0(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 7);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 7);
             }
         } else if (p->x24) {
             if (h->x4 && (r = h->x4(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 7);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 7);
             }
         } else if (p->x25) {
             if (h->x8 && (r = h->x8(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 7);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 7);
             }
         } else if (p->x26) {
             if (h->xC && (r = h->xC(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 7);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 7);
             }
         } else if (p->x20) {
             if (h->x18 && (r = h->x18(p))) {
-                func_800074EC(D_8011EEF8[0], a, b, 8);
+                Sound_PlayAt(D_8011EEF8[0], a, b, 8);
             }
         }
     }

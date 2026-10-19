@@ -4,8 +4,8 @@ typedef struct { u8 pad[0x10]; s32 x10; u8 pad2[0x74 - 0x14]; Slot *x74[12]; s32
 typedef struct { u8 pad[0x340]; Obj *x340[(0x1044 - 0x340) / 4]; s16 x1044; u8 pad2[0x1100 - 0x1046]; Race *x1100; } Game;
 extern Game *gGame;
 extern s32 D_800958A8[];
-extern void func_80002630(void);
-extern void func_80000F9C(void);
+extern void InitLookupTables(void);
+extern void Ai_PickTarget(void);
 
 void func_80001BB0(void) {
     Obj *list[12];
@@ -16,7 +16,7 @@ void func_80001BB0(void) {
     Slot *s;
     Obj *o;
 
-    func_80002630();
+    InitLookupTables();
     n = 0;
     for (k = 0; k < gGame->x1044; k++) {
         if (gGame->x340[k]->x0 == 7) {
@@ -46,7 +46,7 @@ void func_80001BB0(void) {
             o->x10 = 7;
             break;
         case 1:
-            func_80000F9C();
+            Ai_PickTarget();
             o->x10 = 0;
             break;
         }

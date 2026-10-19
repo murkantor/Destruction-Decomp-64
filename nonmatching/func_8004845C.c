@@ -20,7 +20,7 @@ extern s32 D_8011EEE0;
 extern s32 D_800958A8;
 extern f64 D_800BADE8;
 s32 Sound_CountPlaying(s32);
-void func_800084EC(s32);
+void Res_LoadSoundBank(s32);
 void func_8005DC68(void *);
 s32 Res_GetSize(s32);
 void Heap_AllocAlt(void *, void *, s32, s32, s32);
@@ -50,7 +50,7 @@ s32 func_8004845C(MenuItem *it) {
         } else {
             id = D_8011EEF8->x510[D_800BC9E4];
         }
-        func_800084EC(id);
+        Res_LoadSoundBank(id);
         D_80096EB4 = 0;
     }
     if (next == 0x1F) {

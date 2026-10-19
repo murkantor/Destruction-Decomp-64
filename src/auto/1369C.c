@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { s32 idx; u8 r, g, b, pad; } LitVert;
 typedef struct { s32 start; s32 count; } Cell;
@@ -31,13 +34,12 @@ typedef struct { u8 pad0[0x70]; ObjHolder *x70; } World;
 typedef struct { u8 pad0[0x1100]; World *x1100; } Game;
 
 extern Game *gGame;
-extern f64 D_800B83F0;
 void func_8001A478(Grid *, s32, s32, s32 *, s32 *);
 void *memcpy(void *, const void *, u32);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 
-void func_80012A9C(Light *light, Grid *grid, Vert *verts, f32 m[4][4], u8 update)
+void Light_UpdateVertexColors(Light *light, Grid *grid, Vert *verts, f32 m[4][4], u8 update)
 {
     Obj *o = gGame->x1100->x70->xC;
     Vec3f t;
@@ -57,7 +59,7 @@ void func_80012A9C(Light *light, Grid *grid, Vert *verts, f32 m[4][4], u8 update
     t.x = m[3][0] * scale;
     t.y = m[3][1] * o->x10;
     t.z = m[3][2] * o->x10;
-    inv = D_800B83F0 / (scale * 20.0f);
+    inv = 1.0 / (scale * 20.0f);
     light->pos = t;
     light->pos.x += m[0][0] * (o->x10 * 20.0f);
     light->pos.y += m[0][1] * (o->x10 * 20.0f);
@@ -85,7 +87,7 @@ void func_80012A9C(Light *light, Grid *grid, Vert *verts, f32 m[4][4], u8 update
                     if (x >= light->x0 && x <= light->x1 && z >= light->z0 && z <= light->z1) {
                         while (s->idx != grid->idx[start])
                             s++;
-                        { LitVert *dst = &light->cur[light->curCount]; memcpy(dst, s, n * sizeof(LitVert)); }
+                        memcpy((LitVert *)(light->curCount * 8 + (u32)light->cur), s, n * sizeof(LitVert));
                         s += n;
                         light->curCount += n;
                     } else {

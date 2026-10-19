@@ -17,7 +17,7 @@ typedef struct {
 
 extern IdList D_80125BE0;
 
-void func_80041664(void) {
+void Menu_BuildIdList(void) {
     s32 idx;
     Entry *list;
     s32 n;

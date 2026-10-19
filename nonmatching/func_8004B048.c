@@ -38,7 +38,7 @@ extern void func_8005DD20(void *, s32);
 extern void Ui_AddModeLabels(s32);
 extern void Ui_AddSpriteElement(void *, Desc *);
 extern void Ui_AddElement(void *, s32, s32);
-extern void func_80049528(s32, s32, s32, s32);
+extern void Records_Draw(s32, s32, s32, s32);
 extern void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
 void func_8004B048(void) {
@@ -123,7 +123,7 @@ void func_8004B048(void) {
     m.x20 = t.p[1].y;
     Ui_AddSpriteElement(gUi[0], &m);
     Ui_AddElement(gUi[0], 2, 0x12F);
-    func_80049528(-1, labels, -1, track);
+    Records_Draw(-1, labels, -1, track);
     {
         s32 off;
         for (off = 3 * sizeof(Slot68); off >= 0; off -= sizeof(Slot68)) {

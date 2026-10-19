@@ -11,9 +11,9 @@ extern s32 D_8007EED8[];
 f32 func_8001FB40(void *);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
-Pos2 func_8005F6B4(void *, s32, s32);
+Pos2 Ui_GetElementPos(void *, s32, s32);
 f32 func_8003EC70(char *, s32, s32);
-void func_8005F414(void *, s32, s32, f32, f32);
+void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
 s32 func_8000BB30(s32 *arg0, s8 idx) {
     Pos2 pos;
@@ -31,12 +31,12 @@ s32 func_8000BB30(s32 *arg0, s8 idx) {
     strcat(str, (char *)sfx);
     id = *arg0;
     ui = gUi;
-    pos = func_8005F6B4(ui[0], 0, id);
+    pos = Ui_GetElementPos(ui[0], 0, id);
     if (D_800958A4 < 3) {
         pos.x = func_8003EC70(str, 0x111EC, D_8007EED4);
     } else {
         pos.x = func_8003EC70(str, 0x111EC, D_8007EED8[idx]);
     }
-    func_8005F414(ui[0], 0, id, pos.x, pos.y);
+    Ui_SetElementPos(ui[0], 0, id, pos.x, pos.y);
     return 0;
 }

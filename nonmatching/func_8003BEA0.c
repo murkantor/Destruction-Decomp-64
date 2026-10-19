@@ -25,7 +25,7 @@ void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 void func_80063380(s32);
 void func_80063564(s32, s32);
-void func_800595A8(void *, void *, s32);
+void Text_MapChars2(void *, void *, s32);
 void *func_8001007C(char *);
 void func_800100BC(void *, s32);
 s32 sprintf(char *, const char *, ...);
@@ -53,7 +53,7 @@ void func_8003BEA0(void) {
     Ui_ResetScreen(0x112C4, 0x112C5);
     Ui_AddElement(gUi, 2, 1);
     for (i = 0; i < 16; i++) {
-        func_800595A8(gSaveSlots[i].name, name, 16);
+        Text_MapChars2(gSaveSlots[i].name, name, 16);
         flag = 0;
         for (k = 0; k < 16; k++) {
             if (name[k] == ' ') {
@@ -76,7 +76,7 @@ void func_8003BEA0(void) {
             continue;
         }
         e = ext;
-        func_800595A8(gSaveSlots[i].ext, e, 4);
+        Text_MapChars2(gSaveSlots[i].ext, e, 4);
         flag = 0;
         for (k = 0; k < 4; k++) {
             if (e[k] == '\\') {

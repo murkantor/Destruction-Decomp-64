@@ -16,7 +16,7 @@ typedef struct {
 extern u8 D_800B0C90[][11][47][16];
 void osWritebackDCacheAll(void);
 
-void func_80057408(Obj *o, s32 x, s32 y, u8 *str) {
+void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     Disp *d = o->x8C;
     s32 bpp = d->x71;
     u8 *base = o->x90 + (s32)(x * 0.003125f * d->x5C) * bpp + d->x64 * (s32)(y * (1.0f / 240.0f) * d->x60);

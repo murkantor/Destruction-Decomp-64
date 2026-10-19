@@ -7,7 +7,7 @@ void Ui_ResetScreen(s32, s32);
 u64 Time_Get(void *);
 s32 Res_Get(s32);
 
-void func_8004FC80(void) {
+void Credits_Init(void) {
     u64 *p;
     u64 t;
     func_8003ECF8();

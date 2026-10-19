@@ -9,11 +9,11 @@ s32 osRecvMesg(OSMesgQueue *, OSMesg *, s32);
 void osScAddClient(void *, OSScClient *, OSMesgQueue *);
 void osScRemoveClient(void *, OSScClient *);
 void Pad_Read(void);
-void func_80054508(Obj *);
+void DebugMenu_DrawPage(Obj *);
 void func_80056098(u64 *);
 u8 func_800540C0(void);
 
-void func_80054B94(Obj *obj) {
+void DebugMenu_Run(Obj *obj) {
     OSScClient client;
     OSMesgQueue q;
     OSMesg msgs[2];
@@ -33,7 +33,7 @@ void func_80054B94(Obj *obj) {
             for (i = 0; i < (s32)(obj->x8C->x74 >> 3); i++) {
                 p[i] = 0;
             }
-            func_80054508(obj);
+            DebugMenu_DrawPage(obj);
             func_80056098(obj->x90);
         }
         flag = func_800540C0();

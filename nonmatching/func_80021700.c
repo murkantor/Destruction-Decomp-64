@@ -8,8 +8,8 @@ extern s8 D_800D31CC;
 extern f32 D_80095614[];
 extern void Vec3f_Set(Vec3f *, f32, f32, f32);
 extern void func_80023944(Cam *, Car *, f32);
-extern void func_80021A64(Cam *, Car *, f32, f32, f32, f32, f32);
-extern void func_80022144(Cam *, Car *, f32, f32, f32, f32, f32, f32, f32);
+extern void Camera_SetChaseFromCar(Cam *, Car *, f32, f32, f32, f32, f32);
+extern void Camera_UpdateChase2(Cam *, Car *, f32, f32, f32, f32, f32, f32, f32);
 extern void func_8002205C(Cam *, Car *, f32, f32 *);
 extern void func_80022A6C(Cam *, Car *, f32);
 extern void func_80022E1C(Cam *, f32);
@@ -46,10 +46,10 @@ void func_80021700(Cam *cam, f32 dt) {
             h = car->x2C4;
             y += h;
         }
-        func_80021A64(cam, car, lo, lo, y, w, h);
+        Camera_SetChaseFromCar(cam, car, lo, lo, y, w, h);
         break;
     case 1:
-        func_80022144(cam, car, 0.0f, 6.0f, 2.0f, 0.0f, 2.0f, 5.0f, dt);
+        Camera_UpdateChase2(cam, car, 0.0f, 6.0f, 2.0f, 0.0f, 2.0f, 5.0f, dt);
         break;
     case 2:
         z = 8.0f;
@@ -60,7 +60,7 @@ void func_80021700(Cam *cam, f32 dt) {
         if (D_800D31CC >= 3) {
             z = 12.0f;
         }
-        func_80022144(cam, car, k, z, p, k, q, r, dt);
+        Camera_UpdateChase2(cam, car, k, z, p, k, q, r, dt);
         break;
     case 7:
         func_8002205C(cam, car, dt, &D_80095614[cfg->x10]);

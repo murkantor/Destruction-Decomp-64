@@ -8,7 +8,7 @@ extern s32 D_800958A4[];
 extern s32 D_800958DC;
 extern Mat9 D_801242C0[];
 void func_8006300C(s32, f32, f32, f32, f32, f32, f32);
-void func_80042F2C(void);
+void Menu_SetupTrackSelect(void);
 void func_800430E8(void);
 
 static inline void setcam(f32 z, f32 m) {
@@ -31,7 +31,7 @@ void func_80042BF4(void) {
     }
     setcam(0.0f, -1.0f);
     if (D_800958A4[0] == 1) {
-        func_80042F2C();
+        Menu_SetupTrackSelect();
     } else {
         func_800430E8();
     }

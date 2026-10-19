@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 x0[18]; } UiElemDesc;
 typedef struct {
     char name[0x10];
@@ -39,9 +42,7 @@ int sprintf(char *, const char *, ...);
 void func_8004E144(s32, s32);
 void Timer_Start(void *, u64);
 
-static inline void Insert(s32 *p, s32 v) { u8 searching = 1; while (searching) { if (*p != -1) { p++; } else { *p = v; searching = 0; } } }
-
-void func_8004E618(void)
+void Results_Init(void)
 {
     UiElemDesc a = D_800BB2BC;
     UiElemDesc b = D_800BB304;
@@ -54,7 +55,6 @@ void func_8004E618(void)
     s32 rest;
     s32 rank;
     s32 score;
-    s32 *p;
     u8 searching;
     s32 mode;
 
@@ -96,15 +96,22 @@ void func_8004E618(void)
     }
 
     for (i = 0; i < D_80095A70[0]; i++) {
-        rank = 0;
         if (D_80131D88[i].x18 > 0) {
+            rank = 0;
             j = 0;
             score = D_80131D88[i].x18;
             for (; j < D_80095A70[0]; j++) {
                 rank += (score < D_80131D88[j].x18) & (j != i);
             }
             searching = 1;
-Insert(&D_800972F4[rank], i);
+            while (searching) {
+                if (D_800972F4[rank] != -1) {
+                    rank++;
+                } else {
+                    searching = 0;
+                    D_800972F4[rank] = i;
+                }
+            }
         }
     }
 
@@ -118,7 +125,7 @@ Insert(&D_800972F4[rank], i);
     }
 
     if (D_80131D88[D_800972F4[0]].x1C != -1 && D_800958BC[0] == 3 &&
-        D_80097CD8 < D_80131D88[D_800972F4[0]].x18) {
+        D_80131D88[D_800972F4[0]].x18 > D_80097CD8) {
         D_80125C5C = D_80131D88[D_800972F4[0]].x18;
         D_80097335 = 1;
         D_80097D48 = D_800972F4[0];
