@@ -209,6 +209,18 @@ def byte_offsets(code):
         i = j + 1
 
 
+def leading_args(code):
+    """m2c drops parameters a function never uses; put back the ones before the first it does."""
+    def fix(m):
+        params = m.group(2)
+        used = [int(n) for n in re.findall(r"\barg(\d+)\b", params)]
+        if not used or min(used) == 0:
+            return m.group(0)
+        extra = ", ".join(f"M2C_UNK arg{i}" for i in range(min(used)))
+        return f"{m.group(1)}({extra}, {params})" + m.group(3)
+    return re.sub(r"^(\w[\w \*]*?\b\w+)\(([^()]*)\)(\s*\{)", fix, code, count=0, flags=re.M)
+
+
 # m2c option sets to try in turn; different C shapes lead GCC to different code
 VARIANTS = [
     [],
@@ -258,7 +270,7 @@ def try_one(job):
             if r.returncode or "M2C_ERROR" in r.stdout or not r.stdout.strip():
                 first_why = first_why or "m2c failed"
                 continue
-            for code in (r.stdout, byte_offsets(r.stdout)):
+            for code in dict.fromkeys((r.stdout, byte_offsets(r.stdout), leading_args(r.stdout), leading_args(byte_offsets(r.stdout)))):
                 if code in seen:
                     continue
                 seen.add(code)
