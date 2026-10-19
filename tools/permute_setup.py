@@ -38,7 +38,7 @@ def main():
     args = ap.parse_args()
 
     blocks = {}
-    for path in glob.glob(os.path.join(ROOT, "asm", "*.s")):
+    for path in glob.glob(os.path.join(ROOT, "asm", "**", "*.s"), recursive=True):
         for name, vram, size, text in autodecomp.functions(path):
             blocks[name] = text
 

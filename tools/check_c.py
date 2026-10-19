@@ -22,7 +22,7 @@ def main():
     d = sys.argv[1]
     autodecomp.init(open(os.path.join(ROOT, "baserom.z64"), "rb").read(), autodecomp.load_symbols(), None)
     info = {}
-    for path in glob.glob(os.path.join(ROOT, "asm", "*.s")):
+    for path in glob.glob(os.path.join(ROOT, "asm", "**", "*.s"), recursive=True):
         for name, vram, size, _ in autodecomp.functions(path):
             info[name] = (vram, size)
     found = []

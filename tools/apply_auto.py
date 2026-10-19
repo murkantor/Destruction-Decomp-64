@@ -5,10 +5,12 @@ Usage: python3 tools/apply_auto.py [build/auto]
 
 Consecutive matched functions go into one file, src/auto/<ROM offset>.c. When
 m2c's declarations in a group clash, the group is split into one file per
-function. Existing c subsegments in dd64.yaml are kept, so it can be run again
-after more functions match. Run make extract and
+function. A function that an existing C file pulls in with INCLUDE_ASM is put
+in place of that line instead. Existing c subsegments in dd64.yaml are kept, so
+it can be run again after more functions match. Run make extract and
 make afterwards; the build's SHA1 check is the final proof.
 """
+import glob
 import os
 import re
 import subprocess
@@ -51,6 +53,27 @@ def main():
     for line in open(os.path.join(auto, "matches.txt")):
         vram, size, name = line.split()
         matches.append((int(vram, 16), int(size, 16), name))
+
+    # functions an existing C file pulls in with INCLUDE_ASM: replace that line
+    inline = {}
+    for path in glob.glob(os.path.join(ROOT, "asm", "nonmatchings", "**", "*.s"), recursive=True):
+        rel = os.path.relpath(os.path.dirname(path), os.path.join(ROOT, "asm", "nonmatchings"))
+        inline[os.path.basename(path)[:-2]] = rel
+    replaced = 0
+    for vram, size, name in [m for m in matches if m[2] in inline]:
+        cfile = os.path.join(ROOT, "src", inline[name] + ".c")
+        text = open(cfile).read()
+        line = f'INCLUDE_ASM("asm/nonmatchings/{inline[name]}", {name});'
+        if line in text:
+            code = open(os.path.join(auto, name + ".c")).read().strip()
+            text = text.replace(line, code)
+            if '#include "m2c.h"' not in text:
+                text = text.replace('#include "common.h"\n', '#include "common.h"\n#include "m2c.h"\n', 1)
+            open(cfile, "w").write(text)
+            replaced += 1
+    matches = [m for m in matches if m[2] not in inline]
+    if replaced:
+        print(f"{replaced} INCLUDE_ASM lines replaced")
 
     runs = []
     for vram, size, name in matches:

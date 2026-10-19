@@ -37,7 +37,7 @@ def main():
     path = sys.argv[1]
     name = sys.argv[2] if len(sys.argv) > 2 else os.path.basename(path)[:-2]
     info = {}
-    for p in glob.glob(os.path.join(ROOT, "asm", "*.s")):
+    for p in glob.glob(os.path.join(ROOT, "asm", "**", "*.s"), recursive=True):
         for n, vram, size, _ in autodecomp.functions(p):
             info[n] = (vram, size)
     vram, size = info[name]

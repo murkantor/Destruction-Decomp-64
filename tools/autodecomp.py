@@ -3,7 +3,8 @@
 
 Usage: python3 tools/autodecomp.py M2C_DIR [--max-size SIZE] [--out build/auto]
 
-For each function in the splat output under asm/ (not asm/nonmatchings), this
+For each function in the splat output under asm/ (including the ones a C file
+pulls in with INCLUDE_ASM from asm/nonmatchings/), this
 runs m2c, compiles the result with the same compiler and flags as the Makefile,
 and compares it with the ROM. Address fields are compared through the
 relocations, so a wrong symbol or offset counts as a mismatch. Matches are
@@ -11,6 +12,7 @@ written to OUT/matches.txt and their C to OUT/<name>.c. The closest miss for
 each function that compiles to the right size goes to OUT/near/<diffs>_<name>.c.
 """
 import argparse
+import glob
 import os
 import re
 import struct
@@ -378,7 +380,8 @@ def main():
     rom = open(os.path.join(ROOT, "baserom.z64"), "rb").read()
     syms = load_symbols()
     os.makedirs(args.out, exist_ok=True)
-    files = [os.path.join(ROOT, "asm", f) for f in sorted(os.listdir(os.path.join(ROOT, "asm"))) if f.endswith(".s") and f != "entry.s"]
+    files = sorted(f for f in glob.glob(os.path.join(ROOT, "asm", "**", "*.s"), recursive=True)
+                   if os.path.basename(f) != "entry.s" and "/data/" not in f)
     # a lone nop is padding after the last function of a file, not a function
     jobs = [(n, v, sz, t, args.m2c) for path in files for n, v, sz, t in functions(path)
             if sz <= args.max_size and (not args.only or n in args.only) and sz > 4]
