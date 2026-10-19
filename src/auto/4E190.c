@@ -33,7 +33,7 @@ s32 func_8001B2F4(s32);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
 char *strcpy(char *, const char *);
-void func_80048B30(void *, s32, s32);
+void HiScore_DrawTable(void *, s32, s32);
 void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, s64);
 
@@ -112,7 +112,7 @@ void func_8004D590(void) {
         strcpy(D_801238F0[i].x28, empty.c);
         D_801238F0[i].x32 = -1;
     }
-    func_80048B30(D_800972A0, 2, 1);
+    HiScore_DrawTable(D_800972A0, 2, 1);
     Menu_LayoutResultRows(25.0f, D_800972A8, 1);
     for (i = 0; i < 4; i++) {
         D_800958F8[i].xC = 2;

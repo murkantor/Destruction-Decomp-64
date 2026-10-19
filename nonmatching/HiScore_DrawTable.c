@@ -23,7 +23,7 @@ void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
 #define NUM_SHOWN (D_80096038[D_800958B4] < 7 ? D_80096038[D_800958B4] : 6)
 
-void func_80048B30(f32 *xs, s32 ncols, s32 rank) {
+void HiScore_DrawTable(f32 *xs, s32 ncols, s32 rank) {
     s32 skip;
     s32 i;
     s32 row;
@@ -36,10 +36,7 @@ void func_80048B30(f32 *xs, s32 ncols, s32 rank) {
     for (i = 0; i < rank; i++) {
         skip -= (D_801238F0[i].flag != -1);
     }
-    row = 0;
-    e = rank;
-loop:
-    if (e < NUM_SHOWN - skip + rank) {
+    for (row = 0, e = rank; e < (D_80096038[D_800958B4] < 7 ? D_80096038[D_800958B4] - skip + rank : 6 - skip + rank); row++, e++) {
         strcpy(gSaveSlotText[row], D_801238F0[e].name);
         strcpy(D_80130138[row].col[0], D_801238F0[e].a);
         strcpy(D_80130138[row].col[1], D_801238F0[e].b);
@@ -47,11 +44,8 @@ loop:
         for (c = 0; c < ncols; c++) {
             Ui_SetElementPos(gUi, 0, D_800971DC[row][c], func_8003ECC0(D_80130138[row].col[c], 0x111F6, xs[c]), D_80097278[row]);
         }
-        row++;
-        e++;
-        goto loop;
     }
-    row = NUM_SHOWN - skip;
+    row = (D_80096038[D_800958B4] < 7 ? D_80096038[D_800958B4] - skip : 6 - skip);
     for (e = rank; e < 12; e++) {
         if (D_801238F0[e].flag == -1) {
             continue;

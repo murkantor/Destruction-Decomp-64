@@ -136,7 +136,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000D054` | `00DC54` | 0x13c | `func_8000D054` | `src/auto/DC54.c` | C (generated) |
 | `8000D190` | `00DD90` | 0xe8 | `func_8000D190` | `src/auto/DD90.c` | C (generated) |
 | `8000D278` | `00DE78` | 0x5ac | `Hud_UpdateLapTimes` | `src/auto/DE78.c` | C (generated) |
-| `8000D824` | `00E424` | 0x2bc | `Hud_UpdateRaceTime` | `asm/E424.s` | asm |
+| `8000D824` | `00E424` | 0x2bc | `Hud_UpdateRaceTime` | `src/auto/E424.c` | C (generated) |
 | `8000DAE0` | `00E6E0` | 0x498 | `Hud_UpdateRacerTimers` | `src/auto/E6E0.c` | C (generated) |
 | `8000DF78` | `00EB78` | 0x11c | `Hud_FormatLapTime` | `src/auto/EB78.c` | C (generated) |
 | `8000E094` | `00EC94` | 0xe4 | `Time_Format` | `src/auto/EC94.c` | C (generated) |
@@ -144,7 +144,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000E410` | `00F010` | 0xf8 | `func_8000E410` | `src/auto/F010.c` | C (generated) |
 | `8000E508` | `00F108` | 0x180 | `func_8000E508` | `src/auto/F108.c` | C (generated) |
 | `8000E688` | `00F288` | 0x58 | `func_8000E688` | `src/auto/F288.c` | C (generated) |
-| `8000E6E0` | `00F2E0` | 0x17c | `Ui_RevealStep` | `asm/F2E0.s` | asm |
+| `8000E6E0` | `00F2E0` | 0x17c | `Ui_RevealStep` | `src/auto/F2E0.c` | C (generated) |
 | `8000E85C` | `00F45C` | 0x8 | `func_8000E85C` | `src/auto/F45C.c` | C (generated) |
 | `8000E864` | `00F464` | 0xfc | `func_8000E864` | `src/auto/F464.c` | C (generated) |
 | `8000E960` | `00F560` | 0x50 | `func_8000E960` | `src/auto/F560.c` | C (generated) |
@@ -515,7 +515,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800363C4` | `036FC4` | 0x368 | `CarAI_SteerToTarget` | `src/auto/36FC4.c` | C (generated) |
 | `8003672C` | `03732C` | 0xdfc | `Wheel_ComputeTireForce` | `asm/3732C.s` | asm |
 | `80037528` | `038128` | 0x828 | `Car_ApplyWheelForces` | `src/auto/38128.c` | C (generated) |
-| `80037D50` | `038950` | 0x40c | `func_80037D50` | `asm/38950.s` | asm |
+| `80037D50` | `038950` | 0x40c | `Car_ApplySuspensionForces` | `asm/38950.s` | asm |
 | `8003815C` | `038D5C` | 0x14f4 | `func_8003815C` | `asm/38950.s` | asm |
 | `80039650` | `03A250` | 0x1ac | `Car_SelectGear` | `src/auto/3A250.c` | C (generated) |
 | `800397FC` | `03A3FC` | 0x74 | `func_800397FC` | `src/auto/3A3FC.c` | C (generated) |
@@ -679,10 +679,10 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004764C` | `04824C` | 0x188 | `OptionsMenu_Next` | `src/auto/47F6C.c` | C (generated) |
 | `800477D4` | `0483D4` | 0x638 | `func_800477D4` | `src/auto/483D4.c` | C (generated) |
 | `80047E0C` | `048A0C` | 0x650 | `func_80047E0C` | `src/auto/48A0C.c` | C (generated) |
-| `8004845C` | `04905C` | 0x24c | `func_8004845C` | `asm/4905C.s` | asm |
+| `8004845C` | `04905C` | 0x24c | `func_8004845C` | `src/auto/4905C.c` | C (generated) |
 | `800486A8` | `0492A8` | 0xd8 | `func_800486A8` | `src/auto/492A8.c` | C (generated) |
 | `80048780` | `049380` | 0x3ac | `func_80048780` | `src/auto/49380.c` | C (generated) |
-| `80048B30` | `049730` | 0x4a8 | `func_80048B30` | `asm/4972C.s` | asm |
+| `80048B30` | `049730` | 0x4a8 | `HiScore_DrawTable` | `asm/4972C.s` | asm |
 | `80048FD8` | `049BD8` | 0x368 | `Menu_LayoutResultRows` | `src/auto/49BD8.c` | C (generated) |
 | `80049340` | `049F40` | 0x1e8 | `Ui_AddModeLabels` | `src/auto/49F40.c` | C (generated) |
 | `80049528` | `04A128` | 0x878 | `Records_Draw` | `src/auto/4A128.c` | C (generated) |

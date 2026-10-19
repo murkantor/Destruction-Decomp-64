@@ -51,7 +51,7 @@ char *strcat(char *, const char *);
 char *strcpy(char *, const char *);
 s32 func_8001B2F4(s32);
 s32 func_8001B298(s32);
-void func_80048B30(void *, s32, s32);
+void HiScore_DrawTable(void *, s32, s32);
 void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, u64);
 
@@ -170,7 +170,7 @@ void Results_DrawStandings(void) {
             D_80097D48 = 0;
         }
     }
-    func_80048B30(D_80097294, 3, 1);
+    HiScore_DrawTable(D_80097294, 3, 1);
     Menu_LayoutResultRows(26.0f, D_800972A8, 1);
     for (i = 0; i < 4; i++) {
         D_800958F8[i].xC = 2;

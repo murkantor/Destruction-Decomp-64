@@ -45,7 +45,7 @@ void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 f32 func_80039DA4(f32, f32, f32, f32);
 f64 fabs(f64);
 
-void func_80037D50(Car *car, Vec3f *force, Vec3f *torque, f32 mass) {
+void Car_ApplySuspensionForces(Car *car, Vec3f *force, Vec3f *torque, f32 mass) {
     f64 lim = 70.0;
     s32 i;
     RigidBody *rb = &car->rb;
@@ -64,6 +64,7 @@ void func_80037D50(Car *car, Vec3f *force, Vec3f *torque, f32 mass) {
             f32 vel;
             f32 slip;
             f32 res;
+            Wheel *w2;
 
             v.x = D_800960D4[i];
             v.y = -0.095f;
@@ -72,13 +73,14 @@ void func_80037D50(Car *car, Vec3f *force, Vec3f *torque, f32 mass) {
             v = Mtx3_MulVec3fTransposed(&rb->xC8, &v);
             Vec3f_Cross(&c, av, &v);
             vel = c.x * up->x + c.y * up->y + c.z * up->z;
+            w2 = w;
             if (vel > 4.0) {
                 vel = 4.0f;
             } else if (vel < -4.0) {
                 vel = -4.0f;
             }
             vel += lv->x * up->x + lv->y * up->y + lv->z * up->z;
-            slip = (w->x30 - w->xA8) / mass;
+            slip = (w2->x30 - w2->xA8) / mass;
             if (fabs(vel) < 2.0 || fabs(vel) < fabs(slip)) {
                 slip = vel;
             }

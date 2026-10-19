@@ -1,10 +1,13 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s8 h; s8 m; s8 s; s32 frac; } TimeHMS;
 typedef struct { u8 pad[0xC]; s16 xC; u8 padE[0x10A8 - 0xE]; u64 x10A8; u8 pad10B0[0x10FC - 0x10B0]; s16 x10FC; } Game;
 typedef struct { u8 pad[0x60]; u64 x60; u64 laps[4]; s32 x88; } CarData;
 typedef struct { CarData *x0; u8 pad[0x64]; } Car;
 typedef struct { s32 x0; s32 x4; u8 pad[0x10]; } Rec18;
 
-extern Game *gGame;
+extern Game *gGame[];
 extern Car D_800958F0[];
 extern s32 D_800958B4;
 extern s32 D_80095FF8[];
@@ -27,15 +30,13 @@ s32 Hud_UpdateRaceTime(s32 arg0, s8 idx) {
     s8 laps;
     s8 i;
 
-    if (gGame->xC == 2) {
-        if (gGame->x10FC == 0x1F || gGame->x10FC == 0x21) {
+    if (gGame[0]->xC == 2) {
+        if (gGame[0]->x10FC == 0x1F || gGame[0]->x10FC == 0x21) {
             return 0;
         }
         laps = D_800958F0[idx].x0->x88 < 0 ? 0 : D_800958F0[idx].x0->x88;
-        if (gGame->x10FC != 0x1B) {
-            if (laps < D_80095FF8[D_800958B4]) {
-                t = Time_Get(&gGame->x10A8) - D_800958F0[idx].x0->x60;
-            }
+        if (gGame[0]->x10FC != 0x1B) {
+            if (laps < D_80095FF8[D_800958B4]) { t = Time_Get(&gGame[0]->x10A8) - D_800958F0[idx].x0->x60; } else { t = 0; }
             for (i = 0; i < laps; i++) {
                 t += D_800958F0[idx].x0->laps[i];
             }

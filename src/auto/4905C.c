@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 id; void *x4; u8 pad[0x14]; } TexSlot;
 typedef struct {
     u8 pad0[0x7588];
@@ -10,13 +13,15 @@ typedef struct { u8 pad[0x510]; s32 *x510; f32 x514; } SndCfg;
 typedef struct { u8 pad[0x10]; s32 x10; } MenuItem;
 extern Game *gGame;
 extern UiMgr *gUi;
+extern UiMgr *gUiA[] __asm__("gUi");
 extern s32 D_800BC9E4;
 extern SndCfg *D_8011EEF8;
 extern u8 D_80096EB4;
 extern s32 gMainHeap;
 extern s32 D_800BC9F8;
+extern struct { u8 pad[8]; s32 blk; } D_800BC9F0;
 extern void *D_800BCA00;
-extern s32 D_8011EEE0;
+extern s32 D_8011EEE0[];
 extern s32 D_800958A8;
 extern f64 D_800BADE8;
 s32 Sound_CountPlaying(s32);
@@ -61,7 +66,7 @@ s32 func_8004845C(MenuItem *it) {
         t = NULL;
         func_8005DC68(gUi);
         Heap_AllocAlt(&gMainHeap, &D_800BC9F8, Res_GetSize(0x11424), 7, 0);
-        p = HeapBlock_Ptr(&D_800BC9F8);
+        p = HeapBlock_Ptr(&D_800BC9F0.blk);
         st = 2;
         Res_Load(0x11424, p);
         for (i = 0; i < gUi->nTex; i++) {
@@ -72,19 +77,18 @@ s32 func_8004845C(MenuItem *it) {
         }
         D_800BCA00 = t->x4;
         t->x4 = p;
-        Ui_AddElement(gUi, 2, 0x39);
+        Ui_AddElement(gUiA[0], 2, 0x39);
         func_80063564(0x1F, 1);
         it->x10 = st;
-        Sound_SetVolume(D_8011EEE0, 0);
-        return 1;
+        Sound_SetVolume(D_8011EEE0[0], 0);
     } else {
         f32 v = D_8011EEF8->x514 * D_800BADE8;
         if (v < 0.0) {
             v = 0.0f;
         }
-        Sound_SetVolume(D_8011EEE0, (s32)v);
+        Sound_SetVolume(D_8011EEE0[0], (s32)v);
         func_80063564(0x13, 1);
         it->x10 = D_800958A8;
-        return 1;
     }
+    return 1;
 }

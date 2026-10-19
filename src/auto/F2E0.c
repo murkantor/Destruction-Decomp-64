@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 total;
     u16 *src;
@@ -35,11 +38,9 @@ s32 Ui_RevealStep(Target *t) {
         for (; i < D_800D1AE8.total; i += 11) {
             dst[i] = src[i];
         }
-        D_800D1AE8.next = D_800D1AE8.interval + Time_Get(&gGame->x1058);
+        D_800D1AE8.next = Time_Get(&gGame->x1058) + D_800D1AE8.interval;
         D_800D1AE8.idx++;
-        return 0;
-    }
-    if (!D_8007EF33 && D_800D1AE8.idx >= 11) {
+    } else if (!D_8007EF33 && D_800D1AE8.idx >= 11) {
         Ui_AddElement(gUi, 2, 0xB3);
         D_8007EF33 = 1;
     }

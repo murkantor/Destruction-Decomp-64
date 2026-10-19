@@ -949,3 +949,5 @@ Zip_FindEntry = 0x8005333C; // type:func
 Seg_Intersect2D = 0x80000914; // type:func
 Camera_UpdateCheckpointCam = 0x80023944; // type:func
 Car_CollideCars = 0x8003225C; // type:func
+HiScore_DrawTable = 0x80048B30; // type:func
+Car_ApplySuspensionForces = 0x80037D50; // type:func
