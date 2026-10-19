@@ -4,8 +4,8 @@
 #include "ultra64.h"
 
 /*
- * Car fields named from the prototype's debug menu (docs/prototype.md).
- * Offsets were read from the prototype; the damage zones are also used by retail code.
+ * Car fields named from the prototype's debug menu (docs/prototype.md) and from
+ * Car_Create and RigidBody_Init in retail.
  */
 
 typedef struct AiDriver {
@@ -43,40 +43,73 @@ typedef enum DamageZoneId {
     /* 8 */ DAMAGE_ZONE_COUNT
 } DamageZoneId;
 
+typedef struct Vec3f {
+    /* 0x0 */ f32 x;
+    /* 0x4 */ f32 y;
+    /* 0x8 */ f32 z;
+} Vec3f;
+
+/*
+ * Per-model handling data, 0x2B0 bytes. Car_Create copies it into Car.stats and
+ * RigidBody_Init reads the block starting at mass.
+ */
+typedef struct CarStats {
+    /* 0x000 */ u8 unk0[0xC];
+    /* 0x00C */ f32 traction;         /* "traction" */
+    /* 0x010 */ f32 braking;          /* "braking" */
+    /* 0x014 */ f32 engineBraking;    /* "engine braking" */
+    /* 0x018 */ f32 offroadHandling;  /* "offroad handle" */
+    /* 0x01C */ f32 steerResponse;    /* "steer response" */
+    /* 0x020 */ u8 unk20[0xC];
+    /* 0x02C */ f32 torqueAt0Rpm;     /* "torque 0 rpm" */
+    /* 0x030 */ f32 maxTorque;        /* "max torque" */
+    /* 0x034 */ u8 unk34[0xC];
+    /* 0x040 */ f32 gearRatios[6];    /* "gear ratio R", "gear ratio 1" to "5" */
+    /* 0x058 */ f32 finalRatio;       /* "final ratio" */
+    /* 0x05C */ u8 unk5C[0x1C];
+    /* 0x078 */ f32 mass;             /* "mass", clamped to 500 to 2000 */
+    /* 0x07C */ u8 unk7C[0x4];
+    /* 0x080 */ f32 viewingScale;     /* "Viewing Scale" */
+    /* 0x084 */ Vec3f halfExtents;
+    /* 0x090 */ f32 slowSteerAngle;   /* "slow steer angle" */
+    /* 0x094 */ f32 fastSteerAngle;   /* "fast steer angle" */
+    /* 0x098 */ u8 unk98[0x18];
+    /* 0x0B0 */ f32 springK;          /* "spring K", set from mass by Car_Create */
+    /* 0x0B4 */ f32 springB;          /* "spring B", set to 0.25 by Car_Create */
+    /* 0x0B8 */ f32 equilibrium;      /* "equilibrium", set to 1.2 by Car_Create */
+    /* 0x0BC */ f32 minSpringLength;  /* "min spring len" */
+    /* 0x0C0 */ f32 maxSpringLength;  /* "max spring len", set to 1.2 by Car_Create */
+    /* 0x0C4 */ f32 springYPos;       /* "spring ypos" */
+    /* 0x0C8 */ u8 unkC8[0x1E8];
+} CarStats; /* size 0x2B0 */
+
+/* Set up by RigidBody_Init from CarStats.mass onwards. */
+typedef struct RigidBody {
+    /* 0x000 */ u8 unk0[0xC];
+    /* 0x00C */ f32 mass;
+    /* 0x010 */ f32 invMass;
+    /* 0x014 */ Vec3f inertia;        /* box inertia from mass and halfExtents */
+    /* 0x020 */ Vec3f invInertia;
+    /* 0x02C */ u8 unk2C[0xF0];
+    /* 0x11C */ f32 viewingScale;     /* from CarStats.viewingScale */
+    /* 0x120 */ f32 radius;           /* length of halfExtents plus a margin */
+    /* 0x124 */ u8 unk124[0xC];
+    /* 0x130 */ Vec3f halfExtents;    /* from CarStats.halfExtents */
+    /* 0x13C */ u8 unk13C[0x744];
+} RigidBody; /* size 0x880 */
+
 typedef struct Car {
     /* 0x000 */ u8 unk0[0x10];
     /* 0x010 */ s32 health;           /* "Health", 0 to 200 */
     /* 0x014 */ u8 unk14[0x20];
     /* 0x034 */ s32 model;            /* "Name", 0 to 11 */
     /* 0x038 */ AiDriver *ai;
-    /* 0x03C */ u8 unk3C[0x2CC];
-    /* 0x308 */ f32 viewingScale;     /* "Viewing Scale" */
-    /* 0x30C */ u8 unk30C[0x760];
+    /* 0x03C */ u8 unk3C[0x1B0];
+    /* 0x1EC */ RigidBody body;
     /* 0xA6C */ DamageZone damage[DAMAGE_ZONE_COUNT];
-    /* 0xB0C */ u8 unkB0C[0xEC];
-    /* 0xBF8 */ f32 traction;         /* "traction" */
-    /* 0xBFC */ f32 braking;          /* "braking" */
-    /* 0xC00 */ f32 engineBraking;    /* "engine braking" */
-    /* 0xC04 */ f32 offroadHandling;  /* "offroad handle" */
-    /* 0xC08 */ f32 steerResponse;    /* "steer response" */
-    /* 0xC0C */ u8 unkC0C[0xC];
-    /* 0xC18 */ f32 torqueAt0Rpm;     /* "torque 0 rpm" */
-    /* 0xC1C */ f32 maxTorque;        /* "max torque" */
-    /* 0xC20 */ u8 unkC20[0xC];
-    /* 0xC2C */ f32 gearRatios[6];    /* "gear ratio R", "gear ratio 1" to "5" */
-    /* 0xC44 */ f32 finalRatio;       /* "final ratio" */
-    /* 0xC48 */ u8 unkC48[0x1C];
-    /* 0xC64 */ f32 mass;             /* "mass", clamped to 500 to 2000 */
-    /* 0xC68 */ u8 unkC68[0x14];
-    /* 0xC7C */ f32 slowSteerAngle;   /* "slow steer angle" */
-    /* 0xC80 */ f32 fastSteerAngle;   /* "fast steer angle" */
-    /* 0xC84 */ u8 unkC84[0x18];
-    /* 0xC9C */ f32 springK;          /* "spring K" */
-    /* 0xCA0 */ f32 springB;          /* "spring B" */
-    /* 0xCA4 */ f32 equilibrium;      /* "equilibrium" */
-    /* 0xCA8 */ f32 minSpringLength;  /* "min spring len" */
-    /* 0xCAC */ f32 maxSpringLength;  /* "max spring len" */
-    /* 0xCB0 */ f32 springYPos;       /* "spring ypos" */
-} Car;
+    /* 0xB0C */ u8 unkB0C[0xE0];
+    /* 0xBEC */ CarStats stats;
+    /* 0xE9C */ u8 unkE9C[0x4];
+} Car; /* size 0xEA0, allocated by Car_Create */
 
 #endif

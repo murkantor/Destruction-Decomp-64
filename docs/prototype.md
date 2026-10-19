@@ -77,44 +77,56 @@ python3 tools/proto/menuparse.py build/proto/baserom_proto_80000450.text.s baser
 
 ## Car fields
 
-The selected car is a pointer at 0x800E3408. The copy functions read these offsets from it. They are in `include/car.h`.
+The selected car is a pointer at 0x800E3408. The debug copy functions read the offsets below from it. They are in `include/car.h`.
 
-| Offset | Field | Menu label |
+In retail, `Car_Create` (0x8001D708) allocates each car (0xEA0 bytes), copies a 0x2B0 byte `CarStats` record into `car->stats` at 0xBEC, and calls `RigidBody_Init(&car->body, &stats->mass)`. The body at 0x1EC is what the physics code works with. That is why no game code reads the stats fields at their `Car` offsets.
+
+| Offset in Car | Field | Menu label |
 |---|---|---|
 | 0x010 | `health` | Health (0 to 200) |
 | 0x034 | `model` | Name (0 to 11) |
 | 0x038 | `ai` (pointer) | AI Driver submenu |
-| 0x308 | `viewingScale` | Viewing Scale |
+| 0x1EC | `body` (`RigidBody`, 0x880 bytes) | |
+| 0x308 | `body.viewingScale` | Viewing Scale |
 | 0xA6C | `damage[8]`, 0x14 each | Car Damage: `defence` at +0, `offence` at +4 |
-| 0xBF8 | `traction` | traction |
-| 0xBFC | `braking` | braking |
-| 0xC00 | `engineBraking` | engine braking |
-| 0xC04 | `offroadHandling` | offroad handle |
-| 0xC08 | `steerResponse` | steer response |
-| 0xC18 | `torqueAt0Rpm` | torque 0 rpm |
-| 0xC1C | `maxTorque` | max torque |
-| 0xC2C | `gearRatios[6]` | gear ratio R, 1 to 5 |
-| 0xC44 | `finalRatio` | final ratio |
-| 0xC64 | `mass` | mass (clamped to 500 to 2000) |
-| 0xC7C | `slowSteerAngle` | slow steer angle |
-| 0xC80 | `fastSteerAngle` | fast steer angle |
-| 0xC9C | `springK` | spring K |
-| 0xCA0 | `springB` | spring B |
-| 0xCA4 | `equilibrium` | equilibrium |
-| 0xCA8 | `minSpringLength` | min spring len |
-| 0xCAC | `maxSpringLength` | max spring len |
-| 0xCB0 | `springYPos` | spring ypos |
+| 0xBEC | `stats` (`CarStats`, 0x2B0 bytes) | |
 
-Damage zones, in array order: front, right front, right side, right back, left front, left side, left back, back.
+`CarStats` fields, by offset in the record:
+
+| Offset | Field | Menu label |
+|---|---|---|
+| 0x00C | `traction` | traction |
+| 0x010 | `braking` | braking |
+| 0x014 | `engineBraking` | engine braking |
+| 0x018 | `offroadHandling` | offroad handle |
+| 0x01C | `steerResponse` | steer response |
+| 0x02C | `torqueAt0Rpm` | torque 0 rpm |
+| 0x030 | `maxTorque` | max torque |
+| 0x040 | `gearRatios[6]` | gear ratio R, 1 to 5 |
+| 0x058 | `finalRatio` | final ratio |
+| 0x078 | `mass` | mass (clamped to 500 to 2000) |
+| 0x080 | `viewingScale` | Viewing Scale |
+| 0x084 | `halfExtents` | |
+| 0x090 | `slowSteerAngle` | slow steer angle |
+| 0x094 | `fastSteerAngle` | fast steer angle |
+| 0x0B0 | `springK` | spring K |
+| 0x0B4 | `springB` | spring B |
+| 0x0B8 | `equilibrium` | equilibrium |
+| 0x0BC | `minSpringLength` | min spring len |
+| 0x0C0 | `maxSpringLength` | max spring len |
+| 0x0C4 | `springYPos` | spring ypos |
+
+What `Car_Create` and `RigidBody_Init` do with them:
+
+- `springK` is set from `mass`. `springB` is set to 0.25, and `equilibrium` and `maxSpringLength` to 1.2, so the record's own values for these are overwritten.
+- `RigidBody_Init` sets `body.mass`, `body.invMass`, box inertia from `mass` and `halfExtents` (m(b² + c²)/3 per axis) and its inverse, `body.radius` from the length of `halfExtents`, and `body.viewingScale`.
+- The two steer angles feed a curve built around 27.78 m/s (100 km/h).
+
+Damage zones, in array order: front, right front, right side, right back, left front, left side, left back, back. Retail code uses them at the same offsets.
 
 The AI fields live in the struct at `car->ai`: `tendency` +0x20, `newTarget` +0x34, `hitTarget` +0x38, `defence` +0x3C, `boolClose` +0x40, `boolDeath` +0x44, `boolLead` +0x48, `targetBias` +0x4C, `baseTenacity` +0x50, `baseSearch` +0x58.
 
-How far these hold in retail:
-
-- Retail code uses the damage zones at the same offsets.
-- Matched functions use identical offsets from 0xA54 to 0xC50, so the layout did not move.
-- No game code in either build reads the physics fields (0xBF8 to 0xCB0) by these offsets. Only the debug copy functions do, so the physics code must reach them another way. That is still to be found.
-- Both copy functions use 0xABC for the left side defence, which is the left front zone. Going by the 0x14 stride the real field is at 0xAD0. This is a bug in the original code.
+Both debug copy functions use 0xABC for the left side defence, which is the left front zone. Going by the 0x14 stride the real field is at 0xAD0. This is a bug in the original code.
 
 ## Track objects
 

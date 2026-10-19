@@ -33,3 +33,11 @@ DebugMenu_BuildFrameSetup = 0x800560F0; // type:func
 gVideoInterlace = 0x800B0B48;
 gVideoDither = 0x800B0B4C;
 gVideoFifoShift = 0x800B0B50;
+
+// cars and memory (docs/prototype.md, Car fields)
+Car_Load = 0x8001C588; // type:func
+Car_Create = 0x8001D708; // type:func
+RigidBody_Init = 0x8001D058; // type:func
+Mem_Alloc = 0x8005598C; // type:func
+Heap_Alloc = 0x800553E4; // type:func
+gMainHeap = 0x800D2E60;
