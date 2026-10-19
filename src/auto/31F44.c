@@ -9,7 +9,7 @@ typedef struct { u8 pad[0x1100]; Level *level; } Game;
 typedef struct { s32 x0; u8 face[0x44]; } FaceEntry;
 extern Game *gGame;
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
-void func_80018DAC(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
+void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 void Track_GetFace(void *o, s32 i);
 
 s32 Track_GetFacesInRadius(Vec3f *p, f32 r, FaceEntry *out) {
@@ -35,7 +35,7 @@ s32 Track_GetFacesInRadius(Vec3f *p, f32 r, FaceEntry *out) {
     if (z0 > gGame->level->info->grid->h - 1) z0 = gGame->level->info->grid->h - 1;
     if (x1 > gGame->level->info->grid->w - 1) x1 = gGame->level->info->grid->w - 1;
     if (z1 > gGame->level->info->grid->h - 1) z1 = gGame->level->info->grid->h - 1;
-    func_80018DAC(buf, &count, 0x80, x0, z0, x1, z1);
+    Track_CollectCellItems(buf, &count, 0x80, x0, z0, x1, z1);
     for (i = 0; i < count; i++) {
         Track_GetFace(out[i].face, buf[i]);
     }

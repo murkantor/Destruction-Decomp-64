@@ -8,7 +8,7 @@ typedef struct { u8 pad[0x70]; TrackInfo *info; } Level;
 typedef struct { u8 pad[0x1100]; Level *level; } Game;
 extern Game *gGame;
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
-void func_80018DAC(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
+void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 
 s32 Track_GetCellsInBox(Vec3f *a, Vec3f *b, s32 *out, s32 max) {
     s32 x0, z0, x1, z1;
@@ -36,6 +36,6 @@ s32 Track_GetCellsInBox(Vec3f *a, Vec3f *b, s32 *out, s32 max) {
     if (z0 > gGame->level->info->grid->h - 1) z0 = gGame->level->info->grid->h - 1;
     if (x1 > gGame->level->info->grid->w - 1) x1 = gGame->level->info->grid->w - 1;
     if (z1 > gGame->level->info->grid->h - 1) z1 = gGame->level->info->grid->h - 1;
-    func_80018DAC(out, &count, max, x0, z0, x1, z1);
+    Track_CollectCellItems(out, &count, max, x0, z0, x1, z1);
     return count;
 }

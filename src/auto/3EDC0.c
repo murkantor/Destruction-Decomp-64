@@ -11,7 +11,7 @@ extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
 void func_80050684(s32 *);
-u8 func_80050910(s32);
+u8 Menu_HandleSelect(s32);
 void Pak_WriteSave(s32 *);
 void func_80063564(s32, s32);
 void func_80063380(s32);
@@ -26,17 +26,17 @@ s32 func_8003E1C0(State *st) {
                 return 1;
             }
             func_80050684(&a);
-            if (func_80050910(a)) {
+            if (Menu_HandleSelect(a)) {
                 func_80063564(0xB, 1);
             }
             break;
         case 1:
             if (Pak_Open(&b)) {
-                if (!func_80050910(b)) {
+                if (!Menu_HandleSelect(b)) {
                     return 1;
                 }
                 Pak_WriteSave(&b);
-                if (!func_80050910(b)) {
+                if (!Menu_HandleSelect(b)) {
                     return 1;
                 }
                 if (D_800972F0) {

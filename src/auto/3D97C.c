@@ -4,7 +4,7 @@
 typedef struct { u8 pad[0x10]; s32 x10; } Foo;
 extern s32 D_80097D50;
 u8 Pak_Open(s32 *);
-u8 func_80050910(s32);
+u8 Menu_HandleSelect(s32);
 void func_80063380(s32);
 void func_80063564(s32, s32);
 
@@ -13,7 +13,7 @@ s32 func_8003CD7C(Foo *a) {
     switch (a->x10) {
     case 0:
         if (Pak_Open(&tmp)) {
-            if (func_80050910(tmp)) {
+            if (Menu_HandleSelect(tmp)) {
                 func_80063564(0xB, 1);
             } else {
                 func_80063564(5, 1);

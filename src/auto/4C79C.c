@@ -26,7 +26,7 @@ extern u8 D_800972F0;
 void func_8006417C(void *, s32);
 s32 func_8003E9F8(s32);
 u8 Pak_Open(s32 *);
-u8 func_80050910(s32);
+u8 Menu_HandleSelect(s32);
 void func_80063564(s32, s32);
 void func_80063380(s32);
 
@@ -50,7 +50,7 @@ s32 func_8004BB9C(Obj4BB9C *obj) {
             D_8009734C = 0;
             D_8009734D = 1;
             if (Pak_Open(&tmp)) {
-                if (func_80050910(tmp)) {
+                if (Menu_HandleSelect(tmp)) {
                     next = 0xB;
                 } else {
                     next = 6;

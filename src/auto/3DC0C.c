@@ -8,7 +8,7 @@ typedef struct {
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
-u8 func_80050910(s32);
+u8 Menu_HandleSelect(s32);
 void Pak_WriteSave(s32 *);
 void func_80063380(s32);
 void func_80063564(s32, s32);
@@ -26,12 +26,12 @@ s32 func_8003D00C(Item *item) {
                 code = 5;
                 break;
             }
-            if (!func_80050910(err)) {
+            if (!Menu_HandleSelect(err)) {
                 code = 5;
                 break;
             }
             Pak_WriteSave(&err);
-            if (func_80050910(err)) {
+            if (Menu_HandleSelect(err)) {
                 func_80063380(2);
                 func_80063564(0x19, 1);
                 item->x10 = 0;

@@ -11,7 +11,7 @@ void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
 
-s32 func_8000CC74(void) {
+s32 Intro_StepMessages(void) {
     f32 t = Time_ToSeconds(&gGame->x1058);
     s32 ret = 0;
 

@@ -17,7 +17,7 @@ void Msg_Queue(s32, s32, s32, s32);
 u64 Time_Get(u64 *);
 void Timer_Start(void *, s64);
 
-void func_80043CB4(void) {
+void Results_InitTimers(void) {
     s32 i;
 
     if (D_80097354) {

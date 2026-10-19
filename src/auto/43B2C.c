@@ -16,7 +16,7 @@ void func_8003EA7C(s32, s32);
 void func_8005F050(void *, UiElemDesc *);
 void func_8005D8B8(void *, s32, s32);
 void Ui_AddElement(void *, s32, s32);
-void func_80041E44(s32, s32, s32);
+void TrackSelect_Update(s32, s32, s32);
 char *strcpy(char *, const char *);
 
 void func_80042F2C(void) {
@@ -34,7 +34,7 @@ void func_80042F2C(void) {
     }
     func_8005F050(gUi[0], &a);
     Ui_AddElement(gUi[0], 2, 0x3C);
-    func_80041E44(D_800958C0, -1, 0);
+    TrackSelect_Update(D_800958C0, -1, 0);
     strcpy(D_80123CEC, D_80096E4C);
     D_80096E6E = 0;
 }

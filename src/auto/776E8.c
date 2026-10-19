@@ -32,7 +32,7 @@ typedef struct {
 s32 __osPfsSelectBank(OSPfs *pfs, u8 bank);
 s32 __osContRamRead(OSMesgQueue *mq, s32 channel, u16 address, u8 *buffer);
 s32 __osCheckPackId(OSPfs *pfs, __OSPackId *id);
-s32 func_80076698(OSPfs *pfs, __OSPackId *badid, __OSPackId *newid);
+s32 __osRepairPackId(OSPfs *pfs, __OSPackId *badid, __OSPackId *newid);
 void bcopy(const void *src, void *dst, s32 len);
 
 static inline s32 idsum(u16 *ptr, u16 *csum, u16 *icsum) {
@@ -68,7 +68,7 @@ s32 __osGetId(OSPfs *pfs) {
     if (id->checksum != sum || id->inverted_checksum != isum) {
         ret = __osCheckPackId(pfs, id);
         if (ret == 10) {
-            ret = func_80076698(pfs, id, &newid);
+            ret = __osRepairPackId(pfs, id, &newid);
             if (ret != 0) return ret;
             id = &newid;
         } else if (ret != 0) {
@@ -76,7 +76,7 @@ s32 __osGetId(OSPfs *pfs) {
         }
     }
     if ((id->deviceid & 1) == 0) {
-        ret = func_80076698(pfs, id, &newid);
+        ret = __osRepairPackId(pfs, id, &newid);
         if (ret != 0) return ret;
         id = &newid;
         if ((id->deviceid & 1) == 0) return 11;

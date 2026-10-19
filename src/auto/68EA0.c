@@ -8,7 +8,7 @@ typedef struct {
 } Lazy;
 extern Lazy D_800CEAD0;
 extern s32 D_800CEB0C;
-void func_80067D64(void);
+void __amDMA(void);
 
 void *func_800682A0(Lazy **out) {
     if (D_800CEAD0.init == 0) {
@@ -17,5 +17,5 @@ void *func_800682A0(Lazy **out) {
         D_800CEAD0.b = D_800CEB0C;
     }
     *out = &D_800CEAD0;
-    return func_80067D64;
+    return __amDMA;
 }

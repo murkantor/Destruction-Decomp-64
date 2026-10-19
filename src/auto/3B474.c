@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_8003A874(f32 m[3][3], f32 *v, f32 *out) {
+void Inertia_RotateDiag(f32 m[3][3], f32 *v, f32 *out) {
     out[0] = v[0] * m[0][0] * m[0][0] + v[1] * m[1][0] * m[1][0] + v[2] * m[2][0] * m[2][0];
     out[1] = v[0] * m[0][1] * m[0][1] + v[1] * m[1][1] * m[1][1] + v[2] * m[2][1] * m[2][1];
     out[2] = v[0] * m[0][2] * m[0][2] + v[1] * m[1][2] * m[1][2] + v[2] * m[2][2] * m[2][2];

@@ -11,7 +11,7 @@ void func_80063380(s32);
 void func_80063564(s32, s32);
 void Pak_RefreshSaveSlots(void);
 
-s32 func_80050910(u32 arg0) {
+s32 Menu_HandleSelect(u32 arg0) {
     s32 ret = 0;
     s32 count = 0;
     s32 i;

@@ -48,7 +48,7 @@ void alUnlink(ALLink *);
 void alLink(ALLink *, ALLink *);
 s32 osEPiStartDma(void *, OSIoMesg *, s32);
 
-s32 func_80067D64(s32 addr, s32 len, void *state) {
+s32 __amDMA(s32 addr, s32 len, void *state) {
     void *foundBuffer;
     s32 delta, addrEnd, buffEnd;
     AMDMABuffer *dmaPtr, *lastDmaPtr;

@@ -18,7 +18,7 @@ typedef struct { u8 pad[0x1100]; Track *track; } Game;
 extern Game *gGame;
 extern u8 D_801313A0[];
 
-void func_80018DAC(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1) {
+void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1) {
     Grid *g = gGame->track->x70->xC;
     Dims *d = &g->dims;
     u16 *items = g->items;

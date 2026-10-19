@@ -9,7 +9,7 @@ extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
 void Pak_SaveGame(s32 *);
-u8 func_80050910(s32);
+u8 Menu_HandleSelect(s32);
 void func_80063380(s32);
 void func_80063564(s32, s32);
 void Timer_Start(void *, s64);
@@ -23,7 +23,7 @@ s32 func_8003C710(Obj3C710 *obj) {
     } else {
         if (Pak_Open(&x) && x == 5) {
             Pak_SaveGame(&x);
-            if (func_80050910(x)) {
+            if (Menu_HandleSelect(x)) {
                 func_80063380(2);
                 func_80063564(0x19, 1);
                 obj->x10 = 0;

@@ -22,11 +22,11 @@ typedef struct { u8 pad[0x190]; Disp *x190; } Obj;
 extern Game *gGame;
 void func_8001FBA8(Vec3f *, void *);
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
-void func_80018DAC(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
+void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 void func_8001AB10(s32 *idx, Vec3f *pos, s32 *list, s32 n);
 void func_8001ACE8(Color3f *out, f32 x, f32 z, void *tri);
 
-void func_8001B070(Obj *o) {
+void Car_SetPrimColorFromTrack(Obj *o) {
     Vec3f pos;
     Color3f c;
     s32 list[32];
@@ -38,7 +38,7 @@ void func_8001B070(Obj *o) {
     func_8001FBA8(&pos, o);
     Track_PosToCell(&cx, &cz, pos.x * gGame->track->x70->xC->scale, pos.z * gGame->track->x70->xC->scale);
     if (cx >= 0 && cz >= 0 && cx < gGame->track->x70->xC->w && cz < gGame->track->x70->xC->h) {
-        func_80018DAC(list, &n, 32, cx, cz, cx, cz);
+        Track_CollectCellItems(list, &n, 32, cx, cz, cx, cz);
         func_8001AB10(&idx, &pos, list, n);
         if (idx != -1) {
             func_8001ACE8(&c, pos.x, pos.z, gGame->track->x70->xC->x5C + idx * 0x18);

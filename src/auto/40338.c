@@ -16,7 +16,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_SetElementX(void *, s32, s32, f32);
 char *strcpy(char *, const char *);
-s32 func_80010288(char *, s32);
+s32 Font_GetStringWidth(char *, s32);
 void func_8002D3B8(s32);
 void func_8003ECF8(void);
 
@@ -30,7 +30,7 @@ void PakMenu_ShowSaveSlots(void) {
     Ui_RemoveElement(gUi[0], D_80096750[D_800958A8[0]][0]);
     Ui_AddElement(gUi[0], 2, D_80096750[D_800958A8[0]][1]);
     strcpy(gSaveSlotText[0], D_80096E2C);
-    Ui_SetElementX(gUi[0], 0, 0x17A, D_800BA398 - (f32)func_80010288(gSaveSlotText[0], 0x111F4) * D_800BA390);
+    Ui_SetElementX(gUi[0], 0, 0x17A, D_800BA398 - (f32)Font_GetStringWidth(gSaveSlotText[0], 0x111F4) * D_800BA390);
     func_8002D3B8(0);
     func_8002D3B8(1);
     func_8002D3B8(2);

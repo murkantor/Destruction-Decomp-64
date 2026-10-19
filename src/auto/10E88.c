@@ -30,7 +30,7 @@ extern KeyValue D_80137104[];
 void Res_Load(s32, void *);
 void func_8005F7A0(Ui *, void *);
 
-s32 func_80010288(u8 *str, s32 fontId) {
+s32 Font_GetStringWidth(u8 *str, s32 fontId) {
     s8 i;
     s8 j;
     s32 width = 0;

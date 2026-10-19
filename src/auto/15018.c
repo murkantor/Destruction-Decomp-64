@@ -23,7 +23,7 @@ void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 f32 Math_Atan2(f32, f32);
 
-void func_80014418(Obj *o) {
+void PathMover_Update2(Obj *o) {
     Vec3f dir, pos, rel, target;
     Pts pts;
     f32 dot;

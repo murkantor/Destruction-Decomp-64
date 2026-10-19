@@ -12,7 +12,7 @@ extern void *gUi[];
 void func_8003EA7C(s32, s32);
 void func_8005F050(void *, Menu48 *);
 void func_8005D8B8(void *, s32, s32);
-void func_80041E44(void *, s32, s32);
+void TrackSelect_Update(void *, s32, s32);
 
 void func_800430E8(void) {
     Menu48 m = D_800BA704;
@@ -24,6 +24,6 @@ void func_800430E8(void) {
     func_8005F050(gUi[0], &m);
     func_8005D8B8(gUi[0], 2, 0x3B);
     for (i = 0; i < D_800958A4.n; i++) {
-        func_80041E44(D_800958A4.x1C[i], -1, i);
+        TrackSelect_Update(D_800958A4.x1C[i], -1, i);
     }
 }

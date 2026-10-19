@@ -33,7 +33,7 @@ s32 __osPfsSelectBank(OSPfs *pfs, u8 bank);
 s32 __osContRamRead(OSMesgQueue *mq, s32 channel, u16 address, u8 *buffer);
 
 s32 __osCheckPackId(OSPfs *pfs, __OSPackId *id);
-s32 func_80076698(OSPfs *pfs, __OSPackId *badid, __OSPackId *newid);
+s32 __osRepairPackId(OSPfs *pfs, __OSPackId *badid, __OSPackId *newid);
 void bcopy(const void *src, void *dst, s32 len);
 void __osSiGetAccess(void);
 void __osSiRelAccess(void);
@@ -68,7 +68,7 @@ s32 osPfsInitPak(OSMesgQueue *queue, OSPfs *pfs, s32 channel) {
         }
     }
     if ((id->deviceid & 1) == 0) {
-        ret = func_80076698(pfs, id, &newid);
+        ret = __osRepairPackId(pfs, id, &newid);
         if (ret) {
             if (ret == 10)
                 pfs->status |= 4;

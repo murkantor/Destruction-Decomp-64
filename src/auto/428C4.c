@@ -19,7 +19,7 @@ extern s32 D_80097350;
 extern s32 D_800958AC;
 
 void Timer_Start(void *, s64);
-void func_80041E44(s32, s32, s32);
+void TrackSelect_Update(s32, s32, s32);
 
 s32 func_80041CC4(Obj41CC4 *obj) {
     s32 p;
@@ -34,20 +34,20 @@ s32 func_80041CC4(Obj41CC4 *obj) {
         return 0;
     }
     next = (obj->x10 + 1) % D_80097350;
-    func_80041E44(next, obj->x10, p);
+    TrackSelect_Update(next, obj->x10, p);
     if (D_800958A4[0] >= 2 && D_800958AC == 2 && D_800958A4[0] == 4) {
         switch (p) {
             case 0:
-                func_80041E44(next, obj->x10, 1);
+                TrackSelect_Update(next, obj->x10, 1);
                 break;
             case 1:
-                func_80041E44(next, obj->x10, 0);
+                TrackSelect_Update(next, obj->x10, 0);
                 break;
             case 2:
-                func_80041E44(next, obj->x10, 3);
+                TrackSelect_Update(next, obj->x10, 3);
                 break;
             case 3:
-                func_80041E44(next, obj->x10, 2);
+                TrackSelect_Update(next, obj->x10, 2);
                 break;
         }
     }
