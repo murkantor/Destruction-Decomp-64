@@ -5,7 +5,7 @@ extern RomFile gRomFile;
 extern u8 D_DCAF50[]; /* start of zippeddata.zip in ROM */
 extern u8 D_F94840[]; /* end of the zip data, rounded up */
 
-void func_80058848(void *dst, u32 romAddr, u32 size); /* copies from ROM by DMA */
+void Dma_LoadAndFlush(void *dst, u32 romAddr, u32 size); /* copies from ROM by DMA */
 void *memcpy(void *dst, const void *src, u32 size);
 
 /* There is only one file: the name and mode are ignored. */
@@ -28,7 +28,7 @@ s32 RomFile_Read(u8 *buf, u32 size, s32 count, RomFile *f) {
     }
     bytes = size * count;
     if (((u32)buf & 7) == 0 && (f->pos & 1) == 0 && (bytes & 1) == 0) {
-        func_80058848(buf, f->pos, bytes);
+        Dma_LoadAndFlush(buf, f->pos, bytes);
         f->pos += bytes;
     } else {
         while (bytes != 0) {
@@ -39,9 +39,9 @@ s32 RomFile_Read(u8 *buf, u32 size, s32 count, RomFile *f) {
                 chunk = bytes;
             }
             if ((chunk + odd) & 1) {
-                func_80058848(tmp, f->pos - odd, chunk + odd + 1);
+                Dma_LoadAndFlush(tmp, f->pos - odd, chunk + odd + 1);
             } else {
-                func_80058848(tmp, f->pos - odd, chunk + odd);
+                Dma_LoadAndFlush(tmp, f->pos - odd, chunk + odd);
             }
             bytes -= chunk;
             memcpy(buf, tmp + odd, chunk);

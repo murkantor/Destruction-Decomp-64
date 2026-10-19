@@ -4,7 +4,7 @@
 M2C_UNK Rumble_AllowRetry();                            /* extern */
 M2C_UNK func_8005C5EC(M2C_UNK *);                   /* extern */
 M2C_UNK func_8005D5C4(M2C_UNK *);                   /* extern */
-M2C_UNK func_8005FF68(M2C_UNK *);                   /* extern */
+M2C_UNK Audio_Init(M2C_UNK *);                   /* extern */
 M2C_UNK func_80062E4C();                            /* extern */
 M2C_UNK Pad_LatchAll();                            /* extern */
 M2C_UNK func_80063070(void *);                      /* extern */
@@ -29,7 +29,7 @@ void func_800631E0(void *arg0) {
     M2C_FIELD(arg0, M2C_UNK **, 0x4BD38) = &D_801233B0;
     M2C_FIELD(arg0, M2C_UNK **, 0x4BD24) = &D_8012F030;
     M2C_FIELD(arg0, M2C_UNK **, 0x4BD34) = &D_80126240;
-    func_8005FF68(M2C_FIELD(arg0, M2C_UNK **, 0x4BD30));
+    Audio_Init(M2C_FIELD(arg0, M2C_UNK **, 0x4BD30));
     func_8005C5EC(M2C_FIELD(arg0, M2C_UNK **, 0x4BD38));
     func_8005D5C4(M2C_FIELD(arg0, M2C_UNK **, 0x4BD34));
     func_80063488(M2C_FIELD(arg0, M2C_UNK **, 0x4BD24), M2C_FIELD(arg0, s16 *, 0x4BD28));

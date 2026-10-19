@@ -8,7 +8,7 @@ extern s16 D_8011EEEA;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
-void func_800506E4(s32 *);
+void Pak_SaveGame(s32 *);
 u8 func_80050910(s32);
 void func_80063380(s32);
 void func_80063564(s32, s32);
@@ -22,7 +22,7 @@ s32 func_8003C710(Obj3C710 *obj) {
         obj->x10 = 0;
     } else {
         if (Pak_Open(&x) && x == 5) {
-            func_800506E4(&x);
+            Pak_SaveGame(&x);
             if (func_80050910(x)) {
                 func_80063380(2);
                 func_80063564(0x19, 1);
