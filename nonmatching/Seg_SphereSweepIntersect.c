@@ -9,7 +9,7 @@ extern const double D_800B9608;
 extern const double D_800B9610;
 extern const double D_800B9618;
 
-s32 func_80035E78(Vec3f *p0, Vec3f *p1, Vec3f *q0, Vec3f *q1, f32 r, f32 tmin, f32 tmax, f32 *outT, Vec3f *outA, Vec3f *outB, Vec3f *outMid)
+s32 Seg_SphereSweepIntersect(Vec3f *p0, Vec3f *p1, Vec3f *q0, Vec3f *q1, f32 r, f32 tmin, f32 tmax, f32 *outT, Vec3f *outA, Vec3f *outB, Vec3f *outMid)
 {
     Vec3f tmp;
     f32 dpx, dpy, dpz, dqx, dqy, dqz, wx, wy, wz, dvx, dvy, dvz;

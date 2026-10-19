@@ -29,7 +29,7 @@ extern Voice *gVoices;
 extern s32 D_800CCAB8;
 void func_80067874(void *p, void *base, s32 n);
 s32 Voice_FindFree(SeqHdr *h, s32 i);
-void func_80067594(Voice *v);
+void Seq_ResetVoice(Voice *v);
 
 s32 Seq_StartVoices(SeqHdr *h) {
     s32 n = h->x0;
@@ -48,7 +48,7 @@ s32 Seq_StartVoices(SeqHdr *h) {
     for (i = 0; i < n; i++) {
         if (h->x4[i] != 0) {
             v = &gVoices[Voice_FindFree(h, i)];
-            func_80067594(v);
+            Seq_ResetVoice(v);
             v->x70 = h;
             v->x34 = v->x84 = h->x8[i];
             v->x30 = v->x80 = h->xC[i];

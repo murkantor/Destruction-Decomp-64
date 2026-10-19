@@ -43,7 +43,7 @@ typedef struct {
 s32 osPfsFindFile(OSPfs *pfs, u16 company_code, u32 game_code, u8 *game_name, u8 *ext_name, s32 *file_no);
 s32 osPfsFreeBlocks(OSPfs *pfs, s32 *bytes_not_used);
 s32 __osPfsRWInode(OSPfs *pfs, __OSInode *inode, u8 flag, u8 bank);
-s32 func_8006E76C(OSPfs *pfs, __OSInode *inode, int file_size_in_pages, int *first_page, u8 bank, int *decleared, int *last_page);
+s32 __osPfsDeclearPage(OSPfs *pfs, __OSInode *inode, int file_size_in_pages, int *first_page, u8 bank, int *decleared, int *last_page);
 s32 __osContRamWrite(OSMesgQueue *mq, int channel, u16 address, u8 *buffer, int force);
 void bcopy(const void *src, void *dst, int len);
 
@@ -81,7 +81,7 @@ s32 osPfsAllocateFile(OSPfs *pfs, u16 company_code, u32 game_code, u8 *game_name
     for (bank = 0; bank < pfs->banks; bank++) {
         if ((ret = __osPfsRWInode(pfs, &inode, 0, bank)) != 0)
             return ret;
-        if ((ret = func_8006E76C(pfs, &inode, file_size_in_pages, &start_page, bank, &decleared, &last_page)) != 0)
+        if ((ret = __osPfsDeclearPage(pfs, &inode, file_size_in_pages, &start_page, bank, &decleared, &last_page)) != 0)
             return ret;
         if (start_page != -1) {
             if (firsttime == 0) {

@@ -77,7 +77,7 @@ void func_80067368(s32, s32);
 void func_80067950(s32, SynCfg *, s32, s32 *, s32, s32, s32);
 void func_80065A2C(s32, s16);
 void func_8006B840(void *, void *);
-void func_80067594(Voice *);
+void Seq_ResetVoice(Voice *);
 void alSynAllocVoice(void *, SynVoice *, VoiceCfg *);
 
 s32 func_80065708(AudioConfig *c) {
@@ -128,7 +128,7 @@ s32 func_80065708(AudioConfig *c) {
     func_8006B840(D_8011F2B8, p);
     for (i = 0; i < gNumVoices; i++) {
         gVoices[i].xC1 = 0;
-        func_80067594(&gVoices[i]);
+        Seq_ResetVoice(&gVoices[i]);
         vc.unityPitch = 0;
         vc.priority = c->xC;
         vc.fxBus = 0;

@@ -1,12 +1,23 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u32 w0; u32 w1; } Acmd;
+typedef struct { u32 start; u32 end; u32 count; } ALRawLoop;
 typedef struct { s32 order; s32 npredictors; s16 book[1]; } ALADPCMBook;
-typedef struct { u8 *base; s32 len; u8 type; u8 flags; u8 pad[2]; void *loop; ALADPCMBook *book; } ALWaveTable;
-typedef struct { u32 start; u32 end; u32 count; } ALLoop;
+typedef struct {
+    u8 *base;
+    s32 len;
+    u8 type;
+    u8 flags;
+    u8 pad[2];
+    void *loop;
+    ALADPCMBook *book;
+} ALWaveTable;
 typedef struct {
     u8 filter[0x14];
     void *state;
     void *lstate;
-    ALLoop loop;
+    ALRawLoop loop;
     ALWaveTable *table;
     s32 bookSize;
     void *dma;
@@ -17,16 +28,12 @@ typedef struct {
     s32 memin;
 } ALLoadFilter;
 
-#define _SHIFTL(v, s, w) ((u32)(((u32)(v) & ((0x01 << (w)) - 1)) << (s)))
-#define aLoadADPCM(pkt, c, d) { Acmd *_a = (Acmd *)pkt; _a->w0 = _SHIFTL(11, 24, 8) | _SHIFTL(c, 0, 24); _a->w1 = (u32)(d); }
-#define aDMEMMove(pkt, i, o, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = _SHIFTL(10, 24, 8) | _SHIFTL(i, 0, 24); _a->w1 = _SHIFTL(o, 16, 16) | _SHIFTL(c, 0, 16); }
-#define aClearBuffer(pkt, d, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = _SHIFTL(2, 24, 8) | _SHIFTL(d, 0, 24); _a->w1 = (u32)(c); }
+Acmd *_decodeChunk(Acmd *cmd, ALLoadFilter *f, s32 tsam, s32 nbytes, s16 outp, s16 inp, u32 flags);
 
-extern Acmd *_decodeChunk(Acmd *ptr, ALLoadFilter *f, s32 tsam, s32 nbytes, s16 outp, s16 inp, u32 flags);
-
-Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
-    Acmd *ptr = p;
+Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p)
+{
     s16 inp;
+    Acmd *ptr = p;
     s32 tsam;
     s32 nframes;
     s32 nbytes;
@@ -39,13 +46,12 @@ Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd 
     s32 bEnd;
     s32 decoded = 0;
     s32 looped = 0;
-    s32 pad[4];
     ALLoadFilter *f = (ALLoadFilter *)filter;
 
     if (outCount == 0)
         return ptr;
 
-    aLoadADPCM(ptr++, f->bookSize, (u32)f->table->book->book & 0x1FFFFFFF);
+    { Acmd *_a = ptr++; _a->w0 = (0x0B << 24) | (f->bookSize & 0xFFFFFF); _a->w1 = (u32)f->table->book->book & 0x1FFFFFFF; }
 
     inp = 0;
     looped = (outCount + f->sample > f->loop.end) && (f->loop.count != 0);
@@ -65,7 +71,7 @@ Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd 
     nbytes = nframes * 9;
 
     if (looped) {
-        ptr = _decodeChunk(ptr, f, tsam, nbytes, *outp, 0, f->first);
+        ptr = _decodeChunk(ptr, f, tsam, nbytes, *outp, inp, f->first);
 
         if (f->lastsam)
             *outp += (f->lastsam << 1);
@@ -78,18 +84,23 @@ Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd 
 
         bEnd = *outp;
         while (outCount > nSam) {
-            op = (bEnd + ((nframes + 1) << (4 + 1))) & ~0x1f;
-            bEnd += (nSam << 1);
             outCount -= nSam;
-            if ((f->loop.count != -1) && (f->loop.count != 0))
+
+            op = (bEnd + ((nframes + 1) << 5)) & ~0x1f;
+
+            bEnd += nSam << 1;
+
+            if (f->loop.count != -1 && f->loop.count != 0)
                 f->loop.count--;
+
             nSam = (outCount < f->loop.end - f->loop.start) ? outCount : f->loop.end - f->loop.start;
+
             tsam = nSam - 16 + f->lastsam;
             if (tsam < 0) tsam = 0;
             nframes = (tsam + 16 - 1) >> 4;
             nbytes = nframes * 9;
             ptr = _decodeChunk(ptr, f, tsam, nbytes, op, inp, f->first | 2);
-            aDMEMMove(ptr++, op + (f->lastsam << 1), bEnd, nSam << 1);
+            { Acmd *_a = ptr++; _a->w0 = (0x0A << 24) | ((op + (f->lastsam << 1)) & 0xFFFFFF); _a->w1 = (bEnd << 16) | ((nSam << 1) & 0xFFFF); }
         }
 
         f->lastsam = (outCount + f->lastsam) & 0xf;
@@ -99,7 +110,9 @@ Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd 
     }
 
     nSam = nframes << 4;
+
     overFlow = f->memin + nbytes - ((s32)f->table->base + f->table->len);
+
     if (overFlow < 0)
         overFlow = 0;
     nOver = (overFlow / 9) << 4;
@@ -110,7 +123,7 @@ Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd 
 
     if ((nOver - (nOver & 0xf)) < outCount) {
         decoded = 1;
-        ptr = _decodeChunk(ptr, f, nSam - nOver, nbytes, *outp, 0, f->first);
+        ptr = _decodeChunk(ptr, f, nSam - nOver, nbytes, *outp, inp, f->first);
 
         if (f->lastsam)
             *outp += (f->lastsam << 1);
@@ -131,7 +144,7 @@ Acmd *alAdpcmPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd 
             startZero = (nLeft + nSam - nOver) << 1;
         else
             startZero = 0;
-        aClearBuffer(ptr++, startZero + *outp, nOver << 1);
+        { Acmd *_a = ptr++; _a->w0 = (0x02 << 24) | ((startZero + *outp) & 0xFFFFFF); _a->w1 = nOver << 1; }
     }
 
     return ptr;

@@ -42,7 +42,7 @@ static inline void SetPan(Snd66950 *s, s32 idx, u8 pan) {
     alSynSetPan(D_8011F2B8, &D_800CCA9C[idx], pan);
 }
 
-void func_80066950(Snd66950 *s, s32 idx) {
+void Seq_UpdateVolPan(Snd66950 *s, s32 idx) {
     u32 vol;
 
     vol = (u32)(s->xB4 * s->xBC * s->xB3 * s->x96) >> 13;

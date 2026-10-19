@@ -24,7 +24,7 @@ extern s32 D_800B4D80;
 void idle(void *arg);
 void mainproc(void *arg);
 void func_80058800(void);
-void func_8005B880(s32, GameInitConfig *);
+void Main_InitSystems(s32, GameInitConfig *);
 void Boot_LoadData(void);
 
 void boot(void) {
@@ -78,7 +78,7 @@ void mainproc(void *arg) {
     }
 
     func_80058800();
-    func_8005B880(120, &gInitConfig);
+    Main_InitSystems(120, &gInitConfig);
     Boot_LoadData();
 }
 

@@ -53,7 +53,7 @@ void Snd_UpdateVolumeRamp(Voice *);
 f32 func_80066F7C(Voice *);
 f32 func_80066F24(Voice *);
 void AudioVoice_UpdatePitch(Voice *, s32, f32);
-void func_80066950(Voice *, s32);
+void Seq_UpdateVolPan(Voice *, s32);
 
 s32 Audio_UpdateVoices(void) {
     Voice *v = gVoices;
@@ -108,7 +108,7 @@ s32 Audio_UpdateVoices(void) {
             }
             if (v->x4 == 0) {
                 AudioVoice_UpdatePitch(v, i, pitch);
-                func_80066950(v, i);
+                Seq_UpdateVolPan(v, i);
             }
         }
         v->xA2 = (v->x8 - v->x3C) >> 8;

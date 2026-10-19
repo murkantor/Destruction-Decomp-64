@@ -17,10 +17,10 @@ typedef struct {
 } Voice;
 extern s32 D_800CCAB8;
 extern u8 **D_800CCAA4;
-void func_80067594(Voice *);
+void Seq_ResetVoice(Voice *);
 
 s32 func_800678AC(Voice *v, s32 a, s16 b, s16 c, s32 e) {
-    func_80067594(v);
+    Seq_ResetVoice(v);
     v->x9E = a;
     v->x96 = b;
     v->xA8 = c;

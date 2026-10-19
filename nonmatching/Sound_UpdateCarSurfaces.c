@@ -36,7 +36,7 @@ void List_RemoveById(void *, s16);
 Ent *func_8005CC00(void *, s16);
 s16 Sound_PlayCar(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode);
 
-void func_800078C0(void *pool)
+void Sound_UpdateCarSurfaces(void *pool)
 {
     Wheel *w[4];
     Counts counts = D_800B7F8C;

@@ -4,7 +4,7 @@ extern s32 D_800958A4;
 void Cont_ReadAll(void);
 void func_80058B58(void);
 
-s32 func_80050ACC(void) {
+s32 Cont_AllPaksOk(void) {
     s32 r;
     s32 i;
 

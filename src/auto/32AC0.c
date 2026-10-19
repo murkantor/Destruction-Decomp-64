@@ -51,7 +51,7 @@ extern Game *gGame;
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Normalize(Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
-u8 func_80035E78(void *, Vec3f *, void *, Vec3f *, f32, s32, f32, f32 *, Vec3f *, Vec3f *, Vec3f *);
+u8 Seg_SphereSweepIntersect(void *, Vec3f *, void *, Vec3f *, f32, s32, f32, f32 *, Vec3f *, Vec3f *, Vec3f *);
 void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
 u8 Obb_Overlap(void *, void *, Vec3f *, void *, void *, Vec3f *);
 void func_8003225C(Car *, Car *);
@@ -104,7 +104,7 @@ void func_80031EC0(Car *a, s32 idx) {
             Vec3f_Sub(&rel, &a->u.d.x29C, &b->u.d.x29C);
             Vec3f_Dot(dot, &rel, &rel);
             if (900.0 < dot[0]) {
-                if (func_80035E78(aX, aPos, bX, bPos, 1.05f, 0, 1.0f, depth, &outA, &outB, &contact)) {
+                if (Seg_SphereSweepIntersect(aX, aPos, bX, bPos, 1.05f, 0, 1.0f, depth, &outA, &outB, &contact)) {
                     pa->pos = outA;
                     b->u.d.pos = outB;
                     contact.y += 0.05;

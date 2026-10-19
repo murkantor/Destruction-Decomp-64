@@ -15,7 +15,7 @@ static inline void setcam(f32 z, f32 m) {
     func_8006300C(D_800958DC, z, z, z, z, z, m);
 }
 
-void func_80042BF4(void) {
+void Menu_InitPlayerViews(void) {
     Mat9x4 mats;
     Ptr4 ptrs;
     f32 *sel;
@@ -29,7 +29,7 @@ void func_80042BF4(void) {
         D_801242C0[i] = mats.v[i];
         D_801242C0[i].x1C = sel[i];
     }
-    setcam(0.0f, -1.0f);
+    { f32 z = 0.0f; f32 m = -1.0f; func_8006300C(D_800958DC, z, z, z, z, z, m); }
     if (D_800958A4[0] == 1) {
         Menu_SetupTrackSelect();
     } else {

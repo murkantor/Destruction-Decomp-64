@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     s32 x4;
@@ -41,6 +44,9 @@ extern void Ui_AddElement(void *, s32, s32);
 extern void Records_Draw(s32, s32, s32, s32);
 extern void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
+static inline void AddSprite(void *ui, Desc *m) { Ui_AddSpriteElement(ui, m); }
+static inline void AddEl(void *ui, s32 a, s32 b) { Ui_AddElement(ui, a, b); }
+static inline void *GetUi(void) { return gUi[0]; }
 void func_8004B048(void) {
     Desc m;
     Pos2 t;
@@ -114,15 +120,15 @@ void func_8004B048(void) {
     m.x18 = t.p[0].b;
     m.x1C = t.p[0].x;
     m.x20 = t.p[0].y;
-    Ui_AddSpriteElement(gUi[0], &m);
-    Ui_AddElement(gUi[0], 2, 0x12E);
+    Ui_AddSpriteElement(GetUi(), &m);
+    AddEl(gUi[0], 2, 0x12E);
     m.x14 = track + 0x112DD;
     m.x4 = t.p[1].a;
     m.x18 = t.p[1].b;
     m.x1C = t.p[1].x;
     m.x20 = t.p[1].y;
-    Ui_AddSpriteElement(gUi[0], &m);
-    Ui_AddElement(gUi[0], 2, 0x12F);
+    Ui_AddSpriteElement(GetUi(), &m);
+    AddEl(gUi[0], 2, 0x12F);
     Records_Draw(-1, labels, -1, track);
     {
         s32 off;

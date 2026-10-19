@@ -42,7 +42,7 @@ static inline void PI(void *a) { Pad_InitAll(a); }
 static inline void *HBP(HeapBlock *b) { return HeapBlock_Ptr(b); }
 static inline u32 S7C(HeapBlock *b) { return func_8005537C(b); }
 static inline void HA(void *a, HeapBlock *b, u32 c, s32 d, s32 e) { Heap_Alloc(a, b, c, d, e); }
-s32 func_8005B880(s32 pri, Cfg *cfg) {
+s32 Main_InitSystems(s32 pri, Cfg *cfg) {
     HeapBlock blk;
     switch (cfg->x8) {
     case 0:

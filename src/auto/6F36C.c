@@ -8,7 +8,7 @@ typedef union {
 typedef struct { __OSInodeUnit inode_page[128]; } __OSInode;
 typedef struct { u8 pad[0x60]; s32 inode_start_page; } OSPfs;
 
-s32 func_8006E76C(OSPfs *pfs, __OSInode *inode, int file_size_in_pages, int *first_page, u8 bank, int *decleared, int *last_page) {
+s32 __osPfsDeclearPage(OSPfs *pfs, __OSInode *inode, int file_size_in_pages, int *first_page, u8 bank, int *decleared, int *last_page) {
     int j;
     int spage, old_page;
     int ret = 0;

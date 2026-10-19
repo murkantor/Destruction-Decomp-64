@@ -53,40 +53,40 @@ static inline void clr(u8 *p, u32 n) {
     }
 }
 
-void func_80067594(Voice *v) {
+void Seq_ResetVoice(Voice *v) {
     u8 saved = v->xC1;
     s32 q;
 
     v->x0 = 0;
     clr((u8 *)v, 0x120);
+    v->x24 = 99.9f;
     v->xC4 = 0xFF;
+    v->x98 = 0xFFFF;
+    v->x68 = 0.03125f;
     v->xB6 = 0xFF;
     q = 0x6000 / D_800CCAAC;
+    v->xB5 = 0x40;
     v->xCA = 0;
+    v->xB7 = 1;
     v->xCB = 0x7F;
+    v->xBE = 1;
+    v->xA0 = q;
+    v->x54 = 1.0f;
     v->xB4 = 0x7F;
     v->xB9 = 0x7F;
-    v->xBF = 0xFF;
-    v->xBA = 0x7F;
-    v->xB5 = 0x40;
-    v->xB7 = 1;
-    v->xBE = 1;
-    v->xC0 = 0xF;
-    v->x98 = 0xFFFF;
+    v->xC1 = saved;
     v->x92 = 1;
     v->x9A = 1;
     v->x9C = 1;
     v->xC = -1;
-    v->x96 = 0x80;
-    v->xA8 = 0x80;
-    v->x90 = 0x80;
-    v->xC1 = saved;
-    v->x24 = 99.9f;
-    v->x68 = 0.03125f;
-    v->x54 = 1.0f;
-    v->x58 = 1.0f / 255.0f;
-    v->x5C = 1.0f / 15.0f;
-    v->x74 = D_800CCAC0;
-    v->xA0 = q;
     v->x94 = q;
+    v->x96 = 0x80;
+    v->xC0 = 0xF;
+    v->xBA = 0x7F;
+    v->x58 = 1.0f / 255.0f;
+    v->xA8 = 0x80;
+    v->x74 = D_800CCAC0;
+    v->x90 = 0x80;
+    v->xBF = 0xFF;
+    v->x5C = 1.0f / 15.0f;
 }
