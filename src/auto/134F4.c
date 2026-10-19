@@ -22,9 +22,9 @@ void func_8001292C(s32 arg0) {
     D_800D1C18 = Mem_Alloc(arg0 * 4);
 }
 
-M2C_UNK func_80055AB4(s32);                         /* extern */
+M2C_UNK Mem_Free(s32);                         /* extern */
 
 void func_80012958(void) {
-    func_80055AB4(D_800D1C18);
+    Mem_Free(D_800D1C18);
     D_800D1C18 = 0;
 }

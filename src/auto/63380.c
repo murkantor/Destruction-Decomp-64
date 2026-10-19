@@ -13,8 +13,8 @@ s32 func_80062780(s32 arg0) {
     return temp_v0;
 }
 
-M2C_UNK func_80055AB4();                            /* extern */
+M2C_UNK Mem_Free();                            /* extern */
 
 void func_800627C8(void) {
-    func_80055AB4();
+    Mem_Free();
 }

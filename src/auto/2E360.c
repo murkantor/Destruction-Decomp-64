@@ -22,11 +22,11 @@ void *func_8002D760(s32 arg0) {
     return temp_v0;
 }
 
-M2C_UNK func_80055AB4(void *);                      /* extern */
+M2C_UNK Mem_Free(void *);                      /* extern */
 M2C_UNK func_80063AAC(s32);                         /* extern */
 
 void func_8002D7E4(void *arg0) {
     func_80063AAC(M2C_FIELD(arg0, s32 *, 0x24));
-    func_80055AB4(M2C_FIELD(arg0, void **, 0x30));
-    func_80055AB4(arg0);
+    Mem_Free(M2C_FIELD(arg0, void **, 0x30));
+    Mem_Free(arg0);
 }

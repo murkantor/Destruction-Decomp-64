@@ -11,11 +11,11 @@ void func_8006B060(s32 arg0) {
     }
 }
 
-M2C_UNK func_8006B830();                            /* extern */
+M2C_UNK alSynDelete();                            /* extern */
 
 void func_8006B08C(void) {
     if (D_800B56E0 != 0) {
-        func_8006B830();
+        alSynDelete();
         D_800B56E0 = 0;
     }
 }

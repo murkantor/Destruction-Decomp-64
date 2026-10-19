@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80073410(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void alFilterNew(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     M2C_FIELD(arg0, s32 *, 0) = 0;
     M2C_FIELD(arg0, s32 *, 4) = arg1;
     M2C_FIELD(arg0, s32 *, 8) = arg2;

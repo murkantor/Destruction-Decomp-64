@@ -5,7 +5,7 @@ s32 *Mem_Alloc(M2C_UNK);                            /* extern */
 M2C_UNK func_8002D0E0(s32);                         /* extern */
 M2C_UNK func_800500CC(s32 *);                       /* extern */
 M2C_UNK func_80050684(s32 *);                       /* extern */
-M2C_UNK func_80055AB4(s32 *);                       /* extern */
+M2C_UNK Mem_Free(s32 *);                       /* extern */
 M2C_UNK func_80058A74();                            /* extern */
 M2C_UNK func_80058B58();                            /* extern */
 s32 func_80059650(u16, s32, M2C_UNK *, M2C_UNK *, M2C_UNK *); /* extern */
@@ -66,6 +66,6 @@ void func_8004FE4C(s32 *arg0) {
             func_800500CC(temp_s1);
             func_8002D0E0(D_80097A14);
         }
-        func_80055AB4(temp_s1);
+        Mem_Free(temp_s1);
     }
 }

@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 void *func_80055A60(s32, M2C_UNK, M2C_UNK);         /* extern */
-M2C_UNK func_80055AB4(void *);                      /* extern */
+M2C_UNK Mem_Free(void *);                      /* extern */
 s32 func_80063A20(s32);                             /* extern */
 M2C_UNK func_80063B54(s32);                         /* extern */
 M2C_UNK func_80063BFC(s32, void *);                 /* extern */
@@ -58,6 +58,6 @@ s32 func_80025238(s32 arg0) {
     if (temp_a0_9 != -1) {
         func_80063B54(func_80063A20(temp_a0_9));
     }
-    func_80055AB4(temp_v0);
+    Mem_Free(temp_v0);
     return 0;
 }

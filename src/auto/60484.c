@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80055AB4(void *);                      /* extern */
+M2C_UNK Mem_Free(void *);                      /* extern */
 f32 func_80063744(s32);                             /* extern */
 extern s32 D_8011EEE4;
 extern void *D_8011EEF4;
@@ -21,7 +21,7 @@ void func_8005F884(void *arg0) {
         if (var_s0 != NULL) {
             do {
                 var_s0 = M2C_FIELD(var_s0, void **, 4);
-                func_80055AB4(var_a0);
+                Mem_Free(var_a0);
                 var_a0 = var_s0;
             } while (var_s0 != NULL);
         }

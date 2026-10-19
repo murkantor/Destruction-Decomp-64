@@ -3,7 +3,7 @@
 
 void *Mem_Alloc(M2C_UNK);                           /* extern */
 void *func_80055A60(s32, M2C_UNK, M2C_UNK);         /* extern */
-M2C_UNK func_80055AB4(void *);                      /* extern */
+M2C_UNK Mem_Free(void *);                      /* extern */
 s32 func_80063A20(s32);                             /* extern */
 M2C_UNK func_80063BFC(s32, void *);                 /* extern */
 s32 func_80063D6C();                                /* extern */
@@ -36,6 +36,6 @@ s32 func_80002300(s32 arg0) {
     }
     M2C_FIELD(temp_v0_2, s32 *, 0x18) = func_80063A20(M2C_FIELD(temp_v0, s32 *, 0x20));
     M2C_FIELD(M2C_FIELD(D_8011EEE4, void **, 0x1100), void **, 0x2C) = temp_v0_2;
-    func_80055AB4(temp_v0);
+    Mem_Free(temp_v0);
     return 0;
 }

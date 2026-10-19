@@ -3,7 +3,7 @@
 
 M2C_UNK func_80016090(s32);                         /* extern */
 M2C_UNK func_80027ECC(void *);                      /* extern */
-M2C_UNK func_80055AB4(void *);                      /* extern */
+M2C_UNK Mem_Free(void *);                      /* extern */
 
 void func_8002550C(void *arg0) {
     s32 temp_a0;
@@ -18,5 +18,5 @@ void func_8002550C(void *arg0) {
     if (temp_a0 != 0) {
         func_80016090(temp_a0);
     }
-    func_80055AB4(arg0);
+    Mem_Free(arg0);
 }

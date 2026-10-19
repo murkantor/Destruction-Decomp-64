@@ -45,8 +45,8 @@ void func_8005AB4C(void *arg0, s32 arg1) {
 
 s32 func_80055930(M2C_UNK *);                       /* extern */
 M2C_UNK func_80057334(s32);                         /* extern */
-M2C_UNK func_80068C70(M2C_UNK, s32);                /* extern */
-M2C_UNK func_8006A3B0(s32, M2C_UNK);                /* extern */
+M2C_UNK guMtxF2L(M2C_UNK, s32);                /* extern */
+M2C_UNK osWritebackDCache(s32, M2C_UNK);                /* extern */
 extern M2C_UNK D_80125C48;
 
 void func_8005AB5C(void *arg0, M2C_UNK arg1) {
@@ -55,7 +55,7 @@ void func_8005AB5C(void *arg0, M2C_UNK arg1) {
     func_80057334(M2C_FIELD(arg0, s32 *, 4));
     temp_v0 = func_80055930(&D_80125C48);
     M2C_FIELD(arg0, s32 *, 4) = temp_v0;
-    func_80068C70(arg1, temp_v0);
-    func_8006A3B0(M2C_FIELD(arg0, s32 *, 4), 4);
+    guMtxF2L(arg1, temp_v0);
+    osWritebackDCache(M2C_FIELD(arg0, s32 *, 4), 4);
     M2C_FIELD(arg0, u8 *, 8) = (u8) (M2C_FIELD(arg0, u8 *, 8) & 0xFE);
 }

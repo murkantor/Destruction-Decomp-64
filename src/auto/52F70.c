@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_8006CF2C(s32, s32, s32);               /* extern */
+M2C_UNK memcpy(s32, s32, s32);               /* extern */
 extern s32 D_800B048C;
 extern s32 D_800BCA4C;
 extern s32 D_800BCA50;
@@ -9,7 +9,7 @@ extern u32 D_800BCA54;
 
 void func_80052370(s32 arg0, s32 arg1) {
     if ((u32) D_800BCA54 >= (u32) (D_800BCA50 + arg1)) {
-        func_8006CF2C(D_800BCA4C + D_800BCA50, arg0, arg1);
+        memcpy(D_800BCA4C + D_800BCA50, arg0, arg1);
         D_800BCA50 += arg1;
         return;
     }

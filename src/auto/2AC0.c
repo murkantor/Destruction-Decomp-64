@@ -4,7 +4,7 @@
 s32 func_80001D78(s32);                             /* extern */
 s32 func_80055374(M2C_UNK *);                       /* extern */
 M2C_UNK func_80055530(M2C_UNK *, M2C_UNK *, M2C_UNK, M2C_UNK, s32); /* extern */
-M2C_UNK func_80055680(M2C_UNK *, M2C_UNK *);        /* extern */
+M2C_UNK Heap_Free(M2C_UNK *, M2C_UNK *);        /* extern */
 M2C_UNK func_80063BFC(s32, s32);                    /* extern */
 M2C_UNK func_80064100(s32);                         /* extern */
 extern M2C_UNK gMainHeap;
@@ -19,14 +19,14 @@ s32 func_80001EC0(s32 arg0) {
     func_80063BFC(arg0, temp_v0_2);
     temp_v0 = func_80001D78(temp_v0_2);
     func_80064100(temp_v0);
-    func_80055680(&gMainHeap, &sp18);
+    Heap_Free(&gMainHeap, &sp18);
     return temp_v0;
 }
 
-M2C_UNK func_80055AB4();                            /* extern */
+M2C_UNK Mem_Free();                            /* extern */
 
 void func_80001F44(void) {
-    func_80055AB4();
+    Mem_Free();
 }
 
 M2C_UNK func_80063A20(s32);                         /* extern */

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_8006B0DC(void *arg0) {
+void alUnlink(void *arg0) {
     void **temp_v1_2;
     void *temp_v1;
 

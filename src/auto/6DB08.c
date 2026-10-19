@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_8006CF08(u8 *arg0) {
+s32 strlen(u8 *arg0) {
     u8 *var_v1;
 
     var_v1 = arg0;
@@ -13,7 +13,7 @@ s32 func_8006CF08(u8 *arg0) {
     return var_v1 - arg0;
 }
 
-u8 *func_8006CF2C(u8 *arg0, u8 *arg1, s32 arg2) {
+u8 *memcpy(u8 *arg0, u8 *arg1, s32 arg2) {
     s32 var_a2;
     u8 *var_a1;
     u8 *var_v1;

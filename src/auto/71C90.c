@@ -3,7 +3,7 @@
 
 extern void *D_800B56C0;
 
-s32 func_80071090(void *arg0) {
+s32 osGetThreadPri(void *arg0) {
     void *var_a0;
 
     var_a0 = arg0;

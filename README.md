@@ -60,6 +60,7 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `tools/` | Compiler setup and the `move` fix for the assembler |
 | `tools/proto/` | Scripts that compare the prototype with retail |
 | `tools/autodecomp.py`, `tools/apply_auto.py` | Generate matching C with m2c and add it to the build |
+| `tools/rename.py` | Apply names from `symbol_addrs.txt` to the C |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
 | `asm/`, `assets/`, `build/` | Generated, not committed |
 
@@ -72,6 +73,18 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
    python3 path/to/asm-differ/diff.py -m boot
    ```
 4. `make` must still print `OK` before you commit.
+
+## Naming symbols
+
+1. Add `name = 0xADDRESS; // type:func` (or without the type for data) to `symbol_addrs.txt`.
+2. Update the C and rebuild:
+   ```sh
+   python3 tools/rename.py
+   make extract
+   make
+   ```
+
+The libultra, libc and audio library names came from [n64sym](https://github.com/shygoo/n64sym). Its hits inside the game code were false positives and were left out.
 
 ## Generating C with m2c
 
