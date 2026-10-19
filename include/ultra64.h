@@ -22,6 +22,17 @@ typedef double f64;
 typedef s32 OSPri;
 typedef s32 OSId;
 
+typedef struct {
+    /* 0x00 */ u64 at, v0, v1, a0, a1, a2, a3;
+    /* 0x38 */ u64 t0, t1, t2, t3, t4, t5, t6, t7;
+    /* 0x78 */ u64 s0, s1, s2, s3, s4, s5, s6, s7;
+    /* 0xB8 */ u64 t8, t9, gp, sp, s8, ra;
+    /* 0xE8 */ u64 lo, hi;
+    /* 0xF8 */ u32 sr, pc, cause, badvaddr, rcp;
+    /* 0x10C */ u32 fpcsr;
+    /* 0x110 */ f64 fp[16];
+} __OSThreadContext; /* size = 0x190 */
+
 typedef struct OSThread_s {
     /* 0x000 */ struct OSThread_s *next;
     /* 0x004 */ OSPri priority;
@@ -32,7 +43,7 @@ typedef struct OSThread_s {
     /* 0x014 */ OSId id;
     /* 0x018 */ s32 fp;
     /* 0x01C */ void *thprof;
-    /* 0x020 */ u8 context[0x190];
+    /* 0x020 */ __OSThreadContext context;
 } OSThread; /* size = 0x1B0 */
 
 #define OS_READ 0
