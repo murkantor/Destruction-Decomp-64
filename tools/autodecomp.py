@@ -171,8 +171,19 @@ def matches(o, name, vram, size, rom, syms):
     return True, size
 
 
+HEADER_LINES = 3  # the two #include lines and a blank line put in front of m2c's output
+
+
 def repair(code, err):
-    """Fix two common m2c slips that stop the output compiling."""
+    """Fix common m2c slips that stop the output compiling."""
+    # a dereference of an integer sum: m2c means a byte address, so cast it to a pointer
+    bad = {int(n) - HEADER_LINES - 1 for n in re.findall(r"f\.c:(\d+): invalid type argument of `unary \*'", err)}
+    if bad:
+        lines = code.splitlines()
+        for i in bad:
+            if 0 <= i < len(lines):
+                lines[i] = re.sub(r"(^|[^\w)\]])\*\(", r"\1*(M2C_UNK *)(", lines[i])
+        code = "\n".join(lines) + "\n"
     # a callee prototype guessed from one call site that another call site contradicts
     for callee in set(re.findall(r"too few arguments to function `(\w+)'", err)):
         code = re.sub(r"^(.*\b" + callee + r")\(.*\);(.*)$", r"\1();\2", code, count=1, flags=re.M)
