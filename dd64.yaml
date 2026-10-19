@@ -426,6 +426,7 @@ segments:
       - [0x5C474, asm]
       - [0x5C634, c, auto/5C634]
       - [0x5C684, asm]
+      - [0x5D2A0, c, auto/5D2A0]
       - [0x5D380, c, auto/5D380]
       - [0x5D3D0, asm]
       - [0x5D800, c, auto/5D800]
