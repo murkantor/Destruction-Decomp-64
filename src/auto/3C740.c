@@ -1,12 +1,12 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_8005D91C(s32, M2C_UNK, M2C_UNK);       /* extern */
+M2C_UNK Ui_AddElement(s32, M2C_UNK, M2C_UNK);       /* extern */
 extern s8 D_800964D0;
-extern s32 D_8011EEF4;
+extern s32 gUi;
 
 void func_8003BB40(void) {
-    func_8005D91C(D_8011EEF4, 2, 2);
+    Ui_AddElement(gUi, 2, 2);
     D_800964D0 = 0;
 }
 

@@ -13,7 +13,7 @@ extern M2C_UNK D_800D31D0;
 extern s32 gGame;
 extern s16 D_8011EEEA;
 extern u8 D_8011EEEC;
-extern s32 D_8011EEF4;
+extern s32 gUi;
 extern s32 D_8011EEF8;
 
 void func_80063404(s32 arg0) {
@@ -24,6 +24,6 @@ void func_80063404(s32 arg0) {
     func_80063890(&D_800D31D0);
     func_80063890(gGame + 0x1058);
     func_8005C780(D_8011EEF8);
-    func_8005D81C(D_8011EEF4);
+    func_8005D81C(gUi);
     func_8002C6F0();
 }

@@ -4,7 +4,7 @@
 M2C_UNK Mem_Free(void *);                      /* extern */
 f32 func_80063744(s32);                             /* extern */
 extern s32 gGame;
-extern void *D_8011EEF4;
+extern void *gUi;
 extern f32 D_80125BD4;
 
 void func_8005F884(void *arg0) {
@@ -15,7 +15,7 @@ void func_8005F884(void *arg0) {
     void *var_s0;
 
     if (M2C_FIELD(arg0, u8 *, 0x8B68) != 0) {
-        temp_s2 = D_8011EEF4;
+        temp_s2 = gUi;
         var_s0 = M2C_FIELD(temp_s2, void **, 0x8B54);
         var_a0 = var_s0;
         if (var_s0 != NULL) {

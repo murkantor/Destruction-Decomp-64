@@ -3,7 +3,7 @@
 
 void Mem_Free(void *);                   /* extern */
 
-void func_8005DBE4(void *arg0, s32 arg1) {
+void Ui_RemoveElement(void *arg0, s32 arg1) {
     s32 **var_a0;
     s32 **var_v1;
 

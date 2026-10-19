@@ -45,7 +45,7 @@ The debug menu's list items take a pointer into a pool of strings at 0x800B4BC4 
 - The pool has `"FX_TRAV_DIRT_SNOW1FX_HIT_SIDE_SIDE1"` as one string. A missing comma in the original source joined two literals, so the menu shows the wrong name for every sound after it. `names.py` splits it, which makes 39 sound IDs. The split is an inference.
 - The car name list (pool index 202) has 12 placeholder names, `Coupe A` to `Coupe L`, so there are 12 car models.
 - The menu's maximum values for SFX (97) and voice (244) are larger than their name lists, so only the named entries are in the enums.
-- These values are the prototype's. Retail may have added or removed IDs, so check against retail code before relying on them.
+- These values are the prototype's. The sprite and text IDs retail passes to `Ui_AddElement` match them: `OPT_LINE1_STR` to `OPT_LINE8_STR` on the options screen, the warning banner and background, and the Controller Pak icons. The sound IDs are not checked yet.
 
 ```sh
 python3 tools/proto/names.py baserom_proto.z64 > include/ids.h

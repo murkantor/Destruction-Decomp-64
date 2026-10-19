@@ -2,14 +2,14 @@
 #include "m2c.h"
 
 M2C_UNK Mem_Free(s32);                         /* extern */
-void *func_8005E620(s32, M2C_UNK, M2C_UNK);         /* extern */
+void *Ui_FindElement(s32, M2C_UNK, M2C_UNK);         /* extern */
 extern s32 D_800D1AEC;
-extern s32 D_8011EEF4;
+extern s32 gUi;
 
 void func_8000E960(void) {
     void *temp_v0;
 
-    temp_v0 = func_8005E620(D_8011EEF4, 2, 0x1F);
+    temp_v0 = Ui_FindElement(gUi, 2, 0x1F);
     Mem_Free(*M2C_FIELD(temp_v0, s32 **, 0x10));
     *M2C_FIELD(temp_v0, s32 **, 0x10) = 0;
     D_800D1AEC = 0;
