@@ -12,12 +12,12 @@ s32 func_8003D6F8(void) {
     return 1;
 }
 
-M2C_UNK func_8003B730();                            /* extern */
+M2C_UNK PakMenu_InsertPaks();                            /* extern */
 M2C_UNK func_8003EA7C(M2C_UNK, M2C_UNK);            /* extern */
 M2C_UNK func_8003ECF8();                            /* extern */
 
 void func_8003D72C(void) {
     func_8003ECF8();
     func_8003EA7C(0x112CC, 0x112CD);
-    func_8003B730();
+    PakMenu_InsertPaks();
 }

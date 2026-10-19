@@ -166,3 +166,21 @@ lldiv = 0x80078EA4; // type:func
 __divdi3 = 0x8007A440; // type:func
 __udivdi3 = 0x8007A5B0; // type:func
 __umoddi3 = 0x8007A5D0; // type:func
+
+// named from the strings they use
+strcmp = 0x80079ED0; // type:func
+Elf_FindSymbol = 0x80053570; // type:func
+Elf_ResolveSymbols = 0x8005378C; // type:func
+Elf_Relocate = 0x80053900; // type:func
+Debug_AssertScreen = 0x80053D60; // type:func
+Gfx_BusyScreen = 0x80056908; // type:func
+Debug_DrawPerfStats = 0x80056CC4; // type:func
+PakMenu_InsertPaks = 0x8003B730; // type:func
+PakMenu_NoPak = 0x8003C544; // type:func
+PakMenu_NoNote = 0x8003C7E8; // type:func
+PakMenu_NoSaveWarning = 0x8003CAE8; // type:func
+PakMenu_NoteExists = 0x8003CE34; // type:func
+PakMenu_ConfirmOverwrite = 0x8003D0D8; // type:func
+PakMenu_Busy = 0x8003D4D4; // type:func
+PakMenu_PakFull = 0x8003DB0C; // type:func
+Race_WaitForOthers = 0x80045C94; // type:func

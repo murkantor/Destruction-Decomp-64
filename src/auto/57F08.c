@@ -1,12 +1,12 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80056CC4(M2C_UNK, M2C_UNK, M2C_UNK);   /* extern */
+M2C_UNK Debug_DrawPerfStats(M2C_UNK, M2C_UNK, M2C_UNK);   /* extern */
 extern s32 D_800B0B58;
 
 void func_80057308(void) {
     D_800B0B58 = 0;
-    func_80056CC4(0, 2, 0);
+    Debug_DrawPerfStats(0, 2, 0);
 }
 
 s32 func_80055930(M2C_UNK *);                       /* extern */
