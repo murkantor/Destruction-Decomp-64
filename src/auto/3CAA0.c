@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     u8 pad4[6];
@@ -30,7 +33,7 @@ void *func_8001007C(char *);
 void func_800100BC(void *, s32);
 s32 sprintf(char *, const char *, ...);
 
-void func_8003BEA0(void) {
+void PakMenu_BuildSlotList(void) {
     u8 name[16];
     u8 ext[4];
     char sep[3] = " - ";
@@ -42,6 +45,7 @@ void func_8003BEA0(void) {
     u8 *e;
     u8 flag;
     u8 found;
+    s8 sp;
 
     if (Pak_Open(&status) && status != 0 && status != 5) {
         func_80063380(0);
@@ -56,7 +60,8 @@ void func_8003BEA0(void) {
         Text_MapChars2(gSaveSlots[i].name, name, 16);
         flag = 0;
         for (k = 0; k < 16; k++) {
-            if (name[k] == ' ') {
+            sp = name[k] == ' ';
+            if (sp) {
                 if (k == 0) {
                     flag = 1;
                 }

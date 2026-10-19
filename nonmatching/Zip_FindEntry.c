@@ -36,7 +36,7 @@ static inline void Zip_Close(Zip *z) {
     Mem_Free(z);
 }
 
-s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
+s32 Zip_FindEntry(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
     Zip *z;
     ZipEntry *e;
     u8 *p;
@@ -57,17 +57,16 @@ s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
         } else {
             s = fn;
         }
-        if ((c = *p) != 0) {
-        cmp:
-            if (toupper(c) == toupper(*s)) {
-                p++;
-                s++;
-                if ((c = *p) != 0) goto cmp;
-            }
+        while (*p != 0 && toupper(*p) == toupper(*s)) {
+            p++;
+            s++;
         }
         match = (*p == 0 && *s == 0);
         if (match) {
-            goto found;
+            *outSize = e->x18;
+            *outOffset = e->x10;
+            Zip_Close(z);
+            return 0;
         }
     next1:
         e = func_80052AE0(z);
@@ -78,7 +77,6 @@ s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
             goto next2;
             do {
             if (*outOffset != 0 && e->x10 == *outOffset) {
-            found:
                 *outSize = e->x18;
                 *outOffset = e->x10;
                 Zip_Close(z);
@@ -92,3 +90,8 @@ s32 func_8005333C(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
     }
     return -1;
 }
+/* agent45: duplicated found block (cross-jumped back into one) fixes the param registers
+   (path s8, name s7, outSize s6). Remaining diff is only z/e/p in s2/s3/s4: original wants
+   e=s2, z=s3, p=s4, i.e. global-alloc priority e > z > p. Here z 44 refs/106 insns,
+   e 20/42, p 15/22 (inner real while loop). e needs +2 weighted refs (one more in-loop use)
+   with no code change. Using e->x30 twice instead of fn gets e first but changes code. */

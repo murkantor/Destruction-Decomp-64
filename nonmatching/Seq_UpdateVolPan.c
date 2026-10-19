@@ -61,3 +61,6 @@ void Seq_UpdateVolPan(Snd66950 *s, s32 idx) {
         SetPan(s, idx, (s->xB5 * s->xA8 >> 7) & 0x7F);
     }
 }
+/* agent45: only 3 words differ at the pan store: original "andi v1; move a2,v1; sb a2,0xB6",
+   ours "andi v0; move a2,v0; sb v0". Tried pan locals of many types, reused vol/pan locals,
+   inline params s32/u8 with &0x7F inside, assignment-in-arg, ALVoice* param; no luck. */

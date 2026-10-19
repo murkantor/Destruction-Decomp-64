@@ -12,14 +12,14 @@ typedef struct {
     s16 count;
 } GameState;
 extern GameState *gGame;
-void func_80023D60(List *, s32);
+void Handler_CallX4ById(List *, s32);
 
 s32 func_80064100(s32 x) {
     GameState *g = gGame;
     List *l = &g->list;
 
     if (g->count < 256) {
-        func_80023D60(l, x);
+        Handler_CallX4ById(l, x);
         l->items[g->count++] = x;
         return 0;
     }

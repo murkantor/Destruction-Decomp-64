@@ -6,7 +6,7 @@ typedef struct { Vec3f p0; Vec3f p1; } Seg;
 typedef struct { Vec3f p0; Vec3f p1; s32 x18; } Edge;
 typedef struct { s32 count; Edge *items; } EdgeList;
 
-extern u8 func_80000914(Seg *seg, Edge *e);
+extern u8 Seg_Intersect2D(Seg *seg, Edge *e);
 extern f32 func_800005C8(Vec3f a, Vec3f b);
 extern f32 Vec3f_AngleBetween(Vec3f a, Vec3f b);
 extern void Vec3f_Cross(Vec3f *out, Vec3f *a, Vec3f *b);
@@ -36,7 +36,7 @@ Vec3f Path_AvoidEdges(Seg *seg, EdgeList *list)
     hit = 0;
     for (i = 0; i < list->count; i++) {
         edge = list->items[i];
-        hit = func_80000914(seg, &edge);
+        hit = Seg_Intersect2D(seg, &edge);
         if (hit) {
             break;
         }

@@ -1,7 +1,7 @@
 typedef struct { f32 x0; f32 x4; f32 x8; f32 xC; f32 x10; f32 x14; } Seg;
 u8 func_80001670(f32, f32);
 
-s32 func_80000914(Seg *a, Seg *b) {
+s32 Seg_Intersect2D(Seg *a, Seg *b) {
     f32 ax;
     f32 cz;
     f32 bx;
@@ -35,3 +35,4 @@ s32 func_80000914(Seg *a, Seg *b) {
     }
     return 1;
 }
+/* agent45: 15 words, FP temp regs only (k gets f10 vs f6). Tried decl/load order hill-climb, operand orders, e/f locals, inline helper. */

@@ -50,7 +50,7 @@ static inline f32 DistSq(f32 *a, f32 *b) {
     dz = dz * dz;
     return dx + dy + dz;
 }
-void func_80023944(Player *pl, Car *car, f32 dt) {
+void Camera_UpdateCheckpointCam(Player *pl, Car *car, f32 dt) {
     u8 hit = 0;
     f32 *pos = &car->x290;
     f32 dx, dy, dz, d;
@@ -133,3 +133,4 @@ void func_80023944(Player *pl, Car *car, f32 dt) {
     }
     D_80130200.timer += dt;
 }
+/* agent45: 16 words: in all three DistSq blocks original loads cp->x3C/x40 into f2 and subtracts into f4/f6 (no local-alloc tie for dx,dy; dz ties). Tried user-var temps, *=, return forms, separate squares. */

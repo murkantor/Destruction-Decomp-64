@@ -74,3 +74,4 @@ Gfx *Font_DrawString(Font *font, s32 x0, s32 y0, u8 *str, Gfx *g) {
     }
     return g;
 }
+/* agent45: not improved; header GFX stores spill pattern differs (ours frame 0x80 vs 0x78). */

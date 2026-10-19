@@ -53,7 +53,7 @@ static inline void FreeItem(Item42894 *item, s32 *tbl) {
     Mem_Free(item);
 }
 
-s32 func_80042894(Obj42894 *obj) {
+s32 Race_FreeItemsCheckQualify(Obj42894 *obj) {
     s32 i;
     Item42894 **p;
     s32 limit;
@@ -63,3 +63,6 @@ s32 func_80042894(Obj42894 *obj) {
 tbl = D_800919F4; p = D_80096500; do { if (*p != NULL) { FreeItem(*p, tbl); *p = NULL; } p++; } while ((s32)p < (s32)(D_80096500 + 4));
 limit = (D_800958AC == 2 && D_800958A4 == 4) ? 2 : D_800958A4; if (D_80097340 == limit) { D_800958BC = 0; func_80063564(0xF, 1); Players_Reset(); return 1; } if (obj->x28->x10 < D_800958A4) { if (limit == 1) goto call; } return 0; call: return Menu_ToggleHelpOverlay(obj->x10);
 }
+/* agent45: diff is only register choice: original gives `limit` v1 (const 4 in a0, final lb in a0);
+   ours gives limit a0 which leaves the bne delay slot empty (+4 bytes). Tried if/else, ternary,
+   nested ifs, volatile A4, temps for x10, switch, reordering; none changed it. */

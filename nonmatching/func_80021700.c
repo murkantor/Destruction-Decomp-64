@@ -7,7 +7,7 @@ extern f32 D_8009562C;
 extern s8 D_800D31CC;
 extern f32 D_80095614[];
 extern void Vec3f_Set(Vec3f *, f32, f32, f32);
-extern void func_80023944(Cam *, Car *, f32);
+extern void Camera_UpdateCheckpointCam(Cam *, Car *, f32);
 extern void Camera_SetChaseFromCar(Cam *, Car *, f32, f32, f32, f32, f32);
 extern void Camera_UpdateChase2(Cam *, Car *, f32, f32, f32, f32, f32, f32, f32);
 extern void func_8002205C(Cam *, Car *, f32, f32 *);
@@ -33,7 +33,7 @@ void func_80021700(Cam *cam, f32 dt) {
     f32 k;
 
     if (D_80095628) {
-        func_80023944(cam, car, dt);
+        Camera_UpdateCheckpointCam(cam, car, dt);
     }
     Vec3f_Set(&cam->x68, 0.0f, 1.0f, 0.0f);
     switch (cam->xB4) {
@@ -85,3 +85,4 @@ void func_80021700(Cam *cam, f32 dt) {
         break;
     }
 }
+/* agent45: only case 0 differs (one insn): original materialises 0.0f in f0, h = mov f0, lo = mov h (in bc1f delay). Tried orders, lo = h, h = lo, chained, literal 0.0f args. */

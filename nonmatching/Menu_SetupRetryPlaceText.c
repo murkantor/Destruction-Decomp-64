@@ -9,7 +9,7 @@ extern s32 D_80097350;
 void Ui_ResetScreen(s32, s32);
 s32 sprintf(char *, const char *, ...);
 
-void func_8004B9A8(void) {
+void Menu_SetupRetryPlaceText(void) {
     char *text;
     char *t2;
     s32 place;
@@ -70,3 +70,4 @@ void func_8004B9A8(void) {
     }
     D_80097350 = 0;
 }
+/* agent45: only diff is original keeps &D_80123CBA (=gSaveSlotText[5]) in s1 and does move a0,s1 for "TO ADVANCE". Tried reusing text, text+=250, gSaveSlotText[5], assignment in arg. */

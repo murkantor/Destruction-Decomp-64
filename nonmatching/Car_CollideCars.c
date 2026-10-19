@@ -46,13 +46,25 @@ void Vec3f_Set(Vec3f *, f32, f32, f32);
 void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
 f32 sqrtf(f32);
 
-u8 func_8003225C(Car *a, Car *b) {
+static inline void LoadPoly(Poly *p, Phys *ph, s32 i) {
+    Face *fc = &ph->faces[i];
+    Vec3f *verts = ph->verts;
+    s32 k;
+
+    p->x0 = fc->x0;
+    p->n = ph->normals[i];
+    p->count = fc->count;
+    for (k = 0; k < p->count; k++) {
+        p->v[k] = verts[fc->idx[k]];
+    }
+}
+
+u8 Car_CollideCars(Car *a, Car *b) {
     Poly pa;
     Poly pb;
     Hit hit;
     Vec3f pts[2];
-    f32 da;
-    f32 db;
+    f32 d[2];
     Vec3f posA;
     Vec3f posB;
     Vec3f mid;
@@ -82,24 +94,10 @@ u8 func_8003225C(Car *a, Car *b) {
     Vec3f *verts;
 
     for (i = 0; i < A->numFaces; i++) {
-        fc = &A->faces[i];
-        verts = A->verts;
-        pa.x0 = fc->x0;
-        pa.n = A->normals[i];
-        pa.count = fc->count;
-        for (k = 0; k < pa.count; k++) {
-            pa.v[k] = verts[fc->idx[k]];
-        }
+        LoadPoly(&pa, A, i);
         for (j = 0; j < B->numFaces; j++) {
-            fc = &B->faces[j];
-            verts = B->verts;
-            pb.x0 = fc->x0;
-            pb.n = B->normals[j];
-            pb.count = fc->count;
-            for (k = 0; k < pb.count; k++) {
-                pb.v[k] = verts[fc->idx[k]];
-            }
-            if (!Poly_IntersectSegment(&pa, &da, &pb, &db, pts)) {
+            LoadPoly(&pb, B, j);
+            if (!Poly_IntersectSegment(&pa, &d[0], &pb, &d[1], pts)) {
                 continue;
             }
             posA = A->pos;
@@ -107,7 +105,13 @@ u8 func_8003225C(Car *a, Car *b) {
             mid.x = (pts[0].x + pts[1].x) * D_800B94E8;
             mid.y = (pts[0].y + pts[1].y) * D_800B94E8;
             mid.z = (pts[0].z + pts[1].z) * D_800B94E8;
-            mid.y += gGame->race->x10 ? D_800B94F0 : D_800B94F8;
+            {
+                f64 off = D_800B94F0;
+                if (!gGame->race->x10) {
+                    off = D_800B94F8;
+                }
+                mid.y += off;
+            }
             ra.x = mid.x - posA.x;
             ra.y = mid.y - posA.y;
             ra.z = mid.z - posA.z;
@@ -127,13 +131,13 @@ u8 func_8003225C(Car *a, Car *b) {
                 continue;
             }
             if (dotB < dotA) {
-                depth = da * D_800B9500;
+                depth = d[0] * D_800B9500;
                 n1 = pb.n;
                 n2.x = -n1.x;
                 n2.y = -n1.y;
                 n2.z = -n1.z;
             } else {
-                depth = db * D_800B9508;
+                depth = d[1] * D_800B9508;
                 n2 = pa.n;
                 n1.x = -n2.x;
                 n1.y = -n2.y;
@@ -141,10 +145,12 @@ u8 func_8003225C(Car *a, Car *b) {
             }
             sa = n1.x * ra.x + n1.y * ra.y + n1.z * ra.z;
             sb = n2.x * rb.x + n2.y * rb.y + n2.z * rb.z;
-            if (!((sa < 0.0f) & (sb < 0.0f)) && found) {
+            if ((sa < 0.0f) & (sb < 0.0f)) {
+            } else if (found) {
                 continue;
             }
             speed = sqrtf(dv.x * dv.x + dv.y * dv.y + dv.z * dv.z) * D_800D2E78;
+            f = 0.1f;
             if ((sa < 0.0f) & (sb < 0.0f)) {
                 if (dotB < dotA) {
                     best = -dotB;
@@ -154,7 +160,9 @@ u8 func_8003225C(Car *a, Car *b) {
             }
             found = 1;
             m = (depth <= speed) ? depth : speed;
-            f = (m <= 0.1f) ? 0.1f : m;
+            if (!(m <= f)) {
+                f = m;
+            }
             hit.x0 = 0.5f;
             hit.x1C = f;
             hit.x4 = 0.1f;
@@ -176,3 +184,9 @@ u8 func_8003225C(Car *a, Car *b) {
     }
     return found;
 }
+/* agent45: needs --flags -ffast-math (sqrt.s). Same size as original now (inline LoadPoly,
+   f32 d[2] for da/db, off temp for mid.y, f = 0.1f placed before the best update).
+   Remaining: (1) FP callee regs: best gets f24, D_800B94E8 const f22 (orig swapped;
+   global-alloc priority best 13 refs/324 vs const DF 10/319); (2) normals index uses a
+   shared i*3 giv instead of i*12; (3) orig reloads mid.x/y/z from the stack after the
+   off branch, ours keeps them in registers. */

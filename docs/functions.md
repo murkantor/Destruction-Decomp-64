@@ -14,7 +14,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800005C8` | `0011C8` | 0x5c | `func_800005C8` | `src/auto/11C8.c` | C (generated) |
 | `80000624` | `001224` | 0x84 | `Vec3f_DistXZ` | `src/auto/1224.c` | C (generated) |
 | `800006A8` | `0012A8` | 0x26c | `Math_PointLineDist2D` | `src/auto/12A8.c` | C (generated) |
-| `80000914` | `001514` | 0x1b4 | `func_80000914` | `asm/1514.s` | asm |
+| `80000914` | `001514` | 0x1b4 | `Seg_Intersect2D` | `asm/1514.s` | asm |
 | `80000AC8` | `0016C8` | 0x4d4 | `func_80000AC8` | `src/auto/16C8.c` | C (generated) |
 | `80000F9C` | `001B9C` | 0x2d4 | `Ai_PickTarget` | `src/auto/1B9C.c` | C (generated) |
 | `80001270` | `001E70` | 0x24 | `Obj_PickMinKey10` | `src/auto/1E70.c` | C (generated) |
@@ -135,8 +135,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000CE08` | `00DA08` | 0x24c | `Hud_UpdateCountdown` | `src/auto/DA08.c` | C (generated) |
 | `8000D054` | `00DC54` | 0x13c | `func_8000D054` | `src/auto/DC54.c` | C (generated) |
 | `8000D190` | `00DD90` | 0xe8 | `func_8000D190` | `src/auto/DD90.c` | C (generated) |
-| `8000D278` | `00DE78` | 0x5ac | `Hud_UpdateLapTimes` | `asm/DE78.s` | asm |
-| `8000D824` | `00E424` | 0x2bc | `Hud_UpdateRaceTime` | `asm/DE78.s` | asm |
+| `8000D278` | `00DE78` | 0x5ac | `Hud_UpdateLapTimes` | `src/auto/DE78.c` | C (generated) |
+| `8000D824` | `00E424` | 0x2bc | `Hud_UpdateRaceTime` | `asm/E424.s` | asm |
 | `8000DAE0` | `00E6E0` | 0x498 | `Hud_UpdateRacerTimers` | `src/auto/E6E0.c` | C (generated) |
 | `8000DF78` | `00EB78` | 0x11c | `Hud_FormatLapTime` | `src/auto/EB78.c` | C (generated) |
 | `8000E094` | `00EC94` | 0xe4 | `Time_Format` | `src/auto/EC94.c` | C (generated) |
@@ -357,9 +357,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8002322C` | `023E2C` | 0xb0 | `Camera_UpdateBasis` | `src/auto/23E2C.c` | C (generated) |
 | `800232DC` | `023EDC` | 0x64 | `func_800232DC` | `src/auto/23EDC.c` | C (generated) |
 | `80023340` | `023F40` | 0x604 | `Car_ResolveTrackCollision` | `src/auto/23F40.c` | C (generated) |
-| `80023944` | `024544` | 0x39c | `func_80023944` | `asm/24544.s` | asm |
+| `80023944` | `024544` | 0x39c | `Camera_UpdateCheckpointCam` | `asm/24544.s` | asm |
 | `80023CE0` | `0248E0` | 0x7c | `func_80023CE0` | `src/auto/248E0.c` | C (generated) |
-| `80023D60` | `024960` | 0x7c | `func_80023D60` | `src/auto/24960.c` | C (generated) |
+| `80023D60` | `024960` | 0x7c | `Handler_CallX4ById` | `src/auto/24960.c` | C (generated) |
 | `80023DDC` | `0249DC` | 0x7c | `Handler_CallX8ById` | `src/auto/249DC.c` | C (generated) |
 | `80023E58` | `024A58` | 0xa4 | `Handler_Dispatch` | `src/auto/24A58.c` | C (generated) |
 | `80023EFC` | `024AFC` | 0x44 | `func_80023EFC` | `src/auto/24AFC.c` | C (generated) |
@@ -482,7 +482,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80031990` | `032590` | 0x60 | `Vec3_AddToArray` | `src/auto/32590.c` | C (generated) |
 | `800319F0` | `0325F0` | 0x4d0 | `Car_ApplyCollisionImpulse` | `src/auto/325F0.c` | C (generated) |
 | `80031EC0` | `032AC0` | 0x39c | `func_80031EC0` | `src/auto/32AC0.c` | C (generated) |
-| `8003225C` | `032E5C` | 0x764 | `func_8003225C` | `asm/32E5C.s` | asm |
+| `8003225C` | `032E5C` | 0x764 | `Car_CollideCars` | `asm/32E5C.s` | asm |
 | `800329C0` | `0335C0` | 0x164 | `func_800329C0` | `src/auto/335C0.c` | C (generated) |
 | `80032B24` | `033724` | 0xb4 | `func_80032B24` | `src/auto/33724.c` | C (generated) |
 | `80032BD8` | `0337D8` | 0x1b0 | `Model_TransformVerts` | `src/auto/337D8.c` | C (generated) |
@@ -553,7 +553,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003BB9C` | `03C79C` | 0x38 | `func_8003BB9C` | `src/auto/3C79C.c` | C (generated) |
 | `8003BBD4` | `03C7D4` | 0x168 | `SaveMenu_PrevSlot` | `src/auto/3C7D4.c` | C (generated) |
 | `8003BD3C` | `03C93C` | 0x164 | `SaveMenu_NextSlot` | `src/auto/3C93C.c` | C (generated) |
-| `8003BEA0` | `03CAA0` | 0x424 | `func_8003BEA0` | `asm/3CAA0.s` | asm |
+| `8003BEA0` | `03CAA0` | 0x424 | `PakMenu_BuildSlotList` | `src/auto/3CAA0.c` | C (generated) |
 | `8003C2C4` | `03CEC4` | 0x124 | `func_8003C2C4` | `src/auto/3CEC4.c` | C (generated) |
 | `8003C3E8` | `03CFE8` | 0x98 | `func_8003C3E8` | `src/auto/3CFE8.c` | C (generated) |
 | `8003C480` | `03D080` | 0xc4 | `func_8003C480` | `src/auto/3D080.c` | C (generated) |
@@ -634,7 +634,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80042114` | `042D14` | 0x110 | `func_80042114` | `src/auto/42D14.c` | C (generated) |
 | `80042224` | `042E24` | 0x2f0 | `func_80042224` | `src/auto/42E24.c` | C (generated) |
 | `80042514` | `043114` | 0x380 | `func_80042514` | `src/auto/43114.c` | C (generated) |
-| `80042894` | `043494` | 0x160 | `func_80042894` | `asm/43494.s` | asm |
+| `80042894` | `043494` | 0x160 | `Race_FreeItemsCheckQualify` | `asm/43494.s` | asm |
 | `800429F4` | `0435F4` | 0x200 | `Menu_ToggleHelpOverlay` | `src/auto/435F4.c` | C (generated) |
 | `80042BF4` | `0437F4` | 0x194 | `Menu_InitPlayerViews` | `asm/437F4.s` | asm |
 | `80042D88` | `043988` | 0x1a4 | `func_80042D88` | `asm/437F4.s` | asm |
@@ -705,7 +705,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004B774` | `04C374` | 0xe4 | `func_8004B774` | `src/auto/4C374.c` | C (generated) |
 | `8004B858` | `04C458` | 0xb0 | `func_8004B858` | `src/auto/4C458.c` | C (generated) |
 | `8004B908` | `04C508` | 0xa0 | `func_8004B908` | `src/auto/4C508.c` | C (generated) |
-| `8004B9A8` | `04C5A8` | 0x1f4 | `func_8004B9A8` | `asm/4C5A8.s` | asm |
+| `8004B9A8` | `04C5A8` | 0x1f4 | `Menu_SetupRetryPlaceText` | `asm/4C5A8.s` | asm |
 | `8004BB9C` | `04C79C` | 0x170 | `func_8004BB9C` | `src/auto/4C79C.c` | C (generated) |
 | `8004BD0C` | `04C90C` | 0x3b8 | `func_8004BD0C` | `src/auto/4C90C.c` | C (generated) |
 | `8004C0C4` | `04CCC4` | 0xc4 | `func_8004C0C4` | `src/auto/4CCC4.c` | C (generated) |
@@ -772,7 +772,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80052FF0` | `053BF0` | 0x60 | `func_80052FF0` | `src/auto/53BF0.c` | C (generated) |
 | `80053050` | `053C50` | 0xfc | `func_80053050` | `src/auto/53C50.c` | C (generated) |
 | `8005314C` | `053D4C` | 0x1f0 | `Zip_ReadFileByName` | `src/auto/53D4C.c` | C (generated) |
-| `8005333C` | `053F3C` | 0x234 | `func_8005333C` | `asm/53F3C.s` | asm |
+| `8005333C` | `053F3C` | 0x234 | `Zip_FindEntry` | `asm/53F3C.s` | asm |
 | `80053570` | `054170` | 0x21c | `Elf_FindSymbol` | `src/auto/54170.c` | C (generated) |
 | `8005378C` | `05438C` | 0x174 | `Elf_ResolveSymbols` | `src/auto/5438C.c` | C (generated) |
 | `80053900` | `054500` | 0x380 | `Elf_Relocate` | `asm/54500.s` | asm |

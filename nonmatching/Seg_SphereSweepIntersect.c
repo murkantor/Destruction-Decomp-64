@@ -74,3 +74,4 @@ s32 Seg_SphereSweepIntersect(Vec3f *p0, Vec3f *p1, Vec3f *q0, Vec3f *q1, f32 r, 
     *outT = t;
     return 1;
 }
+/* agent45: compile with --flags -ffast-math (inline sqrt.s). Then only b (f12 vs f10) and the D_800B9610 constant pseudo (f10 vs f12) are swapped: global-alloc priority of const (3 refs/14 insns, DF) beats b (7 refs/47). */
