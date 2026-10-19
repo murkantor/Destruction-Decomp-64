@@ -25,7 +25,7 @@ void func_80055360(void *arg0) {
     M2C_FIELD(arg0, u8 *, 7) = 0U;
 }
 
-s32 func_80055374(s32 *arg0) {
+s32 HeapBlock_Ptr(s32 *arg0) {
     return *arg0;
 }
 
