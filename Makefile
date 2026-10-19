@@ -69,7 +69,7 @@ $(BUILD_DIR)/src/libc/%.c.o: OPTFLAGS := -O1
 # by a constant done as a multiply)
 FASTMATH := src/auto/5AFC0.c src/auto/5B048.c src/auto/5B098.c src/auto/5B130.c src/auto/5B240.c \
             src/auto/5B2F4.c src/auto/5B38C.c src/auto/5B424.c src/auto/5B4BC.c src/auto/3F090.c \
-            src/auto/3A8FC.c src/auto/1224.c src/auto/3B0D8.c src/auto/10F0.c
+            src/auto/3A8FC.c src/auto/1224.c src/auto/3B0D8.c src/auto/10F0.c src/auto/1F00.c
 $(FASTMATH:%=$(BUILD_DIR)/%.o): OPTFLAGS += -ffast-math
 
 $(BUILD_DIR)/%.bin.o: %.bin

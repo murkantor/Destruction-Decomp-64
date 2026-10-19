@@ -5,7 +5,7 @@ typedef struct { u32 w0; u32 w1; } Gfx;
 typedef struct { u8 pad[0xC]; s32 xC; } Sub;
 typedef struct { Sub *x0; u32 x4; u8 x8; u8 x9; u8 xA; } Obj;
 void Particle_BuildMatrix(Obj *);
-Gfx *func_80058454(Gfx *, s32, s32, s32, s32);
+Gfx *Gfx_CopyDisplayList(Gfx *, s32, s32, s32, s32);
 
 #define GFX2(pkt, a, b) { Gfx *_g = (Gfx *)(pkt); _g->w0 = (a); _g->w1 = (b); }
 
@@ -30,7 +30,7 @@ Gfx *Particle_Draw(Obj *o, Gfx *g, s32 a2, s32 a3) {
         g[2].w0 = 0xE2001E01;
         g[2].w1 = 3;
     }
-    g = func_80058454(p, o->x0->xC, 10, a2, a3);
+    g = Gfx_CopyDisplayList(p, o->x0->xC, 10, a2, a3);
     GFX2(g++, 0xD8380002, 0x40);
     return g;
 }

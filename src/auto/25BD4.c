@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 M2C_UNK func_80024BA0(s32, s32, s32);               /* extern */
-M2C_UNK func_80024CC8(s32, s32);                    /* extern */
+M2C_UNK Track_LoadResources(s32, s32);                    /* extern */
 s32 Mem_AllocAligned(s32, M2C_UNK, M2C_UNK);           /* extern */
 M2C_UNK Res_Load(s32, s32);                    /* extern */
 s32 Res_GetSize();                                /* extern */
@@ -19,7 +19,7 @@ s32 func_80024FD4(s32 arg0) {
     temp_s2 = func_80063D8C(arg0);
     temp_s0 = (func_80063DAC(arg0) - temp_s2) + temp_v0;
     func_80024BA0(temp_s0, temp_s2, temp_v0);
-    func_80024CC8(temp_s0, temp_v0);
+    Track_LoadResources(temp_s0, temp_v0);
     return 0;
 }
 
