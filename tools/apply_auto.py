@@ -9,7 +9,8 @@ function. A function that an existing C file pulls in with INCLUDE_ASM is put
 in place of that line instead. Existing c subsegments in dd64.yaml are kept, so
 it can be run again after more functions match. A function with constants in
 .rodata gets a file of its own and a .rodata subsegment at the place
-check_c.py found. Run make extract and make afterwards; the build's SHA1 check
+check_c.py found. If that rodata ends 4 bytes off an 8-byte boundary and
+no symbol starts there, a zero word is defined after the function to fill it. Run make extract and make afterwards; the build's SHA1 check
 is the final proof.
 """
 import glob
@@ -25,6 +26,7 @@ TEXT_START, TEXT_END = 0x1050, 0x7B9D0
 RODATA_START, RODATA_END = 0xB8960, 0xBD4A0
 KMC = os.path.join(ROOT, "tools", "kmc")
 HEADER = '#include "common.h"\n#include "m2c.h"\n\n'
+PADDED = {}  # function name -> zero word appended to its file to end its rodata on 8 bytes
 
 
 def compiles(src):
@@ -80,7 +82,8 @@ def shared_rodata(rodata, auto):
     labels = {rom for rom, _ in syms}
     for name, (start, end) in list(rodata.items()):
         if end % 8 and end not in labels:
-            rodata[name] = (start, end + 4)  # the object's rodata is rounded up to 8 over padding
+            rodata[name] = (start, end + 4)  # pad the object's rodata to 8 with a zero word
+            PADDED[name] = "\n/* fills the rest of this file's 8-byte rodata block */\nconst s32 D_%08X = 0;\n" % (end + ROM_BASE)
         elif end % 8:
             out.append((name, "its end", "the next rodata, which would start 4 bytes off an 8-byte boundary"))
             continue
@@ -130,7 +133,7 @@ def main():
         text = open(cfile).read()
         line = f'INCLUDE_ASM("asm/nonmatchings/{inline[name]}", {name});'
         if line in text:
-            code = open(os.path.join(auto, name + ".c")).read().strip()
+            code = open(os.path.join(auto, name + ".c")).read().strip() + PADDED.get(name, "")
             text = text.replace(line, code)
             if '#include "m2c.h"' not in text:
                 text = text.replace('#include "common.h"\n', '#include "common.h"\n#include "m2c.h"\n', 1)
@@ -175,7 +178,7 @@ def main():
         for g in groups:
             start, end = g[0][0] - ROM_BASE, g[-1][0] + g[-1][1] - ROM_BASE
             path = f"{subdir}/{start:X}"
-            src = HEADER + merge([open(os.path.join(auto, n + ".c")).read() for _, _, n in g])
+            src = HEADER + merge([open(os.path.join(auto, n + ".c")).read() for _, _, n in g]) + PADDED.get(g[-1][2], "")
             os.makedirs(os.path.join(ROOT, "src", subdir), exist_ok=True)
             open(os.path.join(ROOT, "src", path + ".c"), "w").write(src)
             files.append((start, end, path))
