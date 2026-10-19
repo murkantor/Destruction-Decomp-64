@@ -122,8 +122,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000B67C` | `00C27C` | 0x70 | `Frame_ToMatrix` | `src/auto/C27C.c` | C (generated) |
 | `8000B6EC` | `00C2EC` | 0x1e8 | `func_8000B6EC` | `asm/C2EC.s` | asm |
 | `8000B8D4` | `00C4D4` | 0x9c | `func_8000B8D4` | `asm/C2EC.s` | asm |
-| `8000B970` | `00C570` | 0x80 | `func_8000B970` | `asm/C2EC.s` | asm |
-| `8000B9F0` | `00C5F0` | 0xd0 | `func_8000B9F0` | `asm/C2EC.s` | asm |
+| `8000B970` | `00C570` | 0x80 | `Frame_ToScaledMatrix` | `src/auto/C570.c` | C (generated) |
+| `8000B9F0` | `00C5F0` | 0xd0 | `func_8000B9F0` | `asm/C5F0.s` | asm |
 | `8000BAC0` | `00C6C0` | 0x8 | `func_8000BAC0` | `src/auto/C6C0.c` | C (generated) |
 | `8000BAC8` | `00C6C8` | 0x8 | `func_8000BAC8` | `src/auto/C6C0.c` | C (generated) |
 | `8000BAD0` | `00C6D0` | 0x60 | `func_8000BAD0` | `src/auto/C6C0.c` | C (generated) |
@@ -406,7 +406,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80025FB0` | `026BB0` | 0x1c | `func_80025FB0` | `src/auto/26BB0.c` | C (generated) |
 | `80025FCC` | `026BCC` | 0x68 | `func_80025FCC` | `src/auto/26BCC.c` | C (generated) |
 | `80026034` | `026C34` | 0x1c | `func_80026034` | `src/auto/26C34.c` | C (generated) |
-| `80026050` | `026C50` | 0x80 | `func_80026050` | `asm/26C50.s` | asm |
+| `80026050` | `026C50` | 0x80 | `Shake_Create` | `src/auto/26C50.c` | C (generated) |
 | `800260D0` | `026CD0` | 0x1c | `func_800260D0` | `src/auto/26CD0.c` | C (generated) |
 | `800260EC` | `026CEC` | 0x84 | `func_800260EC` | `asm/26CEC.s` | asm |
 | `80026170` | `026D70` | 0x1c | `func_80026170` | `src/auto/26D70.c` | C (generated) |
@@ -565,14 +565,14 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003C9E4` | `03D5E4` | 0x104 | `func_8003C9E4` | `asm/3D144.s` | asm |
 | `8003CAE8` | `03D6E8` | 0x19c | `PakMenu_NoSaveWarning` | `asm/3D144.s` | asm |
 | `8003CC84` | `03D884` | 0x78 | `func_8003CC84` | `src/auto/3D884.c` | C (generated) |
-| `8003CCFC` | `03D8FC` | 0x80 | `func_8003CCFC` | `asm/3D8FC.s` | asm |
-| `8003CD7C` | `03D97C` | 0xb8 | `func_8003CD7C` | `asm/3D8FC.s` | asm |
-| `8003CE34` | `03DA34` | 0x148 | `PakMenu_NoteExists` | `asm/3D8FC.s` | asm |
-| `8003CF7C` | `03DB7C` | 0x90 | `func_8003CF7C` | `asm/3D8FC.s` | asm |
-| `8003D00C` | `03DC0C` | 0xcc | `func_8003D00C` | `asm/3D8FC.s` | asm |
-| `8003D0D8` | `03DCD8` | 0x138 | `PakMenu_ConfirmOverwrite` | `asm/3D8FC.s` | asm |
-| `8003D210` | `03DE10` | 0x2c4 | `func_8003D210` | `asm/3D8FC.s` | asm |
-| `8003D4D4` | `03E0D4` | 0x1e4 | `PakMenu_Busy` | `asm/3D8FC.s` | asm |
+| `8003CCFC` | `03D8FC` | 0x80 | `func_8003CCFC` | `src/auto/3D8FC.c` | C (generated) |
+| `8003CD7C` | `03D97C` | 0xb8 | `func_8003CD7C` | `asm/3D97C.s` | asm |
+| `8003CE34` | `03DA34` | 0x148 | `PakMenu_NoteExists` | `asm/3D97C.s` | asm |
+| `8003CF7C` | `03DB7C` | 0x90 | `func_8003CF7C` | `asm/3D97C.s` | asm |
+| `8003D00C` | `03DC0C` | 0xcc | `func_8003D00C` | `asm/3D97C.s` | asm |
+| `8003D0D8` | `03DCD8` | 0x138 | `PakMenu_ConfirmOverwrite` | `asm/3D97C.s` | asm |
+| `8003D210` | `03DE10` | 0x2c4 | `func_8003D210` | `asm/3D97C.s` | asm |
+| `8003D4D4` | `03E0D4` | 0x1e4 | `PakMenu_Busy` | `asm/3D97C.s` | asm |
 | `8003D6B8` | `03E2B8` | 0x40 | `func_8003D6B8` | `src/auto/3E2B8.c` | C (generated) |
 | `8003D6F8` | `03E2F8` | 0x34 | `func_8003D6F8` | `src/auto/3E2F8.c` | C (generated) |
 | `8003D72C` | `03E32C` | 0x38 | `func_8003D72C` | `src/auto/3E2F8.c` | C (generated) |
@@ -1494,7 +1494,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800774FC` | `0780FC` | 0x7c | `__osContDataCrc` | `src/auto/780FC.c` | C (generated) |
 | `80077580` | `078180` | 0xec | `func_80077580` | `asm/78178.s` | asm |
 | `8007766C` | `07826C` | 0x90 | `func_8007766C` | `asm/78178.s` | asm |
-| `800776FC` | `0782FC` | 0x84 | `func_800776FC` | `asm/78178.s` | asm |
+| `800776FC` | `0782FC` | 0x80 | `__osPfsGetOneChannelData` | `src/auto/782FC.c` | C (generated) |
 | `80077780` | `078380` | 0x48 | `__osResetGlobalIntMask` | `src/libultra/__osResetGlobalIntMask.c` | C |
 | `800777D0` | `0783D0` | 0x40 | `__osSetGlobalIntMask` | `src/libultra/__osSetGlobalIntMask.c` | C |
 | `80077810` | `078410` | 0x48 | `osYieldThread` | `src/auto/78410.c` | C (generated) |
