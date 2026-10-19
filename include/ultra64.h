@@ -46,6 +46,25 @@ typedef struct OSThread_s {
     /* 0x020 */ __OSThreadContext context;
 } OSThread; /* size = 0x1B0 */
 
+typedef void *OSMesg;
+
+typedef struct OSMesgQueue_s {
+    /* 0x00 */ OSThread *mtqueue;
+    /* 0x04 */ OSThread *fullqueue;
+    /* 0x08 */ s32 validCount;
+    /* 0x0C */ s32 first;
+    /* 0x10 */ s32 msgCount;
+    /* 0x14 */ OSMesg *msg;
+} OSMesgQueue; /* size = 0x18 */
+
+#define OS_MESG_NOBLOCK 0
+#define OS_MESG_BLOCK 1
+
+#define OS_STATE_STOPPED 1
+#define OS_STATE_RUNNABLE 2
+#define OS_STATE_RUNNING 4
+#define OS_STATE_WAITING 8
+
 #define OS_READ 0
 #define OS_WRITE 1
 

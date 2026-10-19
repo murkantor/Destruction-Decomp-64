@@ -1285,11 +1285,11 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8006A490` | `06B090` | 0xd0 | `osCreateThread` | `src/auto/6B090.c` | C (generated) |
 | `8006A560` | `06B160` | 0x90 | `func_8006A560` | `asm/6B160.s` | asm |
 | `8006A5F0` | `06B1F0` | 0x210 | `osInitialize` | `asm/6B160.s` | asm |
-| `8006A800` | `06B400` | 0x130 | `osRecvMesg` | `asm/6B160.s` | asm |
-| `8006A930` | `06B530` | 0x130 | `osSendMesg` | `asm/6B160.s` | asm |
+| `8006A800` | `06B400` | 0x124 | `osRecvMesg` | `src/auto/6B400.c` | C (generated) |
+| `8006A930` | `06B530` | 0x130 | `osSendMesg` | `src/auto/6B530.c` | C (generated) |
 | `8006AA60` | `06B660` | 0x5c | `osSetEventMesg` | `src/auto/6B660.c` | C (generated) |
 | `8006AAC0` | `06B6C0` | 0xc8 | `osSetThreadPri` | `src/auto/6B6C0.c` | C (generated) |
-| `8006AB90` | `06B790` | 0x120 | `osStartThread` | `asm/6B788.s` | asm |
+| `8006AB90` | `06B790` | 0x118 | `osStartThread` | `src/auto/6B790.c` | C (generated) |
 | `8006ACB0` | `06B8B0` | 0x34 | `__osDequeueThread` | `src/auto/6B8B0.c` | C (generated) |
 | `8006ACF0` | `06B8F0` | 0x54 | `__osTimerServicesInit` | `src/auto/6B8F0.c` | C (generated) |
 | `8006AD44` | `06B944` | 0x13c | `__osTimerInterrupt` | `asm/6B944.s` | asm |
@@ -1417,13 +1417,13 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80070F60` | `071B60` | 0x60 | `osMapTLBRdb` | `asm/709B4.s` | asm |
 | `80070FC0` | `071BC0` | 0xd0 | `func_80070FC0` | `asm/709B4.s` | asm |
 | `80071090` | `071C90` | 0x18 | `osGetThreadPri` | `src/libultra/osGetThreadPri.c` | C |
-| `800710B0` | `071CB0` | 0x140 | `osJamMesg` | `asm/71CA8.s` | asm |
-| `800711F0` | `071DF0` | 0xa0 | `func_800711F0` | `asm/71CA8.s` | asm |
-| `80071290` | `071E90` | 0xa4 | `init_lpfilter` | `asm/71CA8.s` | asm |
-| `80071334` | `071F34` | 0x498 | `alFxNew` | `asm/71CA8.s` | asm |
-| `800717CC` | `0723CC` | 0xb8 | `alEnvmixerNew` | `asm/71CA8.s` | asm |
-| `80071884` | `072484` | 0xb0 | `alLoadNew` | `asm/71CA8.s` | asm |
-| `80071934` | `072534` | 0x8c | `alResampleNew` | `asm/71CA8.s` | asm |
+| `800710B0` | `071CB0` | 0x134 | `osJamMesg` | `src/auto/71CB0.c` | C (generated) |
+| `800711F0` | `071DF0` | 0xa0 | `func_800711F0` | `asm/71DE4.s` | asm |
+| `80071290` | `071E90` | 0xa4 | `init_lpfilter` | `asm/71DE4.s` | asm |
+| `80071334` | `071F34` | 0x498 | `alFxNew` | `asm/71DE4.s` | asm |
+| `800717CC` | `0723CC` | 0xb8 | `alEnvmixerNew` | `asm/71DE4.s` | asm |
+| `80071884` | `072484` | 0xb0 | `alLoadNew` | `asm/71DE4.s` | asm |
+| `80071934` | `072534` | 0x8c | `alResampleNew` | `asm/71DE4.s` | asm |
 | `800719C0` | `0725C0` | 0x5c | `alAuxBusNew` | `src/auto/725C0.c` | C (generated) |
 | `80071A1C` | `07261C` | 0x5c | `alMainBusNew` | `src/auto/7261C.c` | C (generated) |
 | `80071A78` | `072678` | 0x44 | `alSaveNew` | `src/auto/72678.c` | C (generated) |
