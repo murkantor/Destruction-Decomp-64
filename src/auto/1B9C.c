@@ -26,9 +26,9 @@ extern Game *gGame;
 extern f64 D_800B7D80;
 extern f64 D_800B7D88;
 
-Car *func_80001270(Car *, Car *);
+Car *Obj_PickMinKey10(Car *, Car *);
 Car *func_80001294(Car *, Car *);
-Car *func_800012B8(Car *, Car *);
+Car *Obj_PickMaxKey18(Car *, Car *);
 Car *func_800012DC(Car *, Car *);
 Car *Obj_PickNearer(Car *, Car *, Car *);
 Car *Car_PickRandomOther(Car *);
@@ -70,13 +70,13 @@ void Ai_PickTarget(Car *car) {
         }
         switch (mode) {
             case 0:
-                target = func_80001270(other, target);
+                target = Obj_PickMinKey10(other, target);
                 break;
             case 1:
                 target = func_80001294(other, target);
                 break;
             case 2:
-                target = func_800012B8(other, target);
+                target = Obj_PickMaxKey18(other, target);
                 break;
             case 3:
                 target = func_800012DC(other, target);

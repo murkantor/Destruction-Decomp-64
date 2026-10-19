@@ -16,7 +16,7 @@ void func_80002074(void);
 void func_80002148(void);
 void Track_FreeAnims(void);
 void func_8002DCBC(void);
-void func_80063FEC(Node **, Node *);
+void List_Remove(Node **, Node *);
 void Mem_Free(void *);
 
 void func_80024E44(Obj *arg0) {
@@ -42,7 +42,7 @@ void func_80024E44(Obj *arg0) {
     func_8002DCBC();
     for (i = 0; i < arg0->xC->x4 * arg0->xC->x5; i++) {
         while (arg0->xC->x2C[i] != NULL) {
-            func_80063FEC(&arg0->xC->x2C[i], arg0->xC->x2C[i]->next);
+            List_Remove(&arg0->xC->x2C[i], arg0->xC->x2C[i]->next);
         }
     }
     Mem_Free(arg0->xC->x2C);

@@ -14,7 +14,7 @@ extern f32 D_80125BD4;
 extern f64 D_800BACC0;
 
 void Rumble_DisallowRetry(void);
-void func_80062E4C(void);
+void Timer_Reset(void);
 void func_80063564(s32, s32);
 void func_800638C0(void *);
 void func_800638C8(void *);
@@ -30,7 +30,7 @@ s32 func_8004686C(Menu *m) {
         case 0: {
             f32 vol;
             Rumble_DisallowRetry();
-            func_80062E4C();
+            Timer_Reset();
             func_80063564(D_80125C38, 0);
             func_800638C0(gGame[0]->x1058);
             func_800638C8(gGame[0]->x1080);

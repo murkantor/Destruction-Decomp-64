@@ -18,14 +18,14 @@ typedef struct {
 extern ResType gResTypes[];
 extern s32 gNumResTypes;
 
-void func_80063FEC(LNode **, s32);
+void List_Remove(LNode **, s32);
 
 void Res_FreeAll(void) {
     s32 i;
 
     for (i = 0; i < gNumResTypes; i++) {
         while (gResTypes[i].list != NULL) {
-            func_80063FEC(&gResTypes[i].list, gResTypes[i].list->value);
+            List_Remove(&gResTypes[i].list, gResTypes[i].list->value);
         }
         gResTypes[i].count = 0;
     }

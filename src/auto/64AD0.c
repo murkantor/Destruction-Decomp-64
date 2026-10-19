@@ -18,14 +18,14 @@ typedef struct {
 extern ResType gResTypes[];
 extern s32 gNumResTypes;
 
-u8 func_8006404C(LNode **, s32);
+u8 List_Contains(LNode **, s32);
 
 ResType *Res_FindType(s32 key) {
     s32 i;
     ResType *found = NULL;
 
     for (i = 0; i < gNumResTypes; i++) {
-        if (func_8006404C(&gResTypes[i].list, key)) {
+        if (List_Contains(&gResTypes[i].list, key)) {
             found = &gResTypes[i];
             break;
         }

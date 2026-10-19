@@ -58,7 +58,7 @@ void func_80061480(void *, f32, f32, s32);
 void Sprite_SetSize(void *, s32, s32, s32, s32);
 Gfx *func_80061648(void *, Gfx *, s32);
 Gfx *func_8005E92C(Gfx *, s32, s32, s32, s32, s32);
-Gfx *func_80060320(Gfx *);
+Gfx *Gfx_SetTextureLUT(Gfx *);
 
 #define GFX2(g,a,b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
@@ -114,5 +114,5 @@ Gfx *func_8005E2AC(Ctx *ctx, Gfx *g) {
         }
         }
     }
-    return func_80060320(g);
+    return Gfx_SetTextureLUT(g);
 }
