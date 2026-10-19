@@ -21,3 +21,15 @@ sMainStackTop = 0x800CCA70;
 gInitConfig = 0x801311C0; // size:0xC
 gHeapStart = 0x80137170;
 gBuildVersion = 0x8007E910;
+
+// debug menu helpers, matched to the prototype's debug menu (docs/prototype.md)
+DebugMenu_Init = 0x80053F00; // type:func
+DebugMenu_AddToggle = 0x80053F0C; // type:func
+DebugMenu_AddInt = 0x80053F5C; // type:func
+DebugMenu_AddFloat = 0x80053FA8; // type:func
+DebugMenu_AddSubmenu = 0x80053FEC; // type:func
+DebugMenu_BuildVideo = 0x80056054; // type:func
+DebugMenu_BuildFrameSetup = 0x800560F0; // type:func
+gVideoInterlace = 0x800B0B48;
+gVideoDither = 0x800B0B4C;
+gVideoFifoShift = 0x800B0B50;

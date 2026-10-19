@@ -54,7 +54,10 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `linker_syms.txt` | Symbols defined at link time, such as segment ROM addresses |
 | `src/` | Decompiled C |
 | `include/` | Headers. `hardware_syms.ld` holds hardware register and libultra low-memory addresses |
+| `include/ids.h` | Sound, sprite and text IDs, generated from the prototype |
+| `include/car.h` | Car and AI fields known so far |
 | `tools/` | Compiler setup and the `move` fix for the assembler |
+| `tools/proto/` | Scripts that compare the prototype with retail |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |
 | `asm/`, `assets/`, `build/` | Generated, not committed |
 
@@ -77,4 +80,4 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | Assembler | Modern GNU as. KMC's assembler encodes `move` as `addu`, so `tools/fix_move.sed` rewrites it in the compiler output first |
 | libultra | 2.0I, built 31 Jul 1998, with asserts |
 
-See [docs/rom.md](docs/rom.md) for the ROM layout and what is known about the data.
+See [docs/rom.md](docs/rom.md) for the ROM layout and what is known about the data, and [docs/prototype.md](docs/prototype.md) for what a prototype build adds.
