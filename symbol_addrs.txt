@@ -212,3 +212,9 @@ gUi = 0x8011EEF4;
 Ui_AddElement = 0x8005D91C; // type:func
 Ui_FindElement = 0x8005E620; // type:func
 Ui_RemoveElement = 0x8005DBE4; // type:func
+
+// debug render toggles, mapped from the prototype's debug menu (tools/proto/datamap.py)
+gDrawCars = 0x80095880;
+gDrawWorld = 0x80095884;
+gDrawSkyDome = 0x80095888;
+gDoPhysics = 0x8009588C;

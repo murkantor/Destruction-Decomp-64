@@ -28,6 +28,16 @@ Put it at `baserom_proto.z64` in the repo root if you want to run the tools belo
 python3 tools/proto/funcmatch.py baserom_proto.z64 baserom.z64 build/funcmap.txt
 ```
 
+## Data addresses
+
+Matched functions build the same variables' addresses at the same instructions, so `tools/proto/datamap.py` maps prototype data addresses to retail ones (about 1500 of them). The offset between the builds changes from one variable to the next, so only directly mapped addresses can be trusted.
+
+```sh
+python3 tools/proto/datamap.py baserom_proto.z64 baserom.z64 build/funcmap.txt > build/datamap.txt
+```
+
+Through it, the debug menu's Draw Cars, Draw World, Draw SkyDome and Do Physics toggles are `gDrawCars`, `gDrawWorld`, `gDrawSkyDome` and `gDoPhysics` at 0x80095880 to 0x8009588C in retail. Most other menu variables are only used by code retail removed.
+
 ## ID names
 
 The debug menu's list items take a pointer into a pool of strings at 0x800B4BC4 (ROM 0xB57C4). Each list starts at a fixed index in the pool. `tools/proto/names.py` turns them into `include/ids.h`.
