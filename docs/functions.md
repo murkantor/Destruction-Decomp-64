@@ -1240,7 +1240,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800671D4` | `067DD4` | 0x194 | `Math_Exp2f` | `src/auto/67DD4.c` | C (generated) |
 | `80067368` | `067F68` | 0x198 | `func_80067368` | `asm/67F68.s` | asm |
 | `80067500` | `068100` | 0x94 | `func_80067500` | `src/auto/68100.c` | C (generated) |
-| `80067594` | `068194` | 0x134 | `Seq_ResetVoice` | `asm/68194.s` | asm |
+| `80067594` | `068194` | 0x134 | `Seq_ResetVoice` | `src/auto/68194.c` | C (generated) |
 | `800676C8` | `0682C8` | 0x180 | `Voice_FindFree` | `src/auto/682C8.c` | C (generated) |
 | `80067848` | `068448` | 0x2c | `Mem_Fill` | `src/auto/68448.c` | C (generated) |
 | `80067874` | `068474` | 0x38 | `func_80067874` | `src/auto/68474.c` | C (generated) |

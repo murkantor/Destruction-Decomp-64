@@ -1169,7 +1169,7 @@ segments:
       - [0x67DD4, c, auto/67DD4]
       - [0x67F68, asm]
       - [0x68100, c, auto/68100]
-      - [0x68194, asm]
+      - [0x68194, c, auto/68194]
       - [0x682C8, c, auto/682C8]
       - [0x68448, c, auto/68448]
       - [0x68474, c, auto/68474]

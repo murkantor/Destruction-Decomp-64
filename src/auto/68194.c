@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 x0;
     u8 pad4[8];
@@ -55,7 +58,7 @@ static inline void clr(u8 *p, u32 n) {
 
 void Seq_ResetVoice(Voice *v) {
     u8 saved = v->xC1;
-    s32 q;
+    s16 q;
 
     v->x0 = 0;
     clr((u8 *)v, 0x120);
@@ -74,7 +77,7 @@ void Seq_ResetVoice(Voice *v) {
     v->x54 = 1.0f;
     v->xB4 = 0x7F;
     v->xB9 = 0x7F;
-    v->xC1 = saved;
+    v->xBF = 0xFF;
     v->x92 = 1;
     v->x9A = 1;
     v->x9C = 1;
@@ -87,6 +90,6 @@ void Seq_ResetVoice(Voice *v) {
     v->xA8 = 0x80;
     v->x74 = D_800CCAC0;
     v->x90 = 0x80;
-    v->xBF = 0xFF;
+    v->xC1 = saved;
     v->x5C = 1.0f / 15.0f;
 }
