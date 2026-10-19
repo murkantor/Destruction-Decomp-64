@@ -674,9 +674,9 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80046FB8` | `047BB8` | 0x1b4 | `Menu_ShowExitConfirm` | `src/auto/47BB8.c` | C (generated) |
 | `8004716C` | `047D6C` | 0x8c | `func_8004716C` | `src/auto/47D6C.c` | C (generated) |
 | `800471F8` | `047DF8` | 0x174 | `func_800471F8` | `src/auto/47DF8.c` | C (generated) |
-| `8004736C` | `047F6C` | 0x15c | `func_8004736C` | `asm/47F6C.s` | asm |
-| `800474C8` | `0480C8` | 0x184 | `Menu_PrevPage` | `src/auto/480C8.c` | C (generated) |
-| `8004764C` | `04824C` | 0x188 | `OptionsMenu_Next` | `src/auto/480C8.c` | C (generated) |
+| `8004736C` | `047F6C` | 0x15c | `func_8004736C` | `src/auto/47F6C.c` | C (generated) |
+| `800474C8` | `0480C8` | 0x184 | `Menu_PrevPage` | `src/auto/47F6C.c` | C (generated) |
+| `8004764C` | `04824C` | 0x188 | `OptionsMenu_Next` | `src/auto/47F6C.c` | C (generated) |
 | `800477D4` | `0483D4` | 0x638 | `func_800477D4` | `src/auto/483D4.c` | C (generated) |
 | `80047E0C` | `048A0C` | 0x650 | `func_80047E0C` | `src/auto/48A0C.c` | C (generated) |
 | `8004845C` | `04905C` | 0x24c | `func_8004845C` | `asm/4905C.s` | asm |
