@@ -593,6 +593,13 @@ segments:
       - [0x69C78, asm]
       - [0x69C80, c, libultra/guNormalize]
       - [0x69D28, asm]
+      - [0x69D30, c, auto/69D30]
+      - [0x69EE0, c, auto/69EE0]
+      - [0x6A0A8, asm]
+      - [0x6A0B0, c, auto/6A0B0]
+      - [0x6A384, asm]
+      - [0x6A390, c, auto/6A390]
+      - [0x6A6A4, asm]
       - [0x6A6B0, c, auto/6A6B0]
       - [0x6A710, c, auto/6A710]
       - [0x6A78C, asm]
@@ -601,6 +608,8 @@ segments:
       - [0x6A990, c, auto/6A990]
       - [0x6A9E4, c, auto/6A9E4]
       - [0x6AA54, asm]
+      - [0x6AA60, c, auto/6AA60]
+      - [0x6AE18, asm]
       - [0x6B060, c, libultra/osCreateMesgQueue]
       - [0x6B084, asm]
       - [0x6B090, c, auto/6B090]
@@ -789,7 +798,9 @@ segments:
       - [0xB8960, rodata]
       - [0xBCCB0, .rodata, auto/69160]
       - [0xBCCC0, .rodata, auto/694E0]
-      - [0xBCCD0, rodata]
+      - [0xBCCD0, .rodata, auto/69D30]
+      - [0xBCCF0, .rodata, auto/69EE0]
+      - [0xBCD10, rodata]
       - { start: 0xBD4A0, type: bss, vram: 0x800BC8A0 }
 
   - name: assets_bd4a0

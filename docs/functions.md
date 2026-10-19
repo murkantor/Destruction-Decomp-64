@@ -1263,24 +1263,24 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80068EF0` | `069AF0` | 0xdc | `func_80068EF0` | `asm/69A00.s` | asm |
 | `80068FCC` | `069BCC` | 0xac | `func_80068FCC` | `src/auto/69BCC.c` | C (generated) |
 | `80069080` | `069C80` | 0xa8 | `guNormalize` | `src/libultra/guNormalize.c` | C |
-| `80069130` | `069D30` | 0x1b0 | `func_80069130` | `asm/69D28.s` | asm |
-| `800692E0` | `069EE0` | 0x1d0 | `func_800692E0` | `asm/69D28.s` | asm |
-| `800694B0` | `06A0B0` | 0x15c | `func_800694B0` | `asm/69D28.s` | asm |
-| `8006960C` | `06A20C` | 0x184 | `func_8006960C` | `asm/69D28.s` | asm |
-| `80069790` | `06A390` | 0x188 | `func_80069790` | `asm/69D28.s` | asm |
-| `80069918` | `06A518` | 0x198 | `func_80069918` | `asm/69D28.s` | asm |
+| `80069130` | `069D30` | 0x1b0 | `guPerspectiveF` | `src/auto/69D30.c` | C (generated) |
+| `800692E0` | `069EE0` | 0x1c8 | `guPerspective` | `src/auto/69EE0.c` | C (generated) |
+| `800694B0` | `06A0B0` | 0x15c | `guRotateF` | `src/auto/6A0B0.c` | C (generated) |
+| `8006960C` | `06A20C` | 0x178 | `guRotate` | `src/auto/6A0B0.c` | C (generated) |
+| `80069790` | `06A390` | 0x188 | `guRotateRPYF` | `src/auto/6A390.c` | C (generated) |
+| `80069918` | `06A518` | 0x18c | `guRotateRPY` | `src/auto/6A390.c` | C (generated) |
 | `80069AB0` | `06A6B0` | 0x60 | `func_80069AB0` | `src/auto/6A6B0.c` | C (generated) |
 | `80069B10` | `06A710` | 0x7c | `guScale` | `src/auto/6A710.c` | C (generated) |
 | `80069B90` | `06A790` | 0x1a0 | `sinf` | `asm/6A78C.s` | asm |
 | `80069D30` | `06A930` | 0x54 | `sins` | `src/auto/6A930.c` | C (generated) |
 | `80069D90` | `06A990` | 0x54 | `func_80069D90` | `src/auto/6A990.c` | C (generated) |
 | `80069DE4` | `06A9E4` | 0x70 | `guTranslate` | `src/auto/6A9E4.c` | C (generated) |
-| `80069E60` | `06AA60` | 0x1d8 | `func_80069E60` | `asm/6AA54.s` | asm |
-| `8006A038` | `06AC38` | 0x1e8 | `func_8006A038` | `asm/6AA54.s` | asm |
-| `8006A220` | `06AE20` | 0xb0 | `osInvalDCache` | `asm/6AA54.s` | asm |
-| `8006A2D0` | `06AED0` | 0xe0 | `osInvalICache` | `asm/6AA54.s` | asm |
-| `8006A3B0` | `06AFB0` | 0x80 | `osWritebackDCache` | `asm/6AA54.s` | asm |
-| `8006A430` | `06B030` | 0x30 | `osWritebackDCacheAll` | `asm/6AA54.s` | asm |
+| `80069E60` | `06AA60` | 0x1d8 | `guPositionF` | `src/auto/6AA60.c` | C (generated) |
+| `8006A038` | `06AC38` | 0x1e0 | `guPosition` | `src/auto/6AA60.c` | C (generated) |
+| `8006A220` | `06AE20` | 0xb0 | `osInvalDCache` | `asm/6AE18.s` | asm |
+| `8006A2D0` | `06AED0` | 0xe0 | `osInvalICache` | `asm/6AE18.s` | asm |
+| `8006A3B0` | `06AFB0` | 0x80 | `osWritebackDCache` | `asm/6AE18.s` | asm |
+| `8006A430` | `06B030` | 0x30 | `osWritebackDCacheAll` | `asm/6AE18.s` | asm |
 | `8006A460` | `06B060` | 0x24 | `osCreateMesgQueue` | `src/libultra/osCreateMesgQueue.c` | C |
 | `8006A490` | `06B090` | 0xd0 | `osCreateThread` | `src/auto/6B090.c` | C (generated) |
 | `8006A560` | `06B160` | 0x84 | `osGetTime` | `src/auto/6B160.c` | C (generated) |
