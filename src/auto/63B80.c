@@ -25,8 +25,8 @@ void func_80062FD4(void) {
     func_80021350();
 }
 
-M2C_UNK func_800213F0();                            /* extern */
+M2C_UNK Camera_UpdateChase();                            /* extern */
 
 void func_80062FF0(void) {
-    func_800213F0();
+    Camera_UpdateChase();
 }

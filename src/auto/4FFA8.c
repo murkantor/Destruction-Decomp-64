@@ -12,7 +12,7 @@ extern u8 D_80097337;
 extern Timer68 D_800958F8[];
 void Ui_ResetScreen(s32, s32);
 s32 func_8003E644(u8 *, s32);
-void func_8005F050(void *, Menu48 *);
+void Ui_AddSpriteElement(void *, Menu48 *);
 void Ui_AddElement(void *, s32, s32);
 void func_80042114(u8 *);
 void Timer_Start(Timer68 *, u64);
@@ -26,7 +26,7 @@ void func_8004F3A8(void) {
     s = D_80097338[0] + 0xC;
     D_800964F0 = func_8003E644(s, 0);
     m.x14 = s + 0x11371;
-    func_8005F050(gUi[0], &m);
+    Ui_AddSpriteElement(gUi[0], &m);
     Ui_AddElement(gUi[0], 2, 0x3C);
     func_80042114(s);
     D_80097337 = 0;

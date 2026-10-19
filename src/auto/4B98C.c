@@ -12,7 +12,7 @@ typedef struct {
 extern GameState *gGame;
 extern u8 D_80097335;
 void Timer_Start(void *, s64);
-void func_80049DA0(s32, s32);
+void Menu_ShowVersus(s32, s32);
 
 s32 func_8004AD8C(MenuItem *item) {
     s32 n;
@@ -31,7 +31,7 @@ s32 func_8004AD8C(MenuItem *item) {
     if (i == 0) {
         return 0;
     }
-    func_80049DA0(i, i - 1);
+    Menu_ShowVersus(i, i - 1);
     item->value = i - 1;
     return 1;
 }

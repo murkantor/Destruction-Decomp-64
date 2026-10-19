@@ -24,7 +24,7 @@ extern Game *gGame;
 Vec3f func_8001FBA8(void *);
 f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 void Ai_PickTarget(AiCar *);
-void func_800067E0(AiCar *);
+void Ai_CheckStuck(AiCar *);
 u64 Time_Get(u64 *);
 s32 __cmpdi2(s64, s64);
 
@@ -55,7 +55,7 @@ void Ai_UpdateState(AiCar *car) {
             ctrl->x4C = 6;
             Ai_PickTarget(car);
         }
-        func_800067E0(car);
+        Ai_CheckStuck(car);
         break;
     }
     case 1:

@@ -30,7 +30,7 @@ Vec3f func_8001FBA8(Target *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 
-void func_800213F0(Camera *cam) {
+void Camera_UpdateChase(Camera *cam) {
     Target *t = cam->xB0->x20;
     Basis *b;
     Vec3f eye;

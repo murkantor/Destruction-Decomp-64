@@ -9,7 +9,7 @@ extern s32 D_800958B4;
 extern s32 D_80095FF8[];
 u8 func_800016DC(Car *);
 u8 Ai_AdjustLaneFromNeighbour(Car *);
-void func_800067E0(Car *);
+void Ai_CheckStuck(Car *);
 u64 Time_Get(void *);
 
 void func_80005C30(Car *arg0) {
@@ -27,7 +27,7 @@ void func_80005C30(Car *arg0) {
         if (arg0->x88 == D_80095FF8[D_800958B4]) {
             s->x10 = 0xC;
         }
-        func_800067E0(arg0);
+        Ai_CheckStuck(arg0);
         break;
     case 8:
         break;

@@ -30,7 +30,7 @@ extern Game *gGame;
 extern Ent **D_80096074;
 u64 Time_Get(u64 *);
 void Ai_PickTarget(Ent *);
-void func_800067E0(Ent *);
+void Ai_CheckStuck(Ent *);
 
 void func_80005814(Ent *e) {
     Tracker *t = e->x38;
@@ -54,7 +54,7 @@ void func_80005814(Ent *e) {
         if (t->x6C != 0) {
             t->x10 = 4;
         }
-        func_800067E0(e);
+        Ai_CheckStuck(e);
         break;
     case 4:
         if (*D_80096074 == e) {

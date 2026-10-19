@@ -10,7 +10,7 @@ extern Pair3 D_800BA74C;
 extern Players D_800958A4;
 extern void *gUi[];
 void Ui_ResetScreen(s32, s32);
-void func_8005F050(void *, Menu48 *);
+void Ui_AddSpriteElement(void *, Menu48 *);
 void func_8005D8B8(void *, s32, s32);
 void TrackSelect_Update(void *, s32, s32);
 
@@ -21,7 +21,7 @@ void func_800430E8(void) {
 
     Ui_ResetScreen(t.p[D_800958A4.n - 2].a, t.p[D_800958A4.n - 2].b);
     m.x14 = D_800958A4.n + 0x11506;
-    func_8005F050(gUi[0], &m);
+    Ui_AddSpriteElement(gUi[0], &m);
     func_8005D8B8(gUi[0], 2, 0x3B);
     for (i = 0; i < D_800958A4.n; i++) {
         TrackSelect_Update(D_800958A4.x1C[i], -1, i);

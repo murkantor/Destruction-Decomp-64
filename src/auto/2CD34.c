@@ -12,7 +12,7 @@ void func_8003ECF8(void);
 void func_80024E44(void *);
 void func_8002550C(Race *);
 
-void func_8002C134(Game *game) {
+void Game_FreeModeResources(Game *game) {
     s8 i;
 
     switch (gGame->mode) {

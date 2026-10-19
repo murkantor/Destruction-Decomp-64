@@ -39,7 +39,7 @@ Vec3f func_8001FC08(Car *);
 Vec3f func_8001FBA8(Car *);
 f32 func_800005C8(Vec3f, Vec3f);
 
-void func_80003284(Car *car) {
+void Ai_UpdateTargetPoint(Car *car) {
     Ai *ai = car->x38;
     Race *race;
     Seg *segs;

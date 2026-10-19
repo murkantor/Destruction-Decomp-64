@@ -13,7 +13,7 @@ extern UiDesc D_800BAE38;
 extern UiPos2 D_800BAE80;
 extern void *gUi;
 void func_80049340(s32);
-void func_8005F050(void *, UiDesc *);
+void Ui_AddSpriteElement(void *, UiDesc *);
 void Ui_AddElement(void *, s32, s32);
 void func_80049528(s32, s32, s32, s32);
 
@@ -57,14 +57,14 @@ found:
         d.x28 = pos.p[0].b;
         d.x2C = pos.p[0].c;
         d.x30 = pos.p[0].d;
-        func_8005F050(gUi, &d);
+        Ui_AddSpriteElement(gUi, &d);
         Ui_AddElement(gUi, 2, 0x12E);
         d.x24 = i + 0x112DD;
         d.x14 = pos.p[1].a;
         d.x28 = pos.p[1].b;
         d.x2C = pos.p[1].c;
         d.x30 = pos.p[1].d;
-        func_8005F050(gUi, &d);
+        Ui_AddSpriteElement(gUi, &d);
         Ui_AddElement(gUi, 2, 0x12F);
         p = -1;
     }

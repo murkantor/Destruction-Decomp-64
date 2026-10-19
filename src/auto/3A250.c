@@ -17,7 +17,7 @@ typedef struct {
     s32 xA58;
 } Car;
 
-void func_80039650(Car *car, f32 speed) {
+void Car_SelectGear(Car *car, f32 speed) {
     s32 max = car->x198;
     s32 min = car->x19C;
     s32 gear;

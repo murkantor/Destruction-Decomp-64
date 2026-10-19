@@ -13,26 +13,26 @@ extern char D_80123CEC[];
 extern char D_80096E4C[];
 extern u8 D_80096E6E;
 void Ui_ResetScreen(s32, s32);
-void func_8005F050(void *, UiElemDesc *);
+void Ui_AddSpriteElement(void *, UiElemDesc *);
 void func_8005D8B8(void *, s32, s32);
 void Ui_AddElement(void *, s32, s32);
 void TrackSelect_Update(s32, s32, s32);
 char *strcpy(char *, const char *);
 
-void func_80042F2C(void) {
+void Menu_SetupTrackSelect(void) {
     UiElemDesc a = D_800BA674;
     UiElemDesc b = D_800BA6BC;
 
     Ui_ResetScreen(0x112BA, 0x112BB);
     b.x14 = D_800958A4 + 0x11506;
-    func_8005F050(gUi[0], &b);
+    Ui_AddSpriteElement(gUi[0], &b);
     func_8005D8B8(gUi[0], 2, 0x3B);
     if (D_800958C0 == -1 || D_801253F8 != 0 || D_800958C0 < 12 || D_80097A0C[D_800958C0] != 0) {
         a.x14 = D_800958C0 + 0x11371;
     } else {
         a.x14 = 0x11389;
     }
-    func_8005F050(gUi[0], &a);
+    Ui_AddSpriteElement(gUi[0], &a);
     Ui_AddElement(gUi[0], 2, 0x3C);
     TrackSelect_Update(D_800958C0, -1, 0);
     strcpy(D_80123CEC, D_80096E4C);

@@ -11,7 +11,7 @@ extern Game *gGame;
 s32 func_80011CCC(Vec3f pos);
 void func_80063FA0(void **, void *);
 
-void func_8003AF1C(void *obj, f32 x0, f32 z0, f32 x1, f32 z1) {
+void Grid_AddObjToCellsInRect(void *obj, f32 x0, f32 z0, f32 x1, f32 z1) {
     Vec3f v;
     s32 idx[4];
     Grid *grid = gGame->race->track->grid;
