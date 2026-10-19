@@ -399,7 +399,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `02964C` | `80028A4C` | 0x664 | `src/auto/2964C.c` | C (generated) | 1 | `Car_DeformMeshAtImpact` |
 | `029CB0` | `800290B0` | 0x2c8 | `src/auto/29CB0.c` | C (generated) | 1 | `Car_ApplyDamage` |
 | `029F78` | `80029378` | 0x6a0 | `src/auto/29F78.c` | C (generated) | 1 | `Car_OnCollision` |
-| `02A618` | `80029A18` | 0xbb4 | `asm/2A618.s` | asm | 1 |  |
+| `02A618` | `80029A18` | 0xbb4 | `asm/2A618.s` | asm | 1 | `Car_ApplyImpactDamage` |
 | `02B1CC` | `8002A5CC` | 0xc0 | `src/auto/2B1CC.c` | C (generated) | 1 |  |
 | `02B28C` | `8002A68C` | 0x24c | `src/auto/2B28C.c` | C (generated) | 1 |  |
 | `02B4D8` | `8002A8D8` | 0x32c | `src/auto/2B4D8.c` | C (generated) | 1 |  |

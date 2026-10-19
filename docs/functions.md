@@ -436,7 +436,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80028A4C` | `02964C` | 0x664 | `Car_DeformMeshAtImpact` | `src/auto/2964C.c` | C (generated) |
 | `800290B0` | `029CB0` | 0x2c8 | `Car_ApplyDamage` | `src/auto/29CB0.c` | C (generated) |
 | `80029378` | `029F78` | 0x6a0 | `Car_OnCollision` | `src/auto/29F78.c` | C (generated) |
-| `80029A18` | `02A618` | 0xbb4 | `func_80029A18` | `asm/2A618.s` | asm |
+| `80029A18` | `02A618` | 0xbb4 | `Car_ApplyImpactDamage` | `asm/2A618.s` | asm |
 | `8002A5CC` | `02B1CC` | 0xc0 | `func_8002A5CC` | `src/auto/2B1CC.c` | C (generated) |
 | `8002A68C` | `02B28C` | 0x24c | `func_8002A68C` | `src/auto/2B28C.c` | C (generated) |
 | `8002A8D8` | `02B4D8` | 0x32c | `func_8002A8D8` | `src/auto/2B4D8.c` | C (generated) |

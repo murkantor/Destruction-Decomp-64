@@ -940,3 +940,4 @@ Race_AssignSlotObjects = 0x80001BB0; // type:func
 MapMarker_Update = 0x8000E178; // type:func
 MapUi_Init = 0x8000FAD4; // type:func
 Menu_ConfirmTrackSelect = 0x80040C0C; // type:func
+Car_ApplyImpactDamage = 0x80029A18; // type:func

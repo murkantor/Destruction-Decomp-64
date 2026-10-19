@@ -40,7 +40,7 @@ void func_8002A5CC(Car *, s32);
 void Commentary_PickRandom(s32 *, s32, s32, s32);
 void Announcer_Request(s32, s32, s32);
 
-void func_80029A18(Car *atk, Car *vic, s32 part, s32 dmg) {
+void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
     Race *race = gGame->x1100;
     f32 m;
     f64 t;

@@ -34,7 +34,7 @@ extern void func_800266C8(Slot *);
 extern void Ui_RemoveElement(void *, s32);
 extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 unique);
 extern void Announcer_Request(s32 id, s32 arg1, s32 check);
-extern void func_80029A18(Car *, Car *, s32, s32);
+extern void Car_ApplyImpactDamage(Car *, Car *, s32, s32);
 extern void func_800045B0(Car *, s32, s32, Car *, s32, s32);
 
 void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
@@ -120,7 +120,7 @@ void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
     num = a->xBE2 ? 100 : a->parts[pa].x4;
     if (b->xBE2) den = 100; else den = b->parts[pb].x0;
     dmgA = (s32)(num * force) / den;
-    func_80029A18(a, b, pb, dmgA);
+    Car_ApplyImpactDamage(a, b, pb, dmgA);
     if (gGame->x10FC == 0x1C && a->x30 == 0 && dmgA >= 2 && (pa == 0 || pa == 4 || pa == 1)) {
         if (pb == 0) {
             Announcer_Request(0xB8, 0, 1);
@@ -132,7 +132,7 @@ void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
     num = b->xBE2 ? 100 : b->parts[pb].x4;
     if (a->xBE2) den = 100; else den = a->parts[pa].x0;
     dmgB = (s32)(num * force) / den;
-    func_80029A18(b, a, pa, dmgB);
+    Car_ApplyImpactDamage(b, a, pa, dmgB);
     if (gGame->x10FC == 0x1C && b->x30 == 0 && dmgB >= 2 && (pb == 0 || pb == 4 || pb == 1)) {
         if (pa == 0) {
             Announcer_Request(0xB8, 0, 1);
