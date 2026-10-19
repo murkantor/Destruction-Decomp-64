@@ -38,7 +38,7 @@ s32 func_8000E6E0(Target *t) {
             dst[i] = src[i];
         }
         now = Time_Get(&gGame->x1058);
-        D_800D1AE8.next = now + D_800D1AE8.interval;
+        D_800D1AE8.next = D_800D1AE8.interval + now;
         D_800D1AE8.idx++;
         return 0;
     }
