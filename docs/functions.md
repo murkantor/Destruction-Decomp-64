@@ -1210,15 +1210,15 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80065A58` | `066658` | 0x154 | `func_80065A58` | `asm/66658.s` | asm |
 | `80065BAC` | `0667AC` | 0xac | `func_80065BAC` | `asm/66658.s` | asm |
 | `80065C58` | `066858` | 0x108 | `func_80065C58` | `asm/66658.s` | asm |
-| `80065D60` | `066960` | 0x80 | `func_80065D60` | `asm/66658.s` | asm |
-| `80065DE0` | `0669E0` | 0x7c | `func_80065DE0` | `asm/66658.s` | asm |
-| `80065E5C` | `066A5C` | 0x70 | `func_80065E5C` | `asm/66658.s` | asm |
-| `80065ECC` | `066ACC` | 0x58 | `func_80065ECC` | `asm/66658.s` | asm |
-| `80065F24` | `066B24` | 0x60 | `func_80065F24` | `asm/66658.s` | asm |
-| `80065F84` | `066B84` | 0x70 | `func_80065F84` | `asm/66658.s` | asm |
-| `80065FF4` | `066BF4` | 0x70 | `func_80065FF4` | `asm/66658.s` | asm |
-| `80066064` | `066C64` | 0x8c | `func_80066064` | `asm/66658.s` | asm |
-| `800660F0` | `066CF0` | 0x88 | `func_800660F0` | `asm/66658.s` | asm |
+| `80065D60` | `066960` | 0x80 | `Sound_FadeOutAll` | `asm/66658.s` | asm |
+| `80065DE0` | `0669E0` | 0x7c | `Sound_CountPlaying` | `asm/66658.s` | asm |
+| `80065E5C` | `066A5C` | 0x70 | `Sound_FadeOut` | `asm/66658.s` | asm |
+| `80065ECC` | `066ACC` | 0x58 | `Sound_CountVoices` | `asm/66658.s` | asm |
+| `80065F24` | `066B24` | 0x60 | `Sound_SetVolume` | `asm/66658.s` | asm |
+| `80065F84` | `066B84` | 0x70 | `Sound_SetFieldA8` | `src/auto/66B84.c` | C (generated) |
+| `80065FF4` | `066BF4` | 0x70 | `Sound_SetPitch` | `asm/66BF4.s` | asm |
+| `80066064` | `066C64` | 0x8c | `func_80066064` | `asm/66BF4.s` | asm |
+| `800660F0` | `066CF0` | 0x88 | `func_800660F0` | `asm/66BF4.s` | asm |
 | `80066178` | `066D78` | 0x1c | `func_80066178` | `src/auto/66D78.c` | C (generated) |
 | `80066194` | `066D94` | 0x44 | `func_80066194` | `asm/66D94.s` | asm |
 | `800661D8` | `066DD8` | 0x44 | `func_800661D8` | `src/auto/66DD8.c` | C (generated) |

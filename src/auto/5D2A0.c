@@ -17,16 +17,16 @@ typedef struct {
 extern Obj8011EEF8 *D_8011EEF8;
 extern s8 D_800D31CC;
 void Mem_Free(void *);
-s32 func_80065DE0(s32);
-void func_80065D60(s32, s32);
+s32 Sound_CountPlaying(s32);
+void Sound_FadeOutAll(s32, s32);
 
 s32 func_8005C6A0(Owner *o) {
     s32 i;
 
     if (D_8011EEF8->unk530 == 0) {
-        if (func_80065DE0(3) != 0) {
-            func_80065D60(3, 30);
-            while (func_80065DE0(3) != 0) {
+        if (Sound_CountPlaying(3) != 0) {
+            Sound_FadeOutAll(3, 30);
+            while (Sound_CountPlaying(3) != 0) {
             }
         }
         D_8011EEF8->unk52C = 0;

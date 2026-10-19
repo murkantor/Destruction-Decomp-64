@@ -586,6 +586,8 @@ segments:
       - [0x66308, asm]
       - [0x6662C, c, auto/6662C]
       - [0x66658, asm]
+      - [0x66B84, c, auto/66B84]
+      - [0x66BF4, asm]
       - [0x66D78, c, auto/66D78]
       - [0x66D94, asm]
       - [0x66DD8, c, auto/66DD8]
