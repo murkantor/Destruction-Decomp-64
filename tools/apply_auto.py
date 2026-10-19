@@ -75,6 +75,24 @@ def main():
     if replaced:
         print(f"{replaced} INCLUDE_ASM lines replaced")
 
+    # skip anything that already lies inside a C subsegment (decompiled earlier)
+    starts = []
+    for line in open(os.path.join(ROOT, "dd64.yaml")):
+        m = re.match(r"\s*- \[0x([0-9A-F]+), (\w+)", line)
+        if m:
+            starts.append((int(m.group(1), 16), m.group(2)))
+    def in_c(rom):
+        kind = None
+        for start, k in starts:
+            if start > rom:
+                break
+            kind = k
+        return kind == "c"
+    already = [m for m in matches if in_c(m[0] - ROM_BASE)]
+    for vram, size, name in already:
+        print(f"{name}: already in a C file, skipped")
+    matches = [m for m in matches if m not in already]
+
     runs = []
     for vram, size, name in matches:
         if runs and runs[-1][-1][0] + runs[-1][-1][1] == vram:
