@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s8 h; s8 m; s8 s; s32 frac; } TimeHMS;
 typedef struct { u8 pad[0x10A8]; u64 clock; u8 pad10B0[0x10FC - 0x10B0]; s16 x10FC; } Game;
 extern Game *gGame[];
@@ -19,7 +22,7 @@ static inline void FormatTime(TimeHMS hms, char *p) {
             p[5] = '0';
         }
     }
-    p[7] = 0;
+    do { p[7] = 0; } while (0);
 }
 
 s32 SaveSlot_FormatTime(s32 arg0, s8 slot) {

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 f32 fabsf(f32);
 f64 fabs(f64);
 typedef struct { f32 x, y, z; } Vec3f;
@@ -40,6 +43,7 @@ void func_80068FCC(f32 mf[4][4], f32, f32, f32, f32 *, f32 *, f32 *);
 u8 Track_LineOfSight(void *, Vec3f *);
 Gfx *Bg_Draw(Spr *, Gfx *, s32);
 
+static inline u32 ftou(f32 x) { return x > 0.0f ? (u32)x : 0; }
 #define FTOU(x) ((x) > 0.0f ? (u32)(x) : 0)
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
@@ -106,8 +110,6 @@ Gfx *Gfx_DrawLensFlare(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
     else
         k = (D_800B86F0 - dist) * D_800B86F8;
 
-    spr = &sun->spr;
-    q = spr;
     scale = (D_800B8700 - dist) * D_800B8708 + D_800B8710;
     k *= D_801312F8[idx];
     scale *= D_801312F8[idx];
@@ -118,6 +120,8 @@ Gfx *Gfx_DrawLensFlare(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
     GFX2(gfx, 0xE3001201, 0x2000);
     GFX2(gfx, 0xFC119623, 0xFF2FFFFF);
     GFX2(gfx, 0xE3001001, 0);
+    spr = &sun->spr;
+    q = spr;
 
     for (i = 0; i < 5; i++) {
         s32 isz, ix, iy;
@@ -125,8 +129,9 @@ Gfx *Gfx_DrawLensFlare(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
         s32 sx, sy;
         s32 x0, y0;
         e = &D_80084DD0[i];
+        { f32 py = e->pos * mny;
         ix = (nx + e->pos * mnx) * hw + cx;
-        iy = -(ny + e->pos * mny) * hh + cy;
+        iy = -(ny + py) * hh + cy; }
         isz = e->size * ahw * scale;
         if (isz == 0)
             isz = 1;
@@ -150,8 +155,11 @@ Gfx *Gfx_DrawLensFlare(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
         GFX2(gfx, 0xFCFFFFFF, 0xFFFDF6FB);
         {
             Gfx *_g = gfx++;
-            u32 w0 = 0xF6000000 | ((FTOU(cx + cx) & 0x3FF) << 14) | ((FTOU(cy + cy) & 0x3FF) << 2);
-            _g->w0 = w0;
+            s32 w0;
+            u32 w1;
+            w0 = 0xF6000000 | ((FTOU(cx + cx) & 0x3FF) << 14);
+            w1 = w0 | ((FTOU(cy + cy) & 0x3FF) << 2);
+            _g->w0 = w1;
             _g->w1 = 0;
         }
     }

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u32 w0; u32 w1; } Gfx;
 typedef struct { Gfx *x0; void *x4; u8 pad8[0x10]; Gfx *x18; void *x1C; u8 pad20[0x108 - 0x20]; } ShBuf;
@@ -77,8 +80,8 @@ void Shadow_Build(Shadow *s, Mtx3 *m) {
     s->c[2].y = s->pos.y + fwd.y + side.y;
     s->c[2].z = s->pos.z + fwd.z + side.z;
     s->c[3].x = s->pos.x - fwd.x + side.x;
-    s->c[3].y = s->pos.y - fwd.y + side.y;
-    s->c[3].z = s->pos.z - fwd.z + side.z;
+    *(volatile f32 *)&s->c[3].y = s->pos.y - fwd.y + side.y;
+    s->c[3].z = *(volatile f32 *)&s->pos.z - fwd.z + side.z;
     for (i = 0; i < 4; i++) {
         s32 j = (i + 1) % 4;
         Vec3f_Sub(&ab[0], &s->c[j], &s->c[i]);

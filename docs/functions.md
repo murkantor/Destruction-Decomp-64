@@ -154,7 +154,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000F4F4` | `0100F4` | 0x244 | `Ui_UpdateFadeBlink` | `src/auto/100F4.c` | C (generated) |
 | `8000F738` | `010338` | 0x60 | `func_8000F738` | `src/auto/10338.c` | C (generated) |
 | `8000F798` | `010398` | 0x28 | `func_8000F798` | `src/auto/10398.c` | C (generated) |
-| `8000F7C0` | `0103C0` | 0x1c0 | `SaveSlot_FormatTime` | `asm/103C0.s` | asm |
+| `8000F7C0` | `0103C0` | 0x1b4 | `SaveSlot_FormatTime` | `src/auto/103C0.c` | C (generated) |
 | `8000F980` | `010580` | 0x8 | `func_8000F980` | `src/auto/10580.c` | C (generated) |
 | `8000F988` | `010588` | 0x144 | `func_8000F988` | `src/auto/10588.c` | C (generated) |
 | `8000FACC` | `0106CC` | 0x8 | `func_8000FACC` | `src/auto/106CC.c` | C (generated) |
@@ -230,11 +230,11 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80015624` | `016224` | 0xc | `func_80015624` | `src/auto/16224.c` | C (generated) |
 | `80015630` | `016230` | 0xe4 | `Particle_DrawAt` | `src/auto/16230.c` | C (generated) |
 | `80015714` | `016314` | 0x1d8 | `Obj_AllocSubBuffers` | `asm/16314.s` | asm |
-| `800158EC` | `0164EC` | 0x63c | `Shadow_Build` | `asm/16314.s` | asm |
+| `800158EC` | `0164EC` | 0x63c | `Shadow_Build` | `src/auto/164EC.c` | C (generated) |
 | `80015F28` | `016B28` | 0x80 | `func_80015F28` | `src/auto/16B28.c` | C (generated) |
 | `80015FB0` | `016BB0` | 0xe0 | `func_80015FB0` | `src/auto/16BB0.c` | C (generated) |
 | `80016090` | `016C90` | 0x34 | `func_80016090` | `src/auto/16C90.c` | C (generated) |
-| `800160C4` | `016CC4` | 0x7fc | `Gfx_DrawLensFlare` | `asm/16CC4.s` | asm |
+| `800160C4` | `016CC4` | 0x7fc | `Gfx_DrawLensFlare` | `src/auto/16CC4.c` | C (generated) |
 | `800168C0` | `0174C0` | 0x128 | `func_800168C0` | `src/auto/174C0.c` | C (generated) |
 | `800169E8` | `0175E8` | 0x1c | `func_800169E8` | `src/auto/175E8.c` | C (generated) |
 | `80016A04` | `017604` | 0x94 | `func_80016A04` | `src/auto/17604.c` | C (generated) |
@@ -491,7 +491,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80032FC0` | `033BC0` | 0xe8 | `func_80032FC0` | `src/auto/33BC0.c` | C (generated) |
 | `800330A8` | `033CA8` | 0xc0 | `func_800330A8` | `src/auto/33CA8.c` | C (generated) |
 | `80033168` | `033D68` | 0xb54 | `Obb_Overlap` | `asm/33D68.s` | asm |
-| `80033CBC` | `0348BC` | 0x344 | `Poly_IntersectSegment` | `asm/33D68.s` | asm |
+| `80033CBC` | `0348BC` | 0x344 | `Poly_IntersectSegment` | `src/auto/348BC.c` | C (generated) |
 | `80034000` | `034C00` | 0xe0 | `Poly_StraddlesPlane` | `src/auto/34C00.c` | C (generated) |
 | `800340E0` | `034CE0` | 0x2b0 | `Poly_ClipAgainstPlane` | `src/auto/34CE0.c` | C (generated) |
 | `80034390` | `034F90` | 0xa8 | `Poly_ContainsXZ` | `src/auto/34F90.c` | C (generated) |
@@ -719,7 +719,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004D590` | `04E190` | 0x57c | `Results_BuildTable` | `src/auto/4E190.c` | C (generated) |
 | `8004DB0C` | `04E70C` | 0x78 | `func_8004DB0C` | `src/auto/4E70C.c` | C (generated) |
 | `8004DB84` | `04E784` | 0x5c0 | `Results_ShowLapTimes` | `src/auto/4E784.c` | C (generated) |
-| `8004E144` | `04ED44` | 0x394 | `Menu_ShowRecordRows` | `asm/4ED44.s` | asm |
+| `8004E144` | `04ED44` | 0x394 | `Menu_ShowRecordRows` | `src/auto/4ED44.c` | C (generated) |
 | `8004E4D8` | `04F0D8` | 0x54 | `func_8004E4D8` | `src/auto/4F0D8.c` | C (generated) |
 | `8004E52C` | `04F12C` | 0x58 | `func_8004E52C` | `src/auto/4F0D8.c` | C (generated) |
 | `8004E584` | `04F184` | 0x94 | `func_8004E584` | `src/auto/4F184.c` | C (generated) |

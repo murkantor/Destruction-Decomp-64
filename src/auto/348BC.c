@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct {
     u8 pad0[0x4];
@@ -16,7 +19,7 @@ s32 Poly_IntersectSegment(Poly *a, f32 *minA, Poly *b, f32 *minB, Vec3f *out)
     Vec3f s1[2];
     Vec3f s2[2];
     Vec3f e;
-    f32 len2, inv, t0, t1, tmp, lo, hi;
+    f32 len2, t0, t1, tmp, lo, hi, dot;
 
     if (0.0f < a->n.x * b->n.x + a->n.y * b->n.y + a->n.z * b->n.z) {
         return 0;
@@ -39,12 +42,12 @@ s32 Poly_IntersectSegment(Poly *a, f32 *minA, Poly *b, f32 *minB, Vec3f *out)
     e.x = s2[0].x - s1[0].x;
     e.y = s2[0].y - s1[0].y;
     e.z = s2[0].z - s1[0].z;
-    t0 = d.x * e.x + d.y * e.y + d.z * e.z;
+    dot = d.x * e.x + d.y * e.y + d.z * e.z;
     e.x = s2[1].x - s1[0].x;
     e.y = s2[1].y - s1[0].y;
     e.z = s2[1].z - s1[0].z;
     len2 = 1.0f / len2;
-    t0 *= len2;
+    t0 = dot * len2;
     t1 = (d.x * e.x + d.y * e.y + d.z * e.z) * len2;
     if (t1 < t0) {
         tmp = t1;

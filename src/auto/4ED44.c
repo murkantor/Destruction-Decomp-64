@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { s32 v[4][2]; } PosTbl;
 typedef struct { f32 v[3]; } ColTbl;
 typedef struct { s32 v[4]; } RowTbl;
@@ -35,6 +38,8 @@ void Menu_ShowRecordRows(s32 prev, s32 first) {
     s32 j;
     s32 id;
     s32 k;
+    s32 k2;
+    s32 id2;
 
     for (i = 0; i < 4; i++) {
         strcpy(gSaveSlotText[i], D_80131D88[D_800972F4[first + i]].name);
@@ -46,7 +51,12 @@ void Menu_ShowRecordRows(s32 prev, s32 first) {
         }
     }
     if (prev == -1) {
-        i = 0; while (1) { Ui_AddElement(gUi[0], 2, first + i + 0x139); Ui_SetElementPos(gUi[0], 2, first + i + 0x139, pos.v[i][0], pos.v[i][1]); if (++i >= 4) return; }
+        for (i = 0; i < 4; i++) {
+            k2 = i + 0x139;
+            id2 = first + k2;
+            Ui_AddElement(gUi[0], 2, id2);
+            Ui_SetElementPos(gUi[0], 2, id2, pos.v[i][0], pos.v[i][1]);
+        }
     } else {
         for (i = 0; i < 4; i++) {
             k = i + 0x139;
