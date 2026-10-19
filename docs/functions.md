@@ -137,7 +137,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000D190` | `00DD90` | 0xe8 | `func_8000D190` | `src/auto/DD90.c` | C (generated) |
 | `8000D278` | `00DE78` | 0x5ac | `Hud_UpdateLapTimes` | `asm/DE78.s` | asm |
 | `8000D824` | `00E424` | 0x2bc | `Hud_UpdateRaceTime` | `asm/DE78.s` | asm |
-| `8000DAE0` | `00E6E0` | 0x498 | `func_8000DAE0` | `src/auto/E6E0.c` | C (generated) |
+| `8000DAE0` | `00E6E0` | 0x498 | `Hud_UpdateRacerTimers` | `src/auto/E6E0.c` | C (generated) |
 | `8000DF78` | `00EB78` | 0x11c | `Hud_FormatLapTime` | `src/auto/EB78.c` | C (generated) |
 | `8000E094` | `00EC94` | 0xe4 | `Time_Format` | `src/auto/EC94.c` | C (generated) |
 | `8000E178` | `00ED78` | 0x298 | `func_8000E178` | `asm/ED78.s` | asm |

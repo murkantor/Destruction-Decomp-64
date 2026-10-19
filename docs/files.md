@@ -131,7 +131,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `00DC54` | `8000D054` | 0x13c | `src/auto/DC54.c` | C (generated) | 1 |  |
 | `00DD90` | `8000D190` | 0xe8 | `src/auto/DD90.c` | C (generated) | 1 |  |
 | `00DE78` | `8000D278` | 0x868 | `asm/DE78.s` | asm | 2 | `Hud_UpdateLapTimes`, `Hud_UpdateRaceTime` |
-| `00E6E0` | `8000DAE0` | 0x498 | `src/auto/E6E0.c` | C (generated) | 1 |  |
+| `00E6E0` | `8000DAE0` | 0x498 | `src/auto/E6E0.c` | C (generated) | 1 | `Hud_UpdateRacerTimers` |
 | `00EB78` | `8000DF78` | 0x11c | `src/auto/EB78.c` | C (generated) | 1 | `Hud_FormatLapTime` |
 | `00EC94` | `8000E094` | 0xe4 | `src/auto/EC94.c` | C (generated) | 1 | `Time_Format` |
 | `00ED78` | `8000E178` | 0x298 | `asm/ED78.s` | asm | 1 |  |

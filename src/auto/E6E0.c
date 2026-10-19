@@ -37,7 +37,7 @@ TimeHMS Time_Split(u64 t);
 s32 sprintf(char *, const char *, ...);
 void func_800100BC(s32, s32);
 
-s32 func_8000DAE0(s32 a0, s8 idx) {
+s32 Hud_UpdateRacerTimers(s32 a0, s8 idx) {
     u64 now;
     u64 rem;
     TimeHMS ts;
