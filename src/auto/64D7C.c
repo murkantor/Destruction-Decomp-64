@@ -2,17 +2,17 @@
 #include "m2c.h"
 
 M2C_UNK func_80023DDC(void *, M2C_UNK);             /* extern */
-s32 func_80064428(M2C_UNK, void *, s16);            /* extern */
-M2C_UNK func_80064464(void *, s32, s16);            /* extern */
+s32 Array_Find(M2C_UNK, void *, s16);            /* extern */
+M2C_UNK Array_SwapRemove(void *, s32, s16);            /* extern */
 
 void func_8006417C(void *arg0, M2C_UNK arg1) {
     s32 temp_v0;
     void *temp_s1;
 
     temp_s1 = arg0 + 0xC;
-    temp_v0 = func_80064428(arg1, temp_s1, M2C_FIELD(arg0, s16 *, 0xD10));
+    temp_v0 = Array_Find(arg1, temp_s1, M2C_FIELD(arg0, s16 *, 0xD10));
     if (temp_v0 >= 0) {
-        func_80064464(temp_s1, temp_v0, M2C_FIELD(arg0, s16 *, 0xD10));
+        Array_SwapRemove(temp_s1, temp_v0, M2C_FIELD(arg0, s16 *, 0xD10));
         M2C_FIELD(arg0, s16 *, 0xD10) = (s16) ((u16) M2C_FIELD(arg0, s16 *, 0xD10) - 1);
     }
     func_80023DDC(arg0, arg1);

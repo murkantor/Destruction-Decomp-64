@@ -1111,13 +1111,13 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80063564` | `064164` | 0x14 | `func_80063564` | `src/auto/64164.c` | C (generated) |
 | `80063578` | `064178` | 0x38 | `func_80063578` | `src/auto/64178.c` | C (generated) |
 | `800635B0` | `0641B0` | 0x20 | `func_800635B0` | `src/auto/641B0.c` | C (generated) |
-| `800635D0` | `0641D0` | 0x148 | `func_800635D0` | `asm/641D0.s` | asm |
+| `800635D0` | `0641D0` | 0x148 | `Clock_Update` | `src/auto/641D0.c` | C (generated) |
 | `80063718` | `064318` | 0x8 | `func_80063718` | `src/auto/64318.c` | C (generated) |
 | `80063720` | `064320` | 0x18 | `func_80063720` | `src/auto/64320.c` | C (generated) |
 | `80063738` | `064338` | 0xc | `Time_Get` | `src/auto/64320.c` | C (generated) |
 | `80063744` | `064344` | 0x9c | `Time_ToSeconds` | `src/auto/64344.c` | C (generated) |
-| `800637E0` | `0643E0` | 0xc | `func_800637E0` | `src/auto/643E0.c` | C (generated) |
-| `800637EC` | `0643EC` | 0x8 | `func_800637EC` | `src/auto/643EC.c` | C (generated) |
+| `800637E0` | `0643E0` | 0xc | `Clock_GetDelta` | `src/auto/643E0.c` | C (generated) |
+| `800637EC` | `0643EC` | 0x8 | `Clock_GetFrames` | `src/auto/643EC.c` | C (generated) |
 | `800637F4` | `0643F4` | 0x9c | `Clock_Step` | `src/auto/643F4.c` | C (generated) |
 | `80063890` | `064490` | 0x30 | `func_80063890` | `src/auto/64490.c` | C (generated) |
 | `800638C0` | `0644C0` | 0x8 | `func_800638C0` | `src/auto/644C0.c` | C (generated) |
@@ -1147,17 +1147,17 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80064100` | `064D00` | 0x7c | `func_80064100` | `src/auto/64D00.c` | C (generated) |
 | `8006417C` | `064D7C` | 0x74 | `func_8006417C` | `src/auto/64D7C.c` | C (generated) |
 | `800641F0` | `064DF0` | 0x4c | `func_800641F0` | `src/auto/64D7C.c` | C (generated) |
-| `8006423C` | `064E3C` | 0xc8 | `func_8006423C` | `asm/64E3C.s` | asm |
+| `8006423C` | `064E3C` | 0xc8 | `ObjList_Clear` | `src/auto/64E3C.c` | C (generated) |
 | `80064304` | `064F04` | 0x60 | `func_80064304` | `src/auto/64F04.c` | C (generated) |
-| `80064364` | `064F64` | 0xc4 | `func_80064364` | `asm/64F64.s` | asm |
-| `80064428` | `065028` | 0x3c | `func_80064428` | `src/auto/65028.c` | C (generated) |
-| `80064464` | `065064` | 0x38 | `func_80064464` | `src/auto/65064.c` | C (generated) |
+| `80064364` | `064F64` | 0xc4 | `ObjList_Reset` | `src/auto/64F64.c` | C (generated) |
+| `80064428` | `065028` | 0x3c | `Array_Find` | `src/auto/65028.c` | C (generated) |
+| `80064464` | `065064` | 0x38 | `Array_SwapRemove` | `src/auto/65064.c` | C (generated) |
 | `8006449C` | `06509C` | 0x1c | `func_8006449C` | `src/auto/6509C.c` | C (generated) |
 | `800644C0` | `0650C0` | 0x414 | `func_800644C0` | `asm/650B8.s` | asm |
 | `800648D4` | `0654D4` | 0x74 | `func_800648D4` | `src/auto/654D4.c` | C (generated) |
 | `80064948` | `065548` | 0x70 | `func_80064948` | `src/auto/654D4.c` | C (generated) |
 | `800649B8` | `0655B8` | 0xb8 | `func_800649B8` | `src/auto/655B8.c` | C (generated) |
-| `80064A70` | `065670` | 0xc0 | `func_80064A70` | `asm/65670.s` | asm |
+| `80064A70` | `065670` | 0xc0 | `Players_Reset` | `src/auto/65670.c` | C (generated) |
 | `80064B30` | `065730` | 0x5c | `Timer_Start` | `src/auto/65730.c` | C (generated) |
 | `80064B90` | `065790` | 0xe0 | `boot` | `src/main/boot.c` | C |
 | `80064C70` | `065870` | 0x6c | `idle` | `src/main/boot.c` | C |

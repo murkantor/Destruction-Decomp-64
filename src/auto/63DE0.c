@@ -10,7 +10,7 @@ M2C_UNK func_80062E90();                            /* extern */
 M2C_UNK func_80063070(void *);                      /* extern */
 M2C_UNK func_80063404(M2C_UNK *);                   /* extern */
 M2C_UNK func_80063488(M2C_UNK *, s16);              /* extern */
-M2C_UNK func_800635D0(void *);                      /* extern */
+M2C_UNK Clock_Update(void *);                      /* extern */
 M2C_UNK func_80063890(s32);                         /* extern */
 M2C_UNK func_800638C0(s32);                         /* extern */
 extern M2C_UNK D_801233B0;
@@ -38,7 +38,7 @@ void func_800631E0(void *arg0) {
     func_80063890(temp_s0);
 loop_1:
     func_80062E90();
-    func_800635D0(arg0 + 0x10);
+    Clock_Update(arg0 + 0x10);
     func_80063070(arg0);
     goto loop_1;
 }
