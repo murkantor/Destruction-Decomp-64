@@ -4,7 +4,7 @@
 Usage: python3 tools/permute_setup.py [--max-diffs 3] [--near build/auto/near] [--out build/permute]
 
 Each directory gets base.c (preprocessed), target.o (the original function,
-assembled from asm/), compile.sh (the Makefile's compiler pipeline) and
+assembled from asm/), compile.sh (the Makefile's pipeline for files that are all C) and
 settings.toml. Then run, for example:
 
     python3 path/to/decomp-permuter/permuter.py build/permute/func_80012345 --stop-on-zero
@@ -25,11 +25,8 @@ COMPILE_SH = """#!/bin/sh
 set -e
 ROOT={root}
 KMC=$ROOT/tools/kmc
-TMP=$(mktemp -d)
-COMPILER_PATH=$KMC $KMC/gcc -S -G0 -mips3 -mgp32 -mfp32 -O2 -B $KMC/ -I $ROOT/include -I $ROOT -o $TMP/out.s "$1"
-sed -E -i -f $ROOT/tools/fix_move.sed $TMP/out.s
-mips-linux-gnu-as -EB -march=vr4300 -mabi=32 -G0 --no-pad-sections -o "$3" $TMP/out.s
-rm -rf $TMP
+COMPILER_PATH=$KMC $KMC/gcc -c -G0 -mips3 -mgp32 -mfp32 -O2 -B $KMC/ -I $ROOT/include -I $ROOT -o "$3" "$1"
+python3 $ROOT/tools/elf_trim.py "$3"
 """
 
 
