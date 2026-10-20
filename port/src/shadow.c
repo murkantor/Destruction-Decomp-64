@@ -21,6 +21,7 @@
  * the way it is stored, converted or not.
  */
 #include <SDL3/SDL.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "port.h"
@@ -55,11 +56,10 @@ static inline u8 *shadowOf(u32 addr, u32 n) {
 }
 
 /*
- * Per-thread state of the hooks, in one thread-local struct: MinGW's thread
- * locals are emulated, a call per variable per use, and every instrumented
+ * Per-thread state of the hooks, in one struct per thread: every instrumented
  * access goes through here.
  */
-static __thread struct {
+typedef struct {
     /* A bulk read of marked bytes, waiting for the bulk store that copies them */
     u32 pendingSrc, pendingLen, pendingDst, pendingDstLen;
     void *pendingSrcSite;
@@ -67,7 +67,53 @@ static __thread struct {
     int lastByte; /* shadow of the last byte loaded, or -1 */
     u32 pendingAddr;
     void *pendingSite;
-} tls = { .lastByte = -1 };
+} HookState;
+
+#ifdef _WIN32
+/*
+ * MinGW's thread locals are emulated (__emutls_get_address: a call, TlsGetValue
+ * and Get/SetLastError per use), which was a tenth of the game's CPU time. The
+ * state is kept in a TLS slot instead, read straight from the thread's TEB
+ * (the slot array at fs:0xE10, slots 0-63), and made on a thread's first use.
+ */
+#include <windows.h>
+
+static DWORD sTlsIndex = TLS_OUT_OF_INDEXES;
+
+static HookState *newHookState(void) {
+    HookState *t;
+
+    if (sTlsIndex == TLS_OUT_OF_INDEXES) {
+        DWORD i = TlsAlloc();
+        if (i >= 64) {
+            Port_Fatal("shadow: no TLS slot below 64 (got %lu)", (unsigned long)i);
+        }
+        InterlockedCompareExchange((volatile LONG *)&sTlsIndex, (LONG)i, (LONG)TLS_OUT_OF_INDEXES);
+        if (sTlsIndex != i) {
+            TlsFree(i); /* another thread got there first */
+        }
+    }
+    t = (HookState *)calloc(1, sizeof(*t));
+    if (t == NULL) {
+        Port_Fatal("shadow: out of memory");
+    }
+    t->lastByte = -1;
+    TlsSetValue(sTlsIndex, t);
+    return t;
+}
+
+static inline HookState *hookState(void) {
+    HookState *t = NULL;
+
+    if (sTlsIndex < 64) {
+        __asm__("movl %%fs:0xE10(,%1,4), %0" : "=r"(t) : "r"(sTlsIndex));
+    }
+    return t != NULL ? t : newHookState();
+}
+#define tls (*hookState())
+#else
+static __thread HookState tls = { .lastByte = -1 };
+#endif
 #define tPendingSrc (tls.pendingSrc)
 #define tPendingLen (tls.pendingLen)
 #define tPendingDst (tls.pendingDst)

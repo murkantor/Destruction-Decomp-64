@@ -51,6 +51,31 @@ static inline uint32_t Port_RdN64(const void *p, uint32_t n) {
         memcpy(&v, p, n);
         return v;
     }
+    /* the usual cases at one compare: the bytes all unmarked, all written at this
+       width (n << 4), or all big-endian (1) */
+    if (n == 4) {
+        uint32_t s;
+        memcpy(&s, &gPortShadow[off], 4);
+        if (s == 0 || s == 0x40404040u) {
+            memcpy(&v, p, 4);
+            return v;
+        }
+        if (s == 0x01010101u) {
+            memcpy(&v, p, 4);
+            return __builtin_bswap32(v);
+        }
+    } else if (n == 2) {
+        uint16_t s;
+        memcpy(&s, &gPortShadow[off], 2);
+        if (s == 0 || s == 0x2020u) {
+            memcpy(&v, p, 2);
+            return v;
+        }
+        if (s == 0x0101u) {
+            memcpy(&v, p, 2);
+            return (uint16_t)__builtin_bswap16((uint16_t)v);
+        }
+    }
     for (i = 0; i < n; i++) {
         uint8_t s = gPortShadow[off + i];
         if ((s & 1) || ((s >> 4) != 0 && (s >> 4) != n)) {

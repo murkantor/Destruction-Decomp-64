@@ -98,7 +98,9 @@ Run the checkers from the repo root after `make`; they must report nothing new.
   (port/game/devboot.c; `menu=23` opens track select, `menu=32` the options screen, or any
   other menu mode instead), `DD64_FAKEKEY=frame:Key` sends a real SDL key press,
   `DD64_FAKERSTICK=frame:x,y` and `DD64_FAKEGAS=frame:amount` hold player 1's right stick and
-  gas, `DD64_PROFILE=file` (Linux) writes a sampling profile (addresses and counts),
+  gas, `DD64_PROFILE=file` writes a sampling profile (addresses and counts; on Windows also
+  each thread's cycles and, outside the exe, `module!nearest_export`; the Windows numbers are
+  the ones that count, WSL's are mostly llvmpipe), `DD64_GFXLOG=1` also logs the event pump's cost,
   `DD64_BECOPIES=1` reports struct copies of unconverted data, `DD64_DLDUMP=n` logs a display list with its matrices, vertices
   and S2DEX objects, `DD64_TEXDUMP=1` saves the textures uploaded (with DLDUMP: that frame's),
   `DD64_GFXLOG=1` logs draw counts every 60 frames, `DD64_WATCH=addr` logs stores to an

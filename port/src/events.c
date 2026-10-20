@@ -43,7 +43,31 @@ void Port_PumpEvents(void) {
     SDL_Event e;
 
     fakeKey();
-    while (SDL_PollEvent(&e)) {
+    /* one pump (the window's messages, the controllers polled), then what it queued:
+       SDL_PollEvent pumps again on every call, the last, empty, one too */
+    {
+        static int log = -1;
+        static Uint64 since, spent;
+        static unsigned calls;
+        Uint64 t0 = SDL_GetTicksNS();
+
+        if (log < 0) {
+            log = SDL_getenv("DD64_GFXLOG") != NULL;
+            since = t0;
+        }
+        SDL_PumpEvents();
+        if (log) {
+            spent += SDL_GetTicksNS() - t0;
+            calls++;
+            if (t0 - since > 5000000000ull) {
+                Port_Log("events: pumped %.0f times/s, %.1f us each", calls / ((t0 - since) / 1e9), spent / 1e3 / calls);
+                since = t0;
+                spent = 0;
+                calls = 0;
+            }
+        }
+    }
+    while (SDL_PeepEvents(&e, 1, SDL_GETEVENT, SDL_EVENT_FIRST, SDL_EVENT_LAST) == 1) {
         if (e.type != SDL_EVENT_KEY_DOWN && Port_InputCaptureEvent(&e)) {
             continue;
         }

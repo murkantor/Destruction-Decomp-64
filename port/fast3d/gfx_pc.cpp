@@ -614,6 +614,12 @@ static uint32_t texture_checksum(const uint8_t *addr, uint32_t size) {
 /* The size of the texture bound in each slot, in texels (0: none) */
 static uint32_t bound_w[2], bound_h[2];
 
+/*
+ * Bind the texture the tile's load gave slot i, importing it if new or changed.
+ * The batch so far is drawn first (gfx_flush), unless the load turns out to be
+ * the texture already bound: the game loads a texture again for every few
+ * triangles of the same material, and each flush is a draw call.
+ */
 static void import_texture(int i, int tile) {
     uint8_t fmt = rdp.texture_tile[tile].fmt;
     uint8_t siz = rdp.texture_tile[tile].siz;
@@ -623,11 +629,9 @@ static void import_texture(int i, int tile) {
     uint32_t line_bytes = rdp.texture_tile[tile].line_size_bytes;
     uint32_t full_line_bytes = rdp.loaded_texture[tmem].full_line_size_bytes;
 
-    /* GL filter and wrap modes belong to the texture object: whatever gets bound
-       here needs them set again (a new one is incomplete, so black, without) */
-    rendering_state.cms[i] = rendering_state.cmt[i] = 0xFF;
-
     if (addr == NULL || line_bytes == 0 || size_bytes == 0) {
+        gfx_flush();
+        rendering_state.cms[i] = rendering_state.cmt[i] = 0xFF;
         gfx_rapi->select_texture(i, 0, false);
         rendering_state.textures[i] = 0;
         bound_w[i] = bound_h[i] = 0;
@@ -665,6 +669,14 @@ static void import_texture(int i, int tile) {
     TextureCacheKey key = { addr, pal_key, size_bytes, line_bytes, fmt, siz };
     uint32_t sum = texture_checksum(addr, size_bytes);
     auto it = texture_cache.find(key);
+    if (it != texture_cache.end() && it->second.checksum == sum && it->second.texture_id == rendering_state.textures[i] &&
+        it->second.width == bound_w[i] && it->second.height == bound_h[i]) {
+        return; /* the texture already bound: the batch goes on */
+    }
+    gfx_flush();
+    /* GL filter and wrap modes belong to the texture object: whatever gets bound
+       here needs them set again (a new one is incomplete, so black, without) */
+    rendering_state.cms[i] = rendering_state.cmt[i] = 0xFF;
     if (it != texture_cache.end() && it->second.checksum == sum) {
         gfx_rapi->select_texture(i, it->second.texture_id, false);
         rendering_state.textures[i] = it->second.texture_id;
@@ -726,10 +738,13 @@ static void import_texture(int i, int tile) {
 }
 
 void gfx_texture_cache_clear(void) {
+    gfx_flush();
     for (auto &e : texture_cache) {
         gfx_rapi->delete_texture(e.second.texture_id);
     }
     texture_cache.clear();
+    /* nothing bound (a recycled name must not pass for the texture bound) */
+    rendering_state.textures[0] = rendering_state.textures[1] = UINT32_MAX;
 }
 
 /* ---- Matrices and vertices ---- */
@@ -1117,8 +1132,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
             tile = i;
         }
         if (rdp.textures_changed[i]) {
-            gfx_flush();
-            import_texture(i, tile);
+            import_texture(i, tile); /* flushes unless it is the texture bound */
             rdp.textures_changed[i] = false;
         }
         bool linear = (rdp.other_mode_h & (3U << G_MDSFT_TEXTFILT)) != G_TF_POINT && cycle_type != G_CYC_COPY &&

@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <math.h>
 
 #include <map>
 #include <vector>
@@ -95,6 +96,53 @@ static bool gl_core_profile = false;
 /* The interpreter's framebuffer, bound again after work on another one */
 static void gl_bind_current_framebuffer(void) {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.empty() ? 0 : framebuffers[current_framebuffer].fbo);
+}
+
+/*
+ * What GL already has, so a draw's state is only sent when it changes: a frame is
+ * ~1300 draws, most changing one thing or nothing, and each GL call costs the
+ * driver. -1 (or NaN) is "not known". The code that changes these behind the
+ * setters' backs (framebuffer work, the FPS counter, the VI filter) calls
+ * gl_cache_forget after.
+ */
+struct TexParams {
+    GLint min_filter, mag_filter, wrap_s, wrap_t;
+    float aniso; /* 0: never set */
+    bool known;
+};
+static struct {
+    GLint active_unit;
+    GLint bound[2];
+    GLint depth_test, depth_mask, depth_func, poly_offset;
+    float offset_factor, offset_units;
+    GLint blend, blend_modulate;
+    GLint viewport[4], scissor[4];
+} glc;
+static std::vector<TexParams> gl_tex_params; /* by texture name */
+
+static void gl_cache_forget(void) {
+    glc.active_unit = -1;
+    glc.bound[0] = glc.bound[1] = -1;
+    glc.depth_test = glc.depth_mask = glc.depth_func = glc.poly_offset = -1;
+    glc.offset_factor = glc.offset_units = NAN;
+    glc.blend = glc.blend_modulate = -1;
+    for (int i = 0; i < 4; i++) {
+        glc.viewport[i] = glc.scissor[i] = -1;
+    }
+}
+
+static void gl_active_unit(int unit) {
+    if (glc.active_unit != unit) {
+        glActiveTexture(GL_TEXTURE0 + unit);
+        glc.active_unit = unit;
+    }
+}
+
+static TexParams& gl_params_of(GLuint tex) {
+    if (tex >= gl_tex_params.size()) {
+        gl_tex_params.resize(tex + 256);
+    }
+    return gl_tex_params[tex];
 }
 
 static void gfx_opengl_vertex_array_set_attribs(struct ShaderProgram* prg) {
@@ -574,11 +622,21 @@ static GLuint gfx_opengl_new_texture(void) {
 static void gfx_opengl_delete_texture(uint32_t texID) {
     glDeleteTextures(1, &texID);
     gl_set_has_mips(texID, 0);
+    /* the name may come back from glGenTextures as a fresh texture; GL unbinds it */
+    gl_params_of(texID).known = false;
+    for (int t = 0; t < 2; t++) {
+        if (glc.bound[t] == (GLint)texID) {
+            glc.bound[t] = -1;
+        }
+    }
 }
 
 static void gfx_opengl_select_texture(int tile, GLuint texture_id, bool linear_filter) {
-    glActiveTexture(GL_TEXTURE0 + tile);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
+    gl_active_unit(tile);
+    if (glc.bound[tile] != (GLint)texture_id) {
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glc.bound[tile] = (GLint)texture_id;
+    }
 
     current_textures_linear_filter[tile] = linear_filter;
     current_texture_ids[tile] = texture_id;
@@ -648,31 +706,49 @@ static void gfx_opengl_set_sampler_parameters(int tile, bool linear_filter, uint
         gfx_opengl_sync_three_point();
     }
     const float aniso = gfx_opengl_anisotropy();
-    glActiveTexture(GL_TEXTURE0 + tile);
-    if (aniso > 1.0f) {
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
-    } else if (gl_max_anisotropy > 1.0f) {
-        /* Anisotropy is per texture object and survives a recycled name, so OFF
-         * has to be written back or the old 2x-16x stays */
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
-    }
-    if (aniso > 1.0f && filter == GL_LINEAR) {
+    const GLuint id = current_texture_ids[tile];
+    /* Anisotropy is per texture object and survives a recycled name, so OFF has
+     * to be written back (as 1) or the old 2x-16x stays */
+    const float want_aniso = aniso > 1.0f ? aniso : gl_max_anisotropy > 1.0f ? 1.0f : 0.0f;
+    const bool mips = aniso > 1.0f && filter == GL_LINEAR;
+    const GLint min_filter = mips ? GL_LINEAR_MIPMAP_LINEAR : filter;
+    const GLint wrap_s = (GLint)gfx_cm_to_opengl(cms), wrap_t = (GLint)gfx_cm_to_opengl(cmt);
+    TexParams& tp = gl_params_of(id);
+
+    gl_active_unit(tile);
+    if (mips && !gl_has_mips(id)) {
         /* Mips exist (generated at upload when aniso is on) and trilinear
          * minification is what the anisotropic samples run over. If aniso was
          * turned on after this texture's upload, build the chain here or the
          * texture is incomplete. */
-        const GLuint id = current_texture_ids[tile];
-        if (!gl_has_mips(id)) {
-            glGenerateMipmap(GL_TEXTURE_2D);
-            gl_set_has_mips(id, 1);
-        }
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    } else {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        gl_set_has_mips(id, 1);
     }
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
+    if (!tp.known) {
+        tp.min_filter = tp.mag_filter = tp.wrap_s = tp.wrap_t = -1;
+        tp.aniso = 0.0f;
+        tp.known = true;
+    }
+    if (want_aniso != 0.0f && tp.aniso != want_aniso) {
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, want_aniso);
+        tp.aniso = want_aniso;
+    }
+    if (tp.min_filter != min_filter) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter);
+        tp.min_filter = min_filter;
+    }
+    if (tp.mag_filter != filter) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+        tp.mag_filter = filter;
+    }
+    if (tp.wrap_s != wrap_s) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
+        tp.wrap_s = wrap_s;
+    }
+    if (tp.wrap_t != wrap_t) {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
+        tp.wrap_t = wrap_t;
+    }
 }
 
 /* ---- Depth, blend, viewport ---- */
@@ -694,45 +770,60 @@ static void read_dec_bias(void) {
     }
 }
 
+static void gl_depth_func(GLint func, bool offset, float factor, float units) {
+    if (glc.depth_func != func) {
+        glDepthFunc(func);
+        glc.depth_func = func;
+    }
+    if (glc.poly_offset != (GLint)offset) {
+        if (offset) {
+            glEnable(GL_POLYGON_OFFSET_FILL);
+        } else {
+            glDisable(GL_POLYGON_OFFSET_FILL);
+        }
+        glc.poly_offset = offset;
+    }
+    if (glc.offset_factor != factor || glc.offset_units != units) {
+        glPolygonOffset(factor, units);
+        glc.offset_factor = factor;
+        glc.offset_units = units;
+    }
+}
+
 static void gfx_opengl_set_depth_mode(bool depth_test, bool depth_update, bool depth_compare, bool depth_source_prim, uint16_t zmode) {
     read_dec_bias();
     if (depth_test) {
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(depth_update ? GL_TRUE : GL_FALSE);
+        if (glc.depth_test != 1) {
+            glEnable(GL_DEPTH_TEST);
+            glc.depth_test = 1;
+        }
+        if (glc.depth_mask != (GLint)depth_update) {
+            glDepthMask(depth_update ? GL_TRUE : GL_FALSE);
+            glc.depth_mask = depth_update;
+        }
         current_depth_mask = depth_update;
 
         if (depth_compare) {
             switch (zmode) {
                 case ZMODE_INTER:
-                    glDepthFunc(GL_LEQUAL);
-                    glDisable(GL_POLYGON_OFFSET_FILL);
-                    glPolygonOffset(0, 0);
+                    gl_depth_func(GL_LEQUAL, false, 0, 0);
                     break;
 
                 case ZMODE_OPA:
                 case ZMODE_XLU:
-                    if (depth_source_prim) {
-                        glDepthFunc(GL_LEQUAL);
-                    } else {
-                        glDepthFunc(GL_LESS);
-                    }
-                    glDisable(GL_POLYGON_OFFSET_FILL);
-                    glPolygonOffset(0, 0);
+                    gl_depth_func(depth_source_prim ? GL_LEQUAL : GL_LESS, false, 0, 0);
                     break;
 
                 case ZMODE_DEC:
-                    glDepthFunc(GL_LEQUAL);
-                    glEnable(GL_POLYGON_OFFSET_FILL);
-                    glPolygonOffset(dec_bias_f, dec_bias_u);
+                    gl_depth_func(GL_LEQUAL, true, dec_bias_f, dec_bias_u);
                     break;
             }
         } else {
-            glDepthFunc(GL_ALWAYS);
-            glDisable(GL_POLYGON_OFFSET_FILL);
-            glPolygonOffset(0, 0);
+            gl_depth_func(GL_ALWAYS, false, 0, 0);
         }
-    } else {
+    } else if (glc.depth_test != 0) {
         glDisable(GL_DEPTH_TEST);
+        glc.depth_test = 0;
     }
 }
 
@@ -749,24 +840,42 @@ static void gl_set_depth_range(float znear, float zfar) {
     }
 }
 
+static bool gl_rect_changed(GLint* had, int x, int y, int width, int height) {
+    if (had[0] == x && had[1] == y && had[2] == width && had[3] == height) {
+        return false;
+    }
+    had[0] = x, had[1] = y, had[2] = width, had[3] = height;
+    return true;
+}
+
 static void gfx_opengl_set_viewport(int x, int y, int width, int height) {
-    glViewport(x, y, width, height);
+    if (gl_rect_changed(glc.viewport, x, y, width, height)) {
+        glViewport(x, y, width, height);
+    }
 }
 
 static void gfx_opengl_set_scissor(int x, int y, int width, int height) {
-    glScissor(x, y, width, height);
+    if (gl_rect_changed(glc.scissor, x, y, width, height)) {
+        glScissor(x, y, width, height);
+    }
 }
 
 static void gfx_opengl_set_use_alpha(bool use_alpha, bool modulate) {
-    if (use_alpha) {
-        glEnable(GL_BLEND);
-    } else {
-        glDisable(GL_BLEND);
+    if (glc.blend != (GLint)use_alpha) {
+        if (use_alpha) {
+            glEnable(GL_BLEND);
+        } else {
+            glDisable(GL_BLEND);
+        }
+        glc.blend = use_alpha;
     }
-    if (modulate) {
-        glBlendFunc(GL_DST_COLOR, GL_ZERO);
-    } else {
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    if (glc.blend_modulate != (GLint)modulate) {
+        if (modulate) {
+            glBlendFunc(GL_DST_COLOR, GL_ZERO);
+        } else {
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        }
+        glc.blend_modulate = modulate;
     }
 }
 
@@ -1029,10 +1138,12 @@ static void gfx_opengl_init(void) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     framebuffers.resize(1); // for the default screen buffer
+    gl_cache_forget();
 }
 
 static void gfx_opengl_start_frame(void) {
     frame_count++;
+    gl_cache_forget();
 }
 
 static void gfx_opengl_end_frame(void) {
@@ -1217,6 +1328,7 @@ static bool gfx_opengl_start_draw_to_framebuffer(int fb_id, float noise_scale) {
         }
         glBindFramebuffer(GL_FRAMEBUFFER, fb.fbo);
         current_framebuffer = fb_id;
+        gl_cache_forget();
         return true;
     } else {
         return false;
@@ -1343,6 +1455,7 @@ static void gfx_opengl_resolve_msaa_color_buffer(int fb_id_target, int fb_id_sou
     gl_blit_to(fb_dst.fbo, fb_src.width, fb_src.height, dx0, 0, dx1, fb_dst.height, GL_NEAREST);
     gl_bind_current_framebuffer();
     glEnable(GL_SCISSOR_TEST);
+    gl_cache_forget();
 }
 
 /*
@@ -1384,6 +1497,7 @@ extern "C" void gfx_opengl_draw_counter(int value) {
         }
     }
     gl_bind_current_framebuffer();
+    gl_cache_forget();
 }
 
 /* Save the window's back buffer as a BMP (before the swap) */
@@ -1665,6 +1779,7 @@ static void gfx_opengl_resolve_n64_aa(int fb_dst, int fb_src) {
     if (had_scissor) glEnable(GL_SCISSOR_TEST);
     if (had_cull) glEnable(GL_CULL_FACE);
     glDepthMask(current_depth_mask ? GL_TRUE : GL_FALSE);
+    gl_cache_forget();
 }
 
 struct GfxRenderingAPI gfx_opengl_api = {

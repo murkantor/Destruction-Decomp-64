@@ -134,6 +134,8 @@ if(WIN32)
         ${GEN_SYMS})
     # raphnet adapters: the Win32 HID API (port/src/raphnet.c)
     target_link_libraries(dd64 PRIVATE hid setupapi)
+    # timeBeginPeriod (the DD64_PROFILE sampler, port/src/profile.c)
+    target_link_libraries(dd64 PRIVATE winmm)
     add_custom_command(TARGET dd64 POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL3_MINGW_ROOT}/bin/SDL3.dll $<TARGET_FILE_DIR:dd64>)
 else()
