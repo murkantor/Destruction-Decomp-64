@@ -15,7 +15,7 @@ void *Mem_AllocAligned(s32, s32, s32);
 Elem *Ui_FindElement(void *, s32, s32);
 u64 Time_Get(u64 *);
 
-void func_8000E864(void) {
+void Fade_Init(void) {
     s32 size = Res_GetSize(0x11302);
     s16 *buf;
     Elem *e;

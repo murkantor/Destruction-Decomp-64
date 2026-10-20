@@ -3,7 +3,7 @@
 
 typedef struct { u8 pad[0x10]; s16 x10; } Obj;
 
-void func_80008298(Obj *o, s32 n) {
+void Sound_SetScrapeId(Obj *o, s32 n) {
 
 
     switch (n) {

@@ -15,8 +15,8 @@ typedef struct {
     void *x60;
 } Obj;
 void *func_80063E0C(void *, s32, s32);
-void func_8001292C(s32);
-void func_80012984(s32);
+void Surface_InitTable(s32);
+void Surface_AddTexture(s32);
 s32 Res_Get(s32);
 
 void func_80024BA0(Obj *o, s32 a, s32 b) {
@@ -28,9 +28,9 @@ void func_80024BA0(Obj *o, s32 a, s32 b) {
     o->x58 = func_80063E0C(o->x58, a, b);
     o->x5C = func_80063E0C(o->x5C, a, b);
     o->x60 = func_80063E0C(o->x60, a, b);
-    func_8001292C(o->x24);
+    Surface_InitTable(o->x24);
     for (i = 0; i < o->x24; i++) {
-        func_80012984(o->x28[i].x0);
+        Surface_AddTexture(o->x28[i].x0);
         o->x28[i].x0 = Res_Get(o->x28[i].x0);
         if (o->x28[i].x24 != 0) {
             o->x28[i].x24 = Res_Get(o->x28[i].x24);

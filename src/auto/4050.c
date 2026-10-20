@@ -13,7 +13,7 @@ f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 s32 Racer_WrapNode(Car *, s32);
 int abs(int);
 
-s32 func_80003450(Car *car)
+s32 Ai_FindNodeAhead(Car *car)
 {
     Vec3f b1, a1, b2, a2, fwd, pos;
     s32 idx;

@@ -37,7 +37,7 @@ extern s32 D_8007EAE0[][20];
 s32 Racer_WrapNode(Car *, s32);
 Vec3f func_8001FC08(Car *);
 Vec3f Car_GetPos(Car *);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 
 void Ai_UpdateTargetPoint(Car *car) {
     Ai *ai = car->x38;
@@ -73,5 +73,5 @@ void Ai_UpdateTargetPoint(Car *car) {
     d.x = ai->x5C.x - pos.x;
     d.y = ai->x5C.y - pos.y;
     d.z = ai->x5C.z - pos.z;
-    ai->x68 = func_800005C8(fwd, d);
+    ai->x68 = Vec3f_CrossYSign(fwd, d);
 }

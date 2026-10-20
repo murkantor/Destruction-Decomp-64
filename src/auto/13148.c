@@ -19,7 +19,7 @@ extern void *D_8011EEF8;
 s32 rand(void);
 void Sound_PlayAt(void *, f32, f32, f32, Vec3f, s32);
 
-void func_80012548(Obj12548 *o) {
+void Weather_UpdateLightning(Obj12548 *o) {
     u8 tbl[10] = { 0, 0, 0, 1, 1, 2, 3, 4, 5, 6 };
     Vec3f zero = { 0.0f, 0.0f, 0.0f };
     Fog *f = D_801244D0;

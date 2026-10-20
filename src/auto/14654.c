@@ -20,7 +20,7 @@ typedef struct {
 extern Entry28 D_80124B20[];
 extern s32 D_80131F28;
 
-void func_80013A54(s32 a0, Blk14 *a1, u8 a2, u8 a3, s16 a4) {
+void Tex_AddAnim(s32 a0, Blk14 *a1, u8 a2, u8 a3, s16 a4) {
     D_80124B20[D_80131F28].x0 = a0;
     D_80124B20[D_80131F28].x4.w[0] = a1->w[0];
     D_80124B20[D_80131F28].x4.w[1] = a1->w[1];

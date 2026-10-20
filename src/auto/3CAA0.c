@@ -29,8 +29,8 @@ void Ui_AddElement(void *, s32, s32);
 void func_80063380(s32);
 void func_80063564(s32, s32);
 void Text_MapChars2(void *, void *, s32);
-void *func_8001007C(char *);
-void func_800100BC(void *, s32);
+void *Ui_LookupTextId(char *);
+void Ui_SetElementColor(void *, s32);
 s32 sprintf(char *, const char *, ...);
 
 void PakMenu_BuildSlotList(void) {
@@ -108,13 +108,13 @@ void PakMenu_BuildSlotList(void) {
     found = 0;
     for (i = 0; i < 16; i++) {
         if (!found && gSaveSlots[i].x0 != 0) {
-            func_800100BC(func_8001007C(gSaveSlotText[0][i]), 0x111FE);
-            func_800100BC(func_8001007C(gSaveSlotText[1][i]), 0x111FE);
+            Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[0][i]), 0x111FE);
+            Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[1][i]), 0x111FE);
             D_80095908 = i;
             found = 1;
         } else {
-            func_800100BC(func_8001007C(gSaveSlotText[0][i]), 0x11200);
-            func_800100BC(func_8001007C(gSaveSlotText[1][i]), 0x11200);
+            Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[0][i]), 0x11200);
+            Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[1][i]), 0x11200);
         }
     }
     sprintf(D_80124200, D_800B9E00, D_80097D80 / 256);

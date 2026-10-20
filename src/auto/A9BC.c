@@ -10,7 +10,7 @@ Gfx *Model_Draw(void *, Gfx *);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *Car_DrawShadowDL(u8 *obj, Gfx *gfx) {
+Gfx *Car_DrawWheels(u8 *obj, Gfx *gfx) {
     GFX2(gfx, 0xDE000000, D_8008F8C0);
     GFX2(gfx, 0xD9FFF9FF, 0);
     if (D_800958A1[0]) {

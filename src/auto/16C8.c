@@ -38,7 +38,7 @@ static inline f32 Angle(Vec3f a, Vec3f b) {
     return acos(d / sqrtf((a.x * a.x + a.y * a.y + a.z * a.z) * (b.x * b.x + b.y * b.y + b.z * b.z))) * 57.29577957855229;
 }
 
-void func_80000AC8(void *a, void *b, Rel *out) {
+void Ai_ComputeIntercept(void *a, void *b, Rel *out) {
     f32 sa = Car_GetSpeed(a);
     f32 sb = Car_GetSpeed(b);
     Vec3f v;

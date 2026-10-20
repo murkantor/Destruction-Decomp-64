@@ -40,7 +40,7 @@ void func_8005AA68(void *, void *);
 void func_8005AB4C(void *, f32);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 
-void Car_SpawnSpark(Car *car, s8 side) {
+void Car_SpawnPartDebris(Car *car, s8 side) {
     s32 idx = car->x34;
     Spark *p;
     Vec3f v;

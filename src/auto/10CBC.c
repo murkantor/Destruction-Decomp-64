@@ -28,11 +28,11 @@ typedef struct {
 } Ui;
 
 extern Ui *gUi;
-s32 func_80010228(s32);
+s32 Ui_GetStyleRes(s32);
 void Res_Load(s32, void *);
 void Ui_AddResource(Ui *, void *);
 
-void func_800100BC(s32 id, s32 res) {
+void Ui_SetElementColor(s32 id, s32 res) {
     u8 buf[0x28];
     Node *n;
     Elem *found = NULL;
@@ -50,7 +50,7 @@ void func_800100BC(s32 id, s32 res) {
         }
     }
     if (i == gUi->count) {
-        Res_Load(func_80010228(res), buf);
+        Res_Load(Ui_GetStyleRes(res), buf);
         Ui_AddResource(gUi, buf);
     }
     {

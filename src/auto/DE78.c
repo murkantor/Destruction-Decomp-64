@@ -41,8 +41,8 @@ u64 Time_Get(u64 *);
 char *strcpy(char *, const char *);
 char *strcat(char *, const char *);
 s32 sprintf(char *, const char *, ...);
-void *func_8001007C(char *);
-void func_800100BC(void *, s32);
+void *Ui_LookupTextId(char *);
+void Ui_SetElementColor(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 void func_8005DBDC(void *);
 
@@ -104,7 +104,7 @@ s32 Hud_UpdateLapTimes(void *arg0, s8 player) {
             }
             if (best) {
                 for (k = i - 1; k >= 0; k--) {
-                    func_800100BC(func_8001007C(D_8007F714[player][k]), 0x111F8);
+                    Ui_SetElementColor(Ui_LookupTextId(D_8007F714[player][k]), 0x111F8);
                 }
                 color = 0x111FC;
             } else {
@@ -112,8 +112,8 @@ s32 Hud_UpdateLapTimes(void *arg0, s8 player) {
             }
             if (i < 2 && D_8007EF30[i + 1] == 0) {
                 Ui_AddElement(gUi[0], 2, ids[i]);
-                Ui_AddElement(gUi[0], 0, (s32)func_8001007C(D_80124298[player][i + 1]));
-                Ui_AddElement(gUi[0], 0, (s32)func_8001007C(D_8007F714[player][i + 1]));
+                Ui_AddElement(gUi[0], 0, (s32)Ui_LookupTextId(D_80124298[player][i + 1]));
+                Ui_AddElement(gUi[0], 0, (s32)Ui_LookupTextId(D_8007F714[player][i + 1]));
                 D_8007EF30[i + 1] = 1;
             }
         } else if (n == lap) {
@@ -132,7 +132,7 @@ s32 Hud_UpdateLapTimes(void *arg0, s8 player) {
             D_8007F714[player][i][0] = 0;
         }
         if (D_8007EF30[i]) {
-            func_800100BC(func_8001007C(D_8007F714[player][i]), color);
+            Ui_SetElementColor(Ui_LookupTextId(D_8007F714[player][i]), color);
         }
     }
     if (r->x88 >= D_80095FF8[D_800958B4]) {

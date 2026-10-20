@@ -71,7 +71,7 @@ extern void Ui_RemoveElement(void *, s32);
 extern Vec3f Car_GetPos(Car *);
 extern Vec3f Car_GetVelocity(Car *);
 extern void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
-extern void func_800066D0(Car *);
+extern void Ai_OnCarWrecked(Car *);
 extern s32 rand(void);
 extern void func_80016F48(void *, Vec3f, Vec3f, f32, f32, s32);
 extern void Fx_SpawnParticlesMode(void *, Vec3f, Vec3f, f32, f32, s32, s32, s32);
@@ -163,7 +163,7 @@ void Car_UpdateWreck(Car *car) {
             Sound_PlayAt(D_8011EEF8[0], Car_GetPos(car), Car_GetVelocity(car), 10);
             Sound_PlayAt(D_8011EEF8[0], Car_GetPos(car), Car_GetVelocity(car), 2);
             if (D_800958AC != 1 && race->x0 >= 2 && race->x10 == 1) {
-                func_800066D0(car);
+                Ai_OnCarWrecked(car);
             }
         } else if (car->x10 < 21) {
             Vec3f p;

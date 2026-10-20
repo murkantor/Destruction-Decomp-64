@@ -37,7 +37,7 @@ extern const f64 D_800B91A0;
 u64 Time_Get(void *);
 f32 Time_ToSeconds(void *);
 void Msg_Queue(s32, s32, s32, s32);
-void func_8000F1C4(void *, Car *, s32, s32);
+void Hud_FlashDamageZone(void *, Car *, s32, s32);
 f32 Car_GetSpeed(Car *);
 void Standings_Resort(void *, Car *);
 void func_8002A5CC(Car *, s32);
@@ -113,7 +113,7 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
         } else {
             p = part;
         }
-        func_8000F1C4(gUi, vic, dmg, p);
+        Hud_FlashDamageZone(gUi, vic, dmg, p);
         if (vic->x10 < 0) {
             vic->x10 = 0;
         }

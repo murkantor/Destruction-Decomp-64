@@ -25,7 +25,7 @@ static inline void FormatTime(TimeHMS hms, char *p) {
     do { p[7] = 0; } while (0);
 }
 
-s32 SaveSlot_FormatTime(s32 arg0, s8 slot) {
+s32 Hud_FormatTimeLimit(s32 arg0, s8 slot) {
     u64 limit = 0x45D964B800ULL;
     u64 now;
     char buf[8];

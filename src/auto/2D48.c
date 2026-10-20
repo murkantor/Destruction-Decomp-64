@@ -4,7 +4,7 @@
 M2C_UNK Mem_Free(s32);                         /* extern */
 extern void *gGame;
 
-void func_80002148(void) {
+void Track_FreeBranches(void) {
     void *temp_s0;
 
     temp_s0 = M2C_FIELD(gGame, void **, 0x1100);

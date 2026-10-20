@@ -33,7 +33,7 @@ s32 func_800286AC(Car *, Vec3f);
 void Car_ApplyDamage(Car *, s32, f32, s32);
 void Particles_EmitTrail(void *, Vec3f, Car *);
 s32 func_80008004(s32, s32);
-void func_80006E8C(s32, HitMsg *);
+void Sound_PlayContact(s32, HitMsg *);
 void Car_OnCollision(Car *, s32, Car *, s32, f32);
 void Car_DeformMeshAtImpact(Car *, s32, Vec3f, s32);
 void Debris_Spawn(Car *, Vec3f, s32);
@@ -101,7 +101,7 @@ void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
         msg.xC = func_80008004(D_8011EEF8[0], a->x16C);
         msg.x10 = force;
         msg.x14 = flag;
-        func_80006E8C(D_8011EEF8[0], &msg);
+        Sound_PlayContact(D_8011EEF8[0], &msg);
     } else {
         if (force < D_800B9018)
             return;
@@ -113,7 +113,7 @@ void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
             msg.x4 = 0;
             msg.x10 = force;
             msg.x14 = 1;
-            func_80006E8C(D_8011EEF8[0], &msg);
+            Sound_PlayContact(D_8011EEF8[0], &msg);
         }
         if (carB->xD) {
             Car_ApplyDamage(carA, zoneA, force / D_80095840, 0);
@@ -123,7 +123,7 @@ void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
             msg.x4 = 0;
             msg.x10 = force;
             msg.x14 = 1;
-            func_80006E8C(D_8011EEF8[0], &msg);
+            Sound_PlayContact(D_8011EEF8[0], &msg);
         }
         if (!carA->xD && !carB->xD) {
             hpA = carA->x10;
@@ -145,7 +145,7 @@ void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
             msg.xC = zoneB;
             msg.x10 = force;
             msg.x14 = flag;
-            func_80006E8C(D_8011EEF8[0], &msg);
+            Sound_PlayContact(D_8011EEF8[0], &msg);
         }
     }
 

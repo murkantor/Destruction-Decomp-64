@@ -7,7 +7,7 @@ extern s32 D_800D1AEC;
 u8 *Ui_FindElement(void *, s32, s32);
 void Mem_Free(void *);
 
-void func_8000E688(void) {
+void Ui_RevealFree(void) {
     u8 *e = Ui_FindElement(gUi, 2, 0x1E);
     void **slot;
 

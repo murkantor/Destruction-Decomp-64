@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_80001670(f32 arg0, f32 arg1) {
+s32 Math_SameSign(f32 arg0, f32 arg1) {
     f64 temp_f12;
     s32 var_v0;
 

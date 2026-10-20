@@ -9,7 +9,7 @@ typedef struct { u8 pad[0xC]; Mesh *xC; } Trk;
 typedef struct { u8 pad[0x70]; Trk *x70; } Sub1100;
 typedef struct { u8 pad[0x1100]; Sub1100 *x1100; } Game;
 extern Game *gGame;
-extern s8 func_80012A08(s32);
+extern s8 Surface_GetType(s32);
 typedef struct { f32 x, y, z; } Vec3;
 typedef struct { s32 x0; Tri x4; s32 x10; Vec3 v[4]; } Out;
 void Track_GetFace(Out *o, s32 i) {
@@ -18,7 +18,7 @@ void Track_GetFace(Out *o, s32 i) {
     Vec4 *verts = m->x60;
     s32 j;
     o->x10 = f->x14;
-    o->x0 = func_80012A08(f->x16);
+    o->x0 = Surface_GetType(f->x16);
     for (j = 0; j < o->x10; j++) {
         Vec4 *v = (Vec4 *)(f->idx[j] * 16 + (s32)verts);
         o->v[j].x = v->x;

@@ -39,7 +39,7 @@ void func_800109B0(void *arg0, s32 arg1, s32 arg2) {
 M2C_UNK Pool_Free(M2C_UNK *, M2C_UNK *);        /* extern */
 extern M2C_UNK gParticlePool;
 
-void func_800109E0(void *arg0) {
+void ParticleList_Clear(void *arg0) {
     M2C_UNK *temp_a1;
     M2C_UNK *temp_a1_2;
 

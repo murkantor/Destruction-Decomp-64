@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_8000FF5C(void *arg0) {
+void Ui_UpdateElements(void *arg0) {
     s32 (*temp_v0)(void *, s8);
     s32 (*temp_v0_2)(void *, s8);
     s32 var_v1;

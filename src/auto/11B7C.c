@@ -17,7 +17,7 @@ typedef struct {
 #define TXL2WORDS(txls, b) MAX(1, ((txls) * (b) / 8))
 #define CALC_DXT(width, b) (((1 << 11) + TXL2WORDS(width, b) - 1) / TXL2WORDS(width, b))
 
-Gfx *func_80010F7C(Tex *t, s32 frame, Gfx *g) {
+Gfx *Particle_LoadTexFrame(Tex *t, s32 frame, Gfx *g) {
     switch (t->siz) {
         case 2:
             GFX2(g, 0xFD100000 | ((t->fmt & 7) << 21), t->img + t->width * t->height * frame * 2);

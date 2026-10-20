@@ -13,7 +13,7 @@ s32 rand(void);
 void func_800172D0(void *, Vec3f, Vec3f, f32, f32, s32);
 void func_80016F48(void *, Vec3f, Vec3f, f32, f32, s32);
 
-void func_8000A9D8(Obj *arg0, Vec3f pos, f32 *m) {
+void Car_EmitWreckParticles(Obj *arg0, Vec3f pos, f32 *m) {
     s32 t = 0x13 - D_800D31CC * 3;
     Vec3f colA = D_800B80F0;
     Vec3f colB = D_800B80FC;

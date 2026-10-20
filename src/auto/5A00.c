@@ -33,7 +33,7 @@ extern GameState *gGame;
 extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern u32 D_800958B4[];
-void func_80005180(Driver *);
+void Ai_UpdateStateByMode(Driver *);
 void Ai_SelectTeamTarget(Driver *);
 void Ai_Update(Driver *);
 void Ai_UpdateSteer(Driver *);
@@ -56,7 +56,7 @@ void Ai_UpdateDriver(Driver *d) {
         if (D_800958A8 == 3 && D_800958AC == 2) {
             Ai_SelectTeamTarget(d);
         } else {
-            func_80005180(d);
+            Ai_UpdateStateByMode(d);
             Ai_Update(d);
         }
     } else {

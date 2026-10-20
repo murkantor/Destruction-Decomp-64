@@ -8,7 +8,7 @@ typedef struct { u8 pad[0xC]; Grid *grid; } Track;
 typedef struct { u8 pad[0x70]; Track *track; } Race;
 typedef struct { u8 pad[0x1100]; Race *race; } Game;
 extern Game *gGame;
-s32 func_80011CCC(Vec3f pos);
+s32 Track_GetGridCell(Vec3f pos);
 void func_80063FA0(void **, void *);
 
 void Grid_AddObjToCellsInRect(void *obj, f32 x0, f32 z0, f32 x1, f32 z1) {
@@ -20,13 +20,13 @@ void Grid_AddObjToCellsInRect(void *obj, f32 x0, f32 z0, f32 x1, f32 z1) {
 
     v.x = x0;
     v.z = z0;
-    idx[0] = func_80011CCC(v);
+    idx[0] = Track_GetGridCell(v);
     v.z = z1;
-    idx[1] = func_80011CCC(v);
+    idx[1] = Track_GetGridCell(v);
     v.x = x1;
-    idx[3] = func_80011CCC(v);
+    idx[3] = Track_GetGridCell(v);
     v.z = z0;
-    idx[2] = func_80011CCC(v);
+    idx[2] = Track_GetGridCell(v);
     n = (idx[2] - idx[0]) / grid->d.w;
     d = &grid->d;
     lo = idx[0];

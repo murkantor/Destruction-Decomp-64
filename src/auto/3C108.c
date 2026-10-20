@@ -10,7 +10,7 @@ extern s32 D_80097358;
 extern u8 D_80097334;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
-void func_8000E960(void);
+void Fade_Free(void);
 void func_8005DC68(void *);
 void func_80063380(s32);
 void func_80063564(s32, s32);
@@ -24,7 +24,7 @@ s32 func_8003B508(void) {
     }
     lim = 6000000000ULL;
     if (gGame->x10A8 >= lim) {
-        func_8000E960();
+        Fade_Free();
         func_8005DC68(gUi);
         D_80097354 = 1;
         D_80097358 = 0;

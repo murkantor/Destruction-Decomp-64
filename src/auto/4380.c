@@ -29,7 +29,7 @@ Vec3f func_8001FC08(Car *);
 Vec3f Path_AvoidEdges(Seg *, Elem8 *);
 Vec3f Seg_AvoidCircleXZ(Seg *, Circle *);
 u8 Track_IsGridCellSolid(Vec3f *);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 
 void Ai_ConstrainTarget(Car *car) {
     Obj *o;
@@ -89,6 +89,6 @@ void Ai_ConstrainTarget(Car *car) {
         d.x = o->x5C.x - b.x;
         d.y = o->x5C.y - b.y;
         d.z = o->x5C.z - b.z;
-        o->x68 = func_800005C8(a, d);
+        o->x68 = Vec3f_CrossYSign(a, d);
     }
 }

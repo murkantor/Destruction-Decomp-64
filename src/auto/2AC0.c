@@ -9,7 +9,7 @@ M2C_UNK Res_Load(s32, s32);                    /* extern */
 M2C_UNK func_80064100(s32);                         /* extern */
 extern M2C_UNK gMainHeap;
 
-s32 func_80001EC0(s32 arg0) {
+s32 AiDriver_Load(s32 arg0) {
     M2C_UNK sp18;
     s32 temp_v0;
     s32 temp_v0_2;
@@ -25,13 +25,13 @@ s32 func_80001EC0(s32 arg0) {
 
 M2C_UNK Mem_Free();                            /* extern */
 
-void func_80001F44(void) {
+void AiDriver_Free(void) {
     Mem_Free();
 }
 
 M2C_UNK Res_Get(s32);                         /* extern */
 
-void func_80001F60(void) {
+void AiDriver_LoadAll(void) {
     s32 var_s0;
 
     var_s0 = 0x4E21;

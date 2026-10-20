@@ -23,7 +23,7 @@ s32 Race_FindCarSlot(s32);
 void func_8002D0E0(u32);
 void func_80063564(s32, s32);
 void func_80063380(s32);
-void func_800087C8(void);
+void Announcer_ClearQueue(void);
 void Msg_Queue(s32, s32, s32, s32);
 
 s32 Race_ProcessResult(void) {
@@ -81,12 +81,12 @@ s32 Race_ProcessResult(void) {
     func_80063380(2);
     func_80063564(0x1A, 1);
     D_800958B4 = D_80095CA8[D_800958B0[0]][D_801252F4].x0;
-    func_800087C8();
+    Announcer_ClearQueue();
     Msg_Queue(0xE9, 100, 1, 0);
     return 1;
 fail:
     func_80063564(0x28, 1);
-    func_800087C8();
+    Announcer_ClearQueue();
     Msg_Queue(0xCB, 100, 1, 0);
     return 1;
 }

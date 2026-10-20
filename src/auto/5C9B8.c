@@ -62,7 +62,7 @@ extern u8 D_8010AAA8[];
 extern f32 D_8007EEC4;
 extern f32 D_8007EEC8;
 extern void World_FlagAllObjects(World *);
-extern void func_80009638(void);
+extern void Sound_UpdateListeners(void);
 extern void DrawList_Update(World *, s32, s32 *, Obj *);
 extern u8 func_8005CF28(Vec3f *, Obj *);
 extern void Sound_FadeOut(s32, s32);
@@ -70,7 +70,7 @@ extern void World_RemoveObject(World *, Snd *, s32, s32);
 extern s32 Sound_CountPlaying(s32);
 extern s32 Sound_AllocVoice(s32, s32, s32, s32, s32);
 extern s32 Sound_AllocWithBank(void *, s32, s32, s32, s32, s32);
-extern void func_80009200(World *);
+extern void Sound_CullVoices(World *);
 extern f32 func_8005D208(Vec3f *, Vec3f *);
 extern s32 Vec3f_HeadingAngleXZ(Vec3f *, Vec3f *, Vec3f *);
 extern f32 func_8005D114(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
@@ -109,7 +109,7 @@ void World_UpdateSounds(World *w) {
         return;
     }
     World_FlagAllObjects(w);
-    func_80009638();
+    Sound_UpdateListeners();
     for (i = 0; i < w->x100; i++) {
         o = w->objs[i];
         if (o != NULL && o->x44 && o->x45 != 1) {
@@ -174,7 +174,7 @@ void World_UpdateSounds(World *w) {
     if (gGame->xC != 2) {
         return;
     }
-    func_80009200(w);
+    Sound_CullVoices(w);
     for (j = 0; j < D_800D31CC; j++) {
         ps = D_80123B58[j].x10;
         for (i = 0; i < D_8011EEF8->x4D4[j]; i++) {

@@ -7,7 +7,7 @@ typedef struct {
     s32 count;
 } ItemList;
 
-void Race_Init(ItemList *);
+void Sound_InitForMode(ItemList *);
 
 s32 func_8005C780(ItemList *list) {
     u8 *p = *(u8 **)((u8 *)list + 0xFC);
@@ -20,6 +20,6 @@ s32 func_8005C780(ItemList *list) {
         p += 0x58;
     }
     list->count = 0;
-    Race_Init(list);
+    Sound_InitForMode(list);
     return 0;
 }

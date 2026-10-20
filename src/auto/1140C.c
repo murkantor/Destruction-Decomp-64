@@ -12,7 +12,7 @@ void func_80017030(void *, Gfx *, s32);
 void func_80017610(void *, s32, s32);
 void func_80017908(void *, Gfx *, s32);
 
-Gfx *func_8001080C(u8 *obj, Gfx *gfx, s32 arg) {
+Gfx *ParticleSys_Draw(u8 *obj, Gfx *gfx, s32 arg) {
     { Gfx *_g = gfx++; _g->w0 = 0xDA380000; _g->w1 = (u32)D_1304D8; }
     { Gfx *_g = gfx++; _g->w0 = 0xDE000000; _g->w1 = (u32)D_8008F8C0; }
     func_8001723C(obj + 0x148, arg, D_8012455C);

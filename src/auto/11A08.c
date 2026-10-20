@@ -5,7 +5,7 @@ void func_80010E08(void *arg0, s8 arg1) {
     M2C_FIELD(arg0, s8 *, 0x38) = arg1;
 }
 
-void func_80010E10(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
+void Particle_SetColor(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     M2C_FIELD(arg0, s8 *, 0x35) = arg1;
     M2C_FIELD(arg0, s8 *, 0x36) = arg2;
     M2C_FIELD(arg0, s8 *, 0x37) = arg3;
@@ -13,7 +13,7 @@ void func_80010E10(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
 
 M2C_UNK Vec3f_Add(s32, s32, s32);               /* extern */
 
-void func_80010E20(void *arg0) {
+void Particle_Step(void *arg0) {
     s32 temp_a0;
     s32 temp_s0;
     u8 temp_a0_2;

@@ -7,7 +7,7 @@ typedef struct {
 } KeyValue;
 extern KeyValue D_8007F84C[0x94];
 
-s32 func_8001007C(s32 key) {
+s32 Ui_LookupTextId(s32 key) {
     s32 i;
 
     for (i = 0; i < 0x94; i++) {

@@ -47,14 +47,14 @@ extern s32 D_8011EEF8;
 extern s32 D_8011EEE0;
 extern s8 D_800D31CC;
 
-void func_800087C8(void);
+void Announcer_ClearQueue(void);
 void Sound_FadeOutAll(s32, s32);
 s32 Sound_CountPlaying(s32);
 void Rumble_AllowRetry(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDesc *);
 void Ctx_FreeAll(void *);
-void Race_GetLapTimeLimits(s32 *);
+void Hud_GetLayoutIds(s32 *);
 void func_8005DD20(void *, s32);
 void MapUi_Init(void *);
 void func_8004378C(void);
@@ -88,7 +88,7 @@ void Race_End(void)
     UiItem *item = NULL;
     s32 i;
 
-    func_800087C8();
+    Announcer_ClearQueue();
     Sound_FadeOutAll(2, 0);
     while (Sound_CountPlaying(2) != 0) {
     }
@@ -111,7 +111,7 @@ void Race_End(void)
         }
         item->x4 = D_800BCA00;
         Ctx_FreeAll(gUi[0]);
-        Race_GetLapTimeLimits(lim);
+        Hud_GetLayoutIds(lim);
         func_8005DD20(gUi[0], lim[0]);
         func_8005DD20(gUi[0], lim[1]);
         MapUi_Init(gUi[0]);

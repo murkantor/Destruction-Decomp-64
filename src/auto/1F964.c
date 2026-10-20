@@ -47,7 +47,7 @@ void Skid_Free(s32 *);
 void func_80013174(s32 *);
 void func_8005AAC0(void *);
 void func_80063AAC(s32);
-void func_8000A080(Car *);
+void Debris_FreeCar(Car *);
 void Heap_Free(void *, void *);
 void Mem_Free(void *);
 
@@ -113,7 +113,7 @@ void Car_Destroy(Car *o) {
             D_80124360 = 0;
             func_80063AAC(0x4650);
         }
-        func_8000A080(o);
+        Debris_FreeCar(o);
         func_80063AAC(D_80091A54[idx]);
         Heap_Free(gMainHeap, o->xB3C);
         Heap_Free(gMainHeap, o->xB54);

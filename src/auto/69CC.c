@@ -21,14 +21,14 @@ extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern Car **D_80096074;
 extern void Ai_PickTarget2(Car *, Target *);
-extern void AI_PickAttackTarget(Car *);
-extern void func_8000663C(Car *);
-extern void func_80000AC8(Car *, Car *, Target *);
+extern void Ai_SetEvadePoint(Car *);
+extern void Ai_BrakeOrReverse(Car *);
+extern void Ai_ComputeIntercept(Car *, Car *, Target *);
 extern Vec3f Car_GetPos(Car *);
 extern Vec3f Car_GetVelocity(Car *);
 extern Vec3f func_8001FC08(Car *);
-extern f32 func_800005C8(Vec3f, Vec3f);
-extern void Car_UpdateTrackSection(Car *);
+extern f32 Vec3f_CrossYSign(Vec3f, Vec3f);
+extern void Ai_MatchTargetLane(Car *);
 extern void Ai_UpdateLaneOffset(Car *);
 extern void Ai_UpdateTargetPoint(Car *);
 extern void Ai_ConstrainTarget(Car *);
@@ -57,7 +57,7 @@ static inline void aim(Car *car, Target t) {
     d.x = ai->x5C.x - p.x;
     d.y = ai->x5C.y - p.y;
     d.z = ai->x5C.z - p.z;
-    ai->x68 = func_800005C8(q, d);
+    ai->x68 = Vec3f_CrossYSign(q, d);
 }
 
 void Ai_Update(Car *car) {
@@ -70,37 +70,37 @@ void Ai_Update(Car *car) {
         goto do_aim;
     case 1:
     case 3:
-        AI_PickAttackTarget(car);
+        Ai_SetEvadePoint(car);
         break;
     case 4:
         if (D_800958A8 == 3 && D_800958AC == 1 && *D_80096074 != car) {
-            AI_PickAttackTarget(car);
-            func_8000663C(car);
+            Ai_SetEvadePoint(car);
+            Ai_BrakeOrReverse(car);
             break;
         }
         if (t.x0 == -1.0) {
-            func_80000AC8(car, ai->x18, &t);
+            Ai_ComputeIntercept(car, ai->x18, &t);
         }
         aim(car, t);
-        func_8000663C(car);
+        Ai_BrakeOrReverse(car);
         break;
     case 5:
         ai->x6D = 1;
         if (D_800958A8 == 3 && D_800958AC == 1) {
             ai->x18 = *D_80096074;
         }
-        func_80000AC8(car, ai->x18, &t);
+        Ai_ComputeIntercept(car, ai->x18, &t);
         aim(car, t);
         ai->x6D = 1;
         ai->x6C = 0;
         break;
     case 8:
-        Car_UpdateTrackSection(car);
+        Ai_MatchTargetLane(car);
         Ai_UpdateLaneOffset(car);
         ai->x10 = 7;
         break;
     case 10:
-        func_80000AC8(car, ai->x18, &t);
+        Ai_ComputeIntercept(car, ai->x18, &t);
     case 2:
     do_aim:
         aim(car, t);

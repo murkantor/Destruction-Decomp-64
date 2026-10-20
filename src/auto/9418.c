@@ -16,9 +16,9 @@ extern u64 D_800D12E0[];
 extern void *D_8011EEF8[];
 extern u64 Time_Get(u64 *);
 extern int rand(void);
-extern void func_80007744(void *obj, Vec3f pos, s32 id);
+extern void Sound_PlayVoice(void *obj, Vec3f pos, s32 id);
 
-void func_80008818(void) {
+void Announcer_Update(void) {
     s32 i;
 
     if (D_80124364 <= 0) {
@@ -53,7 +53,7 @@ void func_80008818(void) {
         p.y = 0;
         p.z = 0;
         id = D_80126068[0];
-        func_80007744(D_8011EEF8[0], p, id);
+        Sound_PlayVoice(D_8011EEF8[0], p, id);
     }
     for (i = 0; i < D_80124364; i++) {
         D_80126068[i] = D_80126068[i + 1];

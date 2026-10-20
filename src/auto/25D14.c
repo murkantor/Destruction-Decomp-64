@@ -9,8 +9,8 @@ extern Game *gGame;
 extern s32 D_801245A4;
 s32 Res_Get(s32);
 void Race_LoadCarResources(void);
-void func_80001F60(void);
-s32 func_80010730(void);
+void AiDriver_LoadAll(void);
+s32 ParticleSys_Create(void);
 void func_80064100(s32);
 
 void Race_LoadTrackResources(u32 idx) {
@@ -27,7 +27,7 @@ void Race_LoadTrackResources(u32 idx) {
         u->x10 = 0;
     }
     Race_LoadCarResources();
-    func_80001F60();
-    D_801245A4 = func_80010730();
+    AiDriver_LoadAll();
+    D_801245A4 = ParticleSys_Create();
     func_80064100(D_801245A4);
 }

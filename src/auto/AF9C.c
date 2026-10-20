@@ -6,7 +6,7 @@ extern s32 D_80125B70[24];
 extern u8 D_80124478[];
 void guScale(void *, f32, f32, f32);
 
-void func_8000A39C(void) {
+void Debris_Init(void) {
     s32 i;
 
     D_801311B8 = 0;

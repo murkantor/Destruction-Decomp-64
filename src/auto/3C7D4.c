@@ -13,8 +13,8 @@ extern u32 D_80097350;
 extern SaveSlot gSaveSlots[16];
 extern char gSaveSlotText[2][16][0x32];
 void Timer_Start(void *, s64);
-void *func_8001007C(char *);
-void func_800100BC(void *, s32);
+void *Ui_LookupTextId(char *);
+void Ui_SetElementColor(void *, s32);
 
 s32 SaveMenu_PrevSlot(MenuItem *item) {
     s32 i;
@@ -33,10 +33,10 @@ s32 SaveMenu_PrevSlot(MenuItem *item) {
             found = 1;
         }
     } while (!found);
-    func_800100BC(func_8001007C(gSaveSlotText[0][item->value]), 0x11200);
-    func_800100BC(func_8001007C(gSaveSlotText[1][item->value]), 0x11200);
-    func_800100BC(func_8001007C(gSaveSlotText[0][i]), 0x111FE);
-    func_800100BC(func_8001007C(gSaveSlotText[1][i]), 0x111FE);
+    Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[0][item->value]), 0x11200);
+    Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[1][item->value]), 0x11200);
+    Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[0][i]), 0x111FE);
+    Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[1][i]), 0x111FE);
     item->value = i;
     return 1;
 }

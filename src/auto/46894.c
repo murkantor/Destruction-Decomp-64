@@ -55,7 +55,7 @@ void Msg_Queue(s32, s32, s32, s32);
 void Pad_Rumble(s32, s32, s32);
 s32 Race_FindCarSlot(s32);
 u64 Time_Get(u64 *);
-void func_800087C8(void);
+void Announcer_ClearQueue(void);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 
 void Race_WaitForOthers(void) {
@@ -141,7 +141,7 @@ void Race_WaitForOthers(void) {
         Ui_AddElement(gUi[0], 2, 0x210);
         D_80096EC8 = Time_Get(&gGame[0]->x1058);
         D_80096EC0 = -1;
-        func_800087C8();
+        Announcer_ClearQueue();
         if (counts[0] == 0) {
             Announcer_QueueRandom(ann.v, 3, 500, 1, 0);
         } else if (race->x10 == 1) {

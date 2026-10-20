@@ -21,7 +21,7 @@ void Time_Format(TimeHMS t, char *buf, s32 len);
 char *strcpy(char *, const char *);
 void func_80063380(s32);
 void func_80063564(s32, s32);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 
 s32 Hud_UpdateRaceTime(s32 arg0, s8 idx) {
     u64 t = 0;
@@ -51,7 +51,7 @@ s32 Hud_UpdateRaceTime(s32 arg0, s8 idx) {
         strcpy(D_8007F828, buf);
         if (D_80097335) {
             if (D_80130528[D_800958B4].x0 || D_80130528[D_800958B4].x4) {
-                func_800100BC(0x1FF, 0x111FC);
+                Ui_SetElementColor(0x1FF, 0x111FC);
             } else {
                 return 0;
             }

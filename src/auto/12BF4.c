@@ -27,7 +27,7 @@ void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Fx_SpawnParticlesMode(void *, Vec3f, Vec3f, f32, f32, s32, s32, s32);
 void func_80016E60(void *, Vec3f, Vec3f, f32, f32, s32, s32);
 
-void *func_80011FF4(void *arg0) {
+void *Track_UpdateAmbientEmitters(void *arg0) {
     Vec3f pos;
     Vec3f vel;
     s8 i;

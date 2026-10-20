@@ -48,10 +48,10 @@ void Ui_GetElementPos(Vec2f *, void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void func_8005D8B8(void *, s32, s32);
 void func_80061598(void *, s32, s32);
-s32 func_8000E410(CountState *);
+s32 Hud_HealthBarStep(CountState *);
 u64 Time_Get(void *);
 
-s32 func_8000BC74(Arg *arg0, s8 idx) {
+s32 Hud_UpdateHealthBar(Arg *arg0, s8 idx) {
     Vec2f pos;
     s32 a[2] = { 0x36, 0x37 };
     s32 b[2] = { 0x34, 0x35 };
@@ -104,7 +104,7 @@ s32 func_8000BC74(Arg *arg0, s8 idx) {
     st->x18 = Time_Get(gGame->x10A8);
     st->xC = t->x10;
 calc:
-    d = func_8000E410(st);
+    d = Hud_HealthBarStep(st);
     el->x84 += d;
     el->x8C -= d;
     if (el->x8C == 0) {

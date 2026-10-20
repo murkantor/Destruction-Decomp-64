@@ -7,7 +7,7 @@ typedef struct { u8 pad[0x5C]; Vec3f pos; } UnkCar;
 typedef struct { u8 pad[0x38]; UnkCar *x38; } UnkObj;
 f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 
-s32 Car_ClampToSphere(UnkObj *o, Sphere *s) {
+s32 Ai_ClampTargetToCircle(UnkObj *o, Sphere *s) {
     UnkCar *car = o->x38;
     Vec3f n;
     Vec3f d;

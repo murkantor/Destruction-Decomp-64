@@ -4,7 +4,7 @@
 typedef struct { u8 pad[0xA4]; f32 pos[3]; u8 padB0[0x18]; f32 rot[3][3]; u8 padEC[0x30]; f32 scale; } Body;
 void guMtxCatF(f32 (*)[4], s32, void *);
 
-void func_8000B8D4(void *dst, s32 a1, Body *b) {
+void Mtx_FromBodyMul(void *dst, s32 a1, Body *b) {
     f32 m[4][4];
     s32 i;
 

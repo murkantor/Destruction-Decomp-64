@@ -8,7 +8,7 @@ typedef struct { u8 pad[0x1100]; Track066D0 *x1100; } Game066D0;
 extern Game066D0 *gGame;
 void Ai_PickTarget(Obj066D0 *);
 
-void func_800066D0(Obj066D0 *arg0) {
+void Ai_OnCarWrecked(Obj066D0 *arg0) {
     Sub066D0 *sub;
     Track066D0 *track;
     Obj066D0 *obj;

@@ -12,11 +12,11 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `001050` | `80000450` | 0x18 | `src/auto/1050.c` | C (generated) | 2 |  |
 | `001070` | `80000470` | 0x7c | `src/auto/1070.c` | C (generated) | 1 | `Boot_LoadData` |
 | `0010F0` | `800004F0` | 0xd8 | `src/auto/10F0.c` | C (generated) | 1 | `Vec3f_AngleBetween` |
-| `0011C8` | `800005C8` | 0x5c | `src/auto/11C8.c` | C (generated) | 1 |  |
+| `0011C8` | `800005C8` | 0x5c | `src/auto/11C8.c` | C (generated) | 1 | `Vec3f_CrossYSign` |
 | `001224` | `80000624` | 0x84 | `src/auto/1224.c` | C (generated) | 1 | `Vec3f_DistXZ` |
 | `0012A8` | `800006A8` | 0x26c | `src/auto/12A8.c` | C (generated) | 1 | `Math_PointLineDist2D` |
 | `001514` | `80000914` | 0x1b4 | `src/auto/1514.c` | C (generated) | 1 | `Seg_Intersect2D` |
-| `0016C8` | `80000AC8` | 0x4d4 | `src/auto/16C8.c` | C (generated) | 1 |  |
+| `0016C8` | `80000AC8` | 0x4d4 | `src/auto/16C8.c` | C (generated) | 1 | `Ai_ComputeIntercept` |
 | `001B9C` | `80000F9C` | 0x2d4 | `src/auto/1B9C.c` | C (generated) | 1 | `Ai_PickTarget` |
 | `001E70` | `80001270` | 0x24 | `src/auto/1E70.c` | C (generated) | 1 | `Obj_PickMinKey10` |
 | `001E94` | `80001294` | 0x24 | `src/auto/1E94.c` | C (generated) | 1 | `Obj_MaxByKey10` |
@@ -26,17 +26,17 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `002080` | `80001480` | 0xe4 | `src/auto/2080.c` | C (generated) | 1 | `Car_PickRandomOther` |
 | `002164` | `80001564` | 0x104 | `src/auto/2164.c` | C (generated) | 1 | `Car_PickRandomActive` |
 | `002268` | `80001668` | 0x8 | `src/auto/2268.c` | C (generated) | 1 |  |
-| `002270` | `80001670` | 0x6c | `src/auto/2270.c` | C (generated) | 1 |  |
+| `002270` | `80001670` | 0x6c | `src/auto/2270.c` | C (generated) | 1 | `Math_SameSign` |
 | `0022DC` | `800016DC` | 0x2e4 | `src/auto/22DC.c` | C (generated) | 1 | `AI_FindTargetAhead` |
 | `0025C0` | `800019C0` | 0x1e8 | `src/auto/25C0.c` | C (generated) | 1 | `Ai_AdjustLaneFromNeighbour` |
 | `0027B0` | `80001BB0` | 0x1c8 | `asm/27A8.s` | asm | 1 | `Race_AssignSlotObjects` |
 | `002978` | `80001D78` | 0x148 | `src/auto/2978.c` | C (generated) | 1 | `Obj_CreateFromCfg` |
-| `002AC0` | `80001EC0` | 0xd8 | `src/auto/2AC0.c` | C (generated) | 3 |  |
-| `002B98` | `80001F98` | 0x84 | `src/auto/2B98.c` | C (generated) | 1 |  |
-| `002C1C` | `8000201C` | 0x58 | `src/auto/2C1C.c` | C (generated) | 1 |  |
-| `002C74` | `80002074` | 0x40 | `src/auto/2C74.c` | C (generated) | 1 |  |
-| `002CB4` | `800020B4` | 0x94 | `src/auto/2CB4.c` | C (generated) | 1 |  |
-| `002D48` | `80002148` | 0x34 | `src/auto/2D48.c` | C (generated) | 1 |  |
+| `002AC0` | `80001EC0` | 0xd8 | `src/auto/2AC0.c` | C (generated) | 3 | `AiDriver_Load`, `AiDriver_Free`, `AiDriver_LoadAll` |
+| `002B98` | `80001F98` | 0x84 | `src/auto/2B98.c` | C (generated) | 1 | `Track_LoadNodeSegs` |
+| `002C1C` | `8000201C` | 0x58 | `src/auto/2C1C.c` | C (generated) | 1 | `Track_LoadNodeInfo` |
+| `002C74` | `80002074` | 0x40 | `src/auto/2C74.c` | C (generated) | 1 | `Track_FreeNodes` |
+| `002CB4` | `800020B4` | 0x94 | `src/auto/2CB4.c` | C (generated) | 1 | `Track_LoadBranches` |
+| `002D48` | `80002148` | 0x34 | `src/auto/2D48.c` | C (generated) | 1 | `Track_FreeBranches` |
 | `002D7C` | `8000217C` | 0xa4 | `src/auto/2D7C.c` | C (generated) | 1 |  |
 | `002E20` | `80002220` | 0xe0 | `src/auto/2E20.c` | C (generated) | 1 |  |
 | `002F00` | `80002300` | 0x110 | `src/auto/2F00.c` | C (generated) | 1 |  |
@@ -46,85 +46,85 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0031E0` | `800025E0` | 0x48 | `src/auto/31E0.c` | C (generated) | 1 |  |
 | `003230` | `80002630` | 0x1c4 | `src/auto/3230.c` | C (generated) | 1 | `InitLookupTables` |
 | `003400` | `80002800` | 0x8 | `src/auto/3400.c` | C (generated) | 1 |  |
-| `003410` | `80002810` | 0x294 | `src/auto/3410.c` | C (generated) | 1 | `AI_PickAttackTarget` |
+| `003410` | `80002810` | 0x294 | `src/auto/3410.c` | C (generated) | 1 | `Ai_SetEvadePoint` |
 | `0036B0` | `80002AB0` | 0x258 | `src/auto/36B0.c` | C (generated) | 1 | `Ai_PickTarget2` |
 | `003910` | `80002D10` | 0x574 | `src/auto/3910.c` | C (generated) | 1 | `Ai_UpdateLaneOffset` |
 | `003E84` | `80003284` | 0x1cc | `src/auto/3E84.c` | C (generated) | 1 | `Ai_UpdateTargetPoint` |
-| `004050` | `80003450` | 0x32c | `src/auto/4050.c` | C (generated) | 1 |  |
+| `004050` | `80003450` | 0x32c | `src/auto/4050.c` | C (generated) | 1 | `Ai_FindNodeAhead` |
 | `004380` | `80003780` | 0x4ac | `src/auto/4380.c` | C (generated) | 1 | `Ai_ConstrainTarget` |
 | `00482C` | `80003C2C` | 0x2bc | `src/auto/482C.c` | C (generated) | 1 | `Seg_AvoidCircleXZ` |
 | `004AE8` | `80003EE8` | 0x5a0 | `src/auto/4AE8.c` | C (generated) | 1 | `Path_AvoidEdges` |
-| `005088` | `80004488` | 0x120 | `src/auto/5088.c` | C (generated) | 1 | `Car_ClampToSphere` |
-| `0051B0` | `800045B0` | 0x70 | `src/auto/51B0.c` | C (generated) | 1 |  |
-| `005220` | `80004620` | 0x174 | `src/auto/5220.c` | C (generated) | 1 |  |
+| `005088` | `80004488` | 0x120 | `src/auto/5088.c` | C (generated) | 1 | `Ai_ClampTargetToCircle` |
+| `0051B0` | `800045B0` | 0x70 | `src/auto/51B0.c` | C (generated) | 1 | `Ai_OnCollision` |
+| `005220` | `80004620` | 0x174 | `src/auto/5220.c` | C (generated) | 1 | `Ai_OnHitByPlayer` |
 | `005394` | `80004794` | 0x2e8 | `src/auto/5394.c` | C (generated) | 1 | `CarAI_OnCollision` |
-| `005680` | `80004A80` | 0x374 | `src/auto/5680.c` | C (generated) | 1 | `Car_UpdateTrackSection` |
+| `005680` | `80004A80` | 0x374 | `src/auto/5680.c` | C (generated) | 1 | `Ai_MatchTargetLane` |
 | `005A00` | `80004E00` | 0x114 | `src/auto/5A00.c` | C (generated) | 1 | `Ai_UpdateDriver` |
 | `005B14` | `80004F14` | 0x26c | `src/auto/5B14.c` | C (generated) | 1 | `Ai_Steer` |
-| `005D80` | `80005180` | 0x74 | `src/auto/5D80.c` | C (generated) | 1 |  |
+| `005D80` | `80005180` | 0x74 | `src/auto/5D80.c` | C (generated) | 1 | `Ai_UpdateStateByMode` |
 | `005DF4` | `800051F4` | 0x620 | `src/auto/5DF4.c` | C (generated) | 1 | `Ai_SelectTeamTarget` |
 | `006414` | `80005814` | 0x18c | `src/auto/6414.c` | C (generated) | 1 |  |
 | `0065A0` | `800059A0` | 0x290 | `src/auto/65A0.c` | C (generated) | 1 | `Ai_UpdateState` |
-| `006830` | `80005C30` | 0x19c | `src/auto/6830.c` | C (generated) | 1 |  |
+| `006830` | `80005C30` | 0x19c | `src/auto/6830.c` | C (generated) | 1 | `Ai_UpdateRaceState` |
 | `0069CC` | `80005DCC` | 0x5ac | `src/auto/69CC.c` | C (generated) | 1 | `Ai_Update` |
 | `006F78` | `80006378` | 0x2c4 | `src/auto/6F78.c` | C (generated) | 1 | `Ai_UpdateSteer` |
-| `00723C` | `8000663C` | 0x94 | `src/auto/723C.c` | C (generated) | 1 |  |
-| `0072D0` | `800066D0` | 0x110 | `src/auto/72D0.c` | C (generated) | 1 |  |
+| `00723C` | `8000663C` | 0x94 | `src/auto/723C.c` | C (generated) | 1 | `Ai_BrakeOrReverse` |
+| `0072D0` | `800066D0` | 0x110 | `src/auto/72D0.c` | C (generated) | 1 | `Ai_OnCarWrecked` |
 | `0073E0` | `800067E0` | 0x234 | `src/auto/73E0.c` | C (generated) | 1 | `Ai_CheckStuck` |
 | `007620` | `80006A20` | 0x288 | `src/auto/7620.c` | C (generated) | 1 | `Sound_StartCarLoops` |
 | `0078A8` | `80006CA8` | 0x1e4 | `src/auto/78A8.c` | C (generated) | 1 | `EngineSfx_UpdateAll` |
-| `007A8C` | `80006E8C` | 0x390 | `src/auto/7A8C.c` | C (generated) | 1 |  |
-| `007E1C` | `8000721C` | 0xb0 | `src/auto/7E1C.c` | C (generated) | 1 |  |
+| `007A8C` | `80006E8C` | 0x390 | `src/auto/7A8C.c` | C (generated) | 1 | `Sound_PlayContact` |
+| `007E1C` | `8000721C` | 0xb0 | `src/auto/7E1C.c` | C (generated) | 1 | `Sound_ExpireScrapes` |
 | `007ECC` | `800072CC` | 0x220 | `src/auto/7ECC.c` | C (generated) | 1 | `Sound_PlayCar` |
 | `0080EC` | `800074EC` | 0x258 | `src/auto/80EC.c` | C (generated) | 1 | `Sound_PlayAt` |
-| `008344` | `80007744` | 0x17c | `src/auto/8344.c` | C (generated) | 1 |  |
+| `008344` | `80007744` | 0x17c | `src/auto/8344.c` | C (generated) | 1 | `Sound_PlayVoice` |
 | `0084C0` | `800078C0` | 0x3c4 | `asm/84C0.s` | asm | 1 | `Sound_UpdateCarSurfaces` |
 | `008884` | `80007C84` | 0x2e4 | `src/auto/8884.c` | C (generated) | 1 | `EngineSfx_Crossfade` |
 | `008B68` | `80007F68` | 0x6c | `src/auto/8B68.c` | C (generated) | 1 | `Sfx_StopPair` |
 | `008BD4` | `80007FD4` | 0x30 | `src/auto/8BD4.c` | C (generated) | 1 |  |
 | `008C04` | `80008004` | 0x7c | `src/auto/8C04.c` | C (generated) | 1 |  |
 | `008C80` | `80008080` | 0x19c | `src/auto/8C80.c` | C (generated) | 1 | `CarEffect_Init` |
-| `008E1C` | `8000821C` | 0x7c | `src/auto/8E1C.c` | C (generated) | 1 |  |
-| `008E98` | `80008298` | 0x70 | `src/auto/8E98.c` | C (generated) | 1 |  |
+| `008E1C` | `8000821C` | 0x7c | `src/auto/8E1C.c` | C (generated) | 1 | `Sound_SetImpactId` |
+| `008E98` | `80008298` | 0x70 | `src/auto/8E98.c` | C (generated) | 1 | `Sound_SetScrapeId` |
 | `008F10` | `80008310` | 0x1dc | `src/auto/8F10.c` | C (generated) | 1 | `SoundEmitter_Init` |
 | `0090EC` | `800084EC` | 0x19c | `src/auto/90EC.c` | C (generated) | 1 | `Res_LoadSoundBank` |
-| `009288` | `80008688` | 0x24 | `src/auto/9288.c` | C (generated) | 3 |  |
+| `009288` | `80008688` | 0x24 | `src/auto/9288.c` | C (generated) | 3 | `Announcer_GetQueueCount` |
 | `0092AC` | `800086AC` | 0x60 | `src/auto/92AC.c` | C (generated) | 1 | `Game_TimeBefore` |
-| `00930C` | `8000870C` | 0xbc | `src/auto/930C.c` | C (generated) | 1 |  |
-| `0093C8` | `800087C8` | 0x50 | `src/auto/93C8.c` | C (generated) | 1 |  |
-| `009418` | `80008818` | 0x3a0 | `src/auto/9418.c` | C (generated) | 1 |  |
+| `00930C` | `8000870C` | 0xbc | `src/auto/930C.c` | C (generated) | 1 | `Announcer_ReplaceQueued` |
+| `0093C8` | `800087C8` | 0x50 | `src/auto/93C8.c` | C (generated) | 1 | `Announcer_ClearQueue` |
+| `009418` | `80008818` | 0x3a0 | `src/auto/9418.c` | C (generated) | 1 | `Announcer_Update` |
 | `0097B8` | `80008BB8` | 0x218 | `src/auto/97B8.c` | C (generated) | 1 | `Announcer_QueueRandom` |
 | `0099D0` | `80008DD0` | 0x120 | `src/auto/99D0.c` | C (generated) | 1 | `Msg_Queue` |
 | `009AF0` | `80008EF0` | 0x1e0 | `src/auto/9AF0.c` | C (generated) | 1 | `Commentary_PickRandom` |
 | `009CD0` | `800090D0` | 0xdc | `src/auto/9CD0.c` | C (generated) | 1 | `Announcer_Request` |
-| `009DAC` | `800091AC` | 0x54 | `src/auto/9DAC.c` | C (generated) | 1 |  |
-| `009E00` | `80009200` | 0x314 | `src/auto/9E00.c` | C (generated) | 1 |  |
+| `009DAC` | `800091AC` | 0x54 | `src/auto/9DAC.c` | C (generated) | 1 | `Sound_UpdateRace` |
+| `009E00` | `80009200` | 0x314 | `src/auto/9E00.c` | C (generated) | 1 | `Sound_CullVoices` |
 | `00A114` | `80009514` | 0x58 | `src/auto/A114.c` | C (generated) | 1 | `Game_GetTime` |
 | `00A16C` | `8000956C` | 0xcc | `src/auto/A16C.c` | C (generated) | 1 | `World_FlagAllObjects` |
-| `00A238` | `80009638` | 0xbc | `src/auto/A238.c` | C (generated) | 1 |  |
-| `00A2F4` | `800096F4` | 0x340 | `src/auto/A2F4.c` | C (generated) | 1 | `Race_Init` |
-| `00A634` | `80009A34` | 0xc4 | `src/auto/A634.c` | C (generated) | 1 |  |
+| `00A238` | `80009638` | 0xbc | `src/auto/A238.c` | C (generated) | 1 | `Sound_UpdateListeners` |
+| `00A2F4` | `800096F4` | 0x340 | `src/auto/A2F4.c` | C (generated) | 1 | `Sound_InitForMode` |
+| `00A634` | `80009A34` | 0xc4 | `src/auto/A634.c` | C (generated) | 1 | `Sound_RemoveEmitter` |
 | `00A700` | `80009B00` | 0x190 | `src/auto/A700.c` | C (generated) | 1 | `Car_SetPartsForMode` |
-| `00A890` | `80009C90` | 0x12c | `src/auto/A890.c` | C (generated) | 1 |  |
-| `00A9BC` | `80009DBC` | 0x2c4 | `src/auto/A9BC.c` | C (generated) | 1 | `Car_DrawShadowDL` |
-| `00AC80` | `8000A080` | 0x68 | `src/auto/AC80.c` | C (generated) | 1 |  |
+| `00A890` | `80009C90` | 0x12c | `src/auto/A890.c` | C (generated) | 1 | `Car_DamagePart` |
+| `00A9BC` | `80009DBC` | 0x2c4 | `src/auto/A9BC.c` | C (generated) | 1 | `Car_DrawWheels` |
+| `00AC80` | `8000A080` | 0x68 | `src/auto/AC80.c` | C (generated) | 1 | `Debris_FreeCar` |
 | `00ACE8` | `8000A0E8` | 0x2b4 | `src/auto/ACE8.c` | C (generated) | 1 | `Debris_UpdateDraw` |
-| `00AF9C` | `8000A39C` | 0x58 | `src/auto/AF9C.c` | C (generated) | 1 |  |
-| `00AFF4` | `8000A3F4` | 0x180 | `src/auto/AFF4.c` | C (generated) | 1 | `Car_SpawnSpark` |
+| `00AF9C` | `8000A39C` | 0x58 | `src/auto/AF9C.c` | C (generated) | 1 | `Debris_Init` |
+| `00AFF4` | `8000A3F4` | 0x180 | `src/auto/AFF4.c` | C (generated) | 1 | `Car_SpawnPartDebris` |
 | `00B174` | `8000A574` | 0x320 | `src/auto/B174.c` | C (generated) | 1 | `Debris_Spawn` |
 | `00B494` | `8000A894` | 0x144 | `src/auto/B494.c` | C (generated) | 1 |  |
-| `00B5D8` | `8000A9D8` | 0x368 | `src/auto/B5D8.c` | C (generated) | 1 |  |
-| `00B940` | `8000AD40` | 0x490 | `src/auto/B940.c` | C (generated) | 1 |  |
-| `00BDD0` | `8000B1D0` | 0x4ac | `src/auto/BDD0.c` | C (generated) | 1 |  |
+| `00B5D8` | `8000A9D8` | 0x368 | `src/auto/B5D8.c` | C (generated) | 1 | `Car_EmitWreckParticles` |
+| `00B940` | `8000AD40` | 0x490 | `src/auto/B940.c` | C (generated) | 1 | `Car_EmitWheelDust` |
+| `00BDD0` | `8000B1D0` | 0x4ac | `src/auto/BDD0.c` | C (generated) | 1 | `Car_Draw` |
 | `00C27C` | `8000B67C` | 0x70 | `src/auto/C27C.c` | C (generated) | 1 | `Frame_ToMatrix` |
-| `00C2EC` | `8000B6EC` | 0x1e8 | `src/auto/C2EC.c` | C (generated) | 1 |  |
-| `00C4D4` | `8000B8D4` | 0x9c | `src/auto/C4D4.c` | C (generated) | 1 |  |
+| `00C2EC` | `8000B6EC` | 0x1e8 | `src/auto/C2EC.c` | C (generated) | 1 | `Car_UpdateModelMatrices` |
+| `00C4D4` | `8000B8D4` | 0x9c | `src/auto/C4D4.c` | C (generated) | 1 | `Mtx_FromBodyMul` |
 | `00C570` | `8000B970` | 0x80 | `src/auto/C570.c` | C (generated) | 1 | `Frame_ToScaledMatrix` |
 | `00C5F0` | `8000B9F0` | 0xc8 | `src/auto/C5F0.c` | C (generated) | 1 | `Mtx_FromRotPos` |
 | `00C6C0` | `8000BAC0` | 0x70 | `src/auto/C6C0.c` | C (generated) | 3 |  |
 | `00C730` | `8000BB30` | 0x144 | `src/auto/C730.c` | C (generated) | 1 | `Hud_DrawSpeed` |
-| `00C874` | `8000BC74` | 0x444 | `src/auto/C874.c` | C (generated) | 1 |  |
-| `00CCB8` | `8000C0B8` | 0x88 | `src/auto/CCB8.c` | C (generated) | 1 |  |
+| `00C874` | `8000BC74` | 0x444 | `src/auto/C874.c` | C (generated) | 1 | `Hud_UpdateHealthBar` |
+| `00CCB8` | `8000C0B8` | 0x88 | `src/auto/CCB8.c` | C (generated) | 1 | `Hud_FormatPosition` |
 | `00CD40` | `8000C140` | 0xb34 | `src/auto/CD40.c` | C (generated) | 1 | `Hud_UpdateScoreCounter` |
 | `00D874` | `8000CC74` | 0x194 | `src/auto/D874.c` | C (generated) | 1 | `Intro_StepMessages` |
 | `00DA08` | `8000CE08` | 0x24c | `src/auto/DA08.c` | C (generated) | 1 | `Hud_UpdateCountdown` |
@@ -136,65 +136,65 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `00EB78` | `8000DF78` | 0x11c | `src/auto/EB78.c` | C (generated) | 1 | `Hud_FormatLapTime` |
 | `00EC94` | `8000E094` | 0xe4 | `src/auto/EC94.c` | C (generated) | 1 | `Time_Format` |
 | `00ED78` | `8000E178` | 0x298 | `asm/ED78.s` | asm | 1 | `MapMarker_Update` |
-| `00F010` | `8000E410` | 0xf8 | `src/auto/F010.c` | C (generated) | 1 |  |
-| `00F108` | `8000E508` | 0x180 | `src/auto/F108.c` | C (generated) | 1 |  |
-| `00F288` | `8000E688` | 0x58 | `src/auto/F288.c` | C (generated) | 1 |  |
+| `00F010` | `8000E410` | 0xf8 | `src/auto/F010.c` | C (generated) | 1 | `Hud_HealthBarStep` |
+| `00F108` | `8000E508` | 0x180 | `src/auto/F108.c` | C (generated) | 1 | `Ui_RevealInit` |
+| `00F288` | `8000E688` | 0x58 | `src/auto/F288.c` | C (generated) | 1 | `Ui_RevealFree` |
 | `00F2E0` | `8000E6E0` | 0x17c | `src/auto/F2E0.c` | C (generated) | 1 | `Ui_RevealStep` |
 | `00F45C` | `8000E85C` | 0x8 | `src/auto/F45C.c` | C (generated) | 1 |  |
-| `00F464` | `8000E864` | 0xfc | `src/auto/F464.c` | C (generated) | 1 |  |
-| `00F560` | `8000E960` | 0x50 | `src/auto/F560.c` | C (generated) | 1 |  |
+| `00F464` | `8000E864` | 0xfc | `src/auto/F464.c` | C (generated) | 1 | `Fade_Init` |
+| `00F560` | `8000E960` | 0x50 | `src/auto/F560.c` | C (generated) | 1 | `Fade_Free` |
 | `00F5B0` | `8000E9B0` | 0x138 | `src/auto/F5B0.c` | C (generated) | 1 | `Fade_Step` |
 | `00F6E8` | `8000EAE8` | 0x6dc | `src/auto/F6E8.c` | C (generated) | 1 | `Hud_UpdateBlinkElements` |
-| `00FDC4` | `8000F1C4` | 0x330 | `src/auto/FDC4.c` | C (generated) | 1 |  |
+| `00FDC4` | `8000F1C4` | 0x330 | `src/auto/FDC4.c` | C (generated) | 1 | `Hud_FlashDamageZone` |
 | `0100F4` | `8000F4F4` | 0x244 | `src/auto/100F4.c` | C (generated) | 1 | `Ui_UpdateFadeBlink` |
-| `010338` | `8000F738` | 0x60 | `src/auto/10338.c` | C (generated) | 1 |  |
+| `010338` | `8000F738` | 0x60 | `src/auto/10338.c` | C (generated) | 1 | `Hud_FormatCarsLeft` |
 | `010398` | `8000F798` | 0x28 | `src/auto/10398.c` | C (generated) | 1 |  |
-| `0103C0` | `8000F7C0` | 0x1b4 | `src/auto/103C0.c` | C (generated) | 1 | `SaveSlot_FormatTime` |
+| `0103C0` | `8000F7C0` | 0x1b4 | `src/auto/103C0.c` | C (generated) | 1 | `Hud_FormatTimeLimit` |
 | `010580` | `8000F980` | 0x8 | `src/auto/10580.c` | C (generated) | 1 |  |
-| `010588` | `8000F988` | 0x144 | `src/auto/10588.c` | C (generated) | 1 |  |
+| `010588` | `8000F988` | 0x144 | `src/auto/10588.c` | C (generated) | 1 | `Hud_InitForMode` |
 | `0106CC` | `8000FACC` | 0x8 | `src/auto/106CC.c` | C (generated) | 1 |  |
 | `0106D4` | `8000FAD4` | 0x488 | `asm/106D4.s` | asm | 1 | `MapUi_Init` |
-| `010B5C` | `8000FF5C` | 0x120 | `src/auto/10B5C.c` | C (generated) | 1 |  |
-| `010C7C` | `8001007C` | 0x40 | `src/auto/10C7C.c` | C (generated) | 1 |  |
-| `010CBC` | `800100BC` | 0x158 | `src/auto/10CBC.c` | C (generated) | 1 |  |
+| `010B5C` | `8000FF5C` | 0x120 | `src/auto/10B5C.c` | C (generated) | 1 | `Ui_UpdateElements` |
+| `010C7C` | `8001007C` | 0x40 | `src/auto/10C7C.c` | C (generated) | 1 | `Ui_LookupTextId` |
+| `010CBC` | `800100BC` | 0x158 | `src/auto/10CBC.c` | C (generated) | 1 | `Ui_SetElementColor` |
 | `010E14` | `80010214` | 0x14 | `src/auto/10E14.c` | C (generated) | 2 |  |
-| `010E28` | `80010228` | 0x60 | `src/auto/10E28.c` | C (generated) | 1 |  |
-| `010E88` | `80010288` | 0x358 | `src/auto/10E88.c` | C (generated) | 2 | `Font_GetStringWidth`, `Race_GetLapTimeLimits` |
+| `010E28` | `80010228` | 0x60 | `src/auto/10E28.c` | C (generated) | 1 | `Ui_GetStyleRes` |
+| `010E88` | `80010288` | 0x358 | `src/auto/10E88.c` | C (generated) | 2 | `Font_GetStringWidth`, `Hud_GetLayoutIds` |
 | `0111E0` | `800105E0` | 0x14c | `src/auto/111E0.c` | C (generated) | 1 | `Hud_ResetTimeStrings` |
-| `011330` | `80010730` | 0xdc | `src/auto/11330.c` | C (generated) | 3 |  |
-| `01140C` | `8001080C` | 0x138 | `src/auto/1140C.c` | C (generated) | 1 |  |
-| `011550` | `80010950` | 0x120 | `src/auto/11550.c` | C (generated) | 4 |  |
+| `011330` | `80010730` | 0xdc | `src/auto/11330.c` | C (generated) | 3 | `ParticleSys_Create`, `ParticleSys_Destroy` |
+| `01140C` | `8001080C` | 0x138 | `src/auto/1140C.c` | C (generated) | 1 | `ParticleSys_Draw` |
+| `011550` | `80010950` | 0x120 | `src/auto/11550.c` | C (generated) | 4 | `ParticleList_Clear` |
 | `011670` | `80010A70` | 0xb8 | `src/auto/11670.c` | C (generated) | 1 | `List_PushCopy` |
 | `011728` | `80010B28` | 0x1a4 | `src/auto/11728.c` | C (generated) | 1 | `Particle_Spawn` |
 | `0118CC` | `80010CCC` | 0x13c | `src/auto/118CC.c` | C (generated) | 1 | `List_AddNode` |
-| `011A08` | `80010E08` | 0x94 | `src/auto/11A08.c` | C (generated) | 4 |  |
+| `011A08` | `80010E08` | 0x94 | `src/auto/11A08.c` | C (generated) | 4 | `Particle_SetColor`, `Particle_Step` |
 | `011A9C` | `80010E9C` | 0xe0 | `src/auto/11A9C.c` | C (generated) | 1 | `Particles_Update` |
-| `011B7C` | `80010F7C` | 0x370 | `src/auto/11B7C.c` | C (generated) | 1 |  |
+| `011B7C` | `80010F7C` | 0x370 | `src/auto/11B7C.c` | C (generated) | 1 | `Particle_LoadTexFrame` |
 | `011EEC` | `800112EC` | 0x944 | `src/auto/11EEC.c` | C (generated) | 1 | `Particles_Draw` |
 | `012830` | `80011C30` | 0x9c | `src/auto/12830.c` | C (generated) | 1 |  |
-| `0128CC` | `80011CCC` | 0xe4 | `src/auto/128CC.c` | C (generated) | 1 |  |
+| `0128CC` | `80011CCC` | 0xe4 | `src/auto/128CC.c` | C (generated) | 1 | `Track_GetGridCell` |
 | `0129B0` | `80011DB0` | 0x244 | `src/auto/129B0.c` | C (generated) | 1 | `Render_DrawSkyAndWorld` |
-| `012BF4` | `80011FF4` | 0x3cc | `src/auto/12BF4.c` | C (generated) | 1 |  |
+| `012BF4` | `80011FF4` | 0x3cc | `src/auto/12BF4.c` | C (generated) | 1 | `Track_UpdateAmbientEmitters` |
 | `012FC0` | `800123C0` | 0xd0 | `src/auto/12FC0.c` | C (generated) | 1 |  |
 | `013090` | `80012490` | 0x78 | `src/auto/13090.c` | C (generated) | 1 |  |
-| `013108` | `80012508` | 0x38 | `src/auto/13108.c` | C (generated) | 1 |  |
+| `013108` | `80012508` | 0x38 | `src/auto/13108.c` | C (generated) | 1 | `Track_GetScale` |
 | `013140` | `80012540` | 0x8 | `src/auto/13140.c` | C (generated) | 1 |  |
-| `013148` | `80012548` | 0x3ac | `src/auto/13148.c` | C (generated) | 1 |  |
-| `0134F4` | `800128F4` | 0x90 | `src/auto/134F4.c` | C (generated) | 4 |  |
-| `013584` | `80012984` | 0x84 | `src/auto/13584.c` | C (generated) | 1 |  |
-| `013608` | `80012A08` | 0x94 | `src/auto/13608.c` | C (generated) | 2 |  |
+| `013148` | `80012548` | 0x3ac | `src/auto/13148.c` | C (generated) | 1 | `Weather_UpdateLightning` |
+| `0134F4` | `800128F4` | 0x90 | `src/auto/134F4.c` | C (generated) | 4 | `Car_GetGridCell`, `Game_GetMode`, `Surface_InitTable`, `Surface_FreeTable` |
+| `013584` | `80012984` | 0x84 | `src/auto/13584.c` | C (generated) | 1 | `Surface_AddTexture` |
+| `013608` | `80012A08` | 0x94 | `src/auto/13608.c` | C (generated) | 2 | `Surface_GetType` |
 | `01369C` | `80012A9C` | 0x6d8 | `src/auto/1369C.c` | C (generated) | 1 | `Light_UpdateVertexColors` |
 | `013D74` | `80013174` | 0x44 | `src/auto/13D74.c` | C (generated) | 1 |  |
-| `013DC0` | `800131C0` | 0x9c | `src/auto/13DC0.c` | C (generated) | 1 |  |
-| `013E5C` | `8001325C` | 0x350 | `src/auto/13E5C.c` | C (generated) | 1 |  |
+| `013DC0` | `800131C0` | 0x9c | `src/auto/13DC0.c` | C (generated) | 1 | `Track_LoadObjects` |
+| `013E5C` | `8001325C` | 0x350 | `src/auto/13E5C.c` | C (generated) | 1 | `Obj_CreateFromSpawn` |
 | `0141AC` | `800135AC` | 0x1a0 | `src/auto/141AC.c` | C (generated) | 1 | `Obj_Free` |
 | `01434C` | `8001374C` | 0xc4 | `src/auto/1434C.c` | C (generated) | 1 | `ResTable_Load` |
-| `014410` | `80013810` | 0x124 | `src/auto/14410.c` | C (generated) | 1 | `Sfx_AddEntry` |
+| `014410` | `80013810` | 0x124 | `src/auto/14410.c` | C (generated) | 1 | `Tex_AddScroll` |
 | `014534` | `80013934` | 0x120 | `src/auto/14534.c` | C (generated) | 1 | `Res_LoadTable30` |
-| `014654` | `80013A54` | 0x15c | `src/auto/14654.c` | C (generated) | 1 |  |
+| `014654` | `80013A54` | 0x15c | `src/auto/14654.c` | C (generated) | 1 | `Tex_AddAnim` |
 | `0147B0` | `80013BB0` | 0x230 | `src/auto/147B0.c` | C (generated) | 1 | `Anim_UpdateTimers` |
 | `0149E0` | `80013DE0` | 0x1dc | `src/auto/149E0.c` | C (generated) | 1 | `Tex_UpdateScrollAndAnim` |
-| `014BBC` | `80013FBC` | 0x8c | `src/auto/14BBC.c` | C (generated) | 1 |  |
+| `014BBC` | `80013FBC` | 0x8c | `src/auto/14BBC.c` | C (generated) | 1 | `Track_ResetAnimTables` |
 | `014C48` | `80014048` | 0x1a8 | `src/auto/14C48.c` | C (generated) | 1 | `Track_FreeAnims` |
 | `014DF0` | `800141F0` | 0x10 | `src/auto/14DF0.c` | C (generated) | 2 |  |
 | `014E00` | `80014200` | 0x218 | `src/auto/14E00.c` | C (generated) | 1 | `PathMover_Update` |

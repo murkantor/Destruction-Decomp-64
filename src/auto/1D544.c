@@ -27,7 +27,7 @@ typedef struct {
 } ResTbl;
 extern u8 D_80091B28;
 extern ResTbl D_80091B30[];
-void func_80013A54(s32 a0, ResTbl *a1, s8 a2, s8 a3, s16 a4);
+void Tex_AddAnim(s32 a0, ResTbl *a1, s8 a2, s8 a3, s16 a4);
 
 void Model_FixupDisplayList(ResHdr *hdr, s32 base, u8 flag) {
     u8 used[256];
@@ -75,7 +75,7 @@ void Model_FixupDisplayList(ResHdr *hdr, s32 base, u8 flag) {
                 for (t = 0; found && t < 7; t++) {
                     for (j = 0; found && j < D_80091B30[t].n; j++) {
                         if (gfx->w1 == D_80091B30[t].a[j]) {
-                            func_80013A54((s32)&gfx->w1, &D_80091B30[t], j, D_80091B30[t].n, D_80091B30[t].x2A);
+                            Tex_AddAnim((s32)&gfx->w1, &D_80091B30[t], j, D_80091B30[t].n, D_80091B30[t].x2A);
                             found = 0;
                         }
                     }

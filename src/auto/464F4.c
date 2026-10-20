@@ -36,7 +36,7 @@ u64 Time_Get(u64 *);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddSpriteElement(void *, UiDesc *);
 void Ui_AddElement(void *, s32, s32);
-void func_800087C8(void);
+void Announcer_ClearQueue(void);
 u8 Game_TimeBefore(void);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 void Msg_Queue(s32 id, s32 arg1, u8 force, u8 once);
@@ -60,7 +60,7 @@ s32 Race_UpdateFinish(void) {
                 List12 a = D_800BABA8;
                 List12 b = D_800BABD8;
                 List3 c = D_800BAC08;
-                func_800087C8();
+                Announcer_ClearQueue();
                 if (D_80096EC0 == 0) {
                     Announcer_QueueRandom(c.v, 3, 500, 1, 0);
                 } else if (info->x10 == 1) {

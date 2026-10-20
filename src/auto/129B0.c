@@ -39,11 +39,11 @@ extern u8 D_1304D8[];
 extern u8 D_80125460[];
 extern s32 D_80130248;
 extern u8 D_80083B78[];
-void func_80012548(Camera *);
+void Weather_UpdateLightning(Camera *);
 Gfx *Camera_BuildProjection(Gfx *, Camera *);
 Gfx *Track_DrawDisplayList(void *, Gfx *);
 void Tex_UpdateScrollAndAnim(void);
-Gfx *func_80011FF4(Gfx *, Camera *);
+Gfx *Track_UpdateAmbientEmitters(Gfx *, Camera *);
 
 Gfx *Render_DrawSkyAndWorld(s32 arg0, Gfx *gfx, Camera *cam) {
     Vec3f eye;
@@ -53,7 +53,7 @@ Gfx *Render_DrawSkyAndWorld(s32 arg0, Gfx *gfx, Camera *cam) {
 
     if (gGame->xC == 2) {
         if (D_80125B68->x1) {
-            func_80012548(cam);
+            Weather_UpdateLightning(cam);
         }
         far = cam->xC;
         eye = cam->eye;
@@ -85,7 +85,7 @@ Gfx *Render_DrawSkyAndWorld(s32 arg0, Gfx *gfx, Camera *cam) {
         Tex_UpdateScrollAndAnim();
         GFX2(gfx, 0xD8380002, 0x40);
         if (D_80083B78[D_80130248]) {
-            gfx = func_80011FF4(gfx, cam);
+            gfx = Track_UpdateAmbientEmitters(gfx, cam);
         }
     }
     return gfx;

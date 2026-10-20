@@ -31,7 +31,7 @@ void Particles_EmitAlongSegment(void *, Vec3f *, Vec3f *, Vec3f, f32, f32, s32, 
 void Skid_Start(void *);
 void Skid_Stop(void *);
 
-void func_8000AD40(Car *car, void *a, void *b)
+void Car_EmitWheelDust(Car *car, void *a, void *b)
 {
     Vec3f p1;
     Vec3f p2;

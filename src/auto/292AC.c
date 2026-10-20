@@ -8,7 +8,7 @@ extern F5 D_800B9020;
 void Vec3f_Dot(f32 *out, Vec3f *a, Vec3f *b);
 void func_8001FC08(Vec3f *, Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 
 s32 func_800286AC(Car *car, Vec3f dir) {
     Vec3f fwd;
@@ -33,7 +33,7 @@ s32 func_800286AC(Car *car, Vec3f dir) {
     d.y = 0.0f;
     fwd.y = 0.0f;
     angle = Vec3f_AngleBetween(fwd, d);
-    if (func_800005C8(fwd, d) > 0.0) {
+    if (Vec3f_CrossYSign(fwd, d) > 0.0) {
         side = 1;
     }
     for (i = 0; i < 5; i++) {

@@ -12,7 +12,7 @@ extern u8 D_800D1BAC;
 extern s8 D_800D31CC;
 extern Slot44994 D_800958DC[];
 f32 Time_ToSeconds(void *);
-s8 func_800086A0(void);
+s8 Announcer_GetQueueCount(void);
 u8 Game_TimeBefore(void);
 void Camera_UpdateChase(Car44994 *);
 void func_80063564(s32, s32);
@@ -32,7 +32,7 @@ s32 func_80044994(void) {
     if (!D_800D1BAC) {
         return 0;
     }
-    if (func_800086A0()) {
+    if (Announcer_GetQueueCount()) {
         return 0;
     }
     if (Game_TimeBefore()) {

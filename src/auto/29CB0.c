@@ -23,7 +23,7 @@ extern s32 D_800958AC;
 extern u32 D_800958B0;
 extern u8 D_800958A1;
 void Ai_CheckStuck(Car *);
-void func_8000F1C4(void *, Car *, s32, s32);
+void Hud_FlashDamageZone(void *, Car *, s32, s32);
 void func_8002A5CC(Car *, s32);
 
 void Car_ApplyDamage(Car *c, s32 idx, f32 dmg, s32 type) {
@@ -112,7 +112,7 @@ void Car_ApplyDamage(Car *c, s32 idx, f32 dmg, s32 type) {
     } else {
         side = idx;
     }
-    func_8000F1C4(gUi, c, amount, side);
+    Hud_FlashDamageZone(gUi, c, amount, side);
     if (c->x10 < 0) c->x10 = 0;
     if (c->parts[idx].x8 < 0) c->parts[idx].x8 = 0;
     func_8002A5CC(c, idx);

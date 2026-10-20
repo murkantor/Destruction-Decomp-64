@@ -35,7 +35,7 @@ extern void Ui_RemoveElement(void *, s32);
 extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 unique);
 extern void Announcer_Request(s32 id, s32 arg1, s32 check);
 extern void Car_ApplyImpactDamage(Car *, Car *, s32, s32);
-extern void func_800045B0(Car *, s32, s32, Car *, s32, s32);
+extern void Ai_OnCollision(Car *, s32, s32, Car *, s32, s32);
 
 void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
     s32 dmgA;
@@ -140,5 +140,5 @@ void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
             Announcer_Request(0x65, 0, 1);
         }
     }
-    func_800045B0(a, dmgA, pa, b, dmgB, pb);
+    Ai_OnCollision(a, dmgA, pa, b, dmgB, pb);
 }

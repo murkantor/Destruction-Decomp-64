@@ -3,7 +3,7 @@
 
 extern s32 D_800D1C18;
 
-s8 func_80012A08(s32 arg0) {
+s8 Surface_GetType(s32 arg0) {
     return M2C_FIELD(((arg0 * 4) + D_800D1C18), s8 *, 3);
 }
 

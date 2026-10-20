@@ -3,7 +3,7 @@
 
 f32 Car_GetSpeed();
 
-void func_8000663C(void *arg0)
+void Ai_BrakeOrReverse(void *arg0)
 {
   void *temp_s1;
   void *temp_v1;

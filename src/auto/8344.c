@@ -39,7 +39,7 @@ s16 func_80064D70(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(void *, Req7744 *);
 
-void func_80007744(void *obj, Vec3f pos, s32 id) {
+void Sound_PlayVoice(void *obj, Vec3f pos, s32 id) {
     Req7744 req;
     Vec3f zero = D_800B7F20;
     s64 *t;

@@ -8,7 +8,7 @@ typedef struct { u8 pad[0x70]; Track *track; } Race;
 typedef struct { u8 pad[0x1100]; Race *race; } Game;
 extern Game *gGame;
 
-s32 func_80011CCC(Vec3f pos) {
+s32 Track_GetGridCell(Vec3f pos) {
     s32 ix = (pos.x - gGame->race->track->grid->ox) / gGame->race->track->grid->cw;
     s32 iz = (pos.z - gGame->race->track->grid->oz) / gGame->race->track->grid->ch;
 

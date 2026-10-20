@@ -59,8 +59,8 @@ void Grid_Create(s32 *, s32, s32, s32);
 void Grid_AddItem(s32, s32);
 void Grid_BuildCellsXZ(s32, u8 *);
 s32 Res_Get(s32);
-void func_80013A54(s32 *, s32 *, s8, s8, s16);
-void Sfx_AddEntry(Cmd *, s16, s8, s8);
+void Tex_AddAnim(s32 *, s32 *, s8, s8, s16);
+void Tex_AddScroll(Cmd *, s16, s8, s8);
 
 void Track_RelocateDisplayList(Obj *arg0, Script *arg1, s32 arg2) {
     SfxDef *sfx;
@@ -104,7 +104,7 @@ void Track_RelocateDisplayList(Obj *arg0, Script *arg1, s32 arg2) {
             for (j = 0; j < numGroups && cont; j++) {
                 for (k = 0; cont && k < groups[j].x2C; k++) {
                     if (c->x4 == groups[j].x4[k]) {
-                        func_80013A54(&c->x4, groups[j].x4, k, groups[j].x2C, groups[j].x2E);
+                        Tex_AddAnim(&c->x4, groups[j].x4, k, groups[j].x2C, groups[j].x2E);
                         cont = 0;
                     }
                 }
@@ -131,7 +131,7 @@ void Track_RelocateDisplayList(Obj *arg0, Script *arg1, s32 arg2) {
         case 0xF2:
             if (found) {
                 found = 0;
-                Sfx_AddEntry(c, sfx[foundIdx].xC, sfx[foundIdx].xE, sfx[foundIdx].xF);
+                Tex_AddScroll(c, sfx[foundIdx].xC, sfx[foundIdx].xE, sfx[foundIdx].xF);
             }
             break;
         case 0xDE:

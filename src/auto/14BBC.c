@@ -23,7 +23,7 @@ extern RaceState *D_801238E8;
 extern s32 D_8011F048[14];
 extern s32 D_80125578[14];
 
-void func_80013FBC(void) {
+void Track_ResetAnimTables(void) {
     s32 i;
 
     D_801255E4 = 0;

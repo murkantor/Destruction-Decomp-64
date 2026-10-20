@@ -25,7 +25,7 @@ void Ui_ResetScreen(s32, s32);
 s32 sprintf(char *, const char *, ...);
 f32 func_8003ECC0(char *, s32, f32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
 void Timer_Start(void *, u64);
 
@@ -135,10 +135,10 @@ void Results_DrawTeamScores(void) {
     sprintf(D_80123C88[1], D_800BAF68, j);
     Ui_SetElementPos(gUi[0], 0, 0x17F, func_8003ECC0(D_80123C88[1], 0x111F6, xs.v[2]), ys[5]);
     if (j < i) {
-        func_800100BC(0x17E, 0x111FC);
+        Ui_SetElementColor(0x17E, 0x111FC);
         Msg_Queue(0x83, 0, 1, 0);
     } else if (i < j) {
-        func_800100BC(0x17F, 0x111FC);
+        Ui_SetElementColor(0x17F, 0x111FC);
         Msg_Queue(0x82, 0, 1, 0);
     }
     for (i = 0; i < 4; i++) {

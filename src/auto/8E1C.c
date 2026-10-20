@@ -3,7 +3,7 @@
 
 typedef struct { u8 pad[0x10]; s16 x10; } Obj;
 
-void func_8000821C(Obj *o, u32 n) {
+void Sound_SetImpactId(Obj *o, u32 n) {
     switch (n) {
         case 0:
             o->x10 = 0x1D;

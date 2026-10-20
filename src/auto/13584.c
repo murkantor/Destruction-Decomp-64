@@ -6,7 +6,7 @@ extern KeyMap D_8007FCF0[];
 extern s32 *D_800D1C18;
 extern s32 D_80124470;
 
-void func_80012984(s32 key) {
+void Surface_AddTexture(s32 key) {
     KeyMap *m = D_8007FCF0;
 
     while (m->key != -1) {

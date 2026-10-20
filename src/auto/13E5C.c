@@ -49,7 +49,7 @@ void func_80026808(Obj *, s32);
 void func_80025FCC(Obj *, Vec3f, Vec3f);
 void func_800260EC(Obj *, Vec3f, Vec3f);
 
-Obj *func_8001325C(Spawn *sp) {
+Obj *Obj_CreateFromSpawn(Spawn *sp) {
     Obj *obj = Mem_AllocAligned(0x3C, 7, 0);
     s32 kind;
 

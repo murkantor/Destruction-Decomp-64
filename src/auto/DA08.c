@@ -23,7 +23,7 @@ extern char D_800B81A0[];
 extern f64 D_800B81F8;
 u64 Time_Get(u64 *);
 TimeHMS Time_Split(u64 t);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 int sprintf(char *, const char *, ...);
 
 s32 Hud_UpdateCountdown(Obj *o, s8 id) {
@@ -51,13 +51,13 @@ s32 Hud_UpdateCountdown(Obj *o, s8 id) {
     if (D_80096074->x0->x30 != 1 && D_80096074->x0->x3C->x10 == id && (s32)(rem * D_800B81F8) < 6) {
         if (D_8007EED0[0] != 0) {
             D_8007EED0[0] = 0;
-            func_800100BC(o->x0, 0x111D6);
+            Ui_SetElementColor(o->x0, 0x111D6);
         } else {
             D_8007EED0[0] = 1;
-            func_800100BC(o->x0, 0x111D4);
+            Ui_SetElementColor(o->x0, 0x111D4);
         }
     } else {
-        func_800100BC(o->x0, 0x111D6);
+        Ui_SetElementColor(o->x0, 0x111D6);
     }
     hms = Time_Split((s32)(rem / 1000000000) > 0 ? rem : 0);
     sprintf(D_8007F83C, D_800B81A0, hms.s);

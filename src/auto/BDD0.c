@@ -43,18 +43,18 @@ extern u8 D_8012455C;
 extern u8 *D_801245A4;
 extern void *D_8012556C[];
 extern Res *D_80125570;
-void func_8000B6EC(Car *);
+void Car_UpdateModelMatrices(Car *);
 Gfx *Model_Draw(void *, Gfx *);
-Gfx *Car_DrawShadowDL(Car *, Gfx *);
+Gfx *Car_DrawWheels(Car *, Gfx *);
 void Frame_ToMatrix(f32 m[4][4], Car *, s32);
 void Mtx_FromRotPos(f32 out[4][4], f32 m[4][4], Car *, s32, s32);
 void Skid_Update(void *, f32 m[4][4], f32 out[4][4]);
-void func_8000AD40(Car *, f32 a[4][4], f32 b[4][4]);
+void Car_EmitWheelDust(Car *, f32 a[4][4], f32 b[4][4]);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Particles_EmitTrail(void *, Vec3f, Car *);
 void Light_UpdateVertexColors(void *, void *, void *, f32 m[4][4], s32);
-void func_8000A9D8(Car *, Vec3f, f32 m[4][4]);
+void Car_EmitWreckParticles(Car *, Vec3f, f32 m[4][4]);
 Gfx *func_8000A894(Car *, Gfx *);
 Gfx *Debris_UpdateDraw(Car *, Gfx *);
 Gfx *Gfx_SetViewport2(Gfx *, s32);
@@ -105,7 +105,7 @@ static inline Gfx *DrawParticle(Car *car, Gfx *gfx, f32 m[4][4])
     return g;
 }
 
-Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
+Gfx *Car_Draw(Car *car, Gfx *gfx, s32 unused, Cam *cam)
 {
     f32 m18[4][4];
     f32 m58[4][4];
@@ -115,9 +115,9 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
 
     if (car->xC && gDrawCars) {
         if (gGame->xC != 2) {
-            func_8000B6EC(car);
+            Car_UpdateModelMatrices(car);
             gfx = Model_Draw(car->x98, gfx);
-            gfx = Car_DrawShadowDL(car, gfx);
+            gfx = Car_DrawWheels(car, gfx);
             return gfx;
         }
         isLocal = 0;
@@ -125,7 +125,7 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
             isLocal = !car->xD;
         }
         if (!D_8012455C) {
-            func_8000B6EC(car);
+            Car_UpdateModelMatrices(car);
         }
         Frame_ToMatrix(m58, car, 0);
         Frame_ToMatrix(m18, car, 1);
@@ -135,7 +135,7 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
         if (!gGame->x1074 && !D_8012455C) {
             if (!car->xD) {
                 UpdateWheels(car, m18);
-                func_8000AD40(car, m58, m18);
+                Car_EmitWheelDust(car, m58, m18);
                 if (isLocal) {
                     EmitTrail(car);
                 }
@@ -143,13 +143,13 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
                     Light_UpdateVertexColors(car->xB80, D_8012556C[0], D_80125570->xC, m18, !car->xD);
                 }
             } else {
-                func_8000A9D8(car, pos, m18);
+                Car_EmitWreckParticles(car, pos, m18);
             }
         }
     if (car->x30 != 0 || cam->xB4 || D_8012455C != car->x3C->x10) {
             gfx = Model_Draw(car->x98, gfx);
             if (!car->xD) {
-                gfx = func_8000A894(car, Car_DrawShadowDL(car, gfx));
+                gfx = func_8000A894(car, Car_DrawWheels(car, gfx));
             }
             gfx = Gfx_SetViewport2(Debris_UpdateDraw(car, gfx), -2);
             gfx = DrawParticle(car, gfx, m18);

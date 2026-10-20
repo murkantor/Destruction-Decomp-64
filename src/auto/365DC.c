@@ -72,7 +72,7 @@ typedef struct {
 } PolyInfo;
 
 extern Game *gGame[];
-s32 func_80012A08(s32);
+s32 Surface_GetType(s32);
 
 static inline s32 Grid_GetCell(Grid *c, Vec3f *pos) {
     s32 x = (pos->x * c->scale - c->ox) / c->cw;
@@ -133,7 +133,7 @@ Poly *func_800359DC(Car *car) {
                 poly = &c->polys[polyIdx];
                 verts = c->verts;
                 info.n = poly->n;
-                info.type = (s8)func_80012A08(poly->x16);
+                info.type = (s8)Surface_GetType(poly->x16);
                 for (j = 0; j < pi->n; j++) {
                     vp = (Vert *)((poly->v[j] << 4) + (u32)verts);
                     pi->v[j].x = vp->p.x;

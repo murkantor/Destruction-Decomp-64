@@ -6,7 +6,7 @@ extern s32 D_8013137C;
 extern s32 D_80126068[15];
 extern s32 D_80125F58[15];
 
-void func_800087C8(void) {
+void Announcer_ClearQueue(void) {
     s32 i;
 
     D_80124364 = 0;

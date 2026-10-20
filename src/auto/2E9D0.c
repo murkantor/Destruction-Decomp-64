@@ -68,12 +68,12 @@ typedef struct { Car *x0; s32 x4; s32 x8; s32 xC; f32 x10; s32 x14; } Ev;
 extern Game *gGame;
 extern f64 D_800B92E0; /* 1.0 */
 extern void *D_8011EEF8;
-extern s32 func_80011CCC(Vec3f);
+extern s32 Track_GetGridCell(Vec3f);
 extern Vec3f Vec3f_TransformTransposed(Mtx3f *m, Vec3f *t, Vec3f *v);
 extern u8 Seg2D_Intersects(f32, f32, f32, f32, f32, f32, f32, f32);
 extern void func_8002B7A0(Car *, Item *, s32);
 extern u8 func_800330A8(void *, void *, void *, s32, void *);
-extern void func_80006E8C(void *, Ev *);
+extern void Sound_PlayContact(void *, Ev *);
 extern void Pad_Rumble(s32 channel, s32 frames, f32 strength);
 extern void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 extern void Vec3f_Length(f32 *, Vec3f *);
@@ -109,7 +109,7 @@ void Car_CheckTriggersAndPickups(Car *car) {
     mid.x = (pts[0].x + pts[5].x) * 0.5f;
     mid.y = (pts[0].y + pts[5].y) * 0.5f;
     mid.z = (pts[0].z + pts[5].z) * 0.5f;
-    node = tc->x2C[func_80011CCC(mid)];
+    node = tc->x2C[Track_GetGridCell(mid)];
     ph = &car->phys;
     done = 0;
     for (; node != NULL; node = node->x4) {
@@ -181,7 +181,7 @@ void Car_CheckTriggersAndPickups(Car *car) {
             ev.x10 = pk->x6C->x2C;
             ev.x14 = 1;
             ev.xC = pk->x6C->x28;
-            func_80006E8C(D_8011EEF8, &ev);
+            Sound_PlayContact(D_8011EEF8, &ev);
             if (car->x30 == 0 && car->xD == 0 && gGame->x10FC == 0x1C) {
                 Pad_Rumble(car->x3C->x10, 5, 0.75f);
             }

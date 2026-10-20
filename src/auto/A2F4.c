@@ -42,7 +42,7 @@ void Res_LoadSoundBank(s32);
 void Owner_AllocSlotBuffers(Obj96F4 *);
 void Sound_StartCarLoops(Settings *);
 
-void Race_Init(Obj96F4 *obj) {
+void Sound_InitForMode(Obj96F4 *obj) {
     s32 i;
     s32 j;
     Ent50 *e;

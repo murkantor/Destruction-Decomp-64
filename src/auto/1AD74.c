@@ -7,7 +7,7 @@ extern s8 D_800D31CC;
 extern Model D_800D1AA0;
 extern u8 gMainHeap[];
 void Heap_Free(void *, void *);
-void func_800109E0(Model *);
+void ParticleList_Clear(Model *);
 
 void Weather_Free(void) {
     s8 i;
@@ -20,7 +20,7 @@ void Weather_Free(void) {
         m = &D_800D1AA0;
         Heap_Free(gMainHeap, m->x34);
         Heap_Free(gMainHeap, m->x3C);
-        func_800109E0(m);
+        ParticleList_Clear(m);
     }
     D_8008F820 = 1;
 }

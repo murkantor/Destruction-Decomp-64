@@ -54,7 +54,7 @@ void osWritebackDCache(void *, s32);
 void func_80056588(void *, void *, Gfx *, void *, void *);
 s32 func_800572C8(void *);
 f32 Time_ToSeconds(void *);
-void func_8001291C(void);
+void Game_GetMode(void);
 Gfx *func_8005B5E8(Gfx *, ViewCam *);
 Gfx *Camera_BuildProjection(Gfx *, void *);
 Gfx *Render_DrawSkyAndWorld(Renderer *, Gfx *, void *);
@@ -97,7 +97,7 @@ void func_8005FAE4(Renderer *r) {
     func_800563A0(r->x90, modes[D_80124350], r->x10, HeapBlock_Ptr(&r->x158[r->xC]), HeapBlock_Ptr(&r->x150));
     func_80056578(r->x90, 0);
     gfx = HeapBlock_Ptr(&r->x178[r->xC]);
-    func_8001291C();
+    Game_GetMode();
     for (D_8012455C = 0; D_8012455C < D_800D2E58; D_8012455C++) {
         gfx = func_8005B5E8(gfx, &r->x198[D_8012455C]);
         car = gGame->xB40[D_8012455C];

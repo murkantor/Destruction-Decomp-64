@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_8000E864();                            /* extern */
+M2C_UNK Fade_Init();                            /* extern */
 M2C_UNK Ui_AddElement(s32, M2C_UNK, M2C_UNK);       /* extern */
 M2C_UNK func_80063890(s32);                         /* extern */
 M2C_UNK func_800638C0(s32);                         /* extern */
@@ -11,7 +11,7 @@ extern s32 gUi;
 
 void func_8003B5CC(void) {
     Ui_AddElement(gUi, 2, 0x1F);
-    func_8000E864();
+    Fade_Init();
     func_800638C8(gGame + 0x10A8);
     func_80063890(gGame + 0x10A8);
     func_800638C0(gGame + 0x10A8);

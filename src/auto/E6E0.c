@@ -35,7 +35,7 @@ extern f64 D_800B8260;
 u64 Time_Get(u64 *);
 TimeHMS Time_Split(u64 t);
 s32 sprintf(char *, const char *, ...);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 
 s32 Hud_UpdateRacerTimers(s32 a0, s8 idx) {
     u64 now;
@@ -76,14 +76,14 @@ s32 Hud_UpdateRacerTimers(s32 a0, s8 idx) {
     if (rem != 0 && (f64)rem < D_800B8260) {
         if (D_8007EED0[idx] == 0) {
             D_8007EED0[idx] = 1;
-            func_800100BC(idx + 0x200, 0x111D4);
+            Ui_SetElementColor(idx + 0x200, 0x111D4);
         } else {
             D_8007EED0[idx] = 0;
-            func_800100BC(idx + 0x200, 0x111D6);
+            Ui_SetElementColor(idx + 0x200, 0x111D6);
         }
     } else if (D_8007EED0[idx] != 0) {
         D_8007EED0[idx] = 0;
-        func_800100BC(idx + 0x200, 0x111D6);
+        Ui_SetElementColor(idx + 0x200, 0x111D6);
     }
     return 0;
 }

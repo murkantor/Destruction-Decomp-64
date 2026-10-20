@@ -13,9 +13,9 @@ extern A50 D_8011EF11[];
 extern A20 D_8007EF70[2][10];
 void MapUi_Init(s32);
 void Hud_ResetTimeStrings(void);
-void Race_GetLapTimeLimits(s32);
+void Hud_GetLayoutIds(s32);
 
-void func_8000F988(s32 a0, s32 a1) {
+void Hud_InitForMode(s32 a0, s32 a1) {
     s32 i;
     s32 j;
 
@@ -50,5 +50,5 @@ void func_8000F988(s32 a0, s32 a1) {
         }
     }
 end:
-    Race_GetLapTimeLimits(a1);
+    Hud_GetLayoutIds(a1);
 }

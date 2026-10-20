@@ -77,11 +77,11 @@ s16 func_80064D70(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(Pool *, SndReq *);
 Vec3f Car_GetPos(Car *);
-void func_8000821C(SndReq *, s32);
-void func_80008298(SndReq *, s32);
+void Sound_SetImpactId(SndReq *, s32);
+void Sound_SetScrapeId(SndReq *, s32);
 void List_RemoveById(Pool *, s16);
 
-void func_80006E8C(Pool *pool, Ctx *c) {
+void Sound_PlayContact(Pool *pool, Ctx *c) {
     SndReq req;
     Vec3f zero = D_800B7F20;
     s32 slot = -1;
@@ -127,7 +127,7 @@ void func_80006E8C(Pool *pool, Ctx *c) {
         } else {
             mode = c->xC;
         }
-        func_8000821C(&req, mode);
+        Sound_SetImpactId(&req, mode);
     } else {
         if (c->x4 != NULL) {
             mode = 1;
@@ -152,7 +152,7 @@ void func_80006E8C(Pool *pool, Ctx *c) {
         D_8007EDF8[slot].x8 = 1;
         D_8007EDF8[slot].x4 = mode;
         D_8007EDF8[slot].x0 = req.x2;
-        func_80008298(&req, mode);
+        Sound_SetScrapeId(&req, mode);
     }
     if (D_80131F90[req.x10] != -1) {
         t = D_80131F90[req.x10] + Time_Get(&gGame->x1058);

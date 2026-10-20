@@ -6,7 +6,7 @@ typedef struct { u8 pad[0x4C]; BufPair x4C[1]; } Model;
 extern s8 D_800D31CC;
 extern u8 gMainHeap[];
 void Heap_Free(void *, void *);
-void func_800109E0(Model *);
+void ParticleList_Clear(Model *);
 
 void func_8001742C(Model *o) {
     s32 i;
@@ -15,5 +15,5 @@ void func_8001742C(Model *o) {
         Heap_Free(gMainHeap, o->x4C[i].a);
         Heap_Free(gMainHeap, o->x4C[i].b);
     }
-    func_800109E0(o);
+    ParticleList_Clear(o);
 }

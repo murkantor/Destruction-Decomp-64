@@ -32,7 +32,7 @@ void Ui_AddElement(void *, s32, s32);
 char *strcpy(char *, const char *);
 void *Mem_Alloc(s32);
 void Mem_Free(void *);
-void *func_8001325C(Spawn *);
+void *Obj_CreateFromSpawn(Spawn *);
 void func_80064100(void *);
 void Msg_Queue(s32, s32, s32, s32);
 
@@ -67,13 +67,13 @@ void func_8004BD0C(void) {
     sp->x4 = ids1[i];
     sp->x8 = pos[D_800958B0[0]];
     sp->x14 = zero;
-    func_80064100(D_800970F4 = func_8001325C(sp));
+    func_80064100(D_800970F4 = Obj_CreateFromSpawn(sp));
     if (ids2[D_800958B0[0]] != 0) {
         sp->x0 = 0x20;
         sp->x4 = ids2[D_800958B0[0]];
         sp->x8 = pos[D_800958B0[0]];
         sp->x14 = zero;
-        func_80064100(D_800970F8 = func_8001325C(sp));
+        func_80064100(D_800970F8 = Obj_CreateFromSpawn(sp));
     } else {
         D_800970F8 = NULL;
     }

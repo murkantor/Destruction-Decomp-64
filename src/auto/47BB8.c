@@ -14,7 +14,7 @@ extern s32 D_80097350;
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 int sprintf(char *, const char *, ...);
 
 void Menu_ShowExitConfirm(void) {
@@ -34,9 +34,9 @@ void Menu_ShowExitConfirm(void) {
     Ui_SetElementPos(gUi[0], 0, 0x17A, 57.0f, 120.0f);
     Ui_SetElementPos(gUi[0], 0, 0x17C, 151.0f, 150.0f);
     Ui_SetElementPos(gUi[0], 0, 0x17D, 148.0f, 166.0f);
-    func_800100BC(0x17A, 0x111F8);
-    func_800100BC(0x17C, 0x111F4);
-    func_800100BC(0x17D, 0x111F8);
+    Ui_SetElementColor(0x17A, 0x111F8);
+    Ui_SetElementColor(0x17C, 0x111F4);
+    Ui_SetElementColor(0x17D, 0x111F8);
     for (i = 0; i < 4; i++) {
         D_80095908[i].x0 = 0;
     }

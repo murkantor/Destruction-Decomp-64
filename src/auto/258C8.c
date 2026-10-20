@@ -42,20 +42,20 @@ typedef struct {
 extern Game *gGame[];
 
 void *Mem_Alloc(s32);
-void func_8001292C(s32);
-void func_80012984(s32);
+void Surface_InitTable(s32);
+void Surface_AddTexture(s32);
 s32 Res_Get(s32);
 s16 func_80064D70(void);
-void func_80013FBC(void);
+void Track_ResetAnimTables(void);
 
 s32 Track_LoadResources(Track24CC8 *t, s32 arg1) {
     Node24CC8 *n;
     s32 i;
 
     n = Mem_Alloc(0x1C);
-    func_8001292C(t->x24);
+    Surface_InitTable(t->x24);
     for (i = 0; i < t->x24; i++) {
-        func_80012984(t->x28[i].x0);
+        Surface_AddTexture(t->x28[i].x0);
         t->x28[i].x0 = Res_Get(t->x28[i].x0);
         if (t->x28[i].x24 != 0) {
             t->x28[i].x24 = Res_Get(t->x28[i].x24);
@@ -73,6 +73,6 @@ s32 Track_LoadResources(Track24CC8 *t, s32 arg1) {
     for (i = 0; i < t->x4 * t->x5; i++) {
         t->x2C[i] = 0;
     }
-    func_80013FBC();
+    Track_ResetAnimTables();
     return 0;
 }

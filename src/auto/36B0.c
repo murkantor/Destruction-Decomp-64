@@ -21,7 +21,7 @@ struct Car { u8 pad[0xD]; u8 xD; u8 padE[2]; s32 x10; u8 pad14[0x24]; Ai *x38; }
 typedef struct { u8 pad[0x74]; Car *x74[12]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame;
-extern void func_80000AC8(Car *, Car *, Target *);
+extern void Ai_ComputeIntercept(Car *, Car *, Target *);
 extern Car *Car_PickRandomOther(Car *);
 
 void Ai_PickTarget2(Car *car, Target *out) {
@@ -32,7 +32,7 @@ void Ai_PickTarget2(Car *car, Target *out) {
 
     if (!ai->x18->xD) {
         if (ai->x1C >= 10 || ai->x54 != 0) {
-            func_80000AC8(car, ai->x18, out);
+            Ai_ComputeIntercept(car, ai->x18, out);
             if (ai->x54) {
                 ai->x54--;
             }
@@ -50,13 +50,13 @@ void Ai_PickTarget2(Car *car, Target *out) {
             continue;
         }
         if (ai->x18 == o) {
-            func_80000AC8(car, o, out);
+            Ai_ComputeIntercept(car, o, out);
             if (ai->x18->xD) {
                 out->x0 = 500.0f;
             }
             continue;
         }
-        func_80000AC8(car, o, &tmp);
+        Ai_ComputeIntercept(car, o, &tmp);
         if (ai->x40 == 1 && tmp.x0 < ai->x34 && tmp.x0 < out->x0) {
             ai->x18 = o;
             ai->x30 = 0;

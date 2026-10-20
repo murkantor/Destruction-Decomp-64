@@ -16,7 +16,7 @@ void func_80063890(void *);
 void func_800638C0(void *);
 void func_800627F0(s32, s32, s32);
 void func_8005F884(void *);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 
 void func_80044E04(void) {
     s32 i;
@@ -34,7 +34,7 @@ void func_80044E04(void) {
     func_8005F884(gUi);
     if (D_800958B4 >= 4 && D_800958A8 != 2) {
         for (i = 0; i < D_800958A4; i++) {
-            func_800100BC(i + 0x200, 0x111D6);
+            Ui_SetElementColor(i + 0x200, 0x111D6);
         }
     }
 }

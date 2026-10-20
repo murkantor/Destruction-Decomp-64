@@ -35,9 +35,9 @@ typedef struct {
 } Game;
 
 extern Game *gGame;
-void func_80009A34(s32, s32);
+void Sound_RemoveEmitter(s32, s32);
 
-void func_80009200(Foo *arg0) {
+void Sound_CullVoices(Foo *arg0) {
     Entry list[240];
     Entry tmp;
     s32 n;
@@ -70,7 +70,7 @@ void func_80009200(Foo *arg0) {
     all:
         for (i = 0; i < n; i++) {
             list[i].x10 = 0;
-            func_80009A34(list[i].x8, list[i].x0);
+            Sound_RemoveEmitter(list[i].x8, list[i].x0);
         }
         return;
     }
@@ -115,6 +115,6 @@ void func_80009200(Foo *arg0) {
             }
         }
         list[j].x10 = 0;
-        func_80009A34(list[j].x8, list[j].x0);
+        Sound_RemoveEmitter(list[j].x8, list[j].x0);
     }
 }

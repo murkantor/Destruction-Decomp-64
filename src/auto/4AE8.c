@@ -7,7 +7,7 @@ typedef struct { Vec3f p0; Vec3f p1; s32 x18; } Edge;
 typedef struct { s32 count; Edge *items; } EdgeList;
 
 extern u8 Seg_Intersect2D(Seg *seg, Edge *e);
-extern f32 func_800005C8(Vec3f a, Vec3f b);
+extern f32 Vec3f_CrossYSign(Vec3f a, Vec3f b);
 extern f32 Vec3f_AngleBetween(Vec3f a, Vec3f b);
 extern void Vec3f_Cross(Vec3f *out, Vec3f *a, Vec3f *b);
 extern f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
@@ -51,8 +51,8 @@ Vec3f Path_AvoidEdges(Seg *seg, EdgeList *list)
         e1.x = list->items[i].p1.x - seg->p0.x;
         e1.y = 0.0f;
         e1.z = list->items[i].p1.z - seg->p0.z;
-        side0 = func_800005C8(d, e0);
-        side1 = func_800005C8(d, e1);
+        side0 = Vec3f_CrossYSign(d, e0);
+        side1 = Vec3f_CrossYSign(d, e1);
         ang0 = Vec3f_AngleBetween(d, e0);
         ang1 = Vec3f_AngleBetween(d, e1);
         for (j = 0; j < i; j++) {
@@ -60,7 +60,7 @@ Vec3f Path_AvoidEdges(Seg *seg, EdgeList *list)
             v1.y = 0.0f;
             v1.z = list->items[j].p0.z - seg->p0.z;
             ang = Vec3f_AngleBetween(d, v1);
-            side = func_800005C8(d, v1);
+            side = Vec3f_CrossYSign(d, v1);
             if ((ang0 < ang) & (side0 == side)) {
                 ang0 = ang;
                 e0 = v1;
@@ -71,7 +71,7 @@ Vec3f Path_AvoidEdges(Seg *seg, EdgeList *list)
             v2.y = 0.0f;
             v2.z = list->items[j].p1.z - seg->p0.z;
             ang = Vec3f_AngleBetween(d, v2);
-            side = func_800005C8(d, v2);
+            side = Vec3f_CrossYSign(d, v2);
             if ((ang1 < ang) & (side1 == side)) {
                 ang1 = ang;
                 e1 = v2;
@@ -82,7 +82,7 @@ Vec3f Path_AvoidEdges(Seg *seg, EdgeList *list)
         } else {
             best = e1;
         }
-        if (func_800005C8(d, best) <= 0.0) {
+        if (Vec3f_CrossYSign(d, best) <= 0.0) {
             Vec3f_Cross(&n, &best, &up);
         } else {
             Vec3f_Cross(&n, &up, &best);

@@ -16,7 +16,7 @@ typedef struct {
 extern s32 D_80131380;
 extern UnkEntry1C D_801255F0[];
 
-void Sfx_AddEntry(s32 a, s16 b, u8 c, u8 d) {
+void Tex_AddScroll(s32 a, s16 b, u8 c, u8 d) {
     D_801255F0[D_80131380].x0 = a;
     D_801255F0[D_80131380].x4 = b * 0.001;
     D_801255F0[D_80131380].x8 = c;

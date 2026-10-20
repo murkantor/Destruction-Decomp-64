@@ -21,7 +21,7 @@ typedef struct {
 typedef struct { u8 pad[0x1058]; u64 x1058; } Game;
 extern Game *gGame;
 extern u64 gGameTime;
-void func_800091AC(ElemList *);
+void Sound_UpdateRace(ElemList *);
 u64 Time_Get(u64 *);
 void List_RemoveById(ElemList *, s32);
 
@@ -31,7 +31,7 @@ void ElemList_ExpireAndSortById(ElemList *l) {
     Elem *e;
     Elem tmp;
 
-    func_800091AC(l);
+    Sound_UpdateRace(l);
     i = 0;
     t1 = Time_Get(&gGameTime);
     t2 = Time_Get(&gGame->x1058);

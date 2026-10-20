@@ -34,7 +34,7 @@ void Time_Format(TimeHMS t, char *buf, s32 len);
 char *strcpy(char *, const char *);
 s32 sprintf(char *, const char *, ...);
 s32 atoi(const char *);
-void func_800100BC(void *, s32);
+void Ui_SetElementColor(void *, s32);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 void Msg_Queue(s32, s32, s32, s32);
 void Timer_Start(void *, u64);
@@ -83,10 +83,10 @@ void Results_ShowLapTimes(void) {
         Time_Format(t, buf.s, 8);
         strcpy(gSaveSlotText[i + 2], buf.s);
         if (D_80095E28[i] == D_80130518[mode].x8) {
-            func_800100BC(D_8009722C[i], 0x111FC);
+            Ui_SetElementColor(D_8009722C[i], 0x111FC);
             found = 1;
         } else {
-            func_800100BC(D_8009722C[i], 0x111F6);
+            Ui_SetElementColor(D_8009722C[i], 0x111F6);
         }
     }
     t = Time_Split(D_80095E48);
@@ -97,10 +97,10 @@ void Results_ShowLapTimes(void) {
     sprintf(&gSaveSlotText[i + 2][7], "%1d", total);
     strcpy(gSaveSlotText[i + 2], buf.s);
     if (D_80130518[mode].x10 != 0) {
-        func_800100BC(D_8009722C[i], 0x111FC);
+        Ui_SetElementColor(D_8009722C[i], 0x111FC);
         found = 1;
     } else {
-        func_800100BC(D_8009722C[i], 0x111F6);
+        Ui_SetElementColor(D_8009722C[i], 0x111F6);
     }
     if (found) {
         s32 list[3] = { 0xE3, 0xE4, 0xE5 };

@@ -7,7 +7,7 @@ extern u8 D_800958A1;
 extern u8 D_801304D8[];
 void func_800123C0(void);
 void func_800627F0(Obj *, s32, u8);
-f32 func_80012508(void);
+f32 Track_GetScale(void);
 void guPosition(void *m, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z);
 
 void func_8005FA38(Obj *o) {
@@ -15,5 +15,5 @@ void func_8005FA38(Obj *o) {
     func_800123C0();
     func_800627F0(o, 1, D_800958A1);
     o->xC = 0;
-    guPosition(D_801304D8, 0.0f, 0.0f, 0.0f, 1.0 / func_80012508(), 0.0f, 0.0f, 0.0f);
+    guPosition(D_801304D8, 0.0f, 0.0f, 0.0f, 1.0 / Track_GetScale(), 0.0f, 0.0f, 0.0f);
 }

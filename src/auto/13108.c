@@ -8,6 +8,6 @@ typedef struct {
 extern Game *gGame;
 extern u8 *D_80126138;
 
-f32 func_80012508(void) {
+f32 Track_GetScale(void) {
     return (gGame->mode == 2) ? *(f32 *)(D_80126138 + 0xC) : 1.0f;
 }

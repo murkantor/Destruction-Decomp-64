@@ -25,7 +25,7 @@ extern Game *gGame;
 Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 f32 Car_GetSpeed(Car *);
 
 void Ai_Steer(Car *car) {
@@ -58,7 +58,7 @@ void Ai_Steer(Car *car) {
     f.y = 0.0f;
     f.z = fwd.z;
     ang = Vec3f_AngleBetween(f, d);
-    if (func_800005C8(f, d) > 0.0f) {
+    if (Vec3f_CrossYSign(f, d) > 0.0f) {
         ang = -ang;
     }
     ang *= 12.0f;

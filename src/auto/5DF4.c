@@ -37,8 +37,8 @@ Vec3f Car_GetPos(void *);
 Vec3f Car_GetVelocity(void *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
-f32 func_800005C8(Vec3f, Vec3f);
-void func_80000AC8(Car *, Car *, Rel *);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
+void Ai_ComputeIntercept(Car *, Car *, Rel *);
 void Ai_ConstrainTarget(Car *);
 void Ai_Steer(Car *);
 
@@ -64,7 +64,7 @@ static inline void Ai_ApplyRel(Car *car, Rel r) {
     d.x = ai->x5C.x - pos.x;
     d.y = ai->x5C.y - pos.y;
     d.z = ai->x5C.z - pos.z;
-    ai->x68 = func_800005C8(fwd, d);
+    ai->x68 = Vec3f_CrossYSign(fwd, d);
 }
 
 void Ai_SelectTeamTarget(Car *car) {
@@ -115,7 +115,7 @@ void Ai_SelectTeamTarget(Car *car) {
             } else {
                 o->x18 = s->x3C;
             }
-            func_80000AC8(car, o->x18, &tmp);
+            Ai_ComputeIntercept(car, o->x18, &tmp);
             Ai_ApplyRel(car, tmp);
         }
         break;
@@ -141,7 +141,7 @@ void Ai_SelectTeamTarget(Car *car) {
         } else {
             o->x18 = q->x8;
         }
-        func_80000AC8(car, o->x18, &tmp);
+        Ai_ComputeIntercept(car, o->x18, &tmp);
         Ai_ApplyRel(car, tmp);
         break;
     }

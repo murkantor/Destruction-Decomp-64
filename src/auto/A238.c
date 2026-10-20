@@ -9,7 +9,7 @@ extern s8 D_800D31CC[];
 extern Car D_800958F0[];
 extern Unk123B58 D_80123B58[];
 
-void func_80009638(void) {
+void Sound_UpdateListeners(void) {
     s32 i;
     char unused[1];
 

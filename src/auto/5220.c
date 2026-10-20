@@ -36,7 +36,7 @@ extern Game *gGame[];
 u64 Time_Get(u64 *);
 void Ai_PickTarget(Ent *);
 
-void func_80004620(Ent *a, s32 amt, Ent *b, s32 kind) {
+void Ai_OnHitByPlayer(Ent *a, s32 amt, Ent *b, s32 kind) {
     Tracker *t = b->x38;
 
     if (a->xD != 0 || b->xD != 0) {

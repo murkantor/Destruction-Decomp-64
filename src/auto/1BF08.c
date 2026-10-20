@@ -34,7 +34,7 @@ extern u8 D_8012459E[];
 extern u8 D_8012459F[];
 extern u8 D_801245A0[];
 extern s32 rand(void);
-extern void func_8000870C(s32 *, s32, s32);
+extern void Announcer_ReplaceQueued(s32 *, s32, s32);
 extern u64 Time_Get(u64 *);
 extern s8 ItemList_IndexOf(void *, Car *);
 extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 unique);
@@ -79,7 +79,7 @@ void Announcer_UpdateRace(void) {
         if (n == 1) {
             n = rand() % 2;
         }
-        func_8000870C(tbl.v, 0xB, tbl.v[n]);
+        Announcer_ReplaceQueued(tbl.v, 0xB, tbl.v[n]);
     }
     if (D_800958A8[0] == 3) {
         return;

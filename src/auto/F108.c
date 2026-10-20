@@ -32,7 +32,7 @@ void *Mem_AllocAligned(s32, s32, s32);
 Elem *Ui_FindElement(void *, s32, s32);
 u64 Time_Get(u64 *);
 
-void func_8000E508(void) {
+void Ui_RevealInit(void) {
     s32 size;
     u16 *buf;
     Elem *e;

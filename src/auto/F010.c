@@ -7,7 +7,7 @@ extern Game *gGame;
 extern u64 D_8007EF40;
 u64 Time_Get(u64 *);
 
-s32 func_8000E410(Bar *b) {
+s32 Hud_HealthBarStep(Bar *b) {
     s32 d = (Time_Get(&gGame->x10A8) - b->x18) / D_8007EF40;
     s8 v;
 

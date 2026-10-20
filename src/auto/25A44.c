@@ -9,11 +9,11 @@ typedef struct { u8 pad0[0x10]; s32 x10; u8 pad14[0x18]; s32 x2C; } Sub;
 typedef struct { u8 pad0[0x1100]; Sub *x1100; } Game;
 extern Game *gGame;
 void func_8002BED4(void);
-void func_80012958(void);
+void Surface_FreeTable(void);
 void func_80063B54(void *);
 void func_8000217C(s32);
-void func_80002074(void);
-void func_80002148(void);
+void Track_FreeNodes(void);
+void Track_FreeBranches(void);
 void Track_FreeAnims(void);
 void func_8002DCBC(void);
 void List_Remove(Node **, Node *);
@@ -24,7 +24,7 @@ void Track_FreeResources(Obj *arg0) {
     Sub *s;
 
     func_8002BED4();
-    func_80012958();
+    Surface_FreeTable();
     for (i = 0; i < arg0->xC->x24; i++) {
         if (arg0->xC->x28[i].x24 != NULL) {
             func_80063B54(arg0->xC->x28[i].x24);
@@ -35,8 +35,8 @@ void Track_FreeResources(Obj *arg0) {
     if (s->x10 == 1) {
         func_8000217C(s->x2C);
     } else {
-        func_80002074();
-        func_80002148();
+        Track_FreeNodes();
+        Track_FreeBranches();
     }
     Track_FreeAnims();
     func_8002DCBC();

@@ -40,12 +40,12 @@ extern Game *gGame;
 extern s32 D_8007E950[];
 extern s32 D_8007EAE0[][20];
 s32 rand(void);
-s32 func_80003450(Car *);
+s32 Ai_FindNodeAhead(Car *);
 Vec3f Car_GetVelocity(Car *);
 Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 
 void Ai_UpdateLaneOffset(Car *car) {
     Vec3f t;
@@ -97,7 +97,7 @@ void Ai_UpdateLaneOffset(Car *car) {
     trk = gGame->x1100;
     segs = trk->x30;
     e8 = trk->x34;
-    o->x28 = func_80003450(car);
+    o->x28 = Ai_FindNodeAhead(car);
     if (!car->x40) {
         for (i = 0; i < trk->x40; i++) {
             if (car->x28 == trk->x3C[i].x0) {
@@ -136,5 +136,5 @@ void Ai_UpdateLaneOffset(Car *car) {
     t.x = o->x5C.x - pos.x;
     t.y = 0.0f;
     t.z = o->x5C.z - pos.z;
-    o->x68 = func_800005C8(fwd, t);
+    o->x68 = Vec3f_CrossYSign(fwd, t);
 }

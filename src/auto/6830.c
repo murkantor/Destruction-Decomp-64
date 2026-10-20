@@ -12,7 +12,7 @@ u8 Ai_AdjustLaneFromNeighbour(Car *);
 void Ai_CheckStuck(Car *);
 u64 Time_Get(void *);
 
-void func_80005C30(Car *arg0) {
+void Ai_UpdateRaceState(Car *arg0) {
     State *s = arg0->x38;
     u64 t;
 

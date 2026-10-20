@@ -17,7 +17,7 @@ extern Bank *D_8011EEF8;
 void Sound_FadeOut(s32, s32);
 void World_RemoveObject(Bank *, Snd *, s32, s32);
 
-void func_80009A34(s32 idx, s32 id) {
+void Sound_RemoveEmitter(s32 idx, s32 id) {
     Snd *s = NULL;
     s32 i;
 

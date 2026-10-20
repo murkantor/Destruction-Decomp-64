@@ -44,7 +44,7 @@ typedef struct { Vec3f pos; s32 s; s32 t; } Corner;
 
 extern Pool gParticlePool;
 extern void Vec3f_SetLength(Vec3f *out, Vec3f *v, f32 len);
-extern Gfx *func_80010F7C(PSys *sys, s32 tex, Gfx *gfx);
+extern Gfx *Particle_LoadTexFrame(PSys *sys, s32 tex, Gfx *gfx);
 extern void *Pool_Alloc(Pool *pool);
 extern void func_80057334(void *p);
 extern void guPosition(void *m, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z);
@@ -92,7 +92,7 @@ Gfx *Particles_Draw(PSys *sys, f32 (*m)[4], Gfx *gfx)
         GFX2(gfx, 0xFA000000, 0xFFFFFFFF);
         GFX2(gfx, 0xFB000000, 0);
         GFX2(gfx, 0xE200001C, 0x504A50);
-        gfx = func_80010F7C(sys, 0, gfx);
+        gfx = Particle_LoadTexFrame(sys, 0, gfx);
     }
     switch (sys->type) {
         case 0:
@@ -189,7 +189,7 @@ Gfx *Particles_Draw(PSys *sys, f32 (*m)[4], Gfx *gfx)
                 vtx = mem;
                 if (tex != lastTex) {
                     lastTex = tex;
-                    gfx = func_80010F7C(sys, lastTex, gfx);
+                    gfx = Particle_LoadTexFrame(sys, lastTex, gfx);
                 }
                 for (j = 0; j < 3; j++) {
                     mem[j].x = pos.x + scale * c[j].pos.x;
@@ -213,7 +213,7 @@ Gfx *Particles_Draw(PSys *sys, f32 (*m)[4], Gfx *gfx)
                 vtx = mem;
                 if (tex != lastTex) {
                     lastTex = tex;
-                    gfx = func_80010F7C(sys, lastTex, gfx);
+                    gfx = Particle_LoadTexFrame(sys, lastTex, gfx);
                 }
                 for (j = 0; j < 4; j++) {
                     mem[j].x = pos.x + scale * c[j].pos.x;

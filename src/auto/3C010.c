@@ -10,7 +10,7 @@ typedef struct {
 extern GameState *gGame;
 extern s16 D_8011EEEA;
 extern s32 gUi;
-void func_8000E688(GameState *, u64);
+void Ui_RevealFree(GameState *, u64);
 void func_8005DC68(s32);
 void func_80063564(s32, s32);
 
@@ -23,7 +23,7 @@ s32 func_8003B410(void) {
     }
     lim = 4000000000ULL;
     if (gGame->x10A8 >= lim) {
-        func_8000E688(gGame, lim);
+        Ui_RevealFree(gGame, lim);
         func_8005DC68(gUi);
         func_80063564(1, 1);
         ret = 1;

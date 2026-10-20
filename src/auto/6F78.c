@@ -37,7 +37,7 @@ extern f64 D_800B7F08;
 Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 f32 Car_GetSpeed(Car *);
 f32 fabsf(f32);
 
@@ -64,7 +64,7 @@ void Ai_UpdateSteer(Car *car) {
         d.z = t->x64 - pos.z;
         fwd.y = 0.0f;
         diff = fabsf(Vec3f_AngleBetween(fwd, d) - (f32)(car->xA5C * D_800B7EF0));
-        side = func_800005C8(fwd, d);
+        side = Vec3f_CrossYSign(fwd, d);
         if (diff < D_800B7EF8 || (t->x6D && D_800B7F00 < diff) || side != t->x68) {
             car->x2C->x4 = 0;
             car->x2C->x2 = 0;

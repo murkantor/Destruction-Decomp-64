@@ -8,7 +8,7 @@ u32 Res_GetSize(s32);
 void *Mem_AllocAligned(u32, s32, s32);
 void Res_Load(s32, void *);
 
-void *func_80001F98(s32 id) {
+void *Track_LoadNodeSegs(s32 id) {
     u32 size = Res_GetSize(id);
     void *p = Mem_AllocAligned(size, 7, 0);
     u32 n = size / 24;

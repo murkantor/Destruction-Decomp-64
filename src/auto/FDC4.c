@@ -32,7 +32,7 @@ extern s32 D_8007EF18;
 extern Slot D_8007EF68[][10];
 u64 Time_Get(u64 *);
 
-void func_8000F1C4(s32 a0, Car *car, s32 a2, s32 a3) {
+void Hud_FlashDamageZone(s32 a0, Car *car, s32 a2, s32 a3) {
     s32 idx;
     u64 t;
     s32 flag;

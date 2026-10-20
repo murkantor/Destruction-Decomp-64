@@ -19,7 +19,7 @@ void *HeapBlock_Ptr(HeapBlock *);
 void Ui_AddElement(void *, s32, s32);
 UiElement *Ui_FindElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
-void func_800100BC(s32, s32);
+void Ui_SetElementColor(s32, s32);
 
 void func_8004378C(void) {
     UiDef *d;
@@ -32,7 +32,7 @@ void func_8004378C(void) {
         Ui_FindElement(gUi[0], d->kind, d->id)->x8 = d->x10;
         Ui_SetElementPos(gUi[0], d->kind, d->id, d->x, d->y);
         if (d->kind == 0) {
-            func_800100BC(d->id, d->x14);
+            Ui_SetElementColor(d->id, d->x14);
         }
     }
     func_8005F884(gUi[0]);
@@ -43,7 +43,7 @@ void func_8004378C(void) {
         Ui_FindElement(gUi[0], d->kind, d->id)->x8 = d->x10;
         Ui_SetElementPos(gUi[0], d->kind, d->id, d->x, d->y);
         if (d->kind == 0) {
-            func_800100BC(d->id, d->x14);
+            Ui_SetElementColor(d->id, d->x14);
         }
     }
     for (i = 0; i < D_800D31CC[0]; i++) {

@@ -4,7 +4,7 @@
 typedef struct { u8 pad[0x8B54]; s32 x8B54; u8 pad8B58[4]; s16 x8B5C; s16 x8B5E; s16 x8B60; s16 x8B62; s16 x8B64; } Ui;
 typedef struct { s32 a; s32 b; } Pair;
 void func_800601D0(s32);
-void func_8000F988(Ui *, Pair *);
+void Hud_InitForMode(Ui *, Pair *);
 void func_8005DD20(Ui *, s32);
 
 void func_8005D81C(Ui *ui) {
@@ -19,7 +19,7 @@ void func_8005D81C(Ui *ui) {
     ui->x8B64 = 0;
     p.b = 0;
     p.a = 0;
-    func_8000F988(ui, &p);
+    Hud_InitForMode(ui, &p);
     func_8005DD20(ui, p.a);
     func_8005DD20(ui, p.b);
 }

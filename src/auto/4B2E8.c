@@ -50,7 +50,7 @@ extern Game *gGame;
 extern char gSaveSlotText[];
 void *Mem_Alloc(s32);
 void Mem_Free(void *);
-Obj *func_8001325C(Spawn *);
+Obj *Obj_CreateFromSpawn(Spawn *);
 void func_80064100(void *);
 void func_8006300C(s32, f32, f32, f32, f32, f32, f32);
 void Ui_ResetScreen(s32, s32);
@@ -70,7 +70,7 @@ void func_8004A6E8(void) {
         sp->x4 = 0xEB3C;
         sp->x8 = pos;
         sp->x14 = zero;
-        D_800970F0 = func_8001325C(sp);
+        D_800970F0 = Obj_CreateFromSpawn(sp);
         Mem_Free(sp);
     } else {
         Cam *c = D_800970F0->x38;

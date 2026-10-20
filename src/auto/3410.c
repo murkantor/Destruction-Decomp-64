@@ -37,9 +37,9 @@ extern Game *gGame;
 Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
-f32 func_800005C8(Vec3f, Vec3f);
+f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 
-void AI_PickAttackTarget(Car *self) {
+void Ai_SetEvadePoint(Car *self) {
     Tracker *t = self->x38;
     Vec3f dir;
     Vec3f n;
@@ -104,6 +104,6 @@ void AI_PickAttackTarget(Car *self) {
         r.x = t->x5C.x - pos.x;
         r.y = t->x5C.y - pos.y;
         r.z = t->x5C.z - pos.z;
-        t->x68 = func_800005C8(q, r);
+        t->x68 = Vec3f_CrossYSign(q, r);
     }
 }

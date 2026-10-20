@@ -2,11 +2,11 @@
 #include "m2c.h"
 
 M2C_UNK func_8000F980(s32);                         /* extern */
-M2C_UNK func_8000FF5C();                            /* extern */
+M2C_UNK Ui_UpdateElements();                            /* extern */
 s32 func_8005E2AC(s32, M2C_UNK);                    /* extern */
 
 void func_8005D580(s32 arg0, M2C_UNK arg1) {
-    func_8000FF5C();
+    Ui_UpdateElements();
     func_8000F980(func_8005E2AC(arg0, arg1));
 }
 

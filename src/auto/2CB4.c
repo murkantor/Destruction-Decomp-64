@@ -20,7 +20,7 @@ u32 Res_GetSize(s32);
 void *Mem_AllocAligned(u32, u32, u32);
 void Res_Load(s32, void *);
 
-Entry *func_800020B4(s32 id) {
+Entry *Track_LoadBranches(s32 id) {
     u32 size = Res_GetSize(id);
     Entry *e = Mem_AllocAligned(size, 7, 0);
     RaceState *r;

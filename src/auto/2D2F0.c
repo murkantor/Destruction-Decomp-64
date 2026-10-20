@@ -82,7 +82,7 @@ void func_8005FA38(void *);
 void func_800638C0(void *);
 void func_8002D0E0(s32);
 void func_80064948(void *);
-Obj *func_8001325C(Spawn *);
+Obj *Obj_CreateFromSpawn(Spawn *);
 void func_80064100(Obj *);
 void Tag_PassTo(Car *);
 s32 Race_FindCarSlot(s32);
@@ -94,7 +94,7 @@ void Race_PlaceCarsOnGrid(void);
 void World_UpdateEffects(void *, f32);
 void Car_PhysicsStep(void *, f32);
 void func_80062FF0(Plr *);
-void func_8000A39C(void);
+void Debris_Init(void);
 void func_8002BF08(void);
 void func_8000BAC0(void);
 
@@ -174,7 +174,7 @@ void Race_Setup(void) {
                 sp1.x14 = 0;
                 sp1.x18 = 0;
                 sp1.x1C = 0;
-                o1 = func_8001325C(&sp1);
+                o1 = Obj_CreateFromSpawn(&sp1);
                 func_80064100(o1);
                 D_80096074 = o1->x38;
                 Tag_PassTo(NULL);
@@ -202,7 +202,7 @@ void Race_Setup(void) {
                 sp2.x14 = 0;
                 sp2.x18 = 0;
                 sp2.x1C = 0;
-                o2 = func_8001325C(&sp2);
+                o2 = Obj_CreateFromSpawn(&sp2);
                 func_80064100(o2);
                 D_80096078 = (Team *)o2->x38;
                 sp2.x0 = 0x11;
@@ -213,7 +213,7 @@ void Race_Setup(void) {
                 sp2.x14 = 0;
                 sp2.x18 = 0;
                 sp2.x1C = 0;
-                o2 = func_8001325C(&sp2);
+                o2 = Obj_CreateFromSpawn(&sp2);
                 func_80064100(o2);
                 D_8009607C = (Team *)o2->x38;
                 sp2.x0 = 0x10;
@@ -224,7 +224,7 @@ void Race_Setup(void) {
                 sp2.x14 = 0;
                 sp2.x18 = 0;
                 sp2.x1C = 0;
-                o2 = func_8001325C(&sp2);
+                o2 = Obj_CreateFromSpawn(&sp2);
                 func_80064100(o2);
                 D_80096080 = (Team *)o2->x38;
                 sp2.x0 = 0x12;
@@ -235,7 +235,7 @@ void Race_Setup(void) {
                 sp2.x14 = 0;
                 sp2.x18 = 0;
                 sp2.x1C = 0;
-                o2 = func_8001325C(&sp2);
+                o2 = Obj_CreateFromSpawn(&sp2);
                 func_80064100(o2);
                 D_80096084 = (Team *)o2->x38;
                 for (i = 0; i < 4; i++) {
@@ -273,7 +273,7 @@ void Race_Setup(void) {
             func_80062FF0(D_800958DC[k].x0);
         }
         func_8005FA38(D_8011EEF0);
-        func_8000A39C();
+        Debris_Init();
         if (D_800958B4 == 8) {
             func_8002BF08();
         }
