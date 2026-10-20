@@ -2408,7 +2408,8 @@ extern "C" bool gfx_interp_present(bool black) {
     /* each slot's matrix for this moment */
     static std::vector<float> mp;
     static unsigned n_presents, n_slots, n_blended, n_cut;
-    static double behind_ms;
+    static double behind_ms, ms_mtx, ms_replay, ms_present, ms_cpu_vtx, ms_gl_draw;
+    uint64_t t0 = now;
     static const char *gfxlog = getenv("DD64_GFXLOG");
     mp.resize(cur->slots.size() * 16);
     for (size_t i = 0; i < cur->slots.size(); i++) {
@@ -2443,19 +2444,63 @@ extern "C" bool gfx_interp_present(bool black) {
         static unsigned frames_then;
         double secs = since != 0 ? (now - since) / 1e9 : 0.0;
         sysLogPrintf(LOG_NOTE, "gfx: interpolation: %.0f frames/s shown, %.0f game frames/s; %u slots, %u blended, "
-                     "%u cut; on average %.1f ms behind the newest game frame",
+                     "%u cut; on average %.1f ms behind the newest game frame; %.2f ms matrices, %.2f ms replay "
+                     "(%.2f vertices, %.2f draws), %.2f ms present",
                      secs > 0 ? 120 / secs : 0.0, secs > 0 ? (interp_game_frames - frames_then) / secs : 0.0, n_slots,
-                     n_blended, n_cut, behind_ms / 120.0);
+                     n_blended, n_cut, behind_ms / 120.0, ms_mtx / 120.0, ms_replay / 120.0, ms_cpu_vtx / 120.0,
+                     ms_gl_draw / 120.0, ms_present / 120.0);
         since = now;
         frames_then = interp_game_frames;
         n_slots = n_blended = n_cut = 0;
-        behind_ms = 0.0;
+        behind_ms = ms_mtx = ms_replay = ms_present = ms_cpu_vtx = ms_gl_draw = 0.0;
     }
+    uint64_t t1 = SDL_GetTicksNS();
+    ms_mtx += (t1 - t0) / 1e6;
+
+    /* every draw's vertices, moved for this moment, in one array: each batch at a whole
+       vertex of its own stride, so it can be drawn from where it lands */
+    static std::vector<float> all;
+    static std::vector<size_t> firsts;
+    uint64_t tv0 = SDL_GetTicksNS();
+    all.clear();
+    firsts.clear();
+    for (const InterpCmd &c : cur->cmds) {
+        if (c.op != IOP_DRAW) {
+            continue;
+        }
+        size_t verts = c.tris * 3, stride = c.vbo_len / verts;
+        size_t first = (all.size() + stride - 1) / stride;
+        all.resize(first * stride);
+        firsts.push_back(first);
+        all.insert(all.end(), cur->vbo.begin() + c.vbo_off, cur->vbo.begin() + c.vbo_off + c.vbo_len);
+        float *out = &all[first * stride];
+        for (size_t k = 0; k < verts; k++) {
+            const InterpVtx &v = cur->vtx[c.vtx_off + k];
+            if (v.slot < 0) {
+                continue;
+            }
+            const float(*m)[4] = (const float(*)[4]) & mp[v.slot * 16];
+            float x = v.ox * m[0][0] + v.oy * m[1][0] + v.oz * m[2][0] + m[3][0];
+            float y = v.ox * m[0][1] + v.oy * m[1][1] + v.oz * m[2][1] + m[3][1];
+            float z = v.ox * m[0][2] + v.oy * m[1][2] + v.oz * m[2][2] + m[3][2];
+            float w = v.ox * m[0][3] + v.oy * m[1][3] + v.oz * m[2][3] + m[3][3];
+            if (v.wide) {
+                x *= wide_k;
+            }
+            z += v.zoff * w;
+            float *o = &out[k * stride];
+            o[0] = x, o[1] = y, o[2] = z, o[3] = w;
+        }
+    }
+    ms_cpu_vtx += (SDL_GetTicksNS() - tv0) / 1e6;
 
     update_framebuffer_sizes();
     interp_real->start_frame();
     interp_real->start_draw_to_framebuffer(game_fb, 1.0f);
-    static std::vector<float> vbo;
+    uint64_t tu0 = SDL_GetTicksNS();
+    interp_real->upload_vertices(all.data(), all.size());
+    ms_gl_draw += (SDL_GetTicksNS() - tu0) / 1e6;
+    size_t draw_i = 0;
     for (const InterpCmd &c : cur->cmds) {
         switch (c.op) {
             case IOP_LOAD_SHADER: interp_real->load_shader(c.prg); break;
@@ -2468,32 +2513,18 @@ extern "C" bool gfx_interp_present(bool black) {
             case IOP_ALPHA: interp_real->set_use_alpha(c.a[0], c.a[1]); break;
             case IOP_CLEAR: interp_real->clear_framebuffer(c.a[0], c.a[1]); break;
             case IOP_DRAW: {
-                size_t verts = c.tris * 3, stride = c.vbo_len / verts;
-                vbo.assign(cur->vbo.begin() + c.vbo_off, cur->vbo.begin() + c.vbo_off + c.vbo_len);
-                for (size_t k = 0; k < verts; k++) {
-                    const InterpVtx &v = cur->vtx[c.vtx_off + k];
-                    if (v.slot < 0) {
-                        continue;
-                    }
-                    const float(*m)[4] = (const float(*)[4]) & mp[v.slot * 16];
-                    float x = v.ox * m[0][0] + v.oy * m[1][0] + v.oz * m[2][0] + m[3][0];
-                    float y = v.ox * m[0][1] + v.oy * m[1][1] + v.oz * m[2][1] + m[3][1];
-                    float z = v.ox * m[0][2] + v.oy * m[1][2] + v.oz * m[2][2] + m[3][2];
-                    float w = v.ox * m[0][3] + v.oy * m[1][3] + v.oz * m[2][3] + m[3][3];
-                    if (v.wide) {
-                        x *= wide_k;
-                    }
-                    z += v.zoff * w;
-                    float *o = &vbo[k * stride];
-                    o[0] = x, o[1] = y, o[2] = z, o[3] = w;
-                }
-                interp_real->draw_triangles(vbo.data(), c.vbo_len, c.tris);
+                uint64_t td0 = SDL_GetTicksNS();
+                interp_real->draw_uploaded(firsts[draw_i++], c.tris);
+                ms_gl_draw += (SDL_GetTicksNS() - td0) / 1e6;
                 break;
             }
         }
     }
     interp_real->end_frame();
+    uint64_t t2 = SDL_GetTicksNS();
     present_to_window(black);
+    ms_replay += (t2 - t1) / 1e6;
+    ms_present += (SDL_GetTicksNS() - t2) / 1e6;
     return true;
 }
 

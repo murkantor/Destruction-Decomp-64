@@ -39,6 +39,10 @@ struct GfxRenderingAPI {
     /* Resolve the multisampled framebuffer fb_src into fb_dst the way the N64's
      * Video Interface filtered its frame (see gfx_opengl.cpp) */
     void (*resolve_n64_aa)(int fb_dst, int fb_src);
+    /* A whole frame's vertices in one upload (the interpolated replay), then draws
+       from it: first_vertex counts in the current program's stride */
+    void (*upload_vertices)(const float *data, size_t num_floats);
+    void (*draw_uploaded)(size_t first_vertex, size_t num_tris);
 };
 
 #endif

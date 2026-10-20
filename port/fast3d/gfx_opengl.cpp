@@ -799,6 +799,16 @@ static void gfx_opengl_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_
     stream_vbo_off = off + bytes;
 }
 
+/* The interpolated replay: the frame's vertices as one fresh buffer, then its draws */
+static void gfx_opengl_upload_vertices(const float *data, size_t num_floats) {
+    glBufferData(GL_ARRAY_BUFFER, num_floats * sizeof(float), data, GL_STREAM_DRAW);
+    stream_vbo_off = STREAM_VBO_BYTES; /* the next draw_triangles starts a new stream */
+}
+
+static void gfx_opengl_draw_uploaded(size_t first_vertex, size_t num_tris) {
+    glDrawArrays(GL_TRIANGLES, (GLint)first_vertex, (GLsizei)(3 * num_tris));
+}
+
 /* ---- Initialisation ---- */
 
 static void APIENTRY gl_debug(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *msg, const void *p) {
@@ -1682,4 +1692,6 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_delete_texture,
     gfx_opengl_set_texture_filter,
     gfx_opengl_resolve_n64_aa,
+    gfx_opengl_upload_vertices,
+    gfx_opengl_draw_uploaded,
 };
