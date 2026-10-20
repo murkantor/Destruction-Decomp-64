@@ -372,3 +372,22 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
  * block between lim's set and the lim<aq compare; ints always have s5/s7 free there. Every code-free
  * way to be live there that I found (copy after the call, no-op copy deleted by jump2) needs code that
  * the original does not have. Scripts: build/agent66/bf/, build/agent66/t/run.sh, df.sh. */
+/* agent70: unchanged code (frame still 0x128 vs 0x130). Findings:
+ * - mips.c compute_frame_size rounds var_size to 8, so get_frame_size() of 196 is enough: one 4-byte
+ *   slot works. Original saves s0 at 0xD8 (ours 0xD0), so locals+slots end at 0xD0 in ours and at
+ *   0xD4..0xD8 in the original; the extra space is ABOVE the six spill slots (allocated during reload).
+ * - Reload-time slots: alter_reg spill slots (always 8, align -1), caller-save areas (4 bytes: MOVE_MAX=4,
+ *   so regno_save_mode[r][1] is SImode for a GPR and SFmode/SImode for an FP reg), secondary memory
+ *   (SImode/QImode moves GR<->FP, 4 bytes), and a local pseudo kicked out of a spill reg (t0/f18/f19)
+ *   by spill_hard_reg: local pseudos have no allocno, so retry_global_alloc does nothing and they go to
+ *   a new slot at the end; if all their uses are inherited, delete_output_reload removes the store and
+ *   the code is identical. Seen working: 'drive_c' variant kicks pseudo 170 (N.z) out of f16.
+ * - For the kick route the original needs a 10th live FP local in the post-Vec3f_Cross block (f0-f16
+ *   are all used there) whose value ends in f18: only the radius reload fits, i.e. a copy of radius that
+ *   survives CSE (plain copies, struct wrappers, block copies are all propagated away).
+ * - GPR caller-save route: all 9 s-regs are live between lon's set (mfc1 s4) and the fs dot product;
+ *   no multi-block int in a call-clobbered reg exists there in our code.
+ * - bf/bf.py (copy per statement, block / do-while forms) and bf/bf2.py (V2 = V before each call,
+ *   uses renamed over 1..60 following lines, for Cross/GetDriveTorque/Dot/Scale): no vars=200 with
+ *   identical code. Closest: idx2 = idx before Vec3f_Cross used in 'else if (idx2 >= 2)': its slot
+ *   lands exactly at 0xD0 but adds lw/sw. */
