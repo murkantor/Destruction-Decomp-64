@@ -15,7 +15,8 @@
  * starts the race at the course intro, as PakMenu_CheckPaks does after the
  * car select screen.
  */
-#include <SDL3/SDL.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "common.h"
 
@@ -34,21 +35,21 @@ void Game_SetNextMode(s32 mode, s32 arg);
 void Port_Log(const char *fmt, ...);
 
 static s32 option(const char *spec, const char *key, s32 def) {
-    const char *p = SDL_strstr(spec, key);
-    size_t n = SDL_strlen(key);
+    const char *p = strstr(spec, key);
+    size_t n = strlen(key);
 
     while (p != NULL) {
         if ((p == spec || p[-1] == ',' || p[-1] == ' ') && p[n] == '=') {
-            return SDL_atoi(p + n + 1);
+            return atoi(p + n + 1);
         }
-        p = SDL_strstr(p + 1, key);
+        p = strstr(p + 1, key);
     }
     return def;
 }
 
 /* Called by Boot_LoadData once the game is initialised and its data loaded */
 void Port_DevBoot(void) {
-    const char *spec = SDL_getenv("DD64_BOOT");
+    const char *spec = getenv("DD64_BOOT");
     s32 i, car, players;
 
     if (spec == NULL) {
