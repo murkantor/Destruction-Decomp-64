@@ -45,3 +45,11 @@ void Menu_InitPlayerViews(void) {
  * that passes one f32 param twice) gives move a1,zero / sw zero here, and a
  * union bit-cast with an s32 asm-label prototype folds to constants too. The
  * stack args need a GPR-class pseudo P = mfc1 Z that is also a1's source. */
+/* agent63: unchanged (12 diff lines). Findings: (1) i=0: combine re-emits it at the copied loop test, then sched1
+ * (bottom-up, priority 1) hoists it to the top of the block; the original has it as the first insn of the
+ * fallthrough (reorg's eager fill puts it in the blez slot), i.e. after the test. "if (n > 0) { i = 0; do ... }"
+ * gives that (move t5,zero in the slot) but changes the struct-copy schedule and the t-register numbering (49 diffs).
+ * (2) Hard-register locals: f32 z0 = 0.0f; register f32 z asm("$5"); z = z0; func(D, z, z, z, z, z, m) gives
+ * "sw a1,16/20(sp)" for the stack args, but then a2/a3 get mfc1 from z0 (CSE prefers the pseudo); brute force of
+ * z/z0 per argument (mpb/) and z0 in $f0 did not get both. Wrapping the D_80097350 store in do{}while(0), moving
+ * the sel load, a V2/V3 struct-by-value or union prototype: worse. */
