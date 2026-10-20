@@ -123,8 +123,9 @@ class Layout:
             total *= n
         return total
 
-    def leaves(self, off, base, out, depth=0):
-        """Append (offset, width) for each scalar; width UNKNOWN for bytes to leave alone."""
+    def leaves(self, off, base, out, depth=0, room=None):
+        """Append (offset, width) for each scalar; width UNKNOWN for bytes to leave alone.
+        room: bytes the object has, for an array declared without a bound (`T x[]`)."""
         if off is None or depth > 40:
             return
         tag, a, kids = self.dies.get(off, (None, {}, []))
@@ -145,6 +146,8 @@ class Layout:
                 if ktag != 'DW_TAG_member':
                     continue
                 mo = attr_int(ka, 'DW_AT_data_member_location') or 0
+                if re.match(r'pad', attr_name(ka) or ''):
+                    continue  # m2c padding: says nothing about the bytes; another declaration may
                 if 'DW_AT_bit_size' in ka or 'DW_AT_data_bit_offset' in ka:
                     n = self.size(attr_ref(ka)) or 4
                     for i in range(n):
@@ -155,6 +158,8 @@ class Layout:
             count = self.count(kids)
             et = attr_ref(a)
             es = self.size(et)
+            if count is None and room and es:
+                count = room // es  # `T x[]`: up to the next symbol
             if count is None or not es:
                 return
             one = []
@@ -163,7 +168,7 @@ class Layout:
                 out.extend((base + i * es + o, w) for o, w in one)
 
 
-def globals_of(obj, objdump):
+def globals_of(obj, objdump, room):
     text = subprocess.run([objdump, '--dwarf=info', obj], capture_output=True, text=True, check=False).stdout
     dies, top = parse(text)
     lay = Layout(dies)
@@ -176,7 +181,7 @@ def globals_of(obj, objdump):
         if not name:
             continue
         out = []
-        lay.leaves(attr_ref(a), 0, out)
+        lay.leaves(attr_ref(a), 0, out, room=room.get(name))
         if out:
             result.append((name, out))
     return result
@@ -203,6 +208,13 @@ def main():
     for name, value, typ, bind in read_symbols(args.elf):
         if name and typ != 2 and RAM_LO <= value < RAM_HI:
             addrs.setdefault(name, value)
+    # Bytes up to the next symbol, for arrays declared without a bound
+    starts = sorted(set(addrs.values()))
+    nxt = {a: b for a, b in zip(starts, starts[1:])}
+    room = {}
+    for name, value in addrs.items():
+        if value in nxt:
+            room[name] = room[HOST_RENAMES.get(name, name)] = nxt[value] - value
 
     # Every byte: (unit start, width), or UNKNOWN where declarations disagree
     bytemap = {}
@@ -226,7 +238,7 @@ def main():
                 return
 
     with ThreadPoolExecutor(os.cpu_count()) as ex:
-        for result in ex.map(lambda o: globals_of(o, args.objdump), objects):
+        for result in ex.map(lambda o: globals_of(o, args.objdump, room), objects):
             for name, leaves in result:
                 addr = addrs.get(unrename.get(name, name))
                 if addr is None:

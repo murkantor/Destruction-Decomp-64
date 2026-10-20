@@ -60,8 +60,8 @@ void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 
 void Race_WaitForOthers(void) {
     s32 counts[4];
-    UiDesc d1 = D_800BAC14;
-    UiDesc d2 = D_800BAB50;
+    UiDesc d1 = (PORT_CONVERT(&D_800BAC14, 18, 4), D_800BAC14); /* 18 s32, copied into locals */
+    UiDesc d2 = (PORT_CONVERT(&D_800BAB50, 18, 4), D_800BAB50);
     Race *race;
     s32 i;
     s32 j;

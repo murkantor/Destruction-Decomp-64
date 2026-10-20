@@ -84,7 +84,7 @@ extern u8 gPortScratch[] __attribute__((aligned(16)));
 void Port_MarkBE(const void *p, unsigned int len);
 #define PORT_MARK_BE(p, len) Port_MarkBE((const void *)(p), (len))
 #else
-#define PORT_MARK_BE(p, len)
+#define PORT_MARK_BE(p, len) ((void)0)
 #endif
 
 /* Loaded data the game reads only as bytes, in its own byte order (zip headers,
@@ -94,7 +94,7 @@ void Port_MarkBE(const void *p, unsigned int len);
 void Port_MarkNative(const void *p, unsigned int len);
 #define PORT_MARK_RAW(p, len) Port_MarkNative((const void *)(p), (len))
 #else
-#define PORT_MARK_RAW(p, len)
+#define PORT_MARK_RAW(p, len) ((void)0)
 #endif
 
 /*
@@ -108,7 +108,7 @@ void Port_MarkNative(const void *p, unsigned int len);
 void Port_Convert(void *p, unsigned int count, unsigned int width);
 #define PORT_CONVERT(p, count, width) Port_Convert((void *)(p), (count), (width))
 #else
-#define PORT_CONVERT(p, count, width)
+#define PORT_CONVERT(p, count, width) ((void)0)
 #endif
 
 #ifdef TARGET_PC

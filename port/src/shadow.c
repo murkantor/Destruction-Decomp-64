@@ -351,6 +351,11 @@ static inline void store(u32 addr, u32 n) {
    copy, in either order. A source with marks hands them to the destination. */
 static void bulkPair(void) {
     if (tPendingLen != 0 && tPendingLen == tPendingDstLen) {
+        if (tPendingSrcSite != NULL && shadowOf(tPendingDst, tPendingLen) == NULL) {
+            /* big-endian data copied off the RAM image (onto a stack): the marks are lost */
+            report("copy of big-endian data into a local or argument", tPendingSrc, tPendingLen,
+                   tPendingSrcSite);
+        }
         copyMarks((void *)tPendingDst, (const void *)tPendingSrc, tPendingLen);
         tPendingLen = tPendingDstLen = 0;
         tPendingSrcSite = NULL;
@@ -429,12 +434,30 @@ static void copyMarks(void *d, const void *s, size_t n) {
     }
 }
 
+/* A block copy of big-endian data to memory without a shadow loses the marks */
+static void checkBlockCopy(void *d, const void *s, size_t n, void *site) {
+    u8 *ss;
+    size_t i;
+
+    if (n == 0 || shadowOf((u32)d, n) != NULL || (ss = shadowOf((u32)s, n)) == NULL) {
+        return;
+    }
+    for (i = 0; i < n; i++) {
+        if (ss[i] & SH_BE) {
+            report("block copy of big-endian data into a local", (u32)s, n, site);
+            return;
+        }
+    }
+}
+
 void *__wrap_memcpy(void *d, const void *s, size_t n) {
+    checkBlockCopy(d, s, n, __builtin_return_address(0));
     copyMarks(d, s, n);
     return __real_memcpy(d, s, n);
 }
 
 void *__wrap_memmove(void *d, const void *s, size_t n) {
+    checkBlockCopy(d, s, n, __builtin_return_address(0));
     copyMarks(d, s, n);
     return __real_memmove(d, s, n);
 }

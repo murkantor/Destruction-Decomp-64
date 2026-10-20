@@ -64,6 +64,7 @@ fail:
     out->pad = 0;
     return;
 done:
+    PORT_MARK_RAW(out->ptr, sz); /* a fresh block holds nothing: no stale big-endian marks */
     heap->bytesFree -= sz + pad;
     heap->numAllocs++;
     min = heap->minFree;
@@ -131,6 +132,7 @@ fail:
     out->pad = 0;
     return;
 done:
+    PORT_MARK_RAW(out->ptr, size); /* a fresh block holds nothing: no stale big-endian marks */
     heap->bytesFree -= size + pad;
     heap->numAllocs++;
     min = heap->minFree;

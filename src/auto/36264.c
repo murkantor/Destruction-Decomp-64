@@ -25,5 +25,6 @@ void Track_GetFace(Out *o, s32 i) {
         o->v[j].y = v->y;
         o->v[j].z = v->z;
     }
+    PORT_CONVERT(&f->x8, 3, 4); /* o is usually a stack array */
     o->x4 = f->x8;
 }
