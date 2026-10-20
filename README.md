@@ -1,3 +1,12 @@
+When you fear something, study it. Learn why you should fear it.
+
+The following repo is a 100% Claude Opus 5.5 Medium "Decompile this ROM, upload found functions to GIT. Document the functions, and give them suitable names". 100% slop. The entire ROM was decompiled in a remote session in around 20 hours. I had it booting into an SDL3 window, fully playable with Raphnet Raw support and with some minor graphics errors in exactly 24. I reviewed no code, I didn't care, that wasn't the goal of this experiment.
+
+This was an experiment on how "Powerful" and how easy it is to just throw a ROM at an AI and tell it to do the above.
+
+Spoilers; it's very powerful.
+
+
 # DD64
 
 A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
