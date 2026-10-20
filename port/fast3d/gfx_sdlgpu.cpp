@@ -145,6 +145,8 @@ static std::vector<uint8_t> pass_vertices;
 static std::vector<CombinerUniforms> pass_uniforms;
 static bool pending_clear_color, pending_clear_depth;
 
+static void direct_to_window_fb(void); /* (the direct present, below) */
+
 /* The interpolated replay's vertices (upload_vertices): kept apart from the
    pass's stream, as the replay's draws may span passes */
 static std::vector<uint8_t> uploaded_vertices;
@@ -688,6 +690,7 @@ static void gfx_sdlgpu_set_use_alpha(bool alpha, bool modulate) {
 
 /* Record a draw of the current state; false if it would draw nothing */
 static bool record_draw(Draw* d) {
+    direct_to_window_fb();
     const Framebuffer& fb = framebuffers[current_framebuffer];
     GpuProgram* prg = cur_prg;
 
@@ -817,6 +820,7 @@ static void gfx_sdlgpu_update_framebuffer_parameters(int fb_id, uint32_t width, 
         msaa_level >>= 1;
     }
     const bool want_sampled = msaa_level > 1 && gfx_n64_aa != 0 && msaa_sampled_ok;
+    direct_to_window_fb();
     if (fb.color != NULL && fb.width == width && fb.height == height && fb.msaa == msaa_level &&
         fb.msaa_sampled == want_sampled) {
         return;
@@ -870,6 +874,7 @@ static bool gfx_sdlgpu_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     if (fb_id >= (int)framebuffers.size()) {
         return false;
     }
+    direct_to_window_fb();
     if (fb_id != current_framebuffer) {
         flush_pass();
         current_framebuffer = fb_id;
@@ -882,6 +887,7 @@ static bool gfx_sdlgpu_start_draw_to_framebuffer(int fb_id, float noise_scale) {
 
 /* A clear is a load op of the next pass: the draws before it run first */
 static void gfx_sdlgpu_clear_framebuffer(bool clear_color, bool clear_depth) {
+    direct_to_window_fb();
     if (!pass_draws.empty()) {
         flush_pass();
     }
@@ -906,10 +912,12 @@ static SDL_GPUTexture* resolved_color(int fb_id) {
     return fb.resolved;
 }
 
+/* (load CLEAR: the whole of dst black first, as a pass's clear would) */
 static void blit(SDL_GPUTexture* src, uint32_t sw, uint32_t sh, SDL_GPUTexture* dst, int dx, int dy, int dw, int dh,
-                 SDL_GPUFilter filter, SDL_FlipMode flip) {
+                 SDL_GPUFilter filter, SDL_FlipMode flip, SDL_GPULoadOp load = SDL_GPU_LOADOP_LOAD) {
     SDL_GPUBlitInfo b;
     SDL_zero(b);
+    b.clear_color.a = 1.0f;
     b.source.texture = src;
     b.source.w = sw;
     b.source.h = sh;
@@ -918,7 +926,7 @@ static void blit(SDL_GPUTexture* src, uint32_t sw, uint32_t sh, SDL_GPUTexture* 
     b.destination.y = dy;
     b.destination.w = dw;
     b.destination.h = dh;
-    b.load_op = SDL_GPU_LOADOP_LOAD;
+    b.load_op = load;
     b.flip_mode = flip;
     b.filter = filter;
     SDL_BlitGPUTexture(get_cmd(), &b);
@@ -935,11 +943,66 @@ static void present_x(int fb_id, uint32_t full_w, int* x0, int* x1) {
     }
 }
 
+/*
+ * The direct present: present_to_window clears the window's framebuffer and
+ * resolves the game's into it, and the swap would then copy that onto the
+ * swapchain. Instead the resolve is held here and the swap blits the game's
+ * image straight onto the swapchain (and clears the bars in the same pass),
+ * skipping the window framebuffer's clear and one full-window copy. Anything
+ * else that touches the window framebuffer first does what was held
+ * (direct_to_window_fb), so it sees the same contents as without this.
+ */
+static struct {
+    bool on;
+    SDL_GPUTexture* src; /* single-sample: the game's image, bottom row first */
+    uint32_t sw, sh;
+    int x0, x1;          /* where it goes across the window framebuffer */
+    int counter;         /* the FPS counter's value, -1 none */
+} direct = { false, NULL, 0, 0, 0, 0, -1 };
+
+static void counter_image(int value, SDL_GPUTexture** tex, uint32_t* w);
+
+static void direct_to_window_fb(void) {
+    if (!direct.on) {
+        return;
+    }
+    direct.on = false;
+    Framebuffer& fb = framebuffers[0];
+    blit(direct.src, direct.sw, direct.sh, fb.color, direct.x0, 0, direct.x1 - direct.x0, (int)fb.height,
+         SDL_GPU_FILTER_NEAREST, SDL_FLIP_NONE, SDL_GPU_LOADOP_CLEAR);
+    pending_clear_depth = true; /* the window framebuffer is current: its clear's depth half */
+    if (direct.counter >= 0) {
+        SDL_GPUTexture* tex;
+        uint32_t w;
+        const int h = (int)fb.height, scale = h / 240 > 1 ? h / 240 : 1;
+        counter_image(direct.counter, &tex, &w);
+        blit(tex, w, 7, fb.color, 2 * scale, h - 9 * scale, (int)w * scale, 7 * scale, SDL_GPU_FILTER_NEAREST,
+             SDL_FLIP_NONE);
+        direct.counter = -1;
+    }
+}
+
 static void gfx_sdlgpu_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
     Framebuffer& dst = framebuffers[fb_id_target];
     Framebuffer& src = framebuffers[fb_id_source];
     int x0, x1;
 
+    direct_to_window_fb();
+    /* present_to_window's: the window framebuffer just cleared, nothing drawn in it */
+    static const bool no_direct = getenv("DD64_NO_DIRECT") != NULL; /* (testing: the copy as it was) */
+    if (fb_id_target == 0 && fb_id_source != 0 && current_framebuffer == 0 && pass_draws.empty() &&
+        pending_clear_color && !no_direct) {
+        present_x(0, dst.width, &x0, &x1);
+        pending_clear_color = pending_clear_depth = false;
+        direct.src = resolved_color(fb_id_source);
+        direct.sw = src.width;
+        direct.sh = src.height;
+        direct.x0 = x0;
+        direct.x1 = x1;
+        direct.counter = -1;
+        direct.on = true;
+        return;
+    }
     /* the target's pending clear (and the source's draws, if it is current) first */
     flush_pass();
     present_x(fb_id_target, dst.width, &x0, &x1);
@@ -1041,6 +1104,7 @@ static void gfx_sdlgpu_resolve_n64_aa(int fb_dst, int fb_src) {
     if (fb_src <= 0 || fb_src >= (int)framebuffers.size() || fb_dst < 0 || fb_dst >= (int)framebuffers.size()) {
         return;
     }
+    direct_to_window_fb();
     Framebuffer& src = framebuffers[fb_src];
     Framebuffer& dst = framebuffers[fb_dst];
     if (src.msaa <= 1 || !src.msaa_sampled || !vi_init()) {
@@ -1087,6 +1151,22 @@ static void gfx_sdlgpu_resolve_n64_aa(int fb_dst, int fb_src) {
  * pixels as GL's scissored clears).
  */
 static void gfx_sdlgpu_draw_counter(int value) {
+    SDL_GPUTexture* tex;
+    uint32_t w;
+
+    if (direct.on) {
+        direct.counter = value; /* the swap blits it onto the swapchain */
+        return;
+    }
+    const int h = (int)framebuffers[0].height, scale = h / 240 > 1 ? h / 240 : 1;
+    flush_pass();
+    counter_image(value, &tex, &w);
+    blit(tex, w, 7, framebuffers[0].color, 2 * scale, h - 9 * scale, (int)w * scale, 7 * scale,
+         SDL_GPU_FILTER_NEAREST, SDL_FLIP_NONE);
+}
+
+/* The counter's box at one pixel a dot (bottom row first), uploaded */
+static void counter_image(int value, SDL_GPUTexture** out, uint32_t* out_w) {
     static const uint16_t font[10] = {
         /* 3x5 digits, 15 bits each, row-major from the top */
         0x7B6F, 0x2C97, 0x73E7, 0x73CF, 0x5BC9, 0x79CF, 0x79EF, 0x7249, 0x7BEF, 0x7BCF,
@@ -1094,7 +1174,6 @@ static void gfx_sdlgpu_draw_counter(int value) {
     static SDL_GPUTexture* tex;
     static uint32_t tex_w;
     char text[12];
-    const int h = (int)framebuffers[0].height, scale = h / 240 > 1 ? h / 240 : 1;
     const int n = snprintf(text, sizeof(text), "%d", value < 0 ? 0 : value);
     const uint32_t w = 4 * n + 1;
     std::vector<uint32_t> px(w * 7, 0xFF000000u); /* RGBA bytes 0,0,0,255 */
@@ -1110,7 +1189,6 @@ static void gfx_sdlgpu_draw_counter(int value) {
             }
         }
     }
-    flush_pass();
     if (tex == NULL || tex_w != w) {
         if (tex != NULL) {
             SDL_ReleaseGPUTexture(dev, tex);
@@ -1121,12 +1199,13 @@ static void gfx_sdlgpu_draw_counter(int value) {
     TexUpload u = { tex, stage(px.data(), px.size() * 4), w, 7, false };
     tex_uploads.push_back(u);
     run_uploads();
-    blit(tex, w, 7, framebuffers[0].color, 2 * scale, h - 9 * scale, (int)w * scale, 7 * scale,
-         SDL_GPU_FILTER_NEAREST, SDL_FLIP_NONE);
+    *out = tex;
+    *out_w = w;
 }
 
 /* Save the window's image as a BMP (before the swap) */
 static void gfx_sdlgpu_screenshot(const char* path) {
+    direct_to_window_fb();
     const Framebuffer& fb = framebuffers[0];
     const uint32_t w = fb.width, h = fb.height, bytes = w * h * 4;
     SDL_GPUTransferBufferCreateInfo ci;
@@ -1182,10 +1261,28 @@ extern "C" void gfx_sdlgpu_swap(void) {
     flush_pass();
     if (!SDL_WaitAndAcquireGPUSwapchainTexture(get_cmd(), wnd, &sc, &w, &h)) {
         sysLogPrintf(LOG_WARNING, "SDL_gpu: no swapchain image: %s", SDL_GetError());
-    } else if (sc != NULL) { /* NULL: minimised */
+    } else if (sc != NULL && direct.on) { /* NULL: minimised */
+        /* the game's image straight on, and the bars beside it cleared in the same pass */
+        const Framebuffer& fb = framebuffers[0];
+        const int x0 = (int)((int64_t)direct.x0 * w / fb.width), x1 = (int)((int64_t)direct.x1 * w / fb.width);
+        blit(direct.src, direct.sw, direct.sh, sc, x0, 0, x1 - x0, (int)h, SDL_GPU_FILTER_NEAREST, SDL_FLIP_VERTICAL,
+             x0 > 0 || x1 < (int)w ? SDL_GPU_LOADOP_CLEAR : SDL_GPU_LOADOP_DONT_CARE);
+        if (direct.counter >= 0) {
+            /* where draw_counter puts it in the window framebuffer, flipped as the swap would */
+            SDL_GPUTexture* tex;
+            uint32_t cw;
+            const int fh = (int)fb.height, scale = fh / 240 > 1 ? fh / 240 : 1;
+            counter_image(direct.counter, &tex, &cw);
+            blit(tex, cw, 7, sc, (int)((int64_t)2 * scale * w / fb.width), (int)((int64_t)2 * scale * h / fb.height),
+                 (int)((int64_t)cw * scale * w / fb.width), (int)((int64_t)7 * scale * h / fb.height),
+                 SDL_GPU_FILTER_NEAREST, SDL_FLIP_VERTICAL);
+        }
+    } else if (sc != NULL) {
         const Framebuffer& fb = framebuffers[0];
         blit(fb.color, fb.width, fb.height, sc, 0, 0, (int)w, (int)h, SDL_GPU_FILTER_NEAREST, SDL_FLIP_VERTICAL);
     }
+    direct.on = false;
+    direct.counter = -1;
     SDL_SubmitGPUCommandBuffer(cmd);
     cmd = NULL;
 }
