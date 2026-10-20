@@ -53,9 +53,28 @@ static inline u8 *shadowOf(u32 addr, u32 n) {
     return NULL;
 }
 
-/* A bulk read of marked bytes, waiting for the bulk store that copies them */
-static __thread u32 tPendingSrc, tPendingLen, tPendingDst, tPendingDstLen;
-static __thread void *tPendingSrcSite;
+/*
+ * Per-thread state of the hooks, in one thread-local struct: MinGW's thread
+ * locals are emulated, a call per variable per use, and every instrumented
+ * access goes through here.
+ */
+static __thread struct {
+    /* A bulk read of marked bytes, waiting for the bulk store that copies them */
+    u32 pendingSrc, pendingLen, pendingDst, pendingDstLen;
+    void *pendingSrcSite;
+    /* Byte-by-byte copies (below) */
+    int lastByte; /* shadow of the last byte loaded, or -1 */
+    u32 pendingAddr;
+    void *pendingSite;
+} tls = { .lastByte = -1 };
+#define tPendingSrc (tls.pendingSrc)
+#define tPendingLen (tls.pendingLen)
+#define tPendingDst (tls.pendingDst)
+#define tPendingDstLen (tls.pendingDstLen)
+#define tPendingSrcSite (tls.pendingSrcSite)
+#define tLastByte (tls.lastByte)
+#define tPendingAddr (tls.pendingAddr)
+#define tPendingSite (tls.pendingSite)
 
 #define MAX_REPORTS 4096
 static void *sReported[MAX_REPORTS];
@@ -227,12 +246,9 @@ static void reportWidth(const char *what, u32 addr, u32 n, void *site) {
 /*
  * Byte-by-byte copies: a byte load followed by a byte store copies the byte's
  * shadow too, and a byte load of a wider value is only reported if the next
- * access is not the store of that copy.
+ * access is not the store of that copy. (State: tLastByte, tPendingAddr and
+ * tPendingSite in tls above.)
  */
-static __thread int tLastByte = -1;       /* shadow of the last byte loaded, or -1 */
-static __thread u32 tPendingAddr;
-static __thread void *tPendingSite;
-
 static inline void flushPendingByte(void) {
     if (tPendingSite != NULL) {
         reportWidth("byte load of a wider value", tPendingAddr, 1, tPendingSite);

@@ -114,7 +114,6 @@ int main(int argc, char **argv) {
     while (!gPortQuit) {
         Port_PumpEvents();
         Port_RcpRunPending();
-        Port_OsHostTick();
         Port_ViRetrace();
         Port_RcpWait(SDL_GetTicksNS() + 1000000); /* a task, a retrace, or a millisecond */
     }

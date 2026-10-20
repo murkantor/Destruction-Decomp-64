@@ -7,12 +7,13 @@
  * when it blocks in osRecvMesg/osSendMesg, stops, or wakes a higher-priority
  * thread.
  *
- * Interrupts (VI retrace, task completion, timers) arrive from the host main
- * thread as messages. When one wakes a thread with a higher priority than the
- * running one, the switch happens at the running thread's next OS call (any
- * function here, and the cache, timer and DMA calls in os_hw.c). If the running
- * thread makes none for PREEMPT_GRACE_NS (a busy loop), Port_OsHostTick hands
- * the CPU over anyway; the old thread then stops at its next OS call.
+ * Interrupts (VI retrace, task completion, timers) arrive from host threads as
+ * messages: the VI clock (os_hw.c), the main thread (RCP tasks) and the timer
+ * clock here. When one wakes a thread with a higher priority than the running
+ * one, the switch happens at the running thread's next OS call (any function
+ * here, and the cache, timer and DMA calls in os_hw.c). If the running thread
+ * makes none for PREEMPT_GRACE_NS (a busy loop), the timer clock hands the CPU
+ * over anyway; the old thread then stops at its next OS call.
  */
 #include <SDL3/SDL.h>
 #include <string.h>
@@ -42,7 +43,6 @@ static int sNumThreads;
 static OSThread *sRunning;
 static u32 sSeq;
 static u64 sPreemptSince;
-static SDL_ThreadID sMainThreadId;
 static SDL_TLSID sSelfTls;
 
 static struct {
@@ -52,8 +52,11 @@ static struct {
 
 static OSTimer *sTimers[MAX_TIMERS];
 static int sNumTimers;
+static SDL_Condition *sTimerCond; /* wakes the timer clock for a new timer */
 
 static u64 sTimeBaseNs;
+
+static int timerClock(void *data);
 
 static PortThread *self(void) {
     return SDL_GetTLS(&sSelfTls);
@@ -221,8 +224,11 @@ static int threadMain(void *data) {
 
 void Port_OsInit(void) {
     sLock = SDL_CreateMutex();
-    sMainThreadId = SDL_GetCurrentThreadID();
     sTimeBaseNs = SDL_GetTicksNS();
+    sTimerCond = SDL_CreateCondition();
+    if (SDL_CreateThread(timerClock, "timer clock", NULL) == NULL) {
+        Port_Fatal("timer clock thread: %s", SDL_GetError());
+    }
 }
 
 /* ---- Threads ---- */
@@ -503,6 +509,7 @@ s32 osSetTimer(OSTimer *timer, OSTime countdown, OSTime interval, OSMesgQueue *m
         }
         sTimers[sNumTimers++] = timer;
     }
+    SDL_SignalCondition(sTimerCond);
     SDL_UnlockMutex(sLock);
     return 0;
 }
@@ -523,14 +530,14 @@ s32 osStopTimer(OSTimer *timer) {
 }
 
 /*
- * Host main thread, often: fire due timers, and take the CPU from a thread that
- * has kept a higher-priority one waiting too long.
+ * With sLock held: fire the timers that are due, and take the CPU from a thread
+ * that has kept a higher-priority one waiting too long. Returns the time the
+ * next timer is due (0: none).
  */
-void Port_OsHostTick(void) {
-    OSTime now = Port_GetTime();
+static OSTime fireTimers(void) {
+    OSTime now = Port_GetTime(), next = 0;
     int i;
 
-    SDL_LockMutex(sLock);
     for (i = 0; i < sNumTimers;) {
         OSTimer *t = sTimers[i];
         if (now >= t->value) {
@@ -544,6 +551,9 @@ void Port_OsHostTick(void) {
                 continue;
             }
         }
+        if (next == 0 || t->value < next) {
+            next = t->value;
+        }
         i++;
     }
     reschedule(NULL);
@@ -552,7 +562,38 @@ void Port_OsHostTick(void) {
         makeReady(cur);
         dispatch();
     }
+    return next;
+}
+
+/*
+ * The timer clock: fires each timer when it is due, on its own host thread like
+ * the VI clock, so a timer (the frame pacing's wait, say) is not held up while
+ * the main thread draws or waits for vsync. It looks at least every millisecond
+ * for the watchdog, and sleeps the last stretch before a timer precisely.
+ */
+static int timerClock(void *data) {
+    (void)data;
+    SDL_LockMutex(sLock);
+    while (!gPortQuit) {
+        OSTime next = fireTimers(), now = Port_GetTime();
+        u64 waitNs = 1000000;
+
+        if (next != 0) {
+            u64 ns = next > now ? (u64)(next - now) * 64 / 3 : 0;
+            if (ns < waitNs) {
+                waitNs = ns;
+            }
+        }
+        if (waitNs < 1000000) {
+            SDL_UnlockMutex(sLock);
+            SDL_DelayPrecise(waitNs);
+            SDL_LockMutex(sLock);
+        } else {
+            SDL_WaitConditionTimeout(sTimerCond, sLock, 1);
+        }
+    }
     SDL_UnlockMutex(sLock);
+    return 0;
 }
 
 /* ---- Interrupt masks: the switch points above already serialise everything ---- */

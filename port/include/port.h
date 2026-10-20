@@ -37,7 +37,6 @@ void Port_OsInit(void);
 void Port_PostEvent(OSEvent event);
 void Port_PostMesg(OSMesgQueue *mq, OSMesg msg);
 void Port_SafePoint(void);
-void Port_OsHostTick(void);
 OSTime Port_GetTime(void);
 void Port_ViStart(void);
 void Port_ViRetrace(void);
