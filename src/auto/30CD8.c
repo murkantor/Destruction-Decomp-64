@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void *func_800359DC();                              /* extern */
+void *Car_GetFaceUnder();                              /* extern */
 extern f64 D_800B93F8;
 extern f64 D_800B9400;
 extern f32 D_800D2E78;
@@ -14,7 +14,7 @@ void func_800300D8(void *arg0) {
     void *temp_v0;
     void *temp_v1;
 
-    temp_v0 = func_800359DC();
+    temp_v0 = Car_GetFaceUnder();
     if (temp_v0 != NULL) {
         temp_f12 = M2C_FIELD(temp_v0, f32 *, 0xC);
         if (D_800B93F8 < fabs((f64) temp_f12)) {

@@ -7,7 +7,7 @@ extern s32 D_800C06F0;
 extern f32 D_800C06F4;
 extern s64 D_800C06F8;
 extern f64 D_800BBF30;
-extern s32 func_80062F34(void);
+extern s32 Timer_GetRate(void);
 extern void Timer_Reset(void);
 void Timer_InitRate(void) {
     switch (gInitConfig.x8) {
@@ -19,8 +19,8 @@ void Timer_InitRate(void) {
         D_800C06F0 = 50;
         break;
     }
-    if (func_80062F34() > 0) {
-        D_800C06F4 = D_800BBF30 / (f32)func_80062F34();
+    if (Timer_GetRate() > 0) {
+        D_800C06F4 = D_800BBF30 / (f32)Timer_GetRate();
     } else {
         D_800C06F4 = 1.0f;
     }

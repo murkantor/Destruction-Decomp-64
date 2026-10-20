@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80062478(void *arg0, f32 arg1, f32 arg2) {
+void Sprite_SetMtxPosF(void *arg0, f32 arg1, f32 arg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x18), s16 *, 0x10) = (s16) (s32) (arg1 * 4.0f);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x18), s16 *, 0x12) = (s16) (s32) (arg2 * 4.0f);
 }
@@ -24,7 +24,7 @@ void func_8006255C(void *arg0, f32 arg1) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x18), s16 *, 0x16) = (s16) (s32) ((1.0f / arg1) * 1024.0f);
 }
 
-void func_80062598(void *arg0, f32 arg1, f32 arg2) {
+void Sprite_SetBaseScaleF(void *arg0, f32 arg1, f32 arg2) {
     void *temp_v1;
 
     temp_v1 = M2C_FIELD(arg0, void **, 0x18);
@@ -32,12 +32,12 @@ void func_80062598(void *arg0, f32 arg1, f32 arg2) {
     M2C_FIELD(temp_v1, s16 *, 0x16) = (s16) (s32) ((1.0f / arg2) * 1024.0f);
 }
 
-void func_800625F8(void *arg0, f32 arg1, f32 arg2) {
+void Sprite_SetPosF(void *arg0, f32 arg1, f32 arg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x14), s16 *, 0) = (s16) (s32) (arg1 * 4.0f);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x14), s16 *, 8) = (s16) (s32) (arg2 * 4.0f);
 }
 
-void func_80062644(void *arg0, f32 arg1, f32 arg2) {
+void Sprite_SetScaleF(void *arg0, f32 arg1, f32 arg2) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x14), s16 *, 2) = (s16) (s32) ((1.0f / arg1) * 1024.0f);
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x14), s16 *, 0xA) = (s16) (s32) ((1.0f / arg2) * 1024.0f);
 }

@@ -21,9 +21,9 @@ typedef struct {
 
 extern Viewport D_801260D8[];
 extern u8 *D_8011EEF0;
-void func_8005B5BC(void *, s32, s32, s32, s32, s32, s32);
+void View_Init(void *, s32, s32, s32, s32, s32, s32);
 
-void func_800627F0(Screen *s, s32 n, u8 flip) {
+void View_SetupSplitScreen(Screen *s, s32 n, u8 flip) {
     s16 hh = s->x70 / 2;
     s16 hw = s->x6C / 2;
     s32 i;
@@ -107,7 +107,7 @@ void func_800627F0(Screen *s, s32 n, u8 flip) {
         if (flip) {
             f = -f;
         }
-        func_8005B5BC(D_8011EEF0 + 0x198 + i * 0x1C, D_801260D8[i].x, D_801260D8[i].y, D_801260D8[i].w,
+        View_Init(D_8011EEF0 + 0x198 + i * 0x1C, D_801260D8[i].x, D_801260D8[i].y, D_801260D8[i].w,
                       D_801260D8[i].h, f, D_801260D8[i].fh);
     }
 }

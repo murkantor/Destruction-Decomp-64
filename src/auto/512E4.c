@@ -6,7 +6,7 @@ extern u8 D_80097D58;
 extern s32 D_80097D50;
 extern SaveData D_80097A10;
 void Cont_ReadAll(void);
-void func_80058B58(void);
+void Pad_StartRead(void);
 s32 Pak_AllocateFile(s32, s32, s32 *);
 s32 Pak_WriteFile(s32, s32, s32, s32, void *);
 
@@ -18,7 +18,7 @@ void Pak_SaveGame(s32 *res) {
     }
     *res = Pak_AllocateFile(0, 0x320, &D_80097D50);
     if (!D_80097D58) {
-        func_80058B58();
+        Pad_StartRead();
     }
     if (*res == 0) {
         buf = D_80097A10;
@@ -28,7 +28,7 @@ void Pak_SaveGame(s32 *res) {
         }
         *res = Pak_WriteFile(0, D_80097D50, 0, 0x320, p);
         if (!D_80097D58) {
-            func_80058B58();
+            Pad_StartRead();
         }
     }
 }

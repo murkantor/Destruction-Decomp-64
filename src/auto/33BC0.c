@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-s32 func_80032FC0(void *arg0, void *arg1) {
+s32 Aabb_Overlap(void *arg0, void *arg1) {
     f32 temp_f0;
     f32 temp_f0_2;
     f32 temp_f0_3;

@@ -19,7 +19,7 @@ extern void Rom_Copy(s32, void *, s32);
 extern s32 Seq_StartWithBank(void *, void *);
 extern s32 Sound_SetVolume(s32, s32);
 extern s32 SoundEmitter_Init(s32, void *);
-extern void func_80064100(s32);
+extern void ObjList_Add(s32);
 
 s32 Res_LoadSoundBank(ResHdr *p) {
     HeapBlock blk; u32 size; s32 i; s32 n; f32 vol;
@@ -34,7 +34,7 @@ s32 Res_LoadSoundBank(ResHdr *p) {
         case 0x3F4:
             n = size / 44;
             for (i = 0; i < n; i++) {
-                func_80064100(SoundEmitter_Init(D_8011EEF8->xC[D_8011EEF8->x100], p));
+                ObjList_Add(SoundEmitter_Init(D_8011EEF8->xC[D_8011EEF8->x100], p));
                 p = (ResHdr *)((u8 *)p + 44);
             }
             break;

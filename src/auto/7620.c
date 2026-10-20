@@ -39,7 +39,7 @@ extern s32 D_80132164[];
 extern u8 D_8007EE48[];
 extern volatile SndSlot D_801311D0[];
 
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 Vec3f Car_GetPos(Car *);
 s8 Pool_PushCopy(void *, SndReq *);
@@ -55,7 +55,7 @@ void Sound_StartCarLoops(void *pool) {
         car = gGame->x1100->cars[i];
         req.x0 = 0x3F4;
         req.x4 = 0;
-        req.x2 = func_80064D70();
+        req.x2 = Obj_NextId();
         req.x10 = D_8007EDC4[car->x194].x0;
         req.x14 = D_801320C8[req.x10];
         if (D_80131F90[req.x10] != -1) {

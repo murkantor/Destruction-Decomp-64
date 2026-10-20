@@ -3,7 +3,7 @@
 
 s16 Gfx_CountCommandKind(s32, M2C_UNK, M2C_UNK);
 
-u16 func_8005A970(void *arg0, s32 arg1, u16 (*arg2)(M2C_UNK, void *, void *), int arg3)
+u16 Model_Init(void *arg0, s32 arg1, u16 (*arg2)(M2C_UNK, void *, void *), int arg3)
 {
   s32 temp_a0;
   u16 (*temp_v0)(M2C_UNK, void *, void *);

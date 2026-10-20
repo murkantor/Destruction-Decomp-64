@@ -43,7 +43,7 @@ void Ui_SetElementPos(void *, s32, s32, f32, f32);
 u8 Obj_HasValue(void *, void *);
 void func_8005F884(void *);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 s32 sprintf(char *, const char *, ...);
 
 s32 Race_CheckFinishHud(Obj *obj) {
@@ -79,7 +79,7 @@ s32 Race_CheckFinishHud(Obj *obj) {
     if (D_8011EEEA != 0x1D && D_80097A00 != 0) {
         if (D_80097A00 < Time_Get(&gGame->x10A8)) {
             obj->x10 = 1;
-            func_80063564(0x1D, 1);
+            Game_SetNextMode(0x1D, 1);
             ret = 1;
         }
     }
@@ -160,7 +160,7 @@ s32 Race_CheckFinishHud(Obj *obj) {
                     ret = 1;
                     Race_AwardPot();
                     func_80063380(1);
-                    func_80063564(0x2C, 1);
+                    Game_SetNextMode(0x2C, 1);
                 }
             }
         }

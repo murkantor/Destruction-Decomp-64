@@ -46,7 +46,7 @@ f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 f32 Car_GetSpeed(Car *);
 u64 Time_Get(u64 *);
 
-void func_8002B358(void) {
+void Race_EstimateFinishTimes(void) {
     s32 i;
     s32 j;
     Car *car;

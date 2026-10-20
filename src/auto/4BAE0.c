@@ -3,7 +3,7 @@
 
 M2C_UNK Results_LoadBanner(s32, s32);                     /* extern */
 M2C_UNK func_80063380(M2C_UNK);                     /* extern */
-M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
+M2C_UNK Game_SetNextMode(M2C_UNK, M2C_UNK);            /* extern */
 extern s8 D_800958A0;
 extern u8 D_80097335;
 extern void *gGame;
@@ -26,7 +26,7 @@ s32 func_8004AEE0(s32 arg0) {
         M2C_FIELD(D_8011EEF8, s8 *, 0x530) = 0;
         D_800958A0 = 1;
         func_80063380(1);
-        func_80063564(0x13, 1);
+        Game_SetNextMode(0x13, 1);
     } else {
         Results_LoadBanner(arg0, 3);
     }

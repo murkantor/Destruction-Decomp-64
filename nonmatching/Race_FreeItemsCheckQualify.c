@@ -34,21 +34,21 @@ extern s32 D_800958AC;
 extern s32 D_80097340;
 extern s32 D_800958BC;
 
-void func_8005AAC0(void *);
-void func_80063AAC(s32);
+void ModelInst_Free(void *);
+void Res_Release(s32);
 void Mem_Free(void *);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void Players_Reset(void);
 u8 Menu_ToggleHelpOverlay(s32);
 
 static inline void FreeItem(Item42894 *item, s32 *tbl) {
     Inner42894 *in = item->xC;
-    func_8005AAC0(in->x98);
-    func_8005AAC0(in->xC0);
-    func_8005AAC0(in->xE8);
-    func_8005AAC0(in->x110);
-    func_8005AAC0(in->x138);
-    func_80063AAC(tbl[in->x34]);
+    ModelInst_Free(in->x98);
+    ModelInst_Free(in->xC0);
+    ModelInst_Free(in->xE8);
+    ModelInst_Free(in->x110);
+    ModelInst_Free(in->x138);
+    Res_Release(tbl[in->x34]);
     Mem_Free(in);
     Mem_Free(item);
 }
@@ -61,7 +61,7 @@ s32 Race_FreeItemsCheckQualify(Obj42894 *obj) {
     s32 *tbl;
 
 tbl = D_800919F4; p = D_80096500; do { if (*p != NULL) { FreeItem(*p, tbl); *p = NULL; } p++; } while ((s32)p < (s32)(D_80096500 + 4));
-limit = (D_800958AC == 2 && D_800958A4 == 4) ? 2 : D_800958A4; if (D_80097340 == limit) { D_800958BC = 0; func_80063564(0xF, 1); Players_Reset(); return 1; } if (obj->x28->x10 < D_800958A4) { if (limit == 1) goto call; } return 0; call: return Menu_ToggleHelpOverlay(obj->x10);
+limit = (D_800958AC == 2 && D_800958A4 == 4) ? 2 : D_800958A4; if (D_80097340 == limit) { D_800958BC = 0; Game_SetNextMode(0xF, 1); Players_Reset(); return 1; } if (obj->x28->x10 < D_800958A4) { if (limit == 1) goto call; } return 0; call: return Menu_ToggleHelpOverlay(obj->x10);
 }
 /* agent45: diff is only register choice: original gives `limit` v1 (const 4 in a0, final lb in a0);
    ours gives limit a0 which leaves the bne delay slot empty (+4 bytes). Tried if/else, ternary,

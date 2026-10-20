@@ -18,8 +18,8 @@ void func_8002629C(void *);
 void func_80026968(void *);
 void func_80026170(void *);
 void func_80026034(void *);
-void func_8005AAC0(void *);
-void func_80063AAC(s32);
+void ModelInst_Free(void *);
+void Res_Release(s32);
 void Mem_Free(void *);
 
 void Obj_Free(Obj *o) {
@@ -44,10 +44,10 @@ void Obj_Free(Obj *o) {
         default: return;
     }
     D_8011F048[i]--;
-    func_8005AAC0(o->x10);
+    ModelInst_Free(o->x10);
     if (D_8011F048[i] <= 0) {
         D_8011F048[i] = 0;
-        func_80063AAC(o->x4);
+        Res_Release(o->x4);
     }
     Mem_Free(o);
 }

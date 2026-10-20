@@ -20,7 +20,7 @@ static inline s32 load8(UnkA *a, UnkH *h, u8 *buf) {
     return 0;
 }
 
-s32 func_80053050(UnkA *a, UnkH *h, u8 *buf) {
+s32 Zip_ExtractEntry(UnkA *a, UnkH *h, u8 *buf) {
     s32 r;
     if (h->xA == 0) {
         if (h->x14 != h->x18) {

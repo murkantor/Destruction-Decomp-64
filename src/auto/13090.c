@@ -3,7 +3,7 @@
 
 M2C_UNK Obj_FreeResources(M2C_UNK *);                   /* extern */
 M2C_UNK Weather_Free();                            /* extern */
-M2C_UNK func_80063AAC(s32);                         /* extern */
+M2C_UNK Res_Release(s32);                         /* extern */
 extern u8 D_80083AE8;
 extern M2C_UNK D_80083AEC;
 extern s32 D_800958A8;
@@ -17,7 +17,7 @@ void func_80012490(void) {
         if (D_800958A8 != 3) {
             Weather_Free();
         }
-        func_80063AAC(*((__typeof__(D_80083AEC) *)((s8 *)&D_80083AEC + (D_80130248 * 4))));
+        Res_Release(*((__typeof__(D_80083AEC) *)((s8 *)&D_80083AEC + (D_80130248 * 4))));
         D_80083AE8 = 0;
         D_801244D0 = 0;
     }

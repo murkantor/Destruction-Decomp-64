@@ -7,7 +7,7 @@ extern s32 D_800BD210;
 extern s32 D_800BD214;
 extern s32 D_800BD218;
 
-void func_800581F4(void) {
+void Gfx_RunDedupeTexCmds(void) {
     D_800BD20C = 0;
     D_800BD210 = 0;
     D_800BD214 = 0;

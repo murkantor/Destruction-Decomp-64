@@ -11,7 +11,7 @@ extern volatile char D_800BCF98;
 extern int D_80130250;
 extern M2C_UNK gMainHeap;
 
-void func_80056310(void)
+void Gfx_FreeBuffers(void)
 {
   M2C_UNK *new_var;
   Heap_Free(&gMainHeap, &D_800BCF98);

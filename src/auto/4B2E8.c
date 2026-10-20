@@ -51,7 +51,7 @@ extern char gSaveSlotText[];
 void *Mem_Alloc(s32);
 void Mem_Free(void *);
 Obj *Obj_CreateFromSpawn(Spawn *);
-void func_80064100(void *);
+void ObjList_Add(void *);
 void func_8006300C(s32, f32, f32, f32, f32, f32, f32);
 void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
@@ -79,7 +79,7 @@ void func_8004A6E8(void) {
         c->x18 = zero;
         c->x24 = 0;
     }
-    func_80064100(D_800970F0);
+    ObjList_Add(D_800970F0);
     func_8006300C(D_800958DC[0], 0.0f, 40.0f, 300.0f, 0.0f, 0.0f, 150.0f);
     Ui_ResetScreen(0x112EE, 0x112EF);
     {

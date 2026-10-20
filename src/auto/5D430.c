@@ -24,9 +24,9 @@ extern u8 D_80108D60[];
 extern u8 D_80130250[], D_800D3200[], D_80133D08[], D_801340E8[];
 void Rom_Copy(void *, void *, s32);
 void Sound_RelocateBank(void *, void *);
-void func_80065708(AudioCfg *);
+void Audio_InitSynth(AudioCfg *);
 
-void func_8005C830(void) {
+void Audio_LoadBanks(void) {
     AudioCfg cfg;
 
     Rom_Copy(D_8FC5B0, D_80108D60, 0x1D48);
@@ -51,5 +51,5 @@ void func_8005C830(void) {
     cfg.x34 = 1;
     cfg.x38 = 0x24;
     cfg.x3C = 0x800;
-    func_80065708(&cfg);
+    Audio_InitSynth(&cfg);
 }

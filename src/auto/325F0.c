@@ -39,7 +39,7 @@ void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Length(f32 *, Vec3f *);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Tensor_MulVec3f(Vec3f *, void *, Vec3f *);
-void func_80035328(Vec3fPair *, Car *, Hit *);
+void Contact_ComputeImpulse(Vec3fPair *, Car *, Hit *);
 void Car_OnCollision2(void *, Vec3f, void *, Vec3f, f32);
 f32 fabsf(f32);
 
@@ -64,7 +64,7 @@ void Car_ApplyCollisionImpulse(Car *a, Car *b, Hit *hit) {
     f = fabsf(f);
     hit->x54 = b->phys.x10 + f;
     Vec3f_Scale(&s, &hit->x10, hit->x1C);
-    func_80035328(&r, a, hit);
+    Contact_ComputeImpulse(&r, a, hit);
     Vec3f_Length(&f, &r.a);
     pb = &b->phys;
     pa = &a->phys;
@@ -95,7 +95,7 @@ void Car_ApplyCollisionImpulse(Car *a, Car *b, Hit *hit) {
     hit->x20 = hit->x3C;
     hit->x3C = t;
     Vec3f_Scale(&s, &hit->x10, hit->x1C);
-    func_80035328(&r, b, hit);
+    Contact_ComputeImpulse(&r, b, hit);
     Vec3f_Length(&f, &r.a);
     Car_OnCollision2(pb, hit->x48, pa, hit->x2C, f);
     if (gGame->race->x10 == 0) {

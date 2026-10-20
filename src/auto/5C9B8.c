@@ -64,16 +64,16 @@ extern f32 D_8007EEC8;
 extern void World_FlagAllObjects(World *);
 extern void Sound_UpdateListeners(void);
 extern void DrawList_Update(World *, s32, s32 *, Obj *);
-extern u8 func_8005CF28(Vec3f *, Obj *);
+extern u8 Snd_InRange(Vec3f *, Obj *);
 extern void Sound_FadeOut(s32, s32);
 extern void World_RemoveObject(World *, Snd *, s32, s32);
 extern s32 Sound_CountPlaying(s32);
 extern s32 Sound_AllocVoice(s32, s32, s32, s32, s32);
 extern s32 Sound_AllocWithBank(void *, s32, s32, s32, s32, s32);
 extern void Sound_CullVoices(World *);
-extern f32 func_8005D208(Vec3f *, Vec3f *);
+extern f32 Vec3f_DistSq(Vec3f *, Vec3f *);
 extern s32 Vec3f_HeadingAngleXZ(Vec3f *, Vec3f *, Vec3f *);
-extern f32 func_8005D114(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
+extern f32 Snd_DopplerPitch(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
 extern void func_8005D4AC(Snd *, s32 *);
 extern void Sound_SetPitch(s32, f32);
 extern s32 Sound_SetTempoById(s32, s32);
@@ -117,7 +117,7 @@ void World_UpdateSounds(World *w) {
                 DrawList_Update(w, 0, &dl0, o);
             } else {
                 for (j = 0; j < D_800D31CC; j++) {
-                    if (func_8005CF28(D_80123B58[j].x0, o)) {
+                    if (Snd_InRange(D_80123B58[j].x0, o)) {
                         DrawList_Update(w, j, &dl[j], o);
                     }
                 }
@@ -183,7 +183,7 @@ void World_UpdateSounds(World *w) {
                 continue;
             }
             cam = D_80123B58[j].x0;
-            d2 = func_8005D208(cam, &s->x18);
+            d2 = Vec3f_DistSq(cam, &s->x18);
             if (d2 != 0.0 && s->x30 > 0.1) {
                 f = fabs(s->x30 - sqrtf(d2)) / s->x30;
             } else {
@@ -195,7 +195,7 @@ void World_UpdateSounds(World *w) {
             } else {
                 pan = 0x80;
             }
-            pitch = s->x34 + func_8005D114(cam, D_80123B58[j].x8, &s->x18, &s->x24);
+            pitch = s->x34 + Snd_DopplerPitch(cam, D_80123B58[j].x8, &s->x18, &s->x24);
             if (pitch > D_8007EEC4) {
                 pitch = D_8007EEC4;
             } else if (pitch < D_8007EEC8) {

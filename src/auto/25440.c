@@ -6,7 +6,7 @@ typedef struct { u8 pad0[0x10]; s8 x10; u8 pad11[0x37]; u8 x48[8]; } Foo;
 extern u8 gGameTime[];
 extern u64 D_80095830;
 u64 Time_Get(void *);
-Ctrl *func_80062F14(void);
+Ctrl *Pad_GetLatched(void);
 
 void func_80024840(Foo *arg0) {
     Ctrl *c;
@@ -18,7 +18,7 @@ void func_80024840(Foo *arg0) {
     s32 b;
     u8 r;
 
-    c = func_80062F14();
+    c = Pad_GetLatched();
     out = arg0->x48;
     for (i = 0; i < 4; i++) {
         ok = (c[i].xC & 0x2000) == 0;

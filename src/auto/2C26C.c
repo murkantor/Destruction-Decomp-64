@@ -10,7 +10,7 @@ extern s32 D_800958AC;
 extern s32 D_800958A4;
 void Standings_Resort(void *, Car *);
 
-void func_8002B66C(void) {
+void Race_AwardHealthBonus(void) {
     Race *r = gGame[0]->x1100;
     s32 i;
     Car *c;

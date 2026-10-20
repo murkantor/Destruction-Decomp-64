@@ -20,14 +20,14 @@ u64 Time_Get(void *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 char *strcpy(char *, const char *);
-void func_8005E75C(void *, s32, s32, s32);
-void func_8005E7FC(void *, s32, s32);
-void func_8005E88C(void *, s32, s32, s32);
+void Ui_EnableElementAlpha(void *, s32, s32, s32);
+void Ui_DisableElementAlpha(void *, s32, s32);
+void Ui_SetElementAlphaValue(void *, s32, s32, s32);
 f32 func_8003EC70(char *, s32, f32);
 void Ui_SetElementX(void *, s32, s32, f32);
 void func_80063380(s32);
-void func_80063564(s32, s32);
-void func_80063AAC(s32);
+void Game_SetNextMode(s32, s32);
+void Res_Release(s32);
 
 s32 Credits_Update(Obj *obj) {
     Str2 sfx = D_800BAF30;
@@ -53,14 +53,14 @@ s32 Credits_Update(Obj *obj) {
         for (i = 0; i < 10; i++) {
             Ui_AddElement(gUi[0], 0, i + 0x17A);
             strcpy(gSaveSlotText[i], sfx.c);
-            func_8005E75C(gUi[0], 0, i + 0x17A, 0);
+            Ui_EnableElementAlpha(gUi[0], 0, i + 0x17A, 0);
         }
         break;
     case 1:
         if (D_80124560.x18 == 0) {
             if (D_80124560.x14 == 0) {
                 for (i = 0; i < 10; i++) {
-                    func_8005E75C(gUi[0], 0, i + 0x17A, 0);
+                    Ui_EnableElementAlpha(gUi[0], 0, i + 0x17A, 0);
                     if (D_80124560.x10 >= 0xBE) {
                         strcpy(gSaveSlotText[i], sfx.c);
                     } else {
@@ -77,13 +77,13 @@ s32 Credits_Update(Obj *obj) {
                 D_80124560.x18 = 1;
                 now = (f64)now + D_800BB480;
                 for (i = 0; i < 10; i++) {
-                    func_8005E7FC(gUi[0], 0, i + 0x17A);
+                    Ui_DisableElementAlpha(gUi[0], 0, i + 0x17A);
                 }
             }
         } else {
             if (D_80124560.x14 == D_80097324) {
                 for (i = 0; i < 10; i++) {
-                    func_8005E75C(gUi[0], 0, i + 0x17A, D_80097324);
+                    Ui_EnableElementAlpha(gUi[0], 0, i + 0x17A, D_80097324);
                 }
             }
             D_80124560.x14 -= 0x30;
@@ -100,7 +100,7 @@ s32 Credits_Update(Obj *obj) {
             }
         }
         for (i = 0; i < 10; i++) {
-            func_8005E88C(gUi[0], 0, i + 0x17A, D_80124560.x14);
+            Ui_SetElementAlphaValue(gUi[0], 0, i + 0x17A, D_80124560.x14);
         }
         D_80124560.x8 = (f64)now + D_800BB490;
         break;
@@ -112,8 +112,8 @@ s32 Credits_Update(Obj *obj) {
             break;
         }
         func_80063380(2);
-        func_80063564(0x19, 1);
-        func_80063AAC(0x11426);
+        Game_SetNextMode(0x19, 1);
+        Res_Release(0x11426);
         break;
     }
     return 1;

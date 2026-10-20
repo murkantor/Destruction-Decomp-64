@@ -39,16 +39,16 @@ void func_8005F884(void *arg0) {
     D_80125BD4 = Time_ToSeconds(gGame + 0x1058);
 }
 
-void func_8005F980(void *arg0, s16 arg1) {
+void Font_EnableAlpha(void *arg0, s16 arg1) {
     M2C_FIELD(arg0, s16 *, 0x1C) = arg1;
     M2C_FIELD(arg0, s32 *, 0) = (s32) (M2C_FIELD(arg0, s32 *, 0) | 1);
 }
 
-void func_8005F994(void *arg0) {
+void Font_DisableAlpha(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x1C) = 0xFF;
     M2C_FIELD(arg0, s32 *, 0) = (s32) (M2C_FIELD(arg0, s32 *, 0) & 0xFFFE);
 }
 
-void func_8005F9AC(void *arg0, s16 arg1) {
+void Font_SetAlphaValue(void *arg0, s16 arg1) {
     M2C_FIELD(arg0, s16 *, 0x1C) = arg1;
 }

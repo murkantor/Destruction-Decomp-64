@@ -8,7 +8,7 @@ extern SaveBuf D_80097A10;
 extern u8 D_80097D58;
 extern s32 D_80097D50;
 void Cont_ReadAll(void);
-void func_80058B58(void);
+void Pad_StartRead(void);
 s32 Pak_WriteFile(s32, s32, s32, s32, void *);
 
 void Pak_WriteSave(s32 *out) {
@@ -20,6 +20,6 @@ void Pak_WriteSave(s32 *out) {
     }
     *out = Pak_WriteFile(0, D_80097D50, 0, 0x320, p);
     if (!D_80097D58) {
-        func_80058B58();
+        Pad_StartRead();
     }
 }

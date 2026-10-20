@@ -27,7 +27,7 @@ extern f64 D_800B91A8;
 f32 Time_ToSeconds(void *);
 void Car_SetPartsForMode(Obj *);
 
-void func_8002A5CC(Obj *obj, s32 idx) {
+void Car_CheckWrecked(Obj *obj, s32 idx) {
     Cfg *cfg;
 
     cfg = gGame[0]->x1100;

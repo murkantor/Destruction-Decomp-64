@@ -9,7 +9,7 @@ typedef struct { u8 pad[0x70]; Track *track; } Race;
 typedef struct { u8 pad[0x1100]; Race *race; } Game;
 extern Game *gGame;
 s32 Track_GetGridCell(Vec3f pos);
-void func_80063FA0(void **, void *);
+void List_Push(void **, void *);
 
 void Grid_AddObjToCellsInRect(void *obj, f32 x0, f32 z0, f32 x1, f32 z1) {
     Vec3f v;
@@ -33,7 +33,7 @@ void Grid_AddObjToCellsInRect(void *obj, f32 x0, f32 z0, f32 x1, f32 z1) {
     hi = idx[1];
     for (i = 0; i <= n; i++) {
         for (j = lo; j <= hi; j++) {
-            func_80063FA0(&d->cells[j], obj);
+            List_Push(&d->cells[j], obj);
         }
         lo += d->w;
         hi += d->w;

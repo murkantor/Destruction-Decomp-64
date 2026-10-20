@@ -5,7 +5,7 @@ M2C_UNK memset(void *, M2C_UNK, M2C_UNK);    /* extern */
 extern M2C_UNK D_801253FC;
 extern M2C_UNK D_80125408;
 
-void func_8002D3B8(s8 arg0) {
+void Cheat_ResetInput(s8 arg0) {
     s32 temp_s0;
 
     temp_s0 = arg0 * 0x18;

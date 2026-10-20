@@ -5,7 +5,7 @@ M2C_UNK __assert(M2C_UNK *, M2C_UNK *, M2C_UNK); /* extern */
 extern M2C_UNK D_800BBB6C;
 extern M2C_UNK D_800BBB70;
 
-void func_80054CD0(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+void Font_Init(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     if (arg0 == NULL) {
         __assert(&D_800BBB6C, &D_800BBB70, 0x4C);
     }

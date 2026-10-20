@@ -13,8 +13,8 @@ void osScAddClient(void *, OSScClient *, OSMesgQueue *);
 void osScRemoveClient(void *, OSScClient *);
 void Pad_Read(void);
 void DebugMenu_DrawPage(Obj *);
-void func_80056098(u64 *);
-u8 func_800540C0(void);
+void Vi_SwapBuffer(u64 *);
+u8 DebugMenu_HandleInput(void);
 
 void DebugMenu_Run(Obj *obj) {
     OSScClient client;
@@ -37,9 +37,9 @@ void DebugMenu_Run(Obj *obj) {
                 p[i] = 0;
             }
             DebugMenu_DrawPage(obj);
-            func_80056098(obj->x90);
+            Vi_SwapBuffer(obj->x90);
         }
-        flag = func_800540C0();
+        flag = DebugMenu_HandleInput();
         /* p reused as the exit flag; needed for register allocation */
         p = (u64 *)((D_80125C90 >> 12) & 1);
         D_800B04B0++;

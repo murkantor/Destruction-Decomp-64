@@ -9,7 +9,7 @@ extern u8 gParticlePool[];
 extern void *Pool_Alloc(void *);
 extern void guPosition(void *, f32, f32, f32, f32, f32, f32, f32);
 extern void osWritebackDCache(void *, s32);
-extern void func_80057334(void *);
+extern void Gfx_FreeAfterFrame(void *);
 void Obj_EmitPositionedDL(Obj *o) {
     void *m = Pool_Alloc(gParticlePool);
     guPosition(m, 0.0f, 0.0f, 0.0f, 0.03125f, o->x22C, o->x230, o->x234);
@@ -17,5 +17,5 @@ void Obj_EmitPositionedDL(Obj *o) {
     { Gfx *g = &o->x2AC[0]; g->w0 = 0xDA380000; g->w1 = (u32)m - 0x80000000; }
     { Gfx *g = &o->x2AC[1]; g->w0 = 0xDE000000; g->w1 = o->lods[o->x8].dl; }
     { Gfx *g = &o->x2AC[2]; g->w0 = 0xD8380002; g->w1 = 0x40; }
-    func_80057334(m);
+    Gfx_FreeAfterFrame(m);
 }

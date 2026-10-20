@@ -6,7 +6,7 @@ void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Normalize(Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 
-f32 func_8005D114(Vec3f *a, Vec3f *b, Vec3f *c, Vec3f *d) {
+f32 Snd_DopplerPitch(Vec3f *a, Vec3f *b, Vec3f *c, Vec3f *d) {
     Vec3f diff;
     Vec3f n;
     f32 t;

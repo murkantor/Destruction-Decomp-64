@@ -3,9 +3,9 @@
 
 u8 Cont_AllPaksOk(void);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
-s32 func_8003D6B8(void) {
+s32 PakMenu_CheckPaks(void) {
     s32 id;
 
     if (Cont_AllPaksOk()) {
@@ -14,6 +14,6 @@ s32 func_8003D6B8(void) {
     } else {
         id = 0x10;
     }
-    func_80063564(id, 1);
+    Game_SetNextMode(id, 1);
     return 1;
 }

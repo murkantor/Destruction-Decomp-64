@@ -38,7 +38,7 @@ extern State *D_8011EEF8[];
 extern s32 D_80132164[];
 extern s32 D_801320C8[];
 extern s64 D_80131F90[];
-extern s16 func_80064D70(void);
+extern s16 Obj_NextId(void);
 extern u64 Time_Get(u64 *);
 
 Ent *SoundEmitter_Init(Ent *e, Rec *r) {
@@ -46,7 +46,7 @@ Ent *SoundEmitter_Init(Ent *e, Rec *r) {
 
     e->x0 = r->x0;
     e->x4 = e;
-    e->x2 = func_80064D70();
+    e->x2 = Obj_NextId();
     e->x44 = 1;
     e->x45 = 0;
     e->xC = r->x4;

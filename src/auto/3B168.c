@@ -18,7 +18,7 @@ static inline void SinCos_(f32 x, f32 *s, f32 *c) {
     *c = x2 * (x2 * (x2 * (x2 * (x2 * (x2 * 2.087675e-09 + -2.755732e-07) + 2.480159e-05) + -0.001388889) + 0.04166667) + -0.5) + 1.0;
 }
 
-void func_8003A568(f32 m[3][3], Vec3f *axis, f32 angle) {
+void Mtx3_RotateAxisAngle(f32 m[3][3], Vec3f *axis, f32 angle) {
     f32 sc[2];
     f32 x, y, z, w;
     f32 x2, y2, z2, w2;

@@ -9,11 +9,11 @@ void func_80058A40(void) {
 
 extern s32 D_8011EF04;
 
-void func_80058A5C(s32 arg0) {
+void Pad_SetReadHook(s32 arg0) {
     D_8011EF04 = arg0;
 }
 
 
-void func_80058A68(void) {
+void Pad_ClearReadHook(void) {
     D_8011EF04 = 0;
 }

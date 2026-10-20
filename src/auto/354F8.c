@@ -53,7 +53,7 @@ typedef struct { u8 pad[0x10]; f32 x10; u8 pad2[0x104 - 0x14]; Tensor x104; } Wo
 extern void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 extern Vec3f Tensor_MulVec3f(Tensor *, Vec3f *);
 extern double fabs(double);
-extern void func_80034C40(World *, Body *);
+extern void Body_LinkContact(World *, Body *);
 
 void Physics_AddContact(Body *bodies, s32 *count, Body *src, World *w) {
     Body *dst;
@@ -78,7 +78,7 @@ void Physics_AddContact(Body *bodies, s32 *count, Body *src, World *w) {
         d = fabs(src->x10.x * tmp.x + src->x10.y * tmp.y + src->x10.z * tmp.z);
         dst->x38 = w->x10 + d;
         dst->x54 = 0;
-        func_80034C40(w, dst);
+        Body_LinkContact(w, dst);
         (*count)++;
     }
 }

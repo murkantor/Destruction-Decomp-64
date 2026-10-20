@@ -13,7 +13,7 @@ typedef struct {
     s32 count;
 } NodeList;
 
-void func_80034C40(NodeList *list, Node *item) {
+void Body_LinkContact(NodeList *list, Node *item) {
     Node *p;
 
     list->count++;

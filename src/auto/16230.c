@@ -16,7 +16,7 @@ extern u8 gParticlePool[];
 void *Pool_Alloc(void *);
 void guPosition(void *, f32, f32, f32, f32, f32, f32, f32);
 void osWritebackDCache(void *, s32);
-void func_80057334(void *);
+void Gfx_FreeAfterFrame(void *);
 
 void Shadow_Draw(Obj15630 *obj) {
     void *m = Pool_Alloc(gParticlePool);
@@ -38,5 +38,5 @@ void Shadow_Draw(Obj15630 *obj) {
         g->w0 = 0xD8380002;
         g->w1 = 0x40;
     }
-    func_80057334(m);
+    Gfx_FreeAfterFrame(m);
 }

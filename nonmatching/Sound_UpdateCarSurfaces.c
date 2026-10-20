@@ -34,7 +34,7 @@ extern s32 D_801320C8[];
 void Car_GetVelocity(Vec3f *, Car *);
 void Car_GetPos(Vec3f *, Car *);
 void List_RemoveById(void *, s16);
-Ent *func_8005CC00(void *, s16);
+Ent *World_FindObject(void *, s16);
 s16 Sound_PlayCar(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode);
 
 void Sound_UpdateCarSurfaces(void *pool)
@@ -106,7 +106,7 @@ void Sound_UpdateCarSurfaces(void *pool)
             D_8007EDD8[i].id = Sound_PlayCar(pool, &pos, &vel, type, vol, mode); D_8007EDD8[i].type = type;
             goto done;
         update:
-            e = func_8005CC00(pool, D_8007EDD8[i].id); if (e != NULL) { e->x18 = pos; e->x24 = vel; e->x14 = D_801320C8[e->x10] * vol; }
+            e = World_FindObject(pool, D_8007EDD8[i].id); if (e != NULL) { e->x18 = pos; e->x24 = vel; e->x14 = D_801320C8[e->x10] * vol; }
         done:;
         }
         if (!any) {

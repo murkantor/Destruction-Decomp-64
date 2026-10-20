@@ -9,8 +9,8 @@ extern u8 D_80124360;
 extern s32 D_80095A70;
 
 s32 Res_Get(s32);
-void func_80063F78(void);
-void func_80063F88(void);
+void Res_SetForceLoad(void);
+void Res_ClearForceLoad(void);
 
 void Race_LoadCarResources(void) {
     u8 used[12];
@@ -47,21 +47,21 @@ void Race_LoadCarResources(void) {
     }
     for (i = 0; i < D_800D31CC; i++) {
         if (D_800958A8[0] == 3 && D_800958A8[1] == 2) {
-            func_80063F78();
+            Res_SetForceLoad();
         }
         Res_Get(D_80091AB4[D_800958A8[6 + i]]);
         idx = D_800958A8[6 + i];
         if (idx < 12) used[idx] = 1; else used[idx - 12] = 1;
         if (D_800958A8[0] == 3 && D_800958A8[1] == 2 && D_800958A8[-1] == 2) {
             for (k = 1; k < n / 2; k++) {
-                func_80063F78();
+                Res_SetForceLoad();
                 Res_Get(D_80091AB4[D_800958A8[6 + i]]);
             }
         }
     }
     count = D_800D31CC;
     if (D_800958A8[0] == 3 && D_800958A8[1] == 2) {
-        func_80063F88();
+        Res_ClearForceLoad();
         count = n;
     }
     if (D_800958A8[0] != 2) if (count < n) {

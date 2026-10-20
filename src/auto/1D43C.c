@@ -7,8 +7,8 @@ typedef struct { s32 x0[5]; s8 x14; u8 pad[0x1B]; } Grp1C83C;
 extern u8 D_80091B28;
 extern Grp1C83C D_80091B44[];
 Obj1C83C *Res_GetEnd(void *);
-void func_80063AAC(s32);
-void func_80063B54(s32);
+void Res_Release(s32);
+void Res_ReleaseInstance(s32);
 void Mem_Free(void *);
 
 void Model_Free(void *arg0) {
@@ -23,13 +23,13 @@ void Model_Free(void *arg0) {
             D_80091B28 = 1;
             for (k = 0; k < 7; k++) {
                 for (i = 0; i < D_80091B44[k].x14; i++) {
-                    func_80063AAC(D_80091B44[k].x0[i]);
+                    Res_Release(D_80091B44[k].x0[i]);
                 }
             }
         }
         if (obj->x16 != 0) {
             for (i = 0; i < obj->x16; i++) {
-                func_80063B54(obj->x18[i].x0);
+                Res_ReleaseInstance(obj->x18[i].x0);
             }
         }
         Mem_Free(arg0);

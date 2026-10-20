@@ -4,7 +4,7 @@
 M2C_UNK RomFile_Close(s32);                         /* extern */
 M2C_UNK Mem_Free(void *);                      /* extern */
 
-void func_80052E7C(void *arg0) {
+void Zip_Close(void *arg0) {
     s32 temp_a0;
 
     Mem_Free(M2C_FIELD(arg0, void **, 0x4C));
@@ -20,7 +20,7 @@ void func_80052E7C(void *arg0) {
 
 M2C_UNK RomFile_Close(s32);                         /* extern */
 
-void func_80052ED8(void *arg0) {
+void Zip_CloseFile(void *arg0) {
     s32 temp_a0;
 
     temp_a0 = M2C_FIELD(arg0, s32 *, 4);
@@ -30,6 +30,6 @@ void func_80052ED8(void *arg0) {
     }
 }
 
-void func_80052F10(void *arg0) {
+void Zip_Rewind(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x18) = 0;
 }

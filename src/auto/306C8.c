@@ -51,16 +51,16 @@ typedef struct {
 
 extern Game *gGame;
 extern Vec3f Vec3f_TransformTransposed(Mtx3f *m, Vec3f *t, Vec3f *v);
-extern s32 func_80035744(f32 x, f32 z);
+extern s32 Track_GetCellIndex(f32 x, f32 z);
 extern void Track_GetFace(Face *, s32);
 extern u8 Poly_ContainsXZMargin(Face *p, Vec3f *pt, f32 m);
 extern u8 Plane_IntersectSegment(Vec3f *p, Vec3f *n, f32 d, Vec3f *a, Vec3f *b, Vec3f *out1, Vec3f *out2, f32 *t);
-extern void func_800329C0(s32 type, Scale *s);
+extern void Surface_GetGrip(s32 type, Scale *s);
 extern void Vec3f_Length(f32 *, Vec3f *);
 extern s32 rand(void);
 extern f32 sqrtf(f32);
 
-void Car_CheckRamps(Obj *obj, Car *car) {
+void Wheel_ProbeGround(Obj *obj, Car *car) {
     Hit h;
     Vec3f p80;
     Vec3f p90;
@@ -102,7 +102,7 @@ void Car_CheckRamps(Obj *obj, Car *car) {
     pA0.y = 0.6f;
     p90 = Vec3f_TransformTransposed(m, &obj->phys.pos, &pA0);
     p80 = Vec3f_TransformTransposed(m, &obj->phys.pos, &b->xA4);
-    idx = func_80035744(p80.x, p80.z);
+    idx = Track_GetCellIndex(p80.x, p80.z);
     bestType = -999;
     ph = &obj->phys;
     if (idx < 0) {
@@ -119,7 +119,7 @@ void Car_CheckRamps(Obj *obj, Car *car) {
             Plane_IntersectSegment(&face.x14, &n, car->x120, &p90, &p80, &o1, &o2, &t) &&
             t > 0.0f && t < h.t) {
             mul = (f32)(sqrtf(ph->vel.x * ph->vel.x + ph->vel.y * ph->vel.y + ph->vel.z * ph->vel.z) * 0.2777778) * (0.05 * 3) + 1.5;
-            func_800329C0(face.type, &h.scale);
+            Surface_GetGrip(face.type, &h.scale);
             if (obj->xB90 != 1.0) {
                 if (h.scale.x4 != 1.25) {
                     f6 = 1.25 - h.scale.x4;

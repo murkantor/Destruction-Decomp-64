@@ -5,7 +5,7 @@ typedef struct { u8 pad[0x10]; s32 x10; } Menu;
 void Ui_SetElementColor(s32, s32);
 void Timer_Start(void *, s64);
 
-s32 func_8003CF7C(Menu *m) {
+s32 PakMenu_OverwriteToggle(Menu *m) {
     if (m->x10 == 0) {
         Ui_SetElementColor(0x17E, 0x111F4);
         Ui_SetElementColor(0x17D, 0x111F8);

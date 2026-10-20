@@ -25,10 +25,10 @@ extern u32 osDpGetStatus(void);
 extern void Fb_CreateContext(void *);
 extern void Font_BlitString(void *, s32, s32, char *);
 extern s32 sprintf(char *, const char *, ...);
-extern void func_80055F70(void *);
-extern void func_80056098(void *);
+extern void Vi_ApplyConfig(void *);
+extern void Vi_SwapBuffer(void *);
 
-Task *Gfx_BusyScreen(s32 *out, s32 n) {
+Task *Gfx_WaitTask(s32 *out, s32 n) {
     OSMesg msg[2];
     u8 ctx[0xC0];
     char buf[0x80];
@@ -70,8 +70,8 @@ Task *Gfx_BusyScreen(s32 *out, s32 n) {
             case 2:
                 result = ((Msg *)msg[0])->task;
                 D_800B0B6C--;
-                func_80055F70(result->x8C);
-                func_80056098(((Msg *)msg[0])->task->x90);
+                Vi_ApplyConfig(result->x8C);
+                Vi_SwapBuffer(((Msg *)msg[0])->task->x90);
                 break;
             case 4:
                 failed = 1;

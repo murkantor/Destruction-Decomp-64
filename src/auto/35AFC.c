@@ -34,7 +34,7 @@ extern void Vec3f_Dot(f32 *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Length(f32 *out, Vec3f *v);
 extern void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Scale(Vec3f *out, Vec3f *v, f32 s);
-extern void func_80035328(Vec3f *out, Player *p, Contact *c);
+extern void Contact_ComputeImpulse(Vec3f *out, Player *p, Contact *c);
 extern u8 Body_EnergyRatioExceeds(Car *car, Vec3f *imp);
 extern void Car_OnCollision2(Car *car, Vec3f pos, Car *car2, Vec3f pos2, f32 len);
 
@@ -63,7 +63,7 @@ void Car_ApplyContactImpulses(Player *p, Car *car)
                 car->vel.x * c->n.x + car->vel.z * c->n.z < 0.0f) {
                 flag = 1;
             }
-            func_80035328(imp, p, c);
+            Contact_ComputeImpulse(imp, p, c);
             if (!Body_EnergyRatioExceeds(car, imp)) {
                 Vec3f_Add(&acc2.v[0], &acc2.v[0], &imp[0]);
                 Vec3f_Add(&acc2.v[1], &acc2.v[1], &imp[1]);

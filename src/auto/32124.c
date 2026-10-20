@@ -13,7 +13,7 @@ void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Length(f32 *, Vec3f *);
 s32 Track_GetCellsInBox(Vec3f *, Vec3f *, s32 *, s32);
 void Track_GetFace(Face *, s32);
-u8 func_80034794(Face *, f32, Vec3f *, Vec3f *, Vec3f *, Vec3f *, f32 *);
+u8 Poly_SegmentHit(Face *, f32, Vec3f *, Vec3f *, Vec3f *, Vec3f *, f32 *);
 
 s32 Track_LineOfSight(Vec3f *from, Vec3f *to) {
     Vec3f dir;
@@ -48,7 +48,7 @@ s32 Track_LineOfSight(Vec3f *from, Vec3f *to) {
 
             if (tris[list[j]].x15 & 4) continue;
             Track_GetFace(&face, list[j]);
-            if (func_80034794(&face, 0.1f, &start, &end, &hitA, &hitB, &t)) {
+            if (Poly_SegmentHit(&face, 0.1f, &start, &end, &hitA, &hitB, &t)) {
                 if (t > 0.0 && t < 1.0) return 1;
             }
         }

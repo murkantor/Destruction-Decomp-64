@@ -8,20 +8,20 @@ typedef struct {
     u8 x18[1];
 } UiElement;
 UiElement *Ui_FindElement(void *ui, s32 kind, s32 id);
-void func_8005F980(void *, s32);
-void func_800603FC(void *, s32);
-void func_80061554(void *, s32);
+void Font_EnableAlpha(void *, s32);
+void Sprite_EnableAlpha(void *, s32);
+void Bg_EnableAlpha(void *, s32);
 
-void func_8005E75C(void *ui, s32 kind, s32 id, s32 value) {
+void Ui_EnableElementAlpha(void *ui, s32 kind, s32 id, s32 value) {
     switch (kind) {
         case 1:
-            func_800603FC(Ui_FindElement(ui, 1, id)->x14, value);
+            Sprite_EnableAlpha(Ui_FindElement(ui, 1, id)->x14, value);
             break;
         case 2:
-            func_80061554(Ui_FindElement(ui, 2, id)->x18, value);
+            Bg_EnableAlpha(Ui_FindElement(ui, 2, id)->x18, value);
             break;
         case 0:
-            func_8005F980(Ui_FindElement(ui, 0, id)->x10, value);
+            Font_EnableAlpha(Ui_FindElement(ui, 0, id)->x10, value);
             break;
     }
 }

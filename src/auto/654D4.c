@@ -21,11 +21,11 @@ typedef struct Thing {
     u8 pad4F;
     struct Thing *self;
 } Thing;
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 
 void func_800648D4(Thing *t) {
     t->x28 = 20;
-    t->x2A = func_80064D70();
+    t->x2A = Obj_NextId();
     t->x2C = &t->x28;
     t->x40 = 0;
     t->x34 = 2;
@@ -50,7 +50,7 @@ typedef struct {
 } Player;
 extern Player D_800958F8[4];
 
-void func_80064948(Player *src) {
+void Players_SyncAll(Player *src) {
     s32 i;
 
     for (i = 0; i < 4; i++) {

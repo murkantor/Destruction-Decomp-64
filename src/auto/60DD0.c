@@ -4,7 +4,7 @@
 extern s8 D_801301F8;
 extern s8 D_801301F9;
 
-void func_800601D0(s32 arg0) {
+void Gfx_SetUcodeSwap(s32 arg0) {
     if (arg0 & 0xFF) {
         D_801301F8 = 0;
         D_801301F9 = 0;

@@ -7,11 +7,11 @@ typedef struct {
     u8 pad10[0xA0];
 } Entry;
 
-Entry *func_80062F14(void);
+Entry *Pad_GetLatched(void);
 
 s32 AnyEntryFlag10(void) {
     s32 found = 0;
-    Entry *p = func_80062F14();
+    Entry *p = Pad_GetLatched();
     s32 i;
 
     for (i = 0; i < 4; i++) {

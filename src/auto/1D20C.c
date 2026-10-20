@@ -31,7 +31,7 @@ s32 func_80063D8C(s32);
 s32 func_80063DAC(s32);
 s32 func_80063E0C(s32, s32, void *);
 void Model_FixupDisplayList(ResHdr *, s32, s32);
-void func_80063F88(void);
+void Res_ClearForceLoad(void);
 
 u8 *Res_LoadModel(s32 id) {
     u8 *buf;
@@ -69,6 +69,6 @@ u8 *Res_LoadModel(s32 id) {
         D_8012EE24 = hdr->x18;
     }
     Model_FixupDisplayList(hdr, x24, flag);
-    func_80063F88();
+    Res_ClearForceLoad();
     return buf;
 }

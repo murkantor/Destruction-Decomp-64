@@ -27,7 +27,7 @@ void Pak_RefreshSaveSlots(void);
 void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void Text_MapChars2(void *, void *, s32);
 void *Ui_LookupTextId(char *);
 void Ui_SetElementColor(void *, s32);
@@ -49,7 +49,7 @@ void PakMenu_BuildSlotList(void) {
 
     if (Pak_Open(&status) && status != 0 && status != 5) {
         func_80063380(0);
-        func_80063564(2, 1);
+        Game_SetNextMode(2, 1);
         return;
     }
     Pak_RefreshSaveSlots();

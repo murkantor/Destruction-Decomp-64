@@ -6,7 +6,7 @@ typedef struct {
     u32 w1;
 } Gfx;
 
-Gfx *func_8005793C(Gfx *g) {
+Gfx *Gfx_EndDisplayList(Gfx *g) {
     {
         Gfx *_g = g++;
         _g->w0 = 0xE9000000;

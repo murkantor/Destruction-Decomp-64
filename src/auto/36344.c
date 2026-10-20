@@ -7,7 +7,7 @@ typedef struct { u8 pad[0x70]; Track *track; } Race;
 typedef struct { u8 pad[0x1100]; Race *race; } Game;
 extern Game *gGame;
 
-s32 func_80035744(f32 x, f32 y) {
+s32 Track_GetCellIndex(f32 x, f32 y) {
     Grid *g = gGame->race->track->grid;
     s32 ix = (x * g->scale - g->ox) / g->cw;
     s32 iy = (y * g->scale - g->oy) / g->ch;

@@ -55,7 +55,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDesc *);
 void Ctx_FreeAll(void *);
 void Hud_GetLayoutIds(s32 *);
-void func_8005DD20(void *, s32);
+void Ui_LoadResourceFile(void *, s32);
 void MapUi_Init(void *);
 void func_8004378C(void);
 void Heap_Free(void *, void *);
@@ -63,8 +63,8 @@ f32 Time_ToSeconds(void *);
 u64 Time_Get(void *);
 TimeHMS Time_Split(u64 t);
 void Time_Format(TimeHMS t, char *buf, s32 len);
-void func_800638C8(void *);
-void func_800638C0(void *);
+void Clock_Pause(void *);
+void Clock_Resume(void *);
 void func_8005CC4C(s32);
 void Sound_SetVolume(s32, s32);
 void Pad_Rumble(s32, s32, f32);
@@ -112,8 +112,8 @@ void Race_End(void)
         item->x4 = D_800BCA00;
         Ctx_FreeAll(gUi[0]);
         Hud_GetLayoutIds(lim);
-        func_8005DD20(gUi[0], lim[0]);
-        func_8005DD20(gUi[0], lim[1]);
+        Ui_LoadResourceFile(gUi[0], lim[0]);
+        Ui_LoadResourceFile(gUi[0], lim[1]);
         MapUi_Init(gUi[0]);
         if (D_80125C38 == 0x1A) {
             AddSprites();
@@ -144,8 +144,8 @@ void Race_End(void)
         }
     }
     D_80097350 = 4;
-    func_800638C8(gGame[0]->x1058);
-    func_800638C0(gGame[0]->x1080);
+    Clock_Pause(gGame[0]->x1058);
+    Clock_Resume(gGame[0]->x1080);
     func_8005CC4C(D_8011EEF8);
     Sound_SetVolume(D_8011EEE0, 0);
     for (i = 0; i < D_800D31CC; i++) {

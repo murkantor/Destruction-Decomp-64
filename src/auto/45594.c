@@ -15,7 +15,7 @@ f32 Time_ToSeconds(void *);
 s8 Announcer_GetQueueCount(void);
 u8 Game_TimeBefore(void);
 void Camera_UpdateChase(Car44994 *);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 extern f64 D_800BAA70; extern volatile f64 D_800BAA78;
 s32 func_80044994(void) {
@@ -42,6 +42,6 @@ s32 func_80044994(void) {
         D_800958DC[i].x0->xB4 = 2;
         Camera_UpdateChase(D_800958DC[i].x0);
     }
-    func_80063564(0x1B, 1);
+    Game_SetNextMode(0x1B, 1);
     return 0;
 }

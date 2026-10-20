@@ -46,7 +46,7 @@ void *HeapBlock_Ptr(HeapBlock *);
 void *Ui_FindElement(Ui *, s32, s32);
 void *Mem_Alloc(u32);
 void Ui_AddMissingResources(Ui *, void *, u32);
-void func_8005EE90(Ui *, Entry24 *);
+void Ui_AddTextElement(Ui *, Entry24 *);
 void Ui_AddSprite(Ui *, Entry48 *);
 void Ui_AddSpriteElement(Ui *, Entry48 *);
 void Ui_LoadElements(Ui *, void *, u32);
@@ -81,7 +81,7 @@ static inline void Ui_AddToList(Ui *ui, s32 kind, s32 id) {
     }
 }
 
-s32 func_8005DD20(Ui *ui, s32 id) {
+s32 Ui_LoadResourceFile(Ui *ui, s32 id) {
     HeapBlock blk;
     u32 size;
     void *buf;
@@ -106,7 +106,7 @@ s32 func_8005DD20(Ui *ui, s32 id) {
         n = size / sizeof(Entry24);
         for (i = 0; i < n; i++) {
             e = &((Entry24 *)buf)[i];
-            func_8005EE90(ui, e);
+            Ui_AddTextElement(ui, e);
             if (e->x21) {
                 Ui_AddToList(ui, 0, e->x4);
             }

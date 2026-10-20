@@ -3,6 +3,6 @@
 
 extern M2C_UNK gControllersLatched;
 
-M2C_UNK *func_80062F14(void) {
+M2C_UNK *Pad_GetLatched(void) {
     return &gControllersLatched;
 }

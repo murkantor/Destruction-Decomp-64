@@ -34,10 +34,10 @@ extern s32 D_80131380;
 extern s32 D_80131F28;
 extern TimerA D_801255F4[];
 extern TimerB D_80124B38[];
-f32 func_80063718(u64 *);
+f32 Clock_GetDeltaSeconds(u64 *);
 
 void Anim_UpdateTimers(void) {
-    f32 dt = func_80063718(&gGame->x10A8);
+    f32 dt = Clock_GetDeltaSeconds(&gGame->x10A8);
     s8 i;
     s8 n;
     s8 fr;

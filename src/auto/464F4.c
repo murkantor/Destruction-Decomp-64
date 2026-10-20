@@ -41,7 +41,7 @@ u8 Game_TimeBefore(void);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 void Msg_Queue(s32 id, s32 arg1, u8 force, u8 once);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 Race_UpdateFinish(void) {
     Info *info = gGame[0]->x1100;
@@ -81,33 +81,33 @@ s32 Race_UpdateFinish(void) {
     }
     if (D_800958A8 == 2) {
         func_80063380(1);
-        func_80063564(0x2A, 1);
+        Game_SetNextMode(0x2A, 1);
     } else if (D_800958A8 == 3) {
         switch ((enum E { E0, E1, E2, E3 })D_800958AC) {
             case 0:
                 func_80063380(1);
-                func_80063564(0x22, 1);
+                Game_SetNextMode(0x22, 1);
                 break;
             case 1:
                 D_800958BC++;
                 func_80063380(1);
-                func_80063564(0x2B, 1);
+                Game_SetNextMode(0x2B, 1);
                 break;
             case 2:
                 func_80063380(1);
-                func_80063564(0x2C, 1);
+                Game_SetNextMode(0x2C, 1);
                 break;
             case 3:
                 func_80063380(1);
-                func_80063564(0x23, 1);
+                Game_SetNextMode(0x23, 1);
                 break;
         }
     } else if (D_800958B4 < 4) {
         func_80063380(1);
-        func_80063564(0x22, 1);
+        Game_SetNextMode(0x22, 1);
     } else {
         func_80063380(1);
-        func_80063564(0x23, 1);
+        Game_SetNextMode(0x23, 1);
     }
     return 1;
 }

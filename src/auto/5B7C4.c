@@ -15,7 +15,7 @@ typedef struct {
     f32 x24;
 } Obj;
 extern u8 gParticlePool[];
-void func_80057334(void *);
+void Gfx_FreeAfterFrame(void *);
 void *Pool_Alloc(void *);
 void guMtxIdentF(MtxF);
 void guScaleF(MtxF, f32, f32, f32);
@@ -26,11 +26,11 @@ void guTranslateF(MtxF, f32, f32, f32);
 void guMtxF2L(MtxF, void *);
 void osWritebackDCache(void *, s32);
 
-void Particle_BuildMatrix(Obj *o) {
+void ModelInst_BuildMatrix(Obj *o) {
     MtxF m;
     MtxF t;
 
-    func_80057334(o->x4);
+    Gfx_FreeAfterFrame(o->x4);
     o->x4 = Pool_Alloc(gParticlePool);
     guMtxIdentF(m);
     guScaleF(t, o->x24, o->x24, o->x24);

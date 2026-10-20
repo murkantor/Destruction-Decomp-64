@@ -2,10 +2,10 @@
 #include "m2c.h"
 
 extern s32 D_800958A8;
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 func_80040194(u8 *obj) {
-    func_80063564(0x13, 1);
+    Game_SetNextMode(0x13, 1);
     *(s32 *)(obj + 0x10) = D_800958A8;
     return 1;
 }

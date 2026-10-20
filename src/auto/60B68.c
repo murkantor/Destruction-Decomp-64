@@ -22,13 +22,13 @@ typedef struct {
 extern InitConfig gInitConfig;
 extern u8 gMainHeap[];
 extern s32 D_80124350;
-u16 func_80064D70(void);
+u16 Obj_NextId(void);
 void Video_SetMode(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
 void Heap_Alloc(void *heap, HeapBlock *out, u32 size, s32 alignMask, s32 alignOffset);
 
-s32 Audio_Init(AudioObj *o) {
+s32 Render_Init(AudioObj *o) {
     s32 i;
-    o->x2 = func_80064D70();
+    o->x2 = Obj_NextId();
     o->x0 = 0x3EA;
     o->x4 = o;
     o->x56C = 0;

@@ -75,20 +75,20 @@ extern s32 D_80125C58;
 extern u8 gParticlePool[];
 
 OSTime osGetTime(void);
-void func_800565B8(Task *);
+void Gfx_BeginFrame(Task *);
 void osWritebackDCache(void *, s32);
 void osWritebackDCacheAll(void);
 s32 Gfx_CountCommandKind(u64 *, s32, s32);
-Task *Gfx_BusyScreen(s32 *, s32);
+Task *Gfx_WaitTask(s32 *, s32);
 s32 osSendMesg(OSMesgQueue *, OSMesg, s32);
 void osDpGetCounters(u32 *);
 void osDpSetStatus(u32);
 u32 osDpGetStatus(void);
 s32 sprintf(char *, const char *, ...);
 void Font_BlitString(Task *, s32, s32, char *);
-void Emitter_FreeAll(void *, void *);
+void PtrList_FreeAll(void *, void *);
 
-s32 Debug_DrawPerfStats(Task *t, s32 submit, s32 arg2) {
+s32 Gfx_SubmitTask(Task *t, s32 submit, s32 arg2) {
     OSTime now = osGetTime();
     s32 ret;
     Task *task;
@@ -100,7 +100,7 @@ s32 Debug_DrawPerfStats(Task *t, s32 submit, s32 arg2) {
         task->xB4 = D_800B0B68;
         D_800B0B68 = NULL;
         D_800B0B60 = (D_800B0B60 + 1) % 3;
-        func_800565B8(task);
+        Gfx_BeginFrame(task);
         task->list.type = 1;
         task->list.flags = 4;
         task->list.ucode_boot = D_8007ADD0;
@@ -134,11 +134,11 @@ s32 Debug_DrawPerfStats(Task *t, s32 submit, s32 arg2) {
             task->xAC = 0;
             task->xB0 = 0;
         }
-        done = Gfx_BusyScreen(&ret, arg2);
+        done = Gfx_WaitTask(&ret, arg2);
         osSendMesg(D_801238E4, task, 1);
         D_800B0B6C++;
     } else {
-        done = Gfx_BusyScreen(&ret, arg2);
+        done = Gfx_WaitTask(&ret, arg2);
     }
     if (done != NULL) {
         if (done->x88 & 4) {
@@ -171,13 +171,13 @@ s32 Debug_DrawPerfStats(Task *t, s32 submit, s32 arg2) {
             Font_BlitString(done, 220, 210, buf);
         }
         if (done->xB4 != NULL) {
-            Emitter_FreeAll(done->xB4, gParticlePool);
+            PtrList_FreeAll(done->xB4, gParticlePool);
             done->xB4 = NULL;
         }
         D_800B0B64 = (D_800B0B64 + 1) % 3;
     }
     if (D_800B0B68 != NULL) {
-        Emitter_FreeAll(D_800B0B68, gParticlePool);
+        PtrList_FreeAll(D_800B0B68, gParticlePool);
         D_800B0B68 = NULL;
     }
     D_800B0B78 = osGetTime();

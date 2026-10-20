@@ -11,7 +11,7 @@ extern GameState *gGame;
 extern u8 D_80097335;
 extern u64 D_80131298;
 u64 Time_Get(u64 *);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 func_8004AF80(void) {
     s32 ret = 0;
@@ -24,7 +24,7 @@ s32 func_8004AF80(void) {
     }
     if (n == 25) {
         if (Time_Get(&gGame->clock) >= D_80131298) {
-            func_80063564(25, 1);
+            Game_SetNextMode(25, 1);
             ret = 1;
         }
     }

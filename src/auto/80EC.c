@@ -31,7 +31,7 @@ extern u8 D_8007EE48[];
 extern s32 D_80132164[];
 extern s32 D_801320C8[];
 extern u64 D_80131F90[];
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(void *, SndReq *);
 
@@ -42,7 +42,7 @@ void Sound_PlayAt(void *pool, Vec3f pos, Vec3f vel, s32 kind) {
 
     req.x0 = 0x3F4;
     req.x4 = 0;
-    req.x2 = func_80064D70();
+    req.x2 = Obj_NextId();
     req.xC = 4;
     req.x18 = pos;
     req.x24 = vel;

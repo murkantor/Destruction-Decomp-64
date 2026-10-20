@@ -36,8 +36,8 @@ extern u32 D_80125C58;
 extern s32 D_801311B8;
 extern Spark *D_80125B70[];
 void *Mem_Alloc(u32 size);
-void func_8005AA68(void *, void *);
-void func_8005AB4C(void *, f32);
+void ModelInst_Init(void *, void *);
+void ModelInst_SetScale(void *, f32);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 
 void Car_SpawnPartDebris(Car *car, s8 side) {
@@ -57,8 +57,8 @@ void Car_SpawnPartDebris(Car *car, s8 side) {
     D_801311B8++;
     p->x50 = D_80125B70[(s8)idx];
     D_80125B70[(s8)idx] = p;
-    func_8005AA68(q, car->x178);
-    func_8005AB4C(q, 0.01f);
+    ModelInst_Init(q, car->x178);
+    ModelInst_SetScale(q, 0.01f);
     v = car->x23C;
     if (!side) {
         Vec3f_Scale(&v, &v, 1.5f);

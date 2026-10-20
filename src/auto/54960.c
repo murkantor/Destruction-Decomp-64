@@ -9,7 +9,7 @@ void Fb_CreateContext(void *);
 void Font_BlitString(void *, s32, s32, char *);
 s32 sprintf(char *, const char *, ...);
 void Pad_Read(void);
-void func_80053EA8(void);
+void Debug_BreakPoint(void);
 
 void Debug_AssertScreen(char *expr, char *file, s32 line) {
     u8 ctx[0xC0];
@@ -33,7 +33,7 @@ void Debug_AssertScreen(char *expr, char *file, s32 line) {
             case 0:
                 break;
             case 1:
-                func_80053EA8();
+                Debug_BreakPoint();
                 break;
         }
     }

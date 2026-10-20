@@ -28,7 +28,7 @@ extern u8 D_8007EE48[];
 extern s32 D_80132164[];
 extern s32 D_801320C8[];
 extern u64 D_80131F90[];
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 s8 Pool_PushCopy(void *, SndReq *);
 
@@ -38,7 +38,7 @@ s16 Sound_PlayCar(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode) {
 
     req.x0 = 0x3F4;
     req.x4 = 0;
-    req.x2 = func_80064D70();
+    req.x2 = Obj_NextId();
     req.xC = (mode == 2) ? 8 : 7;
     req.x18 = *a;
     req.x24 = *b;

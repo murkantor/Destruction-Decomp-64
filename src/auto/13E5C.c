@@ -37,9 +37,9 @@ extern s32 D_8011F048[];
 void *Mem_AllocAligned(u32, s32, s32);
 s32 Res_Get(s32);
 Res *Res_GetEnd(s32);
-void func_8005A970(Anim *, s32, s32, s32);
-void func_8005AA68(void *, Anim *);
-void func_8005AB4C(void *, f32);
+void Model_Init(Anim *, s32, s32, s32);
+void ModelInst_Init(void *, Anim *);
+void ModelInst_SetScale(void *, f32);
 void Prop_Create(Obj *, Vec3f);
 void Prop_CreateStatic(Obj *, Vec3f);
 void Mover_Create(Obj *, Vec3f, Vec3f);
@@ -115,14 +115,14 @@ Obj *Obj_CreateFromSpawn(Spawn *sp) {
     }
     if (D_80125578[kind] == NULL) {
         D_80125578[kind] = Res_GetEnd(Res_Get(sp->x4));
-        func_8005A970(&D_800D1190[kind], D_80125578[kind]->x20, 0, 0);
+        Model_Init(&D_800D1190[kind], D_80125578[kind]->x20, 0, 0);
     }
     obj->xC = &D_800D1190[kind];
     obj->x8 = D_80125578[kind];
     obj->x4 = sp->x4;
     D_8011F048[kind]++;
-    func_8005AA68(obj->x10, obj->xC);
-    func_8005AB4C(obj->x10, 0.1f);
+    ModelInst_Init(obj->x10, obj->xC);
+    ModelInst_SetScale(obj->x10, 0.1f);
     obj->x0 = sp->x0;
     return obj;
 }

@@ -23,11 +23,11 @@ extern u8 D_8009734C;
 extern u8 D_8009734D;
 extern u8 D_800972F0;
 
-void func_8006417C(void *, s32);
+void ObjList_Remove(void *, s32);
 s32 CarObj_Free(s32);
 u8 Pak_Open(s32 *);
 u8 Menu_HandleSelect(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
 s32 func_8004BB9C(Obj4BB9C *obj) {
@@ -35,11 +35,11 @@ s32 func_8004BB9C(Obj4BB9C *obj) {
     s32 tmp;
     s32 r = -1;
 
-    func_8006417C(gGame[0]->x334, D_800970F4);
+    ObjList_Remove(gGame[0]->x334, D_800970F4);
     if (D_800970F8 != 0) {
-        func_8006417C(gGame[0]->x334, D_800970F8);
+        ObjList_Remove(gGame[0]->x334, D_800970F8);
     }
-    func_8006417C(gGame[0]->x334, D_800964F0[0]);
+    ObjList_Remove(gGame[0]->x334, D_800964F0[0]);
     D_800964F0[0] = CarObj_Free(D_800964F0[0]);
     if (D_80097337) {
         next = 0x2D;
@@ -65,13 +65,13 @@ s32 func_8004BB9C(Obj4BB9C *obj) {
             next = 0x19;
         }
     } else if (D_800972F0) {
-        func_80063564(0x2E, 1);
+        Game_SetNextMode(0x2E, 1);
         goto end;
     } else {
         func_80063380(2);
         next = 0x19;
     }
-    func_80063564(next, 1);
+    Game_SetNextMode(next, 1);
     r = 0;
 end:
     obj->x10 = r;

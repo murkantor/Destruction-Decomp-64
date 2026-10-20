@@ -17,7 +17,7 @@ extern s8 D_800D31CC;
 extern Slot68 D_800958D0[];
 void Clock_Update(Clock *);
 s32 Clock_GetFrames(Clock *);
-void func_80064304(void *);
+void ObjList_DispatchAll(void *);
 f32 func_80062F40(void);
 void World_UpdateEffects(void *, f32);
 void Car_PhysicsStep(void *, f32);
@@ -36,7 +36,7 @@ void World_Update(World *w) {
     for (i = 0; i < gGame[0]->nClocks; i++) {
         Clock_Update(&gGame[0]->timers[i]);
     }
-    func_80064304(w->x334);
+    ObjList_DispatchAll(w->x334);
     if (w->mode == 1) {
     } else if (w->mode >= 2) {
         if (w->mode == 2) {

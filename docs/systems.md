@@ -93,7 +93,7 @@ Each track is two MIPS ELF objects (`<track>.o`, `<track>_sdl.o`) with symbol ta
 | `gUi` (0x8011EEF4) | Owns the sprites and text on screen |
 | `Ui_AddElement(ui, kind, id)`, `Ui_FindElement`, `Ui_RemoveElement` | Kind 2 is a sprite or text string; `id` is a `SpriteId` from `include/ids.h` |
 | `PakMenu_*` | Controller Pak prompts (insert, no note, full, overwrite) |
-| `Debug_AssertScreen`, `Gfx_BusyScreen`, `Debug_DrawPerfStats` | Debug screens left in retail |
+| `Debug_AssertScreen`, `Gfx_WaitTask`, `Gfx_SubmitTask` | Debug screens left in retail |
 | `DebugMenu_*` | Helpers for the debug menu; retail only builds "Video Setup" |
 
 ## Graphics

@@ -11,7 +11,7 @@ extern s32 D_80131F28;
 extern EntC *D_80125BD0;
 extern s32 D_80124358;
 extern s32 D_80131380;
-extern void func_80063AAC(s32);
+extern void Res_Release(s32);
 extern void Mem_Free(void *);
 
 void Track_FreeAnims(void) {
@@ -21,7 +21,7 @@ void Track_FreeAnims(void) {
 
     if (D_801255E4 != NULL) {
         for (i = 0; i < D_80125F50; i++) {
-            func_80063AAC(D_801255E4[i].x8);
+            Res_Release(D_801255E4[i].x8);
         }
         Mem_Free(D_801255E4);
         D_801255E4 = NULL;
@@ -32,7 +32,7 @@ void Track_FreeAnims(void) {
     if (D_80125BD0 != NULL) {
         for (i = 0; i < D_80124358; i++) {
             for (j = 0; j < D_80125BD0[i].x2C; j++) {
-                func_80063AAC(D_80125BD0[i].x18[j]);
+                Res_Release(D_80125BD0[i].x18[j]);
             }
         }
         Mem_Free(D_80125BD0);

@@ -10,10 +10,10 @@ extern u8 D_800964D0;
 extern SaveSlot gSaveSlots[];
 u8 Pak_Open(s32 *);
 void Cont_ReadAll(void);
-void func_80059B10(s32, SaveSlot *);
-void func_80058B58(void);
+void Pak_DeleteNote(s32, SaveSlot *);
+void Pad_StartRead(void);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 Save_DeleteSlot(Menu *m) {
     s32 status;
@@ -21,7 +21,7 @@ s32 Save_DeleteSlot(Menu *m) {
     if (D_800964D0) {
         if (Pak_Open(&status) && (status == 0 || status == 5)) {
             Cont_ReadAll();
-            func_80059B10(0, &gSaveSlots[m->x10]);
+            Pak_DeleteNote(0, &gSaveSlots[m->x10]);
             gSaveSlots[m->x10].x0 = 0;
             gSaveSlots[m->x10].x4 = 0;
             gSaveSlots[m->x10].x8 = 0;
@@ -45,14 +45,14 @@ s32 Save_DeleteSlot(Menu *m) {
             gSaveSlots[m->x10].name[17] = 0;
             gSaveSlots[m->x10].name[18] = 0;
             gSaveSlots[m->x10].name[19] = 0;
-            func_80058B58();
+            Pad_StartRead();
         } else {
             func_80063380(0);
-            func_80063564(2, 1);
+            Game_SetNextMode(2, 1);
         }
     }
     if (gGame->x10FC == D_8011EEEA) {
-        func_80063564(3, 1);
+        Game_SetNextMode(3, 1);
     }
     return 1;
 }

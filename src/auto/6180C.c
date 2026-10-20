@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80060C0C(void *arg0) {
+void Sprite_InitMtx(void *arg0) {
     void *temp_v0;
 
     temp_v0 = M2C_FIELD(arg0, void **, 0x18);

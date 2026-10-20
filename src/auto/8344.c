@@ -35,7 +35,7 @@ extern s32 D_801326A8[];
 extern s64 D_80132200[];
 extern u64 gGameTime;
 
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(void *, Req7744 *);
 
@@ -46,7 +46,7 @@ void Sound_PlayVoice(void *obj, Vec3f pos, s32 id) {
 
     req.x0 = 0x3F4;
     req.x4 = 0;
-    req.x2 = func_80064D70();
+    req.x2 = Obj_NextId();
     req.xC = 1;
     req.x18 = pos;
     req.x24 = zero;

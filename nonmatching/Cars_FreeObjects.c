@@ -33,9 +33,9 @@ extern u8 D_80124360;
 extern void *D_800970F0;
 extern void *D_800970F4;
 extern void *D_800970F8;
-void func_8006417C(void *, Outer *);
-void func_8005AAC0(void *);
-void func_80063AAC(s32);
+void ObjList_Remove(void *, Outer *);
+void ModelInst_Free(void *);
+void Res_Release(s32);
 void Mem_Free(void *);
 void Obj_Free(void *);
 
@@ -44,12 +44,12 @@ static inline Outer *FreeOuter(Outer *o) {
 
     if (o != NULL) {
         in = o->xC;
-        func_8005AAC0(in->x98);
-        func_8005AAC0(in->xC0);
-        func_8005AAC0(in->xE8);
-        func_8005AAC0(in->x110);
-        func_8005AAC0(in->x138);
-        func_80063AAC(D_800919F4[in->x34]);
+        ModelInst_Free(in->x98);
+        ModelInst_Free(in->xC0);
+        ModelInst_Free(in->xE8);
+        ModelInst_Free(in->x110);
+        ModelInst_Free(in->x138);
+        Res_Release(D_800919F4[in->x34]);
         Mem_Free(in);
         Mem_Free(o);
         return NULL;
@@ -65,19 +65,19 @@ void Cars_FreeObjects(void) {
     for (i = 0; i < 4; i++) {
         if (D_800964F0[i] != NULL) {
             if (D_8011EEE4.x4 == gGame->xC) {
-                func_8006417C(D_8011EEE4.x0 + 0x334, D_800964F0[i]);
+                ObjList_Remove(D_8011EEE4.x0 + 0x334, D_800964F0[i]);
             }
             D_800964F0[i] = FreeOuter(D_800964F0[i]);
         }
         o = D_80096500[i];
         if (o != NULL) {
             in = o->xC;
-            func_8005AAC0(in->x98);
-            func_8005AAC0(in->xC0);
-            func_8005AAC0(in->xE8);
-            func_8005AAC0(in->x110);
-            func_8005AAC0(in->x138);
-            func_80063AAC(D_800919F4[in->x34]);
+            ModelInst_Free(in->x98);
+            ModelInst_Free(in->xC0);
+            ModelInst_Free(in->xE8);
+            ModelInst_Free(in->x110);
+            ModelInst_Free(in->x138);
+            Res_Release(D_800919F4[in->x34]);
             Mem_Free(in);
             Mem_Free(o);
             D_80096500[i] = NULL;
@@ -85,7 +85,7 @@ void Cars_FreeObjects(void) {
     }
     if (D_80124360) {
         D_80124360 = 0;
-        func_80063AAC(0x4650);
+        Res_Release(0x4650);
     }
     if (D_800970F0 != NULL) {
         Obj_Free(D_800970F0);

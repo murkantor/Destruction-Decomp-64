@@ -5,7 +5,7 @@ typedef struct { u8 pad[0x44]; s32 x44; u8 pad48[0x68]; } Controller;
 extern Controller gControllers[];
 extern s32 D_800958A4;
 void Cont_ReadAll(void);
-void func_80058B58(void);
+void Pad_StartRead(void);
 
 s32 Cont_AllPaksOk(void) {
     s32 r;
@@ -20,6 +20,6 @@ s32 Cont_AllPaksOk(void) {
             r = 0;
         }
     }
-    func_80058B58();
+    Pad_StartRead();
     return r;
 }

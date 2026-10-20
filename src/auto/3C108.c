@@ -11,11 +11,11 @@ extern u8 D_80097334;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 void Fade_Free(void);
-void func_8005DC68(void *);
+void Ui_ClearDrawList(void *);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
-s32 func_8003B508(void) {
+s32 Logo_LookingGlassUpdate(void) {
     s32 ret = 0;
     u64 lim;
 
@@ -25,14 +25,14 @@ s32 func_8003B508(void) {
     lim = 6000000000ULL;
     if (gGame->x10A8 >= lim) {
         Fade_Free();
-        func_8005DC68(gUi);
+        Ui_ClearDrawList(gUi);
         D_80097354 = 1;
         D_80097358 = 0;
         D_80097334 = 1;
         D_8009734C = 1;
         D_8009734D = 0;
         func_80063380(1);
-        func_80063564(5, 1);
+        Game_SetNextMode(5, 1);
         ret = 1;
     }
     return ret;

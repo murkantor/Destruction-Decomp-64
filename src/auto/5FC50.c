@@ -60,13 +60,13 @@ void *HeapBlock_Ptr(HeapBlock *);
 void Heap_Free(void *, HeapBlock *);
 void Res_Load(s32, void *);
 s32 Res_Get(s32);
-void func_80060370(void *, s32, s32, s32, s32, s32, s32);
+void Tex_Init(void *, s32, s32, s32, s32, s32, s32);
 void Bg_Init(void *, Sprite *, s32);
 void func_80061524(void *, s32, s32);
 void func_8006153C(void *);
 void func_80061590(void *, s32);
 void func_80061588(void *, s32);
-void func_80061568(void *);
+void Bg_DisableAlpha(void *);
 u8 *Ui_FindElement(void *, s32, s32);
 
 void Ui_AddSpriteElement(Ui *ui, Desc *d) {
@@ -102,7 +102,7 @@ void Ui_AddSpriteElement(Ui *ui, Desc *d) {
             cfg->x8 = d->x14;
         }
         slot = &ui->slots[i];
-        func_80060370(&slot->spr, Res_Get(cfg->x8), cfg->x14, cfg->x18, cfg->xC, cfg->x10, 0xFFF4);
+        Tex_Init(&slot->spr, Res_Get(cfg->x8), cfg->x14, cfg->x18, cfg->xC, cfg->x10, 0xFFF4);
         ui->slotCount++;
         slot->id = cfg->x8;
     }
@@ -123,6 +123,6 @@ void Ui_AddSpriteElement(Ui *ui, Desc *d) {
     }
     func_80061590(el->x18, 8);
     func_80061588(el->x18, 0x2000);
-    func_80061568(Ui_FindElement(gUi, 2, el->x0) + 0x18);
+    Bg_DisableAlpha(Ui_FindElement(gUi, 2, el->x0) + 0x18);
     Heap_Free(gMainHeap, &blk);
 }

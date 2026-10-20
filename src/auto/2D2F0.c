@@ -79,11 +79,11 @@ extern s32 D_800958A4;
 void Players_Reset(void);
 void func_8006300C(Plr *, f32, f32, f32, f32, f32, f32);
 void func_8005FA38(void *);
-void func_800638C0(void *);
+void Clock_Resume(void *);
 void func_8002D0E0(s32);
-void func_80064948(void *);
+void Players_SyncAll(void *);
 Obj *Obj_CreateFromSpawn(Spawn *);
-void func_80064100(Obj *);
+void ObjList_Add(Obj *);
 void Tag_PassTo(Car *);
 s32 Race_FindCarSlot(s32);
 void Standings_Resort(void *, Car *);
@@ -120,7 +120,7 @@ void Race_Setup(void) {
             func_8006300C(D_800958DC[i].x0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f);
         }
         func_8005FA38(D_8011EEF0);
-        func_800638C0(gGame[0]->x10A8);
+        Clock_Resume(gGame[0]->x10A8);
         func_8002D0E0(D_80097A14);
         return;
     case 1:
@@ -132,7 +132,7 @@ void Race_Setup(void) {
         D_800958A1[0] = 0;
         func_8005FA38(D_8011EEF0);
         D_80095908 = D_800958A8;
-        func_80064948(&D_800958A1[0x57]);
+        Players_SyncAll(&D_800958A1[0x57]);
         return;
     case 2:
         race = gGame[0]->x1100;
@@ -175,7 +175,7 @@ void Race_Setup(void) {
                 sp1.x18 = 0;
                 sp1.x1C = 0;
                 o1 = Obj_CreateFromSpawn(&sp1);
-                func_80064100(o1);
+                ObjList_Add(o1);
                 D_80096074 = o1->x38;
                 Tag_PassTo(NULL);
                 if (D_800958BC == 0) {
@@ -203,7 +203,7 @@ void Race_Setup(void) {
                 sp2.x18 = 0;
                 sp2.x1C = 0;
                 o2 = Obj_CreateFromSpawn(&sp2);
-                func_80064100(o2);
+                ObjList_Add(o2);
                 D_80096078 = (Team *)o2->x38;
                 sp2.x0 = 0x11;
                 sp2.x4 = 0xEB2D;
@@ -214,7 +214,7 @@ void Race_Setup(void) {
                 sp2.x18 = 0;
                 sp2.x1C = 0;
                 o2 = Obj_CreateFromSpawn(&sp2);
-                func_80064100(o2);
+                ObjList_Add(o2);
                 D_8009607C = (Team *)o2->x38;
                 sp2.x0 = 0x10;
                 sp2.x4 = 0xEB2E;
@@ -225,7 +225,7 @@ void Race_Setup(void) {
                 sp2.x18 = 0;
                 sp2.x1C = 0;
                 o2 = Obj_CreateFromSpawn(&sp2);
-                func_80064100(o2);
+                ObjList_Add(o2);
                 D_80096080 = (Team *)o2->x38;
                 sp2.x0 = 0x12;
                 sp2.x4 = 0xEB2F;
@@ -236,7 +236,7 @@ void Race_Setup(void) {
                 sp2.x18 = 0;
                 sp2.x1C = 0;
                 o2 = Obj_CreateFromSpawn(&sp2);
-                func_80064100(o2);
+                ObjList_Add(o2);
                 D_80096084 = (Team *)o2->x38;
                 for (i = 0; i < 4; i++) {
                     for (j = 2; j >= 0; j--) {

@@ -55,9 +55,9 @@ extern void *gUi[];
 void Res_Load(s32, void *);
 void Ui_AddResource(Mgr *, void *);
 UiElem *Ui_FindElement(void *, s32, s32);
-void func_8005F994(void *);
+void Font_DisableAlpha(void *);
 
-void func_8005EE90(Mgr *m, Def *d) {
+void Ui_AddTextElement(Mgr *m, Def *d) {
     s32 buf[10];
     Entry *e;
     s32 i;
@@ -87,5 +87,5 @@ void func_8005EE90(Mgr *m, Def *d) {
     e->x1A = d->x1E;
     e->x1C = d->x20;
     e->x20 = d->x14;
-    func_8005F994(Ui_FindElement(gUi[0], 0, e->x0)->x10);
+    Font_DisableAlpha(Ui_FindElement(gUi[0], 0, e->x0)->x10);
 }

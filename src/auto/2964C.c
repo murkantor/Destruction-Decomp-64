@@ -15,7 +15,7 @@ typedef struct {
 } DCar;
 
 extern s32 D_800958B4;
-void func_80032B24(DCar *, Vec3f *, Vec3f *);
+void Car_WorldToLocal(DCar *, Vec3f *, Vec3f *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Length(f32 *, Vec3f *);
@@ -56,7 +56,7 @@ void Car_DeformMeshAtImpact(DCar *car, s32 force, Vec3f pos, s32 type) {
     if (force < 2) {
         return;
     }
-    func_80032B24(car, &pos, &p);
+    Car_WorldToLocal(car, &pos, &p);
     Vec3f_Scale(&p, &p, 100.0f);
     box[0] = p.x - 50.0f;
     box[1] = p.x + 50.0f;

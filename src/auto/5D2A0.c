@@ -20,7 +20,7 @@ void Mem_Free(void *);
 s32 Sound_CountPlaying(s32);
 void Sound_FadeOutAll(s32, s32);
 
-s32 func_8005C6A0(Owner *o) {
+s32 World_Free(Owner *o) {
     s32 i;
 
     if (D_8011EEF8->unk530 == 0) {

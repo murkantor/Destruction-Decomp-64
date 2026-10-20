@@ -17,10 +17,10 @@ u64 Time_Get(void *);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 char *strcpy(char *, const char *);
-void func_8005E75C(void *, s32, s32, s32);
+void Ui_EnableElementAlpha(void *, s32, s32, s32);
 void func_80063380(s32);
-void func_80063564(s32, s32);
-void func_80063AAC(s32);
+void Game_SetNextMode(s32, s32);
+void Res_Release(s32);
 
 s32 func_8004F4E4(void) {
     Str2 str;
@@ -47,7 +47,7 @@ s32 func_8004F4E4(void) {
         for (; i < 10; i++) {
             Ui_AddElement(*pu, 0, i + 0x17A);
             strcpy(p, str.c);
-            func_8005E75C(*pu, 0, i + 0x17A, 0);
+            Ui_EnableElementAlpha(*pu, 0, i + 0x17A, 0);
             p += 0x32;
         }
         return 1;
@@ -56,8 +56,8 @@ s32 func_8004F4E4(void) {
         return 1;
     case 2:
         func_80063380(2);
-        func_80063564(0x19, 1);
-        func_80063AAC(0x11426);
+        Game_SetNextMode(0x19, 1);
+        Res_Release(0x11426);
         D_800972F0 = 0;
         return 1;
     }

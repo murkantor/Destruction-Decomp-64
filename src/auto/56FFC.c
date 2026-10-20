@@ -3,6 +3,6 @@
 
 extern s32 D_800B0B58;
 
-s32 func_800563FC(void) {
+s32 Fb_GetLastFramebuffer(void) {
     return D_800B0B58;
 }

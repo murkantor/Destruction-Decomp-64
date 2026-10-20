@@ -17,7 +17,7 @@ void Menu_SetCarPreview(s32, s32);
 char *strcpy(char *, const char *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
-void func_8006417C(void *, s32);
+void ObjList_Remove(void *, s32);
 s32 func_8003E644(s32, s32);
 
 #define LOCKED(x) ((x) != -1 && !(D_801253F8 != 0 || (x) < 12) && ((x) < 12 || D_80097A0C[x] == 0))
@@ -59,7 +59,7 @@ void TrackSelect_Update(s32 cur, s32 prev, s32 slot) {
         }
     }
     if (prev != -1) {
-        func_8006417C(gGame->x334, D_800964F0[slot]);
+        ObjList_Remove(gGame->x334, D_800964F0[slot]);
         D_80096500[slot] = D_800964F0[slot];
         D_800964F0[slot] = 0;
     }

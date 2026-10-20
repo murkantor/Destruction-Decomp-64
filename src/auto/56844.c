@@ -5,7 +5,7 @@ typedef struct Emitter { struct Emitter *next; s32 count; void *items[1]; } Emit
 extern u8 gParticlePool[];
 void Pool_Free(void *, void *);
 
-void Emitter_FreeAll(Emitter *e, void *pool) {
+void PtrList_FreeAll(Emitter *e, void *pool) {
     Emitter *next;
 
     while (e != NULL) {

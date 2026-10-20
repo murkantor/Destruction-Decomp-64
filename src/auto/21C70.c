@@ -18,8 +18,8 @@ extern f32 D_80095610[];
 extern u8 D_80095628;
 extern Game *gGame[];
 void *Mem_Alloc(u32);
-s16 func_80064D70(void);
-void func_8005B220(void *, s32);
+s16 Obj_NextId(void);
+void Camera_Init(void *, s32);
 void Vec3f_Set(Vec3f *, f32, f32, f32);
 void func_80023CE0(Obj *);
 
@@ -33,9 +33,9 @@ Obj *Obj_Create(Src *src) {
     o = Mem_Alloc(sizeof(Obj));
     if (o != NULL) {
         o->x0 = 9;
-        o->x2 = func_80064D70();
+        o->x2 = Obj_NextId();
         o->x4 = o;
-        func_8005B220(o->xC, 2);
+        Camera_Init(o->xC, 2);
         o->x24 = 6.5f;
         if (D_800958B4[0] >= 4) {
             o->x14 = b.v[D_800958B4[0] - 4];

@@ -18,7 +18,7 @@ typedef struct {
     void *x114;
 } Obj;
 void Grid_Free(s32 *);
-void func_80063B54(s32);
+void Res_ReleaseInstance(s32);
 void Mem_Free(void *);
 
 void Obj_FreeResources(Obj *obj) {
@@ -33,7 +33,7 @@ void Obj_FreeResources(Obj *obj) {
         for (i = 0; i < t->x8; i++) {
             Entry *e = &t->x4[i];
             if (e->x0 == 0xFD) {
-                func_80063B54(e->x4);
+                Res_ReleaseInstance(e->x4);
             }
             t = obj->x110;
         }

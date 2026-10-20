@@ -8,7 +8,7 @@ void func_80056090(void) {
 M2C_UNK osViSwapBuffer();                            /* extern */
 M2C_UNK osViBlack(M2C_UNK);                     /* extern */
 
-void func_80056098(void) {
+void Vi_SwapBuffer(void) {
     osViSwapBuffer();
     osViBlack(0);
 }
@@ -16,7 +16,7 @@ void func_80056098(void) {
 s32 osViGetCurrentFramebuffer();                                /* extern */
 s32 osViGetNextFramebuffer();                                /* extern */
 
-void func_800560BC(void) {
+void Vi_WaitSwap(void) {
     s32 temp_s0;
 
     do {

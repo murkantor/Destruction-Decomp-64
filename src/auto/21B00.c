@@ -2,11 +2,11 @@
 #include "m2c.h"
 
 M2C_UNK func_800648D4(void *);                      /* extern */
-s16 func_80064D70();                                /* extern */
+s16 Obj_NextId();                                /* extern */
 
 s32 func_80020F00(void *arg0, s8 arg1) {
     M2C_FIELD(arg0, s16 *, 0) = 1;
-    M2C_FIELD(arg0, s16 *, 2) = func_80064D70();
+    M2C_FIELD(arg0, s16 *, 2) = Obj_NextId();
     M2C_FIELD(arg0, void **, 4) = arg0;
     M2C_FIELD(arg0, s32 *, 8) = 0;
     M2C_FIELD(arg0, s8 *, 0x10) = arg1;

@@ -4,7 +4,7 @@
 typedef struct { u32 w0; u32 w1; } Gfx;
 typedef struct { u8 pad[0xC]; u32 xC; } Model5ADDC;
 typedef struct { Model5ADDC *x0; u32 x4; u8 x8; u8 x9; u8 xA; } Obj5ADDC;
-void Particle_BuildMatrix(Obj5ADDC *);
+void ModelInst_BuildMatrix(Obj5ADDC *);
 
 Gfx *Model_Draw(Obj5ADDC *o, Gfx *gfx) {
     Gfx *g;
@@ -14,7 +14,7 @@ Gfx *Model_Draw(Obj5ADDC *o, Gfx *gfx) {
         return gfx;
     }
     if (o->x8 & 1) {
-        Particle_BuildMatrix(o);
+        ModelInst_BuildMatrix(o);
         o->x8 &= ~1;
     }
     g = gfx++;

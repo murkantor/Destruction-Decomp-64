@@ -9,7 +9,7 @@ void func_80060B40(void *arg0, s16 arg1) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x18), s16 *, 0x16) = arg1;
 }
 
-void func_80060B4C(void *arg0, s16 arg1, s16 arg2) {
+void Sprite_SetBaseScale(void *arg0, s16 arg1, s16 arg2) {
     void *temp_v0;
 
     temp_v0 = M2C_FIELD(arg0, void **, 0x18);

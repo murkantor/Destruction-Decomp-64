@@ -31,12 +31,12 @@ typedef struct { s32 x0, x4, x8, xC, x10, x14, x18; s32 pad[3]; } ResInfo;
 extern void *gUi;
 void Res_Load(s32, void *);
 void *Res_Get(s32);
-void func_80060370(void *, void *, s32, s32, s32, s32, s32);
-void *func_80060470(void);
+void Tex_Init(void *, void *, s32, s32, s32, s32, s32);
+void *Sprite_Create(void);
 void Sprite2D_InitObjs(void *, s32, void *, s32);
-void func_800603CC(void *, s32, s32);
-void func_800603E4(void *);
-void func_8005E7FC(void *, s32, s32);
+void Sprite_SetPrimDepth(void *, s32, s32);
+void Sprite_ClearPrimDepth(void *);
+void Ui_DisableElementAlpha(void *, s32, s32);
 
 void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
     s32 n = m->nSpr;
@@ -64,12 +64,12 @@ void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
             res.x8 = d->x14;
         }
         t = &m->tex[i];
-        func_80060370(t->tex, Res_Get(res.x8), res.x14, res.x18, res.xC, res.x10, 0xFC1034);
+        Tex_Init(t->tex, Res_Get(res.x8), res.x14, res.x18, res.xC, res.x10, 0xFC1034);
         m->nTex++;
         t->id = res.x8;
     }
     e->x10 = (TexInfo *)t->tex;
-    e->x14 = func_80060470();
+    e->x14 = Sprite_Create();
     e->x18 = d->x1C;
     e->x1C = d->x20;
     e->x20 = d->x24;
@@ -83,9 +83,9 @@ void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
     e->x40 = e->x10->x10;
     Sprite2D_InitObjs(e->x14, 3, e->x10, 0);
     if (d->x3C) {
-        func_800603CC(e->x14, d->x40, d->x44);
+        Sprite_SetPrimDepth(e->x14, d->x40, d->x44);
     } else {
-        func_800603E4(e->x14);
+        Sprite_ClearPrimDepth(e->x14);
     }
-    func_8005E7FC(gUi, 1, e->x0);
+    Ui_DisableElementAlpha(gUi, 1, e->x0);
 }

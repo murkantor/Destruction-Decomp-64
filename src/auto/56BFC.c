@@ -4,7 +4,7 @@
 extern s32 D_800B0B18;
 void osCreateViManager(s32);
 
-s32 func_80055FFC(s32 skip) {
+s32 Vi_InitManager(s32 skip) {
     if (skip) {
         if (D_800B0B18 != 0) {
             return 0;

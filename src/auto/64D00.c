@@ -14,7 +14,7 @@ typedef struct {
 extern GameState *gGame;
 void Handler_CallX4ById(List *, s32);
 
-s32 func_80064100(s32 x) {
+s32 ObjList_Add(s32 x) {
     GameState *g = gGame;
     List *l = &g->list;
 

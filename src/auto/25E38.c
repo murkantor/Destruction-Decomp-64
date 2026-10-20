@@ -4,7 +4,7 @@
 void *Mem_AllocAlignedAlt(s32, M2C_UNK, M2C_UNK);         /* extern */
 M2C_UNK Mem_Free(void *);                      /* extern */
 s32 Res_Get(s32);                             /* extern */
-M2C_UNK func_80063B54(s32);                         /* extern */
+M2C_UNK Res_ReleaseInstance(s32);                         /* extern */
 M2C_UNK Res_Load(s32, void *);                 /* extern */
 s32 Res_GetSize();                                /* extern */
 
@@ -56,7 +56,7 @@ s32 func_80025238(s32 arg0) {
     }
     temp_a0_9 = M2C_FIELD(temp_v0, s32 *, 0x20);
     if (temp_a0_9 != -1) {
-        func_80063B54(Res_Get(temp_a0_9));
+        Res_ReleaseInstance(Res_Get(temp_a0_9));
     }
     Mem_Free(temp_v0);
     return 0;

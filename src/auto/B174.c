@@ -29,8 +29,8 @@ extern u32 D_80125C58;
 extern s32 D_801311B8;
 extern Debris *D_80125B70[];
 void *Mem_Alloc(u32 size);
-void func_8005AA68(void *, void *);
-void func_8005AB4C(void *, f32);
+void ModelInst_Init(void *, void *);
+void ModelInst_SetScale(void *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 s32 rand(void);
 
@@ -78,8 +78,8 @@ void Debris_Spawn(Car *car, Vec3f pos, s32 amount) {
         D_801311B8++;
         p->x50 = D_80125B70[(s8)idx];
         D_80125B70[(s8)idx] = p;
-        func_8005AA68(q, car->x178);
-        func_8005AB4C(q, rand() * (1.0f / 32767) * 0.0006 + 0.001);
+        ModelInst_Init(q, car->x178);
+        ModelInst_SetScale(q, rand() * (1.0f / 32767) * 0.0006 + 0.001);
         Vec3f_Add(&p->x4, &car->x290, &pos);
         p->x0 = p->x4.y;
         p->x10 = rand() * (1.0f / 32767) * 0.02 + 0.02;

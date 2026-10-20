@@ -80,7 +80,7 @@ void alSynAddPlayer(void *, void *);
 void Seq_ResetVoice(Voice *);
 void alSynAllocVoice(void *, SynVoice *, VoiceCfg *);
 
-s32 func_80065708(AudioConfig *c) {
+s32 Audio_InitSynth(AudioConfig *c) {
     VoiceCfg vc;
     SynCfg sc;
     s32 fx[3];

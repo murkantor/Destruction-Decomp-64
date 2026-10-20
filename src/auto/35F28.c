@@ -46,7 +46,7 @@ void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 extern f64 D_800B95F8;
 Vec3f Tensor_MulVec3f(Tensor *, Vec3f *);
 
-Impulse func_80035328(Car *car, Contact *c) {
+Impulse Contact_ComputeImpulse(Car *car, Contact *c) {
     Impulse res;
     Vec3f r;
     Vec3f n;

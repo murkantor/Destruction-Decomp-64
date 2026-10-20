@@ -31,7 +31,7 @@ typedef struct {
 
 extern Mgr *volatile D_8011EEF8;
 u8 DrawList_Insert(Mgr *m, s32 idx, s32 pos, Item *item);
-void func_8005D448(Node *dst, Item *src);
+void Snd_UpdateFromTemplate(Node *dst, Item *src);
 
 static inline void Remove(Mgr *m, s16 key) {
     s32 j;
@@ -70,7 +70,7 @@ void DrawList_Update(Mgr *m, s32 idx, s32 *pos, Item *item) {
         }
         e = arr[i];
         if (key == e->x2) {
-            func_8005D448(e, item);
+            Snd_UpdateFromTemplate(e, item);
             break;
         }
         if (key < e->x2) {

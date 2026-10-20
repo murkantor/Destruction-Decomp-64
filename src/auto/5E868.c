@@ -3,7 +3,7 @@
 
 M2C_UNK Mem_Free(void *);                      /* extern */
 
-void func_8005DC68(void *arg0) {
+void Ui_ClearDrawList(void *arg0) {
     void *var_a0;
     void *var_s0;
 

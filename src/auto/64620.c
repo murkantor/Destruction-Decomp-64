@@ -11,7 +11,7 @@ typedef struct {
 } Res;
 
 extern Res *Res_Find(void *);
-extern void func_80063FA0(void ***, void *);
+extern void List_Push(void ***, void *);
 extern u8 D_800B4D70;
 
 void *Res_Get(void *id)
@@ -25,7 +25,7 @@ void *Res_Get(void *id)
             id = *r->x14;
         } else {
             id = r->load(id);
-            func_80063FA0(&r->x14, id);
+            List_Push(&r->x14, id);
         }
         r->x1C++;
         p = id;

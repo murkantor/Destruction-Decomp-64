@@ -9,7 +9,7 @@ typedef struct {
 
 void Sound_InitForMode(ItemList *);
 
-s32 func_8005C780(ItemList *list) {
+s32 World_ResetObjects(ItemList *list) {
     u8 *p = *(u8 **)((u8 *)list + 0xFC);
     s32 i;
 

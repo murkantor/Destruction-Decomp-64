@@ -6,7 +6,7 @@ extern u8 D_801301F9;
 extern u8 D_B7560[];
 extern u8 D_7BCC0[];
 
-Gfx *Gfx_SetTextureLUT(Gfx *gfx) {
+Gfx *Gfx_RestoreF3dexUcode(Gfx *gfx) {
     if (D_801301F9) {
         Gfx *_g = gfx++;
         _g->w0 = 0xE1000000;

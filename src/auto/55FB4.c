@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_800553B4(void **arg0, s32 *arg1, s32 *arg2)
+void Heap_GetFree(void **arg0, s32 *arg1, s32 *arg2)
 {
   s32 temp_v0;
   s32 var_v1;

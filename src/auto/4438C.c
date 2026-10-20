@@ -13,7 +13,7 @@ extern s32 D_800BCA08;
 extern s32 D_800BCA04;
 extern s8 D_800D31CC[];
 extern Ent28 D_80125FE8[];
-void func_8005DC68(void *);
+void Ui_ClearDrawList(void *);
 void func_8005F884(void *);
 void *HeapBlock_Ptr(HeapBlock *);
 void Ui_AddElement(void *, s32, s32);
@@ -25,7 +25,7 @@ void func_8004378C(void) {
     UiDef *d;
     s32 i;
 
-    func_8005DC68(gUi[0]);
+    Ui_ClearDrawList(gUi[0]);
     d = HeapBlock_Ptr(&D_800BC9F0);
     for (i = 0; i < D_800BCA08; d++, i++) {
         Ui_AddElement(gUi[0], d->kind, d->id);

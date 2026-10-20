@@ -56,7 +56,7 @@ void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
 u8 Obb_Overlap(void *, void *, Vec3f *, void *, void *, Vec3f *);
 void Car_CollideCars(Car *, Car *);
 
-void func_80031EC0(Car *a, s32 idx) {
+void Car_CollideOtherCars(Car *a, s32 idx) {
     Vec3f posA;
     Vec3f posB;
     Vec3f d;

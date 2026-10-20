@@ -29,7 +29,7 @@ extern f32 D_80095840;
 extern u8 *D_801245A4;
 extern s32 D_8011EEF8[];
 
-s32 func_800286AC(Car *, Vec3f);
+s32 Car_GetHitZone(Car *, Vec3f);
 void Car_ApplyDamage(Car *, s32, f32, s32);
 void Particles_EmitTrail(void *, Vec3f, Car *);
 s32 func_80008004(s32, s32);
@@ -65,11 +65,11 @@ void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
         c = (Coll *)((u8 *)gGame->x1100->cars[i] + 0x1EC);
         if (a == c) {
             carA = gGame->x1100->cars[i];
-            zoneA = func_800286AC(carA, posA);
+            zoneA = Car_GetHitZone(carA, posA);
         }
         if (b == c) {
             carB = gGame->x1100->cars[i];
-            zoneB = func_800286AC(carB, posB);
+            zoneB = Car_GetHitZone(carB, posB);
         }
         if (carA != NULL && carB != NULL)
             break;

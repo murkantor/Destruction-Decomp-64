@@ -43,7 +43,7 @@ typedef struct {
     u8 x4C;
 } Item;
 
-void func_8005D4E8(Item *dst, Template *src) {
+void Snd_InitFromTemplate(Item *dst, Template *src) {
     dst->x0 = src->x0;
     dst->x2 = src->x2;
     dst->xC = src->xC;

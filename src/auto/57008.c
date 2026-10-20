@@ -31,8 +31,8 @@ void Video_SetMode(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32
 void Heap_Alloc(Heap *heap, HeapBlock *out, u32 size, s32 alignMask, s32 alignOffset);
 void *HeapBlock_Ptr(HeapBlock *);
 void Heap_Free(Heap *heap, HeapBlock *blk);
-void func_80055F70(void *);
-void func_80056098(void *);
+void Vi_ApplyConfig(void *);
+void Vi_SwapBuffer(void *);
 
 Ctx Fb_CreateContext(void) {
     void *p;
@@ -64,8 +64,8 @@ Ctx Fb_CreateContext(void) {
     if (c.x90 != NULL) {
         D_800B0B58 = c.x90;
     }
-    func_80055F70(D_800BCC80);
-    func_80056098(c.x90);
+    Vi_ApplyConfig(D_800BCC80);
+    Vi_SwapBuffer(c.x90);
     Heap_Free(&gMainHeap, &blk);
     return c;
 }

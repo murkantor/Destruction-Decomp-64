@@ -12,7 +12,7 @@ typedef struct {
     Node50 *pool8;
     s32 count8;
 } Mgr;
-void func_8005D4E8(Node50 *, Item *);
+void Snd_InitFromTemplate(Node50 *, Item *);
 
 s32 DrawList_Insert(Mgr *m, s32 idx, s32 pos, Item *item) {
     Node50 **list;
@@ -52,7 +52,7 @@ s32 DrawList_Insert(Mgr *m, s32 idx, s32 pos, Item *item) {
             break;
         }
     }
-    func_8005D4E8(p, item);
+    Snd_InitFromTemplate(p, item);
     list[pos] = p;
     (*cnt)++;
     return ret;

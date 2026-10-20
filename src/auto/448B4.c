@@ -11,7 +11,7 @@ extern u8 D_80097354;
 extern u8 D_80097334[];
 extern Clock D_8007EF20;
 extern Group D_800958A4;
-void func_8005DC68(void *);
+void Ui_ClearDrawList(void *);
 void Ui_AddElement(void *, s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
 u64 Time_Get(u64 *);
@@ -21,7 +21,7 @@ void Results_InitTimers(void) {
     s32 i;
 
     if (D_80097354) {
-        func_8005DC68(gUi);
+        Ui_ClearDrawList(gUi);
         Ui_AddElement(gUi, 2, 0x20);
     }
     Ui_AddElement(gUi, 2, 0x24);

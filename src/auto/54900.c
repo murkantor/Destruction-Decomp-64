@@ -22,13 +22,13 @@ u8 *strcpy(u8 *arg0, u8 *arg1) {
     return arg0;
 }
 
-M2C_UNK func_80054058();                            /* extern */
+M2C_UNK DebugMenu_SetCurrent();                            /* extern */
 extern s32 D_800B04A0;
 
-void func_80053D30(s32 arg0) {
+void DebugMenu_Reset(s32 arg0) {
     D_800B04A0 = 0;
     if (arg0 != 0) {
-        func_80054058();
+        DebugMenu_SetCurrent();
     }
 }
 

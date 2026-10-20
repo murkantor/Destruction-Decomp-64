@@ -11,7 +11,7 @@ void *Ui_LookupTextId(char *);
 void Ui_SetElementColor(void *, s32);
 void Timer_Start(void *, s64);
 
-s32 func_8003C92C(Item *item) {
+s32 PakMenu_NoSaveToggle(Item *item) {
     char *p;
     char *q;
 

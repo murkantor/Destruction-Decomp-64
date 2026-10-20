@@ -9,7 +9,7 @@ M2C_UNK osViSetMode(void *);                        /* extern */
 M2C_UNK osWritebackDCache();                 /* extern */
 extern void *D_800B0B14;
 
-void func_80055F70(void *arg0) {
+void Vi_ApplyConfig(void *arg0) {
     if (arg0 != D_800B0B14) {
         osWritebackDCache(arg0, 0x80);
         if (M2C_FIELD(arg0, u8 *, 0x7D) != 0) {

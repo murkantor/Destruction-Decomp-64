@@ -43,14 +43,14 @@ void Vec3f_TransformTransposed(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
 s32 Track_GetFacesInRadius(Vec3f *, f32, FaceEnt *);
 void Vec3f_Length(f32 *, Vec3f *);
 void Points_ComputeAABB(Poly *, AABB *);
-u8 func_80032FC0(AABB *, AABB *);
+u8 Aabb_Overlap(AABB *, AABB *);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Normalize(Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
-void func_800329C0(s32, Contact *);
+void Surface_GetGrip(s32, Contact *);
 void Physics_AddContact(void *, s32 *, Contact *, Body *);
 f32 sqrtf(f32);
 f64 fabs(f64);
@@ -173,7 +173,7 @@ void Car_CollideTrack(Body *b, void *buf, s32 *cnt) {
             p = &faces[j].p;
             n = &p->n;
             Points_ComputeAABB(p, &fbox);
-            if (!func_80032FC0(&fbox, &box)) {
+            if (!Aabb_Overlap(&fbox, &box)) {
                 continue;
             }
             for (i = 0; i < 7; i++) {
@@ -338,7 +338,7 @@ void Car_CollideTrack(Body *b, void *buf, s32 *cnt) {
             Vec3f_Add(&contact.vel, &contact.vel, &b->vel1);
             Vec3f_Set(&contact.x48, 0.0f, 0.0f, 0.0f);
             Vec3f_Set(&contact.x3C, 0.0f, 0.0f, 0.0f);
-            func_800329C0(bestFace->x0, &contact);
+            Surface_GetGrip(bestFace->x0, &contact);
             contact.xC = bestFace->x0;
             contact.x4 = contact.x4 * 0.1;
             contact.x8 = contact.x8 * 0.1;

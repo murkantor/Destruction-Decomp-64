@@ -25,7 +25,7 @@ extern s32 D_80125BE4[];
 extern s32 D_80096EA0;
 void Timer_Start(void *, s64);
 void Ui_RemapTextures(void);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 Menu_ConfirmTrackSelect(Menu *m) {
     s32 i, j;
@@ -92,7 +92,7 @@ s32 Menu_ConfirmTrackSelect(Menu *m) {
         }
     }
     Ui_RemapTextures();
-    func_80063564(0x18, 1);
+    Game_SetNextMode(0x18, 1);
     D_80096EA0 = 1;
     return 1;
 }

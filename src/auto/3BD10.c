@@ -30,7 +30,7 @@ extern f64 D_800B9D60;
 void Car_UpdatePhysics(WObj *, f32);
 void Camera_Update(WObj *, f32);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
-void func_8003A4D8(void *, Vec3f *);
+void Mtx3_RotateByVector(void *, Vec3f *);
 
 void World_UpdateEffects(World *w, f32 dt) {
     s32 i;
@@ -63,7 +63,7 @@ void World_UpdateEffects(World *w, f32 dt) {
             p->xC += p->x3C * dt;
             p->x10 += p->x40 * dt;
             Vec3f_Scale(&t1, &p->x44, dt);
-            func_8003A4D8(p->x14, &t1);
+            Mtx3_RotateByVector(p->x14, &t1);
             p->x3C = p->x3C - dt * g;
             break;
         }
@@ -108,14 +108,14 @@ void World_UpdateEffects(World *w, f32 dt) {
                         s = q->x5C - q->x58;
                     }
                     Vec3f_Scale(&t2, &q->x4C, s);
-                    func_8003A4D8(q->x10, &t2);
+                    Mtx3_RotateByVector(q->x10, &t2);
                 }
             } else {
                 q->x4 += q->x40 * dt;
                 q->x8 += q->x44 * dt;
                 q->xC += q->x48 * dt;
                 Vec3f_Scale(&t2, &q->x4C, dt);
-                func_8003A4D8(q->x10, &t2);
+                Mtx3_RotateByVector(q->x10, &t2);
                 q->x44 = q->x44 - dt * g;
             }
             q->x58 += dt;

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80060D58(u8 *obj, s32 *src) {
+void Sprite_InitTlut(u8 *obj, s32 *src) {
     u8 *d = *(u8 **)(obj + 0x20);
 
     if (src != NULL) {

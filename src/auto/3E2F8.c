@@ -3,12 +3,12 @@
 
 M2C_UNK Cont_AllPaksOk();                            /* extern */
 M2C_UNK func_80063380(M2C_UNK);                     /* extern */
-M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
+M2C_UNK Game_SetNextMode(M2C_UNK, M2C_UNK);            /* extern */
 
-s32 func_8003D6F8(void) {
+s32 PakMenu_InsertPaksSelect(void) {
     Cont_AllPaksOk();
     func_80063380(2);
-    func_80063564(0x1A, 1);
+    Game_SetNextMode(0x1A, 1);
     return 1;
 }
 
@@ -16,7 +16,7 @@ M2C_UNK PakMenu_InsertPaks();                            /* extern */
 M2C_UNK Ui_ResetScreen(M2C_UNK, M2C_UNK);            /* extern */
 M2C_UNK Cars_FreeObjects();                            /* extern */
 
-void func_8003D72C(void) {
+void PakMenu_InitInsertPaks(void) {
     Cars_FreeObjects();
     Ui_ResetScreen(0x112CC, 0x112CD);
     PakMenu_InsertPaks();

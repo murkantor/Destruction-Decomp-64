@@ -9,7 +9,7 @@ extern u8 D_80097354;
 extern s32 D_80097358;
 extern s32 D_80096EB8;
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 func_80043A88(void) {
     s32 i;
@@ -27,6 +27,6 @@ s32 func_80043A88(void) {
     D_80097358 = 0;
     D_80096EB8 = 0;
     func_80063380(1);
-    func_80063564(0x13, 1);
+    Game_SetNextMode(0x13, 1);
     return 1;
 }

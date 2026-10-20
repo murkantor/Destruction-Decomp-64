@@ -53,10 +53,10 @@ typedef struct {
 } Game;
 
 extern Game *gGame;
-extern void func_8005AB1C(void *, f32, f32, f32);
-extern void func_8005AB34(void *, f32, f32, f32);
-extern void func_8005AB4C(void *, f32);
-extern void func_8005AB5C(void *, Mtx4 *);
+extern void ModelInst_SetPos(void *, f32, f32, f32);
+extern void ModelInst_SetRot(void *, f32, f32, f32);
+extern void ModelInst_SetScale(void *, f32);
+extern void ModelInst_SetMatrix(void *, Mtx4 *);
 extern void Frame_ToScaledMatrix(Mtx4 *, void *);
 extern void Mtx3_RotateY(Mtx3 *, f32);
 extern void Mtx_FromRotPosScaled(void *, Vec3, Mtx3 *);
@@ -65,16 +65,16 @@ extern Gfx *Model_Draw(void *, Gfx *);
 Gfx *Obj_DrawModel(Obj *o, Gfx *gfx) {
     switch (o->type) {
         case 23:
-            func_8005AB4C(o->model, 0.01f);
+            ModelInst_SetScale(o->model, 0.01f);
             goto case_a;
         case 30: {
             SubA *s = o->sub;
-            func_8005AB1C(o->model, s->pos.x, s->pos.y, s->pos.z);
-            func_8005AB34(o->model, s->rot.x * 0.017453292500000002, s->rot.y * 0.017453292500000002, s->rot.z * 0.017453292500000002);
+            ModelInst_SetPos(o->model, s->pos.x, s->pos.y, s->pos.z);
+            ModelInst_SetRot(o->model, s->rot.x * 0.017453292500000002, s->rot.y * 0.017453292500000002, s->rot.z * 0.017453292500000002);
             break;
         }
         case 29:
-            func_8005AB4C(o->model, 0.15f);
+            ModelInst_SetScale(o->model, 0.15f);
         case 27:
         case 28:
         case 32:
@@ -82,8 +82,8 @@ Gfx *Obj_DrawModel(Obj *o, Gfx *gfx) {
             SubA *s;
         case_a:
             s = o->sub;
-            func_8005AB1C(o->model, s->pos.x, s->pos.y, s->pos.z);
-            func_8005AB34(o->model, s->rot.x, s->rot.y, s->rot.z);
+            ModelInst_SetPos(o->model, s->pos.x, s->pos.y, s->pos.z);
+            ModelInst_SetRot(o->model, s->rot.x, s->rot.y, s->rot.z);
             break;
         }
         case 19: {
@@ -107,7 +107,7 @@ Gfx *Obj_DrawModel(Obj *o, Gfx *gfx) {
                 return gfx;
             }
             Frame_ToScaledMatrix(&m, f);
-            func_8005AB5C(o->model, &m);
+            ModelInst_SetMatrix(o->model, &m);
             break;
         }
         case 15:
@@ -125,7 +125,7 @@ Gfx *Obj_DrawModel(Obj *o, Gfx *gfx) {
                 m.m[2][0] = m.m[2][0] * 2.0;
                 m.m[2][1] = m.m[2][1] * 2.0;
                 m.m[2][2] = m.m[2][2] * 2.0;
-                func_8005AB5C(o->model, &m);
+                ModelInst_SetMatrix(o->model, &m);
             } else {
                 Vec3 p;
                 p = s->pos;

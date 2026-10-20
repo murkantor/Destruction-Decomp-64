@@ -39,7 +39,7 @@ extern Slot D_80095908[];
 
 void Ui_SaveElements(void);
 void Ctx_FreeAll(void *);
-void func_8005DD20(void *, s32);
+void Ui_LoadResourceFile(void *, s32);
 void Sound_SetVolume(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 UiElem *Ui_FindElement(void *, s32, s32);
@@ -74,8 +74,8 @@ void func_80048780(void) {
         Ui_SaveElements();
     }
     Ctx_FreeAll(gUi[0]);
-    func_8005DD20(gUi[0], 0x11330);
-    func_8005DD20(gUi[0], 0x11331);
+    Ui_LoadResourceFile(gUi[0], 0x11330);
+    Ui_LoadResourceFile(gUi[0], 0x11331);
     D_80097350[0] = 5;
     f = D_8011EEF8->vol.v[0] * 128.0;
     if (f < 0.0) {

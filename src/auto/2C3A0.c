@@ -49,7 +49,7 @@ static inline void HideMarker(Car *car) {
         } \
     }
 
-void func_8002B7A0(Car *car, Event *ev, u8 flag) {
+void Car_OnTriggerCrossed(Car *car, Event *ev, u8 flag) {
     s32 a;
     s32 b;
     s32 i;

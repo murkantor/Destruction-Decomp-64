@@ -3,20 +3,20 @@
 
 M2C_UNK func_8000F980(s32);                         /* extern */
 M2C_UNK Ui_UpdateElements();                            /* extern */
-s32 func_8005E2AC(s32, M2C_UNK);                    /* extern */
+s32 Ui_Draw(s32, M2C_UNK);                    /* extern */
 
 void func_8005D580(s32 arg0, M2C_UNK arg1) {
     Ui_UpdateElements();
-    func_8000F980(func_8005E2AC(arg0, arg1));
+    func_8000F980(Ui_Draw(arg0, arg1));
 }
 
 s16 func_80010214();                                /* extern */
 s32 func_8001021C();                                /* extern */
-s16 func_80064D70();                                /* extern */
+s16 Obj_NextId();                                /* extern */
 
-void func_8005D5C4(void *arg0) {
+void Ui_Init(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0) = 0x3ED;
-    M2C_FIELD(arg0, s16 *, 2) = func_80064D70();
+    M2C_FIELD(arg0, s16 *, 2) = Obj_NextId();
     M2C_FIELD(arg0, void **, 4) = arg0;
     M2C_FIELD(arg0, s32 *, 8) = 0;
     M2C_FIELD(arg0, s16 *, 0x8B66) = func_80010214();

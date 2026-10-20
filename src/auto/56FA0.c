@@ -4,7 +4,7 @@
 extern void *D_800B0B54;
 extern s32 D_800B0B58;
 
-void func_800563A0(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Fb_InitContext(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     M2C_FIELD(arg0, s32 *, 0x88) = arg1;
     M2C_FIELD(arg0, s32 *, 0x8C) = arg2;
     M2C_FIELD(arg0, s32 *, 0x90) = arg3;

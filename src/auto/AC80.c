@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 M2C_UNK Mem_Free(void *);
-M2C_UNK func_8005AAC0(s32);
+M2C_UNK ModelInst_Free(s32);
 extern M2C_UNK D_80125B70;
 
 void Debris_FreeCar(void *arg0)
@@ -18,7 +18,7 @@ void Debris_FreeCar(void *arg0)
   {
     do
     {
-      func_8005AAC0(var_s0 + 0x28);
+      ModelInst_Free(var_s0 + 0x28);
       var_v0 = 0x50;
       temp_a0 = var_s0;
       var_s0 = *((void **) (((s8 *) var_s0) + var_v0));

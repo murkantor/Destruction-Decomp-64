@@ -3,16 +3,16 @@
 
 M2C_UNK Fade_Init();                            /* extern */
 M2C_UNK Ui_AddElement(s32, M2C_UNK, M2C_UNK);       /* extern */
-M2C_UNK func_80063890(s32);                         /* extern */
-M2C_UNK func_800638C0(s32);                         /* extern */
-M2C_UNK func_800638C8(s32);                         /* extern */
+M2C_UNK Clock_Reset(s32);                         /* extern */
+M2C_UNK Clock_Resume(s32);                         /* extern */
+M2C_UNK Clock_Pause(s32);                         /* extern */
 extern s32 gGame;
 extern s32 gUi;
 
-void func_8003B5CC(void) {
+void Logo_LookingGlassInit(void) {
     Ui_AddElement(gUi, 2, 0x1F);
     Fade_Init();
-    func_800638C8(gGame + 0x10A8);
-    func_80063890(gGame + 0x10A8);
-    func_800638C0(gGame + 0x10A8);
+    Clock_Pause(gGame + 0x10A8);
+    Clock_Reset(gGame + 0x10A8);
+    Clock_Resume(gGame + 0x10A8);
 }

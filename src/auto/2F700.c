@@ -82,19 +82,19 @@ extern Vec3f D_800B9318;
 extern f32 D_800D2E78;
 extern u8 D_800960C0;
 extern s32 D_800958B4;
-void func_8002FA20(Car *);
+void Body_ClearContacts(Car *);
 void Model_TransformVerts(Body *);
 void Camera_CollideTrack(Car *);
 void Trigger_CheckCarsInZone(void *);
-void func_8002F66C(void *);
-void Cars_CheckCollisions(void *);
+void Team_CheckFlagPickup(void *);
+void Team_CheckBaseZone(void *);
 void Car_UpdateWheels(Car *);
-void func_80031EC0(Car *, s32);
+void Car_CollideOtherCars(Car *, s32);
 void Car_CollideTrack(Body *, void *, s32 *);
 void Car_ApplyContactImpulses(Car *, Body *);
 void Car_CheckTriggersAndPickups(Car *);
 void func_8002E740(void);
-void func_800288A4(void);
+void Collision_ResetLastPair(void);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 void Vec3f_Set(Vec3f *, f32, f32, f32);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
@@ -126,7 +126,7 @@ void Car_PhysicsStep(void *w, f32 dt) {
         case 3:
             b = &c->u.body;
             if (!c->u.f.xBAC) {
-                func_8002FA20(c);
+                Body_ClearContacts(c);
                 c->u.f.x330 = &buf1[n];
                 c->u.f.x348 = &buf2[n];
                 n++;
@@ -150,11 +150,11 @@ void Car_PhysicsStep(void *w, f32 dt) {
             break;
         case 15:
         case 17:
-            func_8002F66C(c2->x38);
+            Team_CheckFlagPickup(c2->x38);
             break;
         case 16:
         case 18:
-            Cars_CheckCollisions(c2->x38);
+            Team_CheckBaseZone(c2->x38);
             break;
         case 19:
             break;
@@ -166,7 +166,7 @@ void Car_PhysicsStep(void *w, f32 dt) {
         if (!c->u.f.xBAC) {
             Car_UpdateWheels(c);
             if (c->xC) {
-                func_80031EC0(c, i);
+                Car_CollideOtherCars(c, i);
             }
             Car_CollideTrack(b, buf3, &cnt);
             Car_ApplyContactImpulses(c, b);
@@ -174,7 +174,7 @@ void Car_PhysicsStep(void *w, f32 dt) {
         Car_CheckTriggersAndPickups(c);
     }
     func_8002E740();
-    func_800288A4();
+    Collision_ResetLastPair();
     for (i = 0; i < gGame->x1100->xA4; i++) {
         car = gGame->x1100->x74[i];
         Vec3f_Dot(&dot, &car->u.body.s1.vel, &car->u.body.s1.vel);

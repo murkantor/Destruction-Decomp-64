@@ -3,7 +3,7 @@
 
 void *Mem_Alloc(M2C_UNK);                           /* extern */
 
-void func_80063FA0(void **arg0, s32 arg1) {
+void List_Push(void **arg0, s32 arg1) {
     void *temp_v0;
     void *temp_v1;
 

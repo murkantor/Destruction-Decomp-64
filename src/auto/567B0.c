@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_80055BB0(void *arg0) {
+void PtrList_Init(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0) = 0;
     M2C_FIELD(arg0, s32 *, 4) = 0;
 }
@@ -9,7 +9,7 @@ void func_80055BB0(void *arg0) {
 M2C_UNK *Pool_Alloc(M2C_UNK *);                  /* extern */
 extern M2C_UNK gParticlePool;
 
-void func_80055BBC(M2C_UNK *arg0, s32 arg1) {
+void PtrList_Add(M2C_UNK *arg0, s32 arg1) {
     M2C_UNK *temp_v0;
     M2C_UNK *var_s0;
     s32 temp_v0_2;

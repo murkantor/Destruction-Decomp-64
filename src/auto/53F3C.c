@@ -22,7 +22,7 @@ typedef struct {
 } ZipEntry;
 
 Zip *Zip_Open(char *);
-ZipEntry *func_80052AE0(Zip *);
+ZipEntry *Zip_ReadNextEntry(Zip *);
 void Mem_Free(void *);
 s32 RomFile_Close(void *);
 u8 *strrchr(const u8 *, int);
@@ -73,7 +73,7 @@ s32 Zip_FindEntry(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
             return 0;
         }
     next1:
-        e = func_80052AE0(z);
+        e = Zip_ReadNextEntry(z);
         } while (e != NULL);
         Zip_Close(z);
         z = Zip_Open(path);
@@ -87,7 +87,7 @@ s32 Zip_FindEntry(char *path, u8 *name, s32 *outSize, s32 *outOffset) {
                 return 0;
             }
         next2:
-            e = func_80052AE0(z);
+            e = Zip_ReadNextEntry(z);
             } while (e != NULL);
             Zip_Close(z);
         }

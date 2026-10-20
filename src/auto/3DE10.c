@@ -34,7 +34,7 @@ void func_8004FE4C(s32 *);
 void Pak_WriteSave(s32 *);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
 s32 PakMenu_AutoSaveTick(State *st) {
@@ -62,10 +62,10 @@ s32 PakMenu_AutoSaveTick(State *st) {
     if ((f64)(Time_Get(&gGame->x1058) - D_800964D8) > 3000000000.0) {
         if (D_80124354 == 0) {
             if (D_800972F0) {
-                func_80063564(0x2E, 1);
+                Game_SetNextMode(0x2E, 1);
             } else {
                 func_80063380(2);
-                func_80063564(0x19, 1);
+                Game_SetNextMode(0x19, 1);
                 st->x10 = 0;
             }
         }

@@ -3,7 +3,7 @@
 
 extern s32 D_800C06F0;
 
-s32 func_80062F34(void) {
+s32 Timer_GetRate(void) {
     return D_800C06F0;
 }
 
@@ -21,6 +21,6 @@ f32 func_80062F4C(void) {
 
 extern s32 D_800C070C;
 
-s32 func_80062F58(void) {
+s32 Fps_GetDeltaFrames(void) {
     return D_800C070C;
 }

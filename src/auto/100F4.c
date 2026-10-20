@@ -10,15 +10,15 @@ extern s32 D_8007EF28;
 extern s8 D_8007EF2C;
 extern u8 D_8007EF2D[];
 u64 Time_Get(void *);
-void func_8005E75C(void *, s32, s32, s32);
-void func_8005E88C(void *, s32, s32, s32);
+void Ui_EnableElementAlpha(void *, s32, s32, s32);
+void Ui_SetElementAlphaValue(void *, s32, s32, s32);
 
 s32 Ui_UpdateFadeBlink(s32 *arg0) {
     u64 t;
 
     t = Time_Get(gGame->x1058);
     if (!D_8007EF2D[0]) {
-        func_8005E75C(gUi, 2, *arg0, 0xFF);
+        Ui_EnableElementAlpha(gUi, 2, *arg0, 0xFF);
         D_8007EF28 = 0xFF;
         D_8007EF2C = 1;
         D_8007EF2D[0] = 1;
@@ -40,7 +40,7 @@ s32 Ui_UpdateFadeBlink(s32 *arg0) {
             D_8007EF2C = 0;
         }
     }
-    func_8005E88C(gUi, 2, *arg0, D_8007EF20.alpha);
+    Ui_SetElementAlphaValue(gUi, 2, *arg0, D_8007EF20.alpha);
     D_8007EF20.time = (f64)t + 52000000.0;
 end:
     return 0;

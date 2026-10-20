@@ -9,7 +9,7 @@ extern u8 D_80097D6C[];
 extern u8 D_80097D7C[];
 extern OSMesgQueue gSiMesgQueue;
 void Cont_ReadAll(void);
-void func_80058B58(void);
+void Pad_StartRead(void);
 void func_80050684(s32 *);
 s32 Pak_SetGameInfo(s32, s32, void *, void *, OSMesgQueue *);
 s32 Pak_Init(OSMesgQueue *);
@@ -20,18 +20,18 @@ u8 Pak_Open(s32 *out) {
     if (D_80097D4C) {
         D_80097D4C = 0;
         *out = Pak_SetGameInfo(D_80097D66, D_80097D68, D_80097D6C, D_80097D7C, &gSiMesgQueue);
-        func_80058B58();
+        Pad_StartRead();
         D_80097D58 = 0;
         return *out != 1;
     }
     *out = Pak_Init(&gSiMesgQueue);
     if (*out != 0) {
-        func_80058B58();
+        Pad_StartRead();
         D_80097D58 = 0;
         return *out != 1;
     }
     func_80050684(out);
-    func_80058B58();
+    Pad_StartRead();
     D_80097D58 = 0;
     return 1;
 }

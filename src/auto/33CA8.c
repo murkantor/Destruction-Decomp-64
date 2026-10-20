@@ -3,7 +3,7 @@
 
 void Mtx3_MulDiff(f32 *, s32, s32, s32);
 
-s32 func_800330A8(f32 *ext, s32 arg1, s32 arg2, f32 radius, s32 id) {
+s32 Obb_OverlapsSphere(f32 *ext, s32 arg1, s32 arg2, f32 radius, s32 id) {
     f32 p[3];
     f32 d;
     f32 t;

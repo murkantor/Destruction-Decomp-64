@@ -48,7 +48,7 @@ extern s32 D_8007EECC;
 extern u64 D_80131F90[];
 extern s32 D_80132164[];
 extern u8 D_8007EE48[];
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 Vec3f Car_GetPos(Car *);
 Vec3f Car_GetVelocity(Car *);
@@ -59,7 +59,7 @@ s16 CarEffect_Init(s32 idx, s32 kind, Obj *obj) {
 
     obj->x0 = 0x3F4;
     obj->x4 = 0;
-    obj->x2 = func_80064D70();
+    obj->x2 = Obj_NextId();
     obj->x10 = kind;
     obj->x14 = D_8007EECC;
     if (D_80131F90[kind] != (u64)-1) {

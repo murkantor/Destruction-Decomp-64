@@ -15,7 +15,7 @@ typedef struct {
     Body body;
 } CarW;
 extern f32 D_800D2E78;
-void Car_CheckRamps(CarW *, Wheel *);
+void Wheel_ProbeGround(CarW *, Wheel *);
 
 void Car_UpdateWheels(CarW *car) {
     Body *b = &car->body;
@@ -27,6 +27,6 @@ void Car_UpdateWheels(CarW *car) {
         } else {
             b->wheels[i].x19C += D_800D2E78;
         }
-        Car_CheckRamps(car, &b->wheels[i]);
+        Wheel_ProbeGround(car, &b->wheels[i]);
     }
 }

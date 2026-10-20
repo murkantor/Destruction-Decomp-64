@@ -3,7 +3,7 @@
 
 typedef struct { f32 m[4][4]; } Mtx4;
 extern f64 D_800B8680;
-extern void func_8005AB5C(s32, Mtx4 *);
+extern void ModelInst_SetMatrix(s32, Mtx4 *);
 typedef struct { f32 x, y, z; } Vec3;
 void Mtx_FromRotPosScaled(s32 a0, Vec3 pos, f32 (*rot)[3]) {
     Mtx4 mtx;
@@ -24,5 +24,5 @@ void Mtx_FromRotPosScaled(s32 a0, Vec3 pos, f32 (*rot)[3]) {
             mtx.m[i][j] *= D_800B8680;
         }
     }
-    func_8005AB5C(a0, &mtx);
+    ModelInst_SetMatrix(a0, &mtx);
 }

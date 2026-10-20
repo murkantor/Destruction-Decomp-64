@@ -26,12 +26,12 @@ extern void *D_80096080;
 extern void *D_80096084;
 extern s32 D_800958A4;
 
-u8 func_800330A8(void *, void *, void *, f32, void *);
+u8 Obb_OverlapsSphere(void *, void *, void *, f32, void *);
 u8 Obj_HasValue(void *, Car *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
-void func_8002F66C(Trigger *t) {
+void Team_CheckFlagPickup(Trigger *t) {
     s32 i;
     Car *c;
 
@@ -40,7 +40,7 @@ void func_8002F66C(Trigger *t) {
     }
     for (i = 0; i < gGame->x1100->xA4; i++) {
         c = gGame->x1100->cars[i];
-        if (func_800330A8(c->x31C, c->x2B4, c->x290, t->xC, t->x10)) {
+        if (Obb_OverlapsSphere(c->x31C, c->x2B4, c->x290, t->xC, t->x10)) {
             if (Obj_HasValue(D_80096080, c) && t->x0 == 0) {
                 t->x4 = 1;
                 t->x8 = c;

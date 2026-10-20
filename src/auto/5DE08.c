@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-f32 func_8005D208(void *arg0, void *arg1) {
+f32 Vec3f_DistSq(void *arg0, void *arg1) {
     f32 temp_f0;
     f32 temp_f2;
     f32 temp_f4;

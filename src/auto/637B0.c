@@ -7,7 +7,7 @@ extern f32 D_800C0708;
 extern s32 D_800C070C;
 
 u64 osGetTime(void);
-s32 func_80062F34(void);
+s32 Timer_GetRate(void);
 
 void Fps_Update(void) {
     u64 now;
@@ -17,11 +17,11 @@ void Fps_Update(void) {
 
     now = (osGetTime() * 64) / 3;
     delta = now - D_800C06F8;
-    x = delta * func_80062F34();
+    x = delta * Timer_GetRate();
     v = x * 1e-9 + 0.5;
     D_800C070C = v;
-    if (func_80062F34() > 0) {
-        D_800C0708 = (f32)(u32)v / func_80062F34();
+    if (Timer_GetRate() > 0) {
+        D_800C0708 = (f32)(u32)v / Timer_GetRate();
     } else {
         D_800C0708 = 0.0f;
     }

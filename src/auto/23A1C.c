@@ -33,7 +33,7 @@ extern Vec3f D_800B8C10;
 void Vec3f_Scale(Vec3f *out, Vec3f *v, f32 s);
 void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 void Mtx2x3_RotateY(Vec3f *m, f32 angle);
-void func_8003A568(Vec3f *m, Vec3f *axis, f32 angle);
+void Mtx3_RotateAxisAngle(Vec3f *m, Vec3f *axis, f32 angle);
 
 void Camera_UpdateFreeFly(Camera *cam, f32 dt) {
     s32 sx = D_80125C8C[cam->xB0->x10].stickX;
@@ -104,10 +104,10 @@ void Camera_UpdateFreeFly(Camera *cam, f32 dt) {
         Vec3f_Add(&cam->target, &cam->pos, m);
     }
     if (((btn >> 9) & 1) | (sx < -9)) {
-        func_8003A568(m, &up, dt * 0.7853982f);
+        Mtx3_RotateAxisAngle(m, &up, dt * 0.7853982f);
         Vec3f_Add(&cam->target, &cam->pos, m);
     } else if (((btn >> 8) & 1) | (sx > 9)) {
-        func_8003A568(m, &up, dt * -0.7853982f);
+        Mtx3_RotateAxisAngle(m, &up, dt * -0.7853982f);
         Vec3f_Add(&cam->target, &cam->pos, m);
     }
 }

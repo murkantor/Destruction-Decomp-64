@@ -99,7 +99,7 @@ static inline u8 PolyInfo_Contains(PolyInfo *info, Vec3f *pos) {
     return 1;
 }
 
-Poly *func_800359DC(Car *car) {
+Poly *Car_GetFaceUnder(Car *car) {
     Poly *ret;
     Grid *g;
     Grid *c;

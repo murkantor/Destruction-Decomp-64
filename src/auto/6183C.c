@@ -5,7 +5,7 @@ typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; s32 x10; s32 x14; } Img60C3C;
 typedef struct { s32 x0; s32 x4; s16 x8; s16 xA; s16 xC; s16 xE; s32 x10; s32 x14; } Tex60C3C;
 typedef struct { u8 pad[0x1C]; Tex60C3C *x1C; } Obj60C3C;
 
-void func_80060C3C(Obj60C3C *obj, Img60C3C *img) {
+void Sprite_InitTxtr(Obj60C3C *obj, Img60C3C *img) {
     if (img->x14 == 0x1033) {
         Tex60C3C *t = obj->x1C;
         t->x0 = img->x14;

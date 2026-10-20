@@ -10,7 +10,7 @@ extern u8 D_80097A0C[];
 extern u8 D_80096E6E;
 extern struct { void *p; } D_8011EEF8;
 extern void *gUi;
-Pad *func_80062F14(void);
+Pad *Pad_GetLatched(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
@@ -24,7 +24,7 @@ s32 Menu_ToggleHelpOverlay(s32 arg) {
     if (arg != -1 && D_801253F8 == 0 && arg >= 12) {
         if (arg < 12 || D_80097A0C[arg] == 0) return 0;
     }
-    if (func_80062F14()->xC & 0x2000) {
+    if (Pad_GetLatched()->xC & 0x2000) {
         if (D_80096E6E) return ret;
         Ui_AddElement(gUi, 2, 0x8F);
         for (i = 0; i < 6; i++) {

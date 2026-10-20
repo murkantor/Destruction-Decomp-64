@@ -11,10 +11,10 @@ extern GameState *gGame;
 extern s16 D_8011EEEA;
 extern s32 gUi;
 void Ui_RevealFree(GameState *, u64);
-void func_8005DC68(s32);
-void func_80063564(s32, s32);
+void Ui_ClearDrawList(s32);
+void Game_SetNextMode(s32, s32);
 
-s32 func_8003B410(void) {
+s32 Logo_ThqUpdate(void) {
     s32 ret = 0;
     u64 lim;
 
@@ -24,8 +24,8 @@ s32 func_8003B410(void) {
     lim = 4000000000ULL;
     if (gGame->x10A8 >= lim) {
         Ui_RevealFree(gGame, lim);
-        func_8005DC68(gUi);
-        func_80063564(1, 1);
+        Ui_ClearDrawList(gUi);
+        Game_SetNextMode(1, 1);
         ret = 1;
     }
     return ret;

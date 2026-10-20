@@ -4,7 +4,7 @@
 s32 RomFile_Read(M2C_UNK, s32, M2C_UNK, s32);      /* extern */
 s32 Arc_SeekToEntryData();                                /* extern */
 
-s32 func_80052FF0(void *arg0, void *arg1, M2C_UNK arg2) {
+s32 Zip_ReadStoredEntry(void *arg0, void *arg1, M2C_UNK arg2) {
     s32 var_v0;
 
     var_v0 = Arc_SeekToEntryData();

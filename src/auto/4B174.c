@@ -42,9 +42,9 @@ extern Slot4A574 D_80095908[];
 
 s32 sprintf(char *, const char *, ...);
 void HiScore_ApplyNewEntries(void);
-void func_8006417C(void *, s32);
-void func_80063564(s32, s32);
-void func_80057308(void);
+void ObjList_Remove(void *, s32);
+void Game_SetNextMode(s32, s32);
+void Gfx_FlushFrames(void);
 
 s32 func_8004A574(Obj4A574 *obj) {
     s32 i;
@@ -56,7 +56,7 @@ s32 func_8004A574(Obj4A574 *obj) {
         sprintf((char *)D_80097D5C, D_800BAF80, obj->x28->x10 + 1);
     }
     HiScore_ApplyNewEntries();
-    func_8006417C(gGame->x334, D_800970F0);
+    ObjList_Remove(gGame->x334, D_800970F0);
     if (D_800958A8 == 3 && D_800958AC == 2) {
         for (i = D_80097D48 + 1; i < 4; i++) {
             if (D_80097D18[i].x0 != -1 || D_80097D18[i].x4 != -1 || D_80097D18[i].x8 != -1) {
@@ -64,12 +64,12 @@ s32 func_8004A574(Obj4A574 *obj) {
                 gGame->x10FE = 1;
                 D_80095908[i].x0 = 0;
                 obj->x10 = 0;
-                func_80063564(0x26, 1);
-                func_80057308();
+                Game_SetNextMode(0x26, 1);
+                Gfx_FlushFrames();
                 return 1;
             }
         }
     }
-    func_80063564(0x25, 1);
+    Game_SetNextMode(0x25, 1);
     return 1;
 }

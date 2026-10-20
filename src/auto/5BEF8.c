@@ -28,7 +28,7 @@ extern void guMtxIdentF(MtxF);
 extern void guMtxF2L(MtxF, void *);
 extern void guMtxCatF(void *, MtxF, MtxF);
 extern void osWritebackDCache(void *, s32);
-extern void func_80057334(void *);
+extern void Gfx_FreeAfterFrame(void *);
 extern double fabs(double);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
@@ -74,7 +74,7 @@ Gfx *Camera_BuildProjection(Gfx *gfx, Cam *cam) {
     GFX2(gfx, 0xDB04000C, 2);
     GFX2(gfx, 0xDB040014, 0xFFFE);
     GFX2(gfx, 0xDB04001C, 0xFFFE);
-    func_80057334(cam->x0);
-    func_80057334(cam->x4);
+    Gfx_FreeAfterFrame(cam->x0);
+    Gfx_FreeAfterFrame(cam->x4);
     return gfx;
 }

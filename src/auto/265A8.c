@@ -61,9 +61,9 @@ extern f64 D_800B8D70;
 Car *Car_PickRandomOther(Car *);
 void Standings_Resort(void *, Car *);
 void Msg_Queue(s32, s32, s32, s32);
-void func_800638C8(void *);
-void func_80063890(void *);
-void func_800638C0(void *);
+void Clock_Pause(void *);
+void Clock_Reset(void *);
+void Clock_Resume(void *);
 
 void Tag_PassTo(Car *car) {
     s32 n = 10;
@@ -105,9 +105,9 @@ void Tag_PassTo(Car *car) {
     }
     tag->x19 = 0;
     tag->x1A = 0;
-    func_800638C8(&gGame[0]->x10A8);
-    func_80063890(&gGame[0]->x10A8);
-    func_800638C0(&gGame[0]->x10A8);
+    Clock_Pause(&gGame[0]->x10A8);
+    Clock_Reset(&gGame[0]->x10A8);
+    Clock_Resume(&gGame[0]->x10A8);
     if (gGame[0]->x10FC == 0x1C && tag->x0 != NULL && (s8)tag->x0->x34 != tag->x18) {
         tag->x18 = tag->x0->x34;
         if (tag->x0->x30 == 0) {

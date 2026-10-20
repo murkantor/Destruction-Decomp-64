@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 M2C_UNK Game_FreeModeResources(s32);                         /* extern */
-M2C_UNK func_8005C6A0(s32);                         /* extern */
+M2C_UNK World_Free(s32);                         /* extern */
 M2C_UNK func_8005D640(s32);                         /* extern */
 M2C_UNK func_8005FAC8(s32);                         /* extern */
 M2C_UNK Res_FreeAll();                            /* extern */
@@ -11,8 +11,8 @@ extern s32 D_8011EEF0;
 extern s32 gUi;
 extern s32 D_8011EEF8;
 
-void func_80063504(s32 arg0) {
-    func_8005C6A0(D_8011EEF8);
+void Game_EndMode(s32 arg0) {
+    World_Free(D_8011EEF8);
     ObjList_Reset(arg0 + 0x334);
     Game_FreeModeResources(arg0);
     func_8005D640(gUi);

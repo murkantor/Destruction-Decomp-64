@@ -19,7 +19,7 @@ s32 func_80055358(void) {
     return 0;
 }
 
-void func_80055360(void *arg0) {
+void HeapBlock_Clear(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0) = 0;
     M2C_FIELD(arg0, s32 *, 4) = (s32) M2C_FIELD(arg0, u8 *, 7);
     M2C_FIELD(arg0, u8 *, 7) = 0U;
@@ -29,15 +29,15 @@ s32 HeapBlock_Ptr(s32 *arg0) {
     return *arg0;
 }
 
-u32 func_8005537C(void *arg0) {
+u32 HeapBlock_Size(void *arg0) {
     return (u32) M2C_FIELD(arg0, u32 *, 4) >> 8;
 }
 
-u8 func_80055388(void *arg0) {
+u8 HeapBlock_Pad(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 7);
 }
 
-void func_80055390(void *arg0, void *arg1, s32 arg2) {
+void Heap_Init(void *arg0, void *arg1, s32 arg2) {
     M2C_FIELD(arg1, s32 *, 0) = arg2;
     M2C_FIELD(arg1, s32 *, 4) = 0;
     M2C_FIELD(arg0, void **, 0) = arg1;

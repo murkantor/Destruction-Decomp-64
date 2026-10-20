@@ -10,7 +10,7 @@ extern char gSaveSlotText[];
 u8 Pak_Open(s32 *);
 void Pak_SaveGame(s32 *);
 u8 Menu_HandleSelect(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 void Ui_SetElementColor(s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
@@ -23,7 +23,7 @@ s32 Menu_SaveGameState(Menu *m) {
 
     switch (m->x10) {
         case 0:
-            func_80063564(3, 1);
+            Game_SetNextMode(3, 1);
             m->x10 = 0;
             break;
         case 1:
@@ -31,12 +31,12 @@ s32 Menu_SaveGameState(Menu *m) {
             if (Menu_HandleSelect(pak)) {
                 Pak_SaveGame(&pak);
                 if (pak == 9) {
-                    func_80063564(9, 1);
+                    Game_SetNextMode(9, 1);
                     m->x10 = 0;
                 }
                 if (Menu_HandleSelect(pak) && gGame->x10FC == D_8011EEEA) {
                     func_80063380(2);
-                    func_80063564(0x19, 1);
+                    Game_SetNextMode(0x19, 1);
                     m->x10 = 0;
                 }
             } else if (pak == 5) {
@@ -51,12 +51,12 @@ s32 Menu_SaveGameState(Menu *m) {
             }
             } else {
                 func_80063380(2);
-                func_80063564(0x19, 1);
+                Game_SetNextMode(0x19, 1);
                 m->x10 = 0;
             }
             break;
         case 2:
-            func_80063564(8, 1);
+            Game_SetNextMode(8, 1);
             m->x10 = 0;
             break;
     }

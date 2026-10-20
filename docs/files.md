@@ -395,23 +395,23 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `028B08` | `80027F08` | 0x74 | `src/auto/28B08.c` | C (generated) | 1 | `ItemList_IndexOf` |
 | `028B7C` | `80027F7C` | 0xec | `src/auto/28B7C.c` | C (generated) | 1 | `Race_GetPlayerPosition` |
 | `028C70` | `80028070` | 0x63c | `src/auto/28C70.c` | C (generated) | 1 | `Car_OnCollision2` |
-| `0292AC` | `800286AC` | 0x1f8 | `src/auto/292AC.c` | C (generated) | 1 |  |
-| `0294A4` | `800288A4` | 0x18 | `src/auto/294A4.c` | C (generated) | 1 |  |
-| `0294BC` | `800288BC` | 0x190 | `src/auto/294BC.c` | C (generated) | 1 | `Track_ScaleVertsByDistance` |
+| `0292AC` | `800286AC` | 0x1f8 | `src/auto/292AC.c` | C (generated) | 1 | `Car_GetHitZone` |
+| `0294A4` | `800288A4` | 0x18 | `src/auto/294A4.c` | C (generated) | 1 | `Collision_ResetLastPair` |
+| `0294BC` | `800288BC` | 0x190 | `src/auto/294BC.c` | C (generated) | 1 | `Car_DeformVerts` |
 | `02964C` | `80028A4C` | 0x664 | `src/auto/2964C.c` | C (generated) | 1 | `Car_DeformMeshAtImpact` |
 | `029CB0` | `800290B0` | 0x2c8 | `src/auto/29CB0.c` | C (generated) | 1 | `Car_ApplyDamage` |
 | `029F78` | `80029378` | 0x6a0 | `src/auto/29F78.c` | C (generated) | 1 | `Car_OnCollision` |
 | `02A618` | `80029A18` | 0xbb4 | `src/auto/2A618.c` | C (generated) | 1 | `Car_ApplyImpactDamage` |
-| `02B1CC` | `8002A5CC` | 0xc0 | `src/auto/2B1CC.c` | C (generated) | 1 |  |
-| `02B28C` | `8002A68C` | 0x24c | `src/auto/2B28C.c` | C (generated) | 1 |  |
-| `02B4D8` | `8002A8D8` | 0x32c | `src/auto/2B4D8.c` | C (generated) | 1 |  |
+| `02B1CC` | `8002A5CC` | 0xc0 | `src/auto/2B1CC.c` | C (generated) | 1 | `Car_CheckWrecked` |
+| `02B28C` | `8002A68C` | 0x24c | `src/auto/2B28C.c` | C (generated) | 1 | `Team_ScoreFlagAtBase` |
+| `02B4D8` | `8002A8D8` | 0x32c | `src/auto/2B4D8.c` | C (generated) | 1 | `Race_OnLapCompleted` |
 | `02B804` | `8002AC04` | 0x26c | `src/auto/2B804.c` | C (generated) | 1 | `Race_AwardPot` |
 | `02BA70` | `8002AE70` | 0x4e8 | `src/auto/2BA70.c` | C (generated) | 1 | `Results_TallyStandings` |
-| `02BF58` | `8002B358` | 0x314 | `src/auto/2BF58.c` | C (generated) | 1 |  |
-| `02C26C` | `8002B66C` | 0x134 | `src/auto/2C26C.c` | C (generated) | 1 |  |
-| `02C3A0` | `8002B7A0` | 0x4f8 | `src/auto/2C3A0.c` | C (generated) | 1 |  |
+| `02BF58` | `8002B358` | 0x314 | `src/auto/2BF58.c` | C (generated) | 1 | `Race_EstimateFinishTimes` |
+| `02C26C` | `8002B66C` | 0x134 | `src/auto/2C26C.c` | C (generated) | 1 | `Race_AwardHealthBonus` |
+| `02C3A0` | `8002B7A0` | 0x4f8 | `src/auto/2C3A0.c` | C (generated) | 1 | `Car_OnTriggerCrossed` |
 | `02C898` | `8002BC98` | 0x23c | `src/auto/2C898.c` | C (generated) | 1 | `Track_LoadGridObjects` |
-| `02CAD4` | `8002BED4` | 0x34 | `src/auto/2CAD4.c` | C (generated) | 1 |  |
+| `02CAD4` | `8002BED4` | 0x34 | `src/auto/2CAD4.c` | C (generated) | 1 | `Track_FreeGridObjects` |
 | `02CB08` | `8002BF08` | 0x28 | `src/auto/2CB08.c` | C (generated) | 1 |  |
 | `02CB30` | `8002BF30` | 0x204 | `src/auto/2CB30.c` | C (generated) | 1 | `World_Update` |
 | `02CD34` | `8002C134` | 0x1e4 | `src/auto/2CD34.c` | C (generated) | 1 | `Game_FreeModeResources` |
@@ -419,24 +419,24 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `02D2F0` | `8002C6F0` | 0x998 | `src/auto/2D2F0.c` | C (generated) | 1 | `Race_Setup` |
 | `02DC88` | `8002D088` | 0x58 | `src/auto/2DC88.c` | C (generated) | 1 |  |
 | `02DCE0` | `8002D0E0` | 0xa8 | `src/auto/2DCE0.c` | C (generated) | 1 |  |
-| `02DD88` | `8002D188` | 0x194 | `src/auto/2DD88.c` | C (generated) | 1 |  |
-| `02DF20` | `8002D320` | 0x98 | `src/auto/2DF20.c` | C (generated) | 1 |  |
-| `02DFB8` | `8002D3B8` | 0x54 | `src/auto/2DFB8.c` | C (generated) | 1 |  |
+| `02DD88` | `8002D188` | 0x194 | `src/auto/2DD88.c` | C (generated) | 1 | `Game_RunStartupChecks` |
+| `02DF20` | `8002D320` | 0x98 | `src/auto/2DF20.c` | C (generated) | 1 | `Cheat_ResetAll` |
+| `02DFB8` | `8002D3B8` | 0x54 | `src/auto/2DFB8.c` | C (generated) | 1 | `Cheat_ResetInput` |
 | `02E00C` | `8002D40C` | 0x2f8 | `src/auto/2E00C.c` | C (generated) | 1 | `Cheat_UpdateInput` |
 | `02E304` | `8002D704` | 0x50 | `src/auto/2E304.c` | C (generated) | 1 | `AnyEntryFlag10` |
 | `02E360` | `8002D760` | 0xbc | `src/auto/2E360.c` | C (generated) | 2 |  |
-| `02E41C` | `8002D81C` | 0x4a0 | `src/auto/2E41C.c` | C (generated) | 1 |  |
-| `02E8BC` | `8002DCBC` | 0x9c | `src/auto/2E8BC.c` | C (generated) | 1 |  |
-| `02E958` | `8002DD58` | 0x74 | `src/auto/2E958.c` | C (generated) | 1 |  |
+| `02E41C` | `8002D81C` | 0x4a0 | `src/auto/2E41C.c` | C (generated) | 1 | `Track_LoadProps` |
+| `02E8BC` | `8002DCBC` | 0x9c | `src/auto/2E8BC.c` | C (generated) | 1 | `Track_FreeProps` |
+| `02E958` | `8002DD58` | 0x74 | `src/auto/2E958.c` | C (generated) | 1 | `Prop_Draw` |
 | `02E9D0` | `8002DDD0` | 0x970 | `src/auto/2E9D0.c` | C (generated) | 1 | `Car_CheckTriggersAndPickups` |
 | `02F340` | `8002E740` | 0x3c0 | `src/auto/2F340.c` | C (generated) | 1 |  |
 | `02F700` | `8002EB00` | 0xb6c | `src/auto/2F700.c` | C (generated) | 1 | `Car_PhysicsStep` |
-| `03026C` | `8002F66C` | 0x208 | `src/auto/3026C.c` | C (generated) | 1 |  |
-| `030474` | `8002F874` | 0xb0 | `src/auto/30474.c` | C (generated) | 1 | `Cars_CheckCollisions` |
+| `03026C` | `8002F66C` | 0x208 | `src/auto/3026C.c` | C (generated) | 1 | `Team_CheckFlagPickup` |
+| `030474` | `8002F874` | 0xb0 | `src/auto/30474.c` | C (generated) | 1 | `Team_CheckBaseZone` |
 | `030524` | `8002F924` | 0xfc | `src/auto/30524.c` | C (generated) | 1 | `Trigger_CheckCarsInZone` |
-| `030620` | `8002FA20` | 0xc | `src/auto/30620.c` | C (generated) | 1 |  |
+| `030620` | `8002FA20` | 0xc | `src/auto/30620.c` | C (generated) | 1 | `Body_ClearContacts` |
 | `03062C` | `8002FA2C` | 0x9c | `src/auto/3062C.c` | C (generated) | 1 | `Car_UpdateWheels` |
-| `0306C8` | `8002FAC8` | 0x610 | `src/auto/306C8.c` | C (generated) | 1 | `Car_CheckRamps` |
+| `0306C8` | `8002FAC8` | 0x610 | `src/auto/306C8.c` | C (generated) | 1 | `Wheel_ProbeGround` |
 | `030CD8` | `800300D8` | 0x10c | `src/auto/30CD8.c` | C (generated) | 1 |  |
 | `030DE4` | `800301E4` | 0xf74 | `src/auto/30DE4.c` | C (generated) | 1 | `Car_CollideTrack` |
 | `031D58` | `80031158` | 0x1ec | `src/auto/31D58.c` | C (generated) | 1 | `Line_ClosestPoints` |
@@ -445,15 +445,15 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0323A0` | `800317A0` | 0x1f0 | `src/auto/323A0.c` | C (generated) | 1 | `Track_GetCellsInBox` |
 | `032590` | `80031990` | 0x60 | `src/auto/32590.c` | C (generated) | 1 | `Vec3_AddToArray` |
 | `0325F0` | `800319F0` | 0x4d0 | `src/auto/325F0.c` | C (generated) | 1 | `Car_ApplyCollisionImpulse` |
-| `032AC0` | `80031EC0` | 0x39c | `src/auto/32AC0.c` | C (generated) | 1 |  |
+| `032AC0` | `80031EC0` | 0x39c | `src/auto/32AC0.c` | C (generated) | 1 | `Car_CollideOtherCars` |
 | `032E5C` | `8003225C` | 0x764 | `src/auto/32E5C.c` | C (generated) | 1 | `Car_CollideCars` |
-| `0335C0` | `800329C0` | 0x164 | `src/auto/335C0.c` | C (generated) | 1 |  |
-| `033724` | `80032B24` | 0xb4 | `src/auto/33724.c` | C (generated) | 1 |  |
+| `0335C0` | `800329C0` | 0x164 | `src/auto/335C0.c` | C (generated) | 1 | `Surface_GetGrip` |
+| `033724` | `80032B24` | 0xb4 | `src/auto/33724.c` | C (generated) | 1 | `Car_WorldToLocal` |
 | `0337D8` | `80032BD8` | 0x1b0 | `src/auto/337D8.c` | C (generated) | 1 | `Model_TransformVerts` |
 | `033988` | `80032D88` | 0x11c | `src/auto/33988.c` | C (generated) | 1 | `Obb_ToAabb` |
 | `033AA4` | `80032EA4` | 0x11c | `src/auto/33AA4.c` | C (generated) | 1 | `Points_ComputeAABB` |
-| `033BC0` | `80032FC0` | 0xe8 | `src/auto/33BC0.c` | C (generated) | 1 |  |
-| `033CA8` | `800330A8` | 0xc0 | `src/auto/33CA8.c` | C (generated) | 1 |  |
+| `033BC0` | `80032FC0` | 0xe8 | `src/auto/33BC0.c` | C (generated) | 1 | `Aabb_Overlap` |
+| `033CA8` | `800330A8` | 0xc0 | `src/auto/33CA8.c` | C (generated) | 1 | `Obb_OverlapsSphere` |
 | `033D68` | `80033168` | 0xb54 | `src/auto/33D68.c` | C (generated) | 1 | `Obb_Overlap` |
 | `0348BC` | `80033CBC` | 0x344 | `src/auto/348BC.c` | C (generated) | 1 | `Poly_IntersectSegment` |
 | `034C00` | `80034000` | 0xe0 | `src/auto/34C00.c` | C (generated) | 1 | `Poly_StraddlesPlane` |
@@ -462,16 +462,16 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `035038` | `80034438` | 0xec | `src/auto/35038.c` | C (generated) | 1 | `Poly_ContainsXZMargin` |
 | `035124` | `80034524` | 0x124 | `src/auto/35124.c` | C (generated) | 1 | `Poly_ContainsPoint` |
 | `035248` | `80034648` | 0x14c | `src/auto/35248.c` | C (generated) | 1 |  |
-| `035394` | `80034794` | 0x164 | `src/auto/35394.c` | C (generated) | 1 |  |
+| `035394` | `80034794` | 0x164 | `src/auto/35394.c` | C (generated) | 1 | `Poly_SegmentHit` |
 | `0354F8` | `800348F8` | 0x348 | `src/auto/354F8.c` | C (generated) | 2 | `Plane_IntersectSegment`, `Physics_AddContact` |
-| `035840` | `80034C40` | 0x48 | `src/auto/35840.c` | C (generated) | 1 |  |
+| `035840` | `80034C40` | 0x48 | `src/auto/35840.c` | C (generated) | 1 | `Body_LinkContact` |
 | `035888` | `80034C88` | 0x274 | `src/auto/35888.c` | C (generated) | 1 | `Body_EnergyRatioExceeds` |
 | `035AFC` | `80034EFC` | 0x42c | `src/auto/35AFC.c` | C (generated) | 1 | `Car_ApplyContactImpulses` |
-| `035F28` | `80035328` | 0x33c | `src/auto/35F28.c` | C (generated) | 1 |  |
+| `035F28` | `80035328` | 0x33c | `src/auto/35F28.c` | C (generated) | 1 | `Contact_ComputeImpulse` |
 | `036264` | `80035664` | 0xe0 | `src/auto/36264.c` | C (generated) | 1 | `Track_GetFace` |
-| `036344` | `80035744` | 0xd4 | `src/auto/36344.c` | C (generated) | 1 |  |
+| `036344` | `80035744` | 0xd4 | `src/auto/36344.c` | C (generated) | 1 | `Track_GetCellIndex` |
 | `036418` | `80035818` | 0x1c4 | `src/auto/36418.c` | C (generated) | 1 | `Seg2D_Intersects` |
-| `0365DC` | `800359DC` | 0x388 | `src/auto/365DC.c` | C (generated) | 1 |  |
+| `0365DC` | `800359DC` | 0x388 | `src/auto/365DC.c` | C (generated) | 1 | `Car_GetFaceUnder` |
 | `036964` | `80035D64` | 0x114 | `src/auto/36964.c` | C (generated) | 1 | `Track_IsGridCellSolid` |
 | `036A78` | `80035E78` | 0x35c | `src/auto/36A78.c` | C (generated) | 1 | `Seg_SphereSweepIntersect` |
 | `036DE0` | `800361E0` | 0x1e4 | `src/auto/36DE0.c` | C (generated) | 1 | `CarAI_InitTarget` |
@@ -480,7 +480,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `038128` | `80037528` | 0x828 | `src/auto/38128.c` | C (generated) | 1 | `Car_ApplyWheelForces` |
 | `038950` | `80037D50` | 0x1900 | `asm/38950.s` | asm | 2 | `Car_ApplySuspensionForces`, `Car_UpdatePhysics` |
 | `03A250` | `80039650` | 0x1ac | `src/auto/3A250.c` | C (generated) | 1 | `Car_SelectGear` |
-| `03A3FC` | `800397FC` | 0x74 | `src/auto/3A3FC.c` | C (generated) | 1 |  |
+| `03A3FC` | `800397FC` | 0x74 | `src/auto/3A3FC.c` | C (generated) | 1 | `Car_GetDriveTorque` |
 | `03A470` | `80039870` | 0xe8 | `src/auto/3A470.c` | C (generated) | 1 | `Car_UpdateRpm` |
 | `03A558` | `80039958` | 0x210 | `src/auto/3A558.c` | C (generated) | 1 | `Car_UpdateEngineRpm` |
 | `03A770` | `80039B70` | 0x18c | `src/auto/3A770.c` | C (generated) | 1 | `Math_SinCos` |
@@ -488,55 +488,55 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `03A9A4` | `80039DA4` | 0x20 | `src/auto/3A9A4.c` | C (generated) | 1 |  |
 | `03A9C4` | `80039DC4` | 0x25c | `src/auto/3A9C4.c` | C (generated) | 1 | `Basis_RotateRows` |
 | `03AC20` | `8003A020` | 0x4b8 | `src/auto/3AC20.c` | C (generated) | 2 | `Mtx3_RotateY`, `Mtx2x3_RotateY` |
-| `03B0D8` | `8003A4D8` | 0x90 | `src/auto/3B0D8.c` | C (generated) | 1 |  |
-| `03B168` | `8003A568` | 0x30c | `src/auto/3B168.c` | C (generated) | 1 |  |
+| `03B0D8` | `8003A4D8` | 0x90 | `src/auto/3B0D8.c` | C (generated) | 1 | `Mtx3_RotateByVector` |
+| `03B168` | `8003A568` | 0x30c | `src/auto/3B168.c` | C (generated) | 1 | `Mtx3_RotateAxisAngle` |
 | `03B474` | `8003A874` | 0x1b4 | `src/auto/3B474.c` | C (generated) | 1 | `Inertia_RotateDiag` |
 | `03B628` | `8003AA28` | 0x9c | `src/auto/3B628.c` | C (generated) | 1 | `Tensor_MulVec3f` |
 | `03B6C4` | `8003AAC4` | 0x10c | `src/auto/3B6C4.c` | C (generated) | 1 | `Basis_Orthonormalize` |
-| `03B7D0` | `8003ABD0` | 0xb8 | `src/auto/3B7D0.c` | C (generated) | 1 |  |
+| `03B7D0` | `8003ABD0` | 0xb8 | `src/auto/3B7D0.c` | C (generated) | 1 | `Mtx3_MulVec3f` |
 | `03B888` | `8003AC88` | 0xb8 | `src/auto/3B888.c` | C (generated) | 1 | `Mtx3_MulVec3fTransposed` |
 | `03B940` | `8003AD40` | 0xdc | `src/auto/3B940.c` | C (generated) | 1 | `Mtx3_MulDiff` |
 | `03BA1C` | `8003AE1C` | 0x100 | `src/auto/3BA1C.c` | C (generated) | 1 | `Vec3f_TransformTransposed` |
 | `03BB1C` | `8003AF1C` | 0x18c | `src/auto/3BB1C.c` | C (generated) | 1 | `Grid_AddObjToCellsInRect` |
-| `03BCA8` | `8003B0A8` | 0x64 | `src/auto/3BCA8.c` | C (generated) | 1 |  |
+| `03BCA8` | `8003B0A8` | 0x64 | `src/auto/3BCA8.c` | C (generated) | 1 | `Grid_AddObjAtPos` |
 | `03BD10` | `8003B110` | 0x2f4 | `src/auto/3BD10.c` | C (generated) | 1 | `World_UpdateEffects` |
-| `03C010` | `8003B410` | 0x84 | `src/auto/3C010.c` | C (generated) | 1 |  |
-| `03C094` | `8003B494` | 0x74 | `src/auto/3C094.c` | C (generated) | 1 |  |
-| `03C108` | `8003B508` | 0xc4 | `src/auto/3C108.c` | C (generated) | 1 |  |
-| `03C1CC` | `8003B5CC` | 0x60 | `src/auto/3C1CC.c` | C (generated) | 1 |  |
-| `03C22C` | `8003B62C` | 0x7c | `src/auto/3C22C.c` | C (generated) | 1 |  |
-| `03C2A8` | `8003B6A8` | 0x7c | `src/auto/3C2A8.c` | C (generated) | 1 |  |
+| `03C010` | `8003B410` | 0x84 | `src/auto/3C010.c` | C (generated) | 1 | `Logo_ThqUpdate` |
+| `03C094` | `8003B494` | 0x74 | `src/auto/3C094.c` | C (generated) | 1 | `Logo_ThqInit` |
+| `03C108` | `8003B508` | 0xc4 | `src/auto/3C108.c` | C (generated) | 1 | `Logo_LookingGlassUpdate` |
+| `03C1CC` | `8003B5CC` | 0x60 | `src/auto/3C1CC.c` | C (generated) | 1 | `Logo_LookingGlassInit` |
+| `03C22C` | `8003B62C` | 0x7c | `src/auto/3C22C.c` | C (generated) | 1 | `Logo_N64Update` |
+| `03C2A8` | `8003B6A8` | 0x7c | `src/auto/3C2A8.c` | C (generated) | 1 | `Logo_N64Init` |
 | `03C330` | `8003B730` | 0x104 | `src/auto/3C330.c` | C (generated) | 1 | `PakMenu_InsertPaks` |
 | `03C434` | `8003B834` | 0x298 | `src/auto/3C434.c` | C (generated) | 1 | `Save_DeleteSlot` |
-| `03C6CC` | `8003BACC` | 0x74 | `src/auto/3C6CC.c` | C (generated) | 1 |  |
-| `03C740` | `8003BB40` | 0x5c | `src/auto/3C740.c` | C (generated) | 2 |  |
-| `03C79C` | `8003BB9C` | 0x38 | `src/auto/3C79C.c` | C (generated) | 1 |  |
+| `03C6CC` | `8003BACC` | 0x74 | `src/auto/3C6CC.c` | C (generated) | 1 | `SaveMenu_ToggleDelete` |
+| `03C740` | `8003BB40` | 0x5c | `src/auto/3C740.c` | C (generated) | 2 | `SaveMenu_InitDelete` |
+| `03C79C` | `8003BB9C` | 0x38 | `src/auto/3C79C.c` | C (generated) | 1 | `SaveMenu_Select` |
 | `03C7D4` | `8003BBD4` | 0x168 | `src/auto/3C7D4.c` | C (generated) | 1 | `SaveMenu_PrevSlot` |
 | `03C93C` | `8003BD3C` | 0x164 | `src/auto/3C93C.c` | C (generated) | 1 | `SaveMenu_NextSlot` |
 | `03CAA0` | `8003BEA0` | 0x424 | `src/auto/3CAA0.c` | C (generated) | 1 | `PakMenu_BuildSlotList` |
 | `03CEC4` | `8003C2C4` | 0x124 | `src/auto/3CEC4.c` | C (generated) | 1 |  |
-| `03CFE8` | `8003C3E8` | 0x98 | `src/auto/3CFE8.c` | C (generated) | 1 |  |
-| `03D080` | `8003C480` | 0xc4 | `src/auto/3D080.c` | C (generated) | 1 |  |
+| `03CFE8` | `8003C3E8` | 0x98 | `src/auto/3CFE8.c` | C (generated) | 1 | `PakMenu_NoPakTick` |
+| `03D080` | `8003C480` | 0xc4 | `src/auto/3D080.c` | C (generated) | 1 | `PakMenu_NoPakSelect` |
 | `03D144` | `8003C544` | 0x114 | `src/auto/3D144.c` | C (generated) | 1 | `PakMenu_NoPak` |
-| `03D258` | `8003C658` | 0xb8 | `src/auto/3D258.c` | C (generated) | 1 |  |
-| `03D310` | `8003C710` | 0xd8 | `src/auto/3D310.c` | C (generated) | 1 |  |
+| `03D258` | `8003C658` | 0xb8 | `src/auto/3D258.c` | C (generated) | 1 | `PakMenu_NoNoteToggle` |
+| `03D310` | `8003C710` | 0xd8 | `src/auto/3D310.c` | C (generated) | 1 | `PakMenu_NoNoteSelect` |
 | `03D3E8` | `8003C7E8` | 0x144 | `src/auto/3D3E8.c` | C (generated) | 1 | `PakMenu_NoNote` |
-| `03D52C` | `8003C92C` | 0xb8 | `src/auto/3D52C.c` | C (generated) | 1 |  |
-| `03D5E4` | `8003C9E4` | 0x104 | `src/auto/3D5E4.c` | C (generated) | 1 |  |
+| `03D52C` | `8003C92C` | 0xb8 | `src/auto/3D52C.c` | C (generated) | 1 | `PakMenu_NoSaveToggle` |
+| `03D5E4` | `8003C9E4` | 0x104 | `src/auto/3D5E4.c` | C (generated) | 1 | `PakMenu_NoSaveSelect` |
 | `03D6E8` | `8003CAE8` | 0x19c | `src/auto/3D6E8.c` | C (generated) | 1 | `PakMenu_NoSaveWarning` |
-| `03D884` | `8003CC84` | 0x78 | `src/auto/3D884.c` | C (generated) | 1 |  |
-| `03D8FC` | `8003CCFC` | 0x80 | `src/auto/3D8FC.c` | C (generated) | 1 |  |
-| `03D97C` | `8003CD7C` | 0xb8 | `src/auto/3D97C.c` | C (generated) | 1 |  |
+| `03D884` | `8003CC84` | 0x78 | `src/auto/3D884.c` | C (generated) | 1 | `PakMenu_NoteExistsUp` |
+| `03D8FC` | `8003CCFC` | 0x80 | `src/auto/3D8FC.c` | C (generated) | 1 | `PakMenu_NoteExistsDown` |
+| `03D97C` | `8003CD7C` | 0xb8 | `src/auto/3D97C.c` | C (generated) | 1 | `PakMenu_NoteExistsSelect` |
 | `03DA34` | `8003CE34` | 0x148 | `src/auto/3DA34.c` | C (generated) | 1 | `PakMenu_NoteExists` |
-| `03DB7C` | `8003CF7C` | 0x90 | `src/auto/3DB7C.c` | C (generated) | 1 |  |
-| `03DC0C` | `8003D00C` | 0xcc | `src/auto/3DC0C.c` | C (generated) | 1 |  |
+| `03DB7C` | `8003CF7C` | 0x90 | `src/auto/3DB7C.c` | C (generated) | 1 | `PakMenu_OverwriteToggle` |
+| `03DC0C` | `8003D00C` | 0xcc | `src/auto/3DC0C.c` | C (generated) | 1 | `PakMenu_OverwriteSelect` |
 | `03DCD8` | `8003D0D8` | 0x138 | `src/auto/3DCD8.c` | C (generated) | 1 | `PakMenu_ConfirmOverwrite` |
 | `03DE10` | `8003D210` | 0x2c4 | `src/auto/3DE10.c` | C (generated) | 1 | `PakMenu_AutoSaveTick` |
 | `03E0D4` | `8003D4D4` | 0x1e4 | `src/auto/3E0D4.c` | C (generated) | 1 | `PakMenu_Busy` |
-| `03E2B8` | `8003D6B8` | 0x40 | `src/auto/3E2B8.c` | C (generated) | 1 |  |
-| `03E2F8` | `8003D6F8` | 0x6c | `src/auto/3E2F8.c` | C (generated) | 2 |  |
-| `03E364` | `8003D764` | 0xf4 | `src/auto/3E364.c` | C (generated) | 1 |  |
-| `03E458` | `8003D858` | 0xf8 | `src/auto/3E458.c` | C (generated) | 1 |  |
+| `03E2B8` | `8003D6B8` | 0x40 | `src/auto/3E2B8.c` | C (generated) | 1 | `PakMenu_CheckPaks` |
+| `03E2F8` | `8003D6F8` | 0x6c | `src/auto/3E2F8.c` | C (generated) | 2 | `PakMenu_InsertPaksSelect`, `PakMenu_InitInsertPaks` |
+| `03E364` | `8003D764` | 0xf4 | `src/auto/3E364.c` | C (generated) | 1 | `PakMenu_PakFullUp` |
+| `03E458` | `8003D858` | 0xf8 | `src/auto/3E458.c` | C (generated) | 1 | `PakMenu_PakFullDown` |
 | `03E550` | `8003D950` | 0x1bc | `src/auto/3E550.c` | C (generated) | 1 | `Menu_SaveGameState` |
 | `03E70C` | `8003DB0C` | 0x260 | `src/auto/3E70C.c` | C (generated) | 1 | `PakMenu_PakFull` |
 | `03E96C` | `8003DD6C` | 0xf4 | `src/auto/3E96C.c` | C (generated) | 1 |  |
@@ -712,81 +712,81 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `053320` | `80052720` | 0x8 | `src/auto/53320.c` | C (generated) | 1 |  |
 | `053328` | `80052728` | 0x148 | `src/auto/53328.c` | C (generated) | 1 | `Zip_ReadEndOfCentralDir` |
 | `053470` | `80052870` | 0x270 | `src/auto/53470.c` | C (generated) | 1 | `Zip_Open` |
-| `0536E0` | `80052AE0` | 0x39c | `src/auto/536E0.c` | C (generated) | 1 |  |
-| `053A7C` | `80052E7C` | 0x9c | `src/auto/53A7C.c` | C (generated) | 3 |  |
+| `0536E0` | `80052AE0` | 0x39c | `src/auto/536E0.c` | C (generated) | 1 | `Zip_ReadNextEntry` |
+| `053A7C` | `80052E7C` | 0x9c | `src/auto/53A7C.c` | C (generated) | 3 | `Zip_Close`, `Zip_CloseFile`, `Zip_Rewind` |
 | `053B18` | `80052F18` | 0xd8 | `src/auto/53B18.c` | C (generated) | 1 | `Arc_SeekToEntryData` |
-| `053BF0` | `80052FF0` | 0x60 | `src/auto/53BF0.c` | C (generated) | 1 |  |
-| `053C50` | `80053050` | 0xfc | `src/auto/53C50.c` | C (generated) | 1 |  |
+| `053BF0` | `80052FF0` | 0x60 | `src/auto/53BF0.c` | C (generated) | 1 | `Zip_ReadStoredEntry` |
+| `053C50` | `80053050` | 0xfc | `src/auto/53C50.c` | C (generated) | 1 | `Zip_ExtractEntry` |
 | `053D4C` | `8005314C` | 0x1f0 | `src/auto/53D4C.c` | C (generated) | 1 | `Zip_ReadFileByName` |
 | `053F3C` | `8005333C` | 0x228 | `src/auto/53F3C.c` | C (generated) | 1 | `Zip_FindEntry` |
 | `054170` | `80053570` | 0x21c | `src/auto/54170.c` | C (generated) | 1 | `Elf_FindSymbol` |
 | `05438C` | `8005378C` | 0x174 | `src/auto/5438C.c` | C (generated) | 1 | `Elf_ResolveSymbols` |
 | `054500` | `80053900` | 0x380 | `src/auto/54500.c` | C (generated) | 1 | `Elf_Relocate` |
 | `054880` | `80053C80` | 0x80 | `src/auto/54880.c` | C (generated) | 1 | `Elf_Link` |
-| `054900` | `80053D00` | 0x60 | `src/auto/54900.c` | C (generated) | 3 | `strcpy` |
+| `054900` | `80053D00` | 0x60 | `src/auto/54900.c` | C (generated) | 3 | `strcpy`, `DebugMenu_Reset` |
 | `054960` | `80053D60` | 0x148 | `src/auto/54960.c` | C (generated) | 1 | `Debug_AssertScreen` |
-| `054AA8` | `80053EA8` | 0x180 | `src/auto/54AA8.c` | C (generated) | 6 | `DebugMenu_Init`, `DebugMenu_AddToggle`, `DebugMenu_AddInt`, `DebugMenu_AddFloat`, `DebugMenu_AddSubmenu` |
-| `054C28` | `80054028` | 0x1c | `src/auto/54C28.c` | C (generated) | 1 |  |
-| `054C44` | `80054044` | 0x14 | `src/auto/54C44.c` | C (generated) | 1 |  |
-| `054C58` | `80054058` | 0x44 | `src/auto/54C58.c` | C (generated) | 2 |  |
-| `054C9C` | `8005409C` | 0x20 | `src/auto/54C9C.c` | C (generated) | 1 |  |
-| `054CC0` | `800540C0` | 0x448 | `src/auto/54CC0.c` | C (generated) | 1 |  |
+| `054AA8` | `80053EA8` | 0x180 | `src/auto/54AA8.c` | C (generated) | 6 | `Debug_BreakPoint`, `DebugMenu_Init`, `DebugMenu_AddToggle`, `DebugMenu_AddInt`, `DebugMenu_AddFloat`, `DebugMenu_AddSubmenu` |
+| `054C28` | `80054028` | 0x1c | `src/auto/54C28.c` | C (generated) | 1 | `DebugMenu_GetCurrent` |
+| `054C44` | `80054044` | 0x14 | `src/auto/54C44.c` | C (generated) | 1 | `DebugMenu_SetRoot` |
+| `054C58` | `80054058` | 0x44 | `src/auto/54C58.c` | C (generated) | 2 | `DebugMenu_SetCurrent`, `DebugMenu_Push` |
+| `054C9C` | `8005409C` | 0x20 | `src/auto/54C9C.c` | C (generated) | 1 | `DebugMenu_Pop` |
+| `054CC0` | `800540C0` | 0x448 | `src/auto/54CC0.c` | C (generated) | 1 | `DebugMenu_HandleInput` |
 | `055108` | `80054508` | 0x2fc | `src/auto/55108.c` | C (generated) | 1 | `DebugMenu_DrawPage` |
 | `055404` | `80054804` | 0x2f8 | `src/auto/55404.c` | C (generated) | 1 | `DebugMenu_Draw` |
-| `0556FC` | `80054AFC` | 0x4c | `src/auto/556FC.c` | C (generated) | 1 |  |
-| `055748` | `80054B48` | 0x4c | `src/auto/55748.c` | C (generated) | 2 |  |
+| `0556FC` | `80054AFC` | 0x4c | `src/auto/556FC.c` | C (generated) | 1 | `DebugMenu_Step` |
+| `055748` | `80054B48` | 0x4c | `src/auto/55748.c` | C (generated) | 2 | `DebugMenu_Update` |
 | `055794` | `80054B94` | 0x130 | `src/auto/55794.c` | C (generated) | 1 | `DebugMenu_Run` |
-| `0558D0` | `80054CD0` | 0x100 | `src/auto/558D0.c` | C (generated) | 1 |  |
+| `0558D0` | `80054CD0` | 0x100 | `src/auto/558D0.c` | C (generated) | 1 | `Font_Init` |
 | `0559D0` | `80054DD0` | 0x10c | `src/auto/559D0.c` | C (generated) | 1 | `Gfx_LoadTlut` |
 | `055ADC` | `80054EDC` | 0x438 | `src/auto/55ADC.c` | C (generated) | 1 | `Font_DrawString` |
-| `055F20` | `80055320` | 0x94 | `src/auto/55F20.c` | C (generated) | 8 | `HeapBlock_Ptr` |
-| `055FB4` | `800553B4` | 0x30 | `src/auto/55FB4.c` | C (generated) | 1 |  |
+| `055F20` | `80055320` | 0x94 | `src/auto/55F20.c` | C (generated) | 8 | `HeapBlock_Clear`, `HeapBlock_Ptr`, `HeapBlock_Size`, `HeapBlock_Pad`, `Heap_Init` |
+| `055FB4` | `800553B4` | 0x30 | `src/auto/55FB4.c` | C (generated) | 1 | `Heap_GetFree` |
 | `055FE4` | `800553E4` | 0x4b4 | `src/heap.c` | C | 4 | First-fit heap with an address-sorted free list |
 | `056498` | `80055898` | 0xf4 | `src/pool.c` | C | 4 | Fixed-size block pools |
 | `05658C` | `8005598C` | 0x160 | `src/mem.c` | C | 5 | Allocations from the main heap (Mem_Alloc, Mem_Free) |
 | `0566EC` | `80055AEC` | 0xc4 | `src/auto/566EC.c` | C (generated) | 1 | `Mem_Shrink` |
-| `0567B0` | `80055BB0` | 0x94 | `src/auto/567B0.c` | C (generated) | 2 |  |
-| `056844` | `80055C44` | 0x84 | `src/auto/56844.c` | C (generated) | 1 | `Emitter_FreeAll` |
+| `0567B0` | `80055BB0` | 0x94 | `src/auto/567B0.c` | C (generated) | 2 | `PtrList_Init`, `PtrList_Add` |
+| `056844` | `80055C44` | 0x84 | `src/auto/56844.c` | C (generated) | 1 | `PtrList_FreeAll` |
 | `0568D0` | `80055CD0` | 0x1fc | `src/auto/568D0.c` | C (generated) | 1 | `Video_SetMode` |
 | `056ACC` | `80055ECC` | 0xa4 | `src/auto/56ACC.c` | C (generated) | 1 | `Vi_InitConfig` |
-| `056B70` | `80055F70` | 0x8c | `src/auto/56B70.c` | C (generated) | 1 |  |
-| `056BFC` | `80055FFC` | 0x58 | `src/auto/56BFC.c` | C (generated) | 1 |  |
+| `056B70` | `80055F70` | 0x8c | `src/auto/56B70.c` | C (generated) | 1 | `Vi_ApplyConfig` |
+| `056BFC` | `80055FFC` | 0x58 | `src/auto/56BFC.c` | C (generated) | 1 | `Vi_InitManager` |
 | `056C54` | `80056054` | 0x3c | `src/auto/56C54.c` | C (generated) | 1 | `DebugMenu_BuildVideo` |
-| `056C90` | `80056090` | 0x60 | `src/auto/56C90.c` | C (generated) | 3 |  |
+| `056C90` | `80056090` | 0x60 | `src/auto/56C90.c` | C (generated) | 3 | `Vi_SwapBuffer`, `Vi_WaitSwap` |
 | `056CF0` | `800560F0` | 0x220 | `src/auto/56CF0.c` | C (generated) | 1 | `DebugMenu_BuildFrameSetup` |
-| `056F10` | `80056310` | 0x90 | `src/auto/56F10.c` | C (generated) | 1 |  |
-| `056FA0` | `800563A0` | 0x50 | `src/auto/56FA0.c` | C (generated) | 1 |  |
-| `056FF0` | `800563F0` | 0xc | `src/auto/56FF0.c` | C (generated) | 1 |  |
-| `056FFC` | `800563FC` | 0xc | `src/auto/56FFC.c` | C (generated) | 1 |  |
+| `056F10` | `80056310` | 0x90 | `src/auto/56F10.c` | C (generated) | 1 | `Gfx_FreeBuffers` |
+| `056FA0` | `800563A0` | 0x50 | `src/auto/56FA0.c` | C (generated) | 1 | `Fb_InitContext` |
+| `056FF0` | `800563F0` | 0xc | `src/auto/56FF0.c` | C (generated) | 1 | `Fb_GetContext` |
+| `056FFC` | `800563FC` | 0xc | `src/auto/56FFC.c` | C (generated) | 1 | `Fb_GetLastFramebuffer` |
 | `057008` | `80056408` | 0x170 | `src/auto/57008.c` | C (generated) | 1 | `Fb_CreateContext` |
 | `057178` | `80056578` | 0x40 | `src/auto/57178.c` | C (generated) | 3 |  |
-| `0571B8` | `800565B8` | 0x350 | `src/auto/571B8.c` | C (generated) | 1 |  |
-| `057508` | `80056908` | 0x3bc | `src/auto/57508.c` | C (generated) | 1 | `Gfx_BusyScreen` |
-| `0578C4` | `80056CC4` | 0x604 | `src/auto/578C4.c` | C (generated) | 1 | `Debug_DrawPerfStats` |
-| `057EC8` | `800572C8` | 0x40 | `src/auto/57EC8.c` | C (generated) | 2 |  |
-| `057F08` | `80057308` | 0x94 | `src/auto/57F08.c` | C (generated) | 2 |  |
+| `0571B8` | `800565B8` | 0x350 | `src/auto/571B8.c` | C (generated) | 1 | `Gfx_BeginFrame` |
+| `057508` | `80056908` | 0x3bc | `src/auto/57508.c` | C (generated) | 1 | `Gfx_WaitTask` |
+| `0578C4` | `80056CC4` | 0x604 | `src/auto/578C4.c` | C (generated) | 1 | `Gfx_SubmitTask` |
+| `057EC8` | `800572C8` | 0x40 | `src/auto/57EC8.c` | C (generated) | 2 | `Gfx_SubmitFrame`, `Gfx_SubmitFrameWait` |
+| `057F08` | `80057308` | 0x94 | `src/auto/57F08.c` | C (generated) | 2 | `Gfx_FlushFrames`, `Gfx_FreeAfterFrame` |
 | `057F9C` | `8005739C` | 0x6c | `src/auto/57F9C.c` | C (generated) | 1 | `Sched_WaitRetrace` |
 | `058008` | `80057408` | 0x198 | `asm/58008.s` | asm | 1 | `Font_BlitString` |
-| `0581A0` | `800575A0` | 0x5c | `src/auto/581A0.c` | C (generated) | 2 |  |
+| `0581A0` | `800575A0` | 0x5c | `src/auto/581A0.c` | C (generated) | 2 | `Font_InitDebug` |
 | `0581FC` | `800575FC` | 0x340 | `src/auto/581FC.c` | C (generated) | 1 | `Gfx_InitRenderState` |
-| `05853C` | `8005793C` | 0x28 | `src/auto/5853C.c` | C (generated) | 1 |  |
-| `058564` | `80057964` | 0xe4 | `src/auto/58564.c` | C (generated) | 1 |  |
+| `05853C` | `8005793C` | 0x28 | `src/auto/5853C.c` | C (generated) | 1 | `Gfx_EndDisplayList` |
+| `058564` | `80057964` | 0xe4 | `src/auto/58564.c` | C (generated) | 1 | `Font_DrawScaled` |
 | `058648` | `80057A48` | 0xf4 | `src/auto/58648.c` | C (generated) | 1 | `Gfx_IsCommandKind` |
 | `05873C` | `80057B3C` | 0xe0 | `src/auto/5873C.c` | C (generated) | 1 | `Gfx_NextCmd` |
 | `05881C` | `80057C1C` | 0xf4 | `src/auto/5881C.c` | C (generated) | 1 | `Gfx_WalkToCommand` |
 | `058910` | `80057D10` | 0x21c | `src/auto/58910.c` | C (generated) | 1 | `Gfx_ReplaceCommand` |
 | `058B2C` | `80057F2C` | 0x118 | `src/auto/58B2C.c` | C (generated) | 1 | `Gfx_StripCommands` |
 | `058C44` | `80058044` | 0x1b0 | `src/auto/58C44.c` | C (generated) | 1 | `Gfx_DedupeTexCmds` |
-| `058DF4` | `800581F4` | 0x38 | `src/auto/58DF4.c` | C (generated) | 1 |  |
+| `058DF4` | `800581F4` | 0x38 | `src/auto/58DF4.c` | C (generated) | 1 | `Gfx_RunDedupeTexCmds` |
 | `058E2C` | `8005822C` | 0x228 | `src/auto/58E2C.c` | C (generated) | 1 | `Gfx_CountCommandKind` |
 | `059054` | `80058454` | 0x17c | `src/auto/59054.c` | C (generated) | 1 | `Gfx_CopyDisplayList` |
 | `0591D0` | `800585D0` | 0x228 | `src/auto/591D0.c` | C (generated) | 1 | `Gfx_CalcBounds` |
-| `059400` | `80058800` | 0x48 | `src/auto/59400.c` | C (generated) | 1 |  |
+| `059400` | `80058800` | 0x48 | `src/auto/59400.c` | C (generated) | 1 | `Dma_InitPiManager` |
 | `059448` | `80058848` | 0x100 | `src/auto/59448.c` | C (generated) | 1 | `Dma_LoadAndFlush` |
 | `059550` | `80058950` | 0xf0 | `src/auto/59550.c` | C (generated) | 1 | `Pad_InitAll` |
-| `059640` | `80058A40` | 0x34 | `src/auto/59640.c` | C (generated) | 3 |  |
+| `059640` | `80058A40` | 0x34 | `src/auto/59640.c` | C (generated) | 3 | `Pad_SetReadHook`, `Pad_ClearReadHook` |
 | `059674` | `80058A74` | 0xe4 | `src/auto/59674.c` | C (generated) | 1 | `Cont_ReadAll` |
-| `059758` | `80058B58` | 0x20 | `src/auto/59758.c` | C (generated) | 1 |  |
+| `059758` | `80058B58` | 0x20 | `src/auto/59758.c` | C (generated) | 1 | `Pad_StartRead` |
 | `059778` | `80058B78` | 0x1f0 | `src/auto/59778.c` | C (generated) | 1 | `Pad_Read` |
 | `059968` | `80058D68` | 0x100 | `src/auto/59968.c` | C (generated) | 1 | `Pad_ReadAll` |
 | `059A68` | `80058E68` | 0xa0 | `src/auto/59A68.c` | C (generated) | 1 | `Pad_Init` |
@@ -807,8 +807,8 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `05A5B4` | `800599B4` | 0x70 | `src/auto/5A5B4.c` | C (generated) | 1 | `Pak_ReadFile` |
 | `05A624` | `80059A24` | 0x70 | `src/auto/5A624.c` | C (generated) | 1 | `Pak_WriteFile` |
 | `05A694` | `80059A94` | 0x38 | `src/auto/5A694.c` | C (generated) | 1 |  |
-| `05A6CC` | `80059ACC` | 0x44 | `src/auto/5A6CC.c` | C (generated) | 1 |  |
-| `05A710` | `80059B10` | 0x50 | `src/auto/5A710.c` | C (generated) | 1 |  |
+| `05A6CC` | `80059ACC` | 0x44 | `src/auto/5A6CC.c` | C (generated) | 1 | `Pak_FileState` |
+| `05A710` | `80059B10` | 0x50 | `src/auto/5A710.c` | C (generated) | 1 | `Pak_DeleteNote` |
 | `05A760` | `80059B60` | 0x670 | `src/auto/5A760.c` | C (generated) | 1 | `Math_Atan2` |
 | `05ADD0` | `8005A1D0` | 0x2c | `src/auto/5ADD0.c` | C (generated) | 2 | `Vec3f_Copy`, `Vec3f_Set` |
 | `05ADFC` | `8005A1FC` | 0x48 | `src/auto/5ADFC.c` | C (generated) | 1 | `Vec3f_FromAngleXY` |
@@ -826,20 +826,20 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `05B424` | `8005A824` | 0x98 | `src/auto/5B424.c` | C (generated) | 1 | `Vec3f_RotateY` |
 | `05B4BC` | `8005A8BC` | 0x98 | `src/auto/5B4BC.c` | C (generated) | 1 | `Vec3f_RotateZ2` |
 | `05B560` | `8005A960` | 0x10 | `src/auto/5B560.c` | C (generated) | 2 |  |
-| `05B570` | `8005A970` | 0xf8 | `src/auto/5B570.c` | C (generated) | 2 |  |
-| `05B668` | `8005AA68` | 0x58 | `src/auto/5B668.c` | C (generated) | 1 |  |
-| `05B6C0` | `8005AAC0` | 0x104 | `src/auto/5B6C0.c` | C (generated) | 9 |  |
-| `05B7C4` | `8005ABC4` | 0x14c | `src/auto/5B7C4.c` | C (generated) | 1 | `Particle_BuildMatrix` |
-| `05B910` | `8005AD10` | 0x44 | `src/auto/5B910.c` | C (generated) | 1 |  |
+| `05B570` | `8005A970` | 0xf8 | `src/auto/5B570.c` | C (generated) | 2 | `Model_Init` |
+| `05B668` | `8005AA68` | 0x58 | `src/auto/5B668.c` | C (generated) | 1 | `ModelInst_Init` |
+| `05B6C0` | `8005AAC0` | 0x104 | `src/auto/5B6C0.c` | C (generated) | 9 | `ModelInst_Free`, `ModelInst_SetXlu`, `ModelInst_ClearXlu`, `ModelInst_SetAlpha`, `ModelInst_SetShade`, `ModelInst_SetPos` and 3 more |
+| `05B7C4` | `8005ABC4` | 0x14c | `src/auto/5B7C4.c` | C (generated) | 1 | `ModelInst_BuildMatrix` |
+| `05B910` | `8005AD10` | 0x44 | `src/auto/5B910.c` | C (generated) | 1 | `ModelInst_UpdateMatrix` |
 | `05B954` | `8005AD54` | 0x88 | `src/auto/5B954.c` | C (generated) | 1 |  |
 | `05B9DC` | `8005ADDC` | 0x114 | `src/auto/5B9DC.c` | C (generated) | 1 | `Model_Draw` |
 | `05BAF0` | `8005AEF0` | 0x13c | `src/auto/5BAF0.c` | C (generated) | 1 | `Particle_Draw` |
 | `05BC2C` | `8005B02C` | 0x13c | `src/auto/5BC2C.c` | C (generated) | 1 |  |
 | `05BD68` | `8005B168` | 0xb8 | `src/auto/5BD68.c` | C (generated) | 1 |  |
-| `05BE20` | `8005B220` | 0xd8 | `src/auto/5BE20.c` | C (generated) | 1 |  |
+| `05BE20` | `8005B220` | 0xd8 | `src/auto/5BE20.c` | C (generated) | 1 | `Camera_Init` |
 | `05BEF8` | `8005B2F8` | 0x2c4 | `src/auto/5BEF8.c` | C (generated) | 1 | `Camera_BuildProjection` |
-| `05C1BC` | `8005B5BC` | 0x2c | `src/auto/5C1BC.c` | C (generated) | 1 |  |
-| `05C1E8` | `8005B5E8` | 0x1c | `src/auto/5C1E8.c` | C (generated) | 1 |  |
+| `05C1BC` | `8005B5BC` | 0x2c | `src/auto/5C1BC.c` | C (generated) | 1 | `View_Init` |
+| `05C1E8` | `8005B5E8` | 0x1c | `src/auto/5C1E8.c` | C (generated) | 1 | `Gfx_SetViewportNoClip` |
 | `05C204` | `8005B604` | 0x24c | `src/auto/5C204.c` | C (generated) | 1 | `Gfx_SetViewportScissor` |
 | `05C450` | `8005B850` | 0x24 | `src/auto/5C450.c` | C (generated) | 3 |  |
 | `05C480` | `8005B880` | 0x1b4 | `src/auto/5C480.c` | C (generated) | 1 | `Main_InitSystems` |
@@ -847,29 +847,29 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `05C684` | `8005BA84` | 0xd0 | `src/auto/5C684.c` | C (generated) | 1 | `System_InitHeaps` |
 | `05C760` | `8005BB60` | 0x258 | `src/auto/5C760.c` | C (generated) | 1 | `ElemList_ExpireAndSortById` |
 | `05C9B8` | `8005BDB8` | 0x834 | `src/auto/5C9B8.c` | C (generated) | 1 | `World_UpdateSounds` |
-| `05D1EC` | `8005C5EC` | 0xb4 | `src/auto/5D1EC.c` | C (generated) | 1 |  |
-| `05D2A0` | `8005C6A0` | 0xe0 | `src/auto/5D2A0.c` | C (generated) | 1 |  |
-| `05D380` | `8005C780` | 0x50 | `src/auto/5D380.c` | C (generated) | 1 |  |
+| `05D1EC` | `8005C5EC` | 0xb4 | `src/auto/5D1EC.c` | C (generated) | 1 | `World_Init` |
+| `05D2A0` | `8005C6A0` | 0xe0 | `src/auto/5D2A0.c` | C (generated) | 1 | `World_Free` |
+| `05D380` | `8005C780` | 0x50 | `src/auto/5D380.c` | C (generated) | 1 | `World_ResetObjects` |
 | `05D3D0` | `8005C7D0` | 0x60 | `src/auto/5D3D0.c` | C (generated) | 1 | `Game_SaveItems` |
-| `05D430` | `8005C830` | 0x144 | `src/auto/5D430.c` | C (generated) | 1 |  |
+| `05D430` | `8005C830` | 0x144 | `src/auto/5D430.c` | C (generated) | 1 | `Audio_LoadBanks` |
 | `05D574` | `8005C974` | 0xb0 | `src/auto/5D574.c` | C (generated) | 1 | `Rom_Copy` |
 | `05D624` | `8005CA24` | 0xa8 | `src/auto/5D624.c` | C (generated) | 1 | `Pool_PushCopy` |
 | `05D6CC` | `8005CACC` | 0xc0 | `src/auto/5D6CC.c` | C (generated) | 1 | `List_RemoveById` |
 | `05D78C` | `8005CB8C` | 0x74 | `src/auto/5D78C.c` | C (generated) | 1 | `Owner_AllocSlotBuffers` |
-| `05D800` | `8005CC00` | 0x4c | `src/auto/5D800.c` | C (generated) | 1 |  |
+| `05D800` | `8005CC00` | 0x4c | `src/auto/5D800.c` | C (generated) | 1 | `World_FindObject` |
 | `05D84C` | `8005CC4C` | 0x4c | `src/auto/5D84C.c` | C (generated) | 1 |  |
 | `05D898` | `8005CC98` | 0x3c | `src/auto/5D898.c` | C (generated) | 1 |  |
 | `05D8D4` | `8005CCD4` | 0x254 | `src/auto/5D8D4.c` | C (generated) | 1 | `DrawList_Update` |
-| `05DB28` | `8005CF28` | 0x48 | `src/auto/5DB28.c` | C (generated) | 1 |  |
+| `05DB28` | `8005CF28` | 0x48 | `src/auto/5DB28.c` | C (generated) | 1 | `Snd_InRange` |
 | `05DB70` | `8005CF70` | 0x1a4 | `src/auto/5DB70.c` | C (generated) | 1 | `Vec3f_HeadingAngleXZ` |
-| `05DD14` | `8005D114` | 0xf4 | `src/auto/5DD14.c` | C (generated) | 1 |  |
-| `05DE08` | `8005D208` | 0x3c | `src/auto/5DE08.c` | C (generated) | 1 |  |
+| `05DD14` | `8005D114` | 0xf4 | `src/auto/5DD14.c` | C (generated) | 1 | `Snd_DopplerPitch` |
+| `05DE08` | `8005D208` | 0x3c | `src/auto/5DE08.c` | C (generated) | 1 | `Vec3f_DistSq` |
 | `05DE44` | `8005D244` | 0x12c | `src/auto/5DE44.c` | C (generated) | 1 | `DrawList_Insert` |
 | `05DF70` | `8005D370` | 0xd8 | `src/auto/5DF70.c` | C (generated) | 1 | `World_RemoveObject` |
-| `05E048` | `8005D448` | 0x64 | `src/auto/5E048.c` | C (generated) | 1 |  |
+| `05E048` | `8005D448` | 0x64 | `src/auto/5E048.c` | C (generated) | 1 | `Snd_UpdateFromTemplate` |
 | `05E0AC` | `8005D4AC` | 0x3c | `src/auto/5E0AC.c` | C (generated) | 2 |  |
-| `05E0E8` | `8005D4E8` | 0x98 | `src/auto/5E0E8.c` | C (generated) | 1 |  |
-| `05E180` | `8005D580` | 0xec | `src/auto/5E180.c` | C (generated) | 3 |  |
+| `05E0E8` | `8005D4E8` | 0x98 | `src/auto/5E0E8.c` | C (generated) | 1 | `Snd_InitFromTemplate` |
+| `05E180` | `8005D580` | 0xec | `src/auto/5E180.c` | C (generated) | 3 | `Ui_Init` |
 | `05E26C` | `8005D66C` | 0x1b0 | `src/auto/5E26C.c` | C (generated) | 1 | `Ctx_FreeAll` |
 | `05E41C` | `8005D81C` | 0x9c | `src/auto/5E41C.c` | C (generated) | 1 |  |
 | `05E4B8` | `8005D8B8` | 0x64 | `src/auto/5E4B8.c` | C (generated) | 1 |  |
@@ -878,17 +878,17 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `05E6F4` | `8005DAF4` | 0xe8 | `src/auto/5E6F4.c` | C (generated) | 1 | `Ui_InsertElementAfter` |
 | `05E7DC` | `8005DBDC` | 0x8 | `src/auto/5E7DC.c` | C (generated) | 1 |  |
 | `05E7E4` | `8005DBE4` | 0x84 | `src/auto/5E7E4.c` | C (generated) | 1 | `Ui_RemoveElement` |
-| `05E868` | `8005DC68` | 0xb8 | `src/auto/5E868.c` | C (generated) | 2 |  |
-| `05E920` | `8005DD20` | 0x34c | `src/auto/5E920.c` | C (generated) | 1 |  |
+| `05E868` | `8005DC68` | 0xb8 | `src/auto/5E868.c` | C (generated) | 2 | `Ui_ClearDrawList` |
+| `05E920` | `8005DD20` | 0x34c | `src/auto/5E920.c` | C (generated) | 1 | `Ui_LoadResourceFile` |
 | `05EC6C` | `8005E06C` | 0x240 | `src/auto/5EC6C.c` | C (generated) | 1 | `Ui_AddSprite` |
-| `05EEAC` | `8005E2AC` | 0x374 | `src/auto/5EEAC.c` | C (generated) | 1 |  |
+| `05EEAC` | `8005E2AC` | 0x374 | `src/auto/5EEAC.c` | C (generated) | 1 | `Ui_Draw` |
 | `05F220` | `8005E620` | 0x13c | `src/auto/5F220.c` | C (generated) | 1 | `Ui_FindElement` |
-| `05F35C` | `8005E75C` | 0xa0 | `src/auto/5F35C.c` | C (generated) | 1 |  |
-| `05F3FC` | `8005E7FC` | 0x90 | `src/auto/5F3FC.c` | C (generated) | 1 |  |
-| `05F48C` | `8005E88C` | 0xa0 | `src/auto/5F48C.c` | C (generated) | 1 |  |
-| `05F52C` | `8005E92C` | 0x494 | `src/auto/5F52C.c` | C (generated) | 1 |  |
+| `05F35C` | `8005E75C` | 0xa0 | `src/auto/5F35C.c` | C (generated) | 1 | `Ui_EnableElementAlpha` |
+| `05F3FC` | `8005E7FC` | 0x90 | `src/auto/5F3FC.c` | C (generated) | 1 | `Ui_DisableElementAlpha` |
+| `05F48C` | `8005E88C` | 0xa0 | `src/auto/5F48C.c` | C (generated) | 1 | `Ui_SetElementAlphaValue` |
+| `05F52C` | `8005E92C` | 0x494 | `src/auto/5F52C.c` | C (generated) | 1 | `Font_DrawText` |
 | `05F9C0` | `8005EDC0` | 0xd0 | `src/auto/5F9C0.c` | C (generated) | 1 | `Ui_AddMissingResources` |
-| `05FA90` | `8005EE90` | 0x1c0 | `src/auto/5FA90.c` | C (generated) | 1 |  |
+| `05FA90` | `8005EE90` | 0x1c0 | `src/auto/5FA90.c` | C (generated) | 1 | `Ui_AddTextElement` |
 | `05FC50` | `8005F050` | 0x280 | `src/auto/5FC50.c` | C (generated) | 1 | `Ui_AddSpriteElement` |
 | `05FED0` | `8005F2D0` | 0x144 | `src/auto/5FED0.c` | C (generated) | 1 | `Ui_LoadElements` |
 | `060014` | `8005F414` | 0xb0 | `src/auto/60014.c` | C (generated) | 1 | `Ui_SetElementPos` |
@@ -896,87 +896,87 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0601BC` | `8005F5BC` | 0xf8 | `src/auto/601BC.c` | C (generated) | 1 | `Ui_SetElementY` |
 | `0602B4` | `8005F6B4` | 0xec | `src/auto/602B4.c` | C (generated) | 1 | `Ui_GetElementPos` |
 | `0603A0` | `8005F7A0` | 0xe4 | `src/auto/603A0.c` | C (generated) | 1 | `Ui_AddResource` |
-| `060484` | `8005F884` | 0x130 | `src/auto/60484.c` | C (generated) | 4 |  |
-| `0605C0` | `8005F9C0` | 0x78 | `src/auto/605C0.c` | C (generated) | 1 |  |
+| `060484` | `8005F884` | 0x130 | `src/auto/60484.c` | C (generated) | 4 | `Font_EnableAlpha`, `Font_DisableAlpha`, `Font_SetAlphaValue` |
+| `0605C0` | `8005F9C0` | 0x78 | `src/auto/605C0.c` | C (generated) | 1 | `ModelInst_Create` |
 | `060638` | `8005FA38` | 0x90 | `src/auto/60638.c` | C (generated) | 1 |  |
 | `0606C8` | `8005FAC8` | 0x1c | `src/auto/606C8.c` | C (generated) | 1 |  |
-| `0606E4` | `8005FAE4` | 0x484 | `src/auto/606E4.c` | C (generated) | 1 |  |
-| `060B68` | `8005FF68` | 0x11c | `src/auto/60B68.c` | C (generated) | 1 | `Audio_Init` |
+| `0606E4` | `8005FAE4` | 0x484 | `src/auto/606E4.c` | C (generated) | 1 | `Render_Frame` |
+| `060B68` | `8005FF68` | 0x11c | `src/auto/60B68.c` | C (generated) | 1 | `Render_Init` |
 | `060C84` | `80060084` | 0x14c | `src/auto/60C84.c` | C (generated) | 1 | `Obj_ReallocBuffers` |
-| `060DD0` | `800601D0` | 0x38 | `src/auto/60DD0.c` | C (generated) | 1 |  |
+| `060DD0` | `800601D0` | 0x38 | `src/auto/60DD0.c` | C (generated) | 1 | `Gfx_SetUcodeSwap` |
 | `060E08` | `80060208` | 0x118 | `src/auto/60E08.c` | C (generated) | 1 | `Gfx_SetupRenderModes` |
-| `060F20` | `80060320` | 0x50 | `src/auto/60F20.c` | C (generated) | 1 | `Gfx_SetTextureLUT` |
-| `060F70` | `80060370` | 0x38 | `src/auto/60F70.c` | C (generated) | 2 |  |
+| `060F20` | `80060320` | 0x50 | `src/auto/60F20.c` | C (generated) | 1 | `Gfx_RestoreF3dexUcode` |
+| `060F70` | `80060370` | 0x38 | `src/auto/60F70.c` | C (generated) | 2 | `Tex_Init` |
 | `060FA8` | `800603A8` | 0x1c | `src/auto/60FA8.c` | C (generated) | 1 |  |
 | `060FC4` | `800603C4` | 0x8 | `src/auto/60FC4.c` | C (generated) | 1 |  |
-| `060FCC` | `800603CC` | 0x18 | `src/auto/60FCC.c` | C (generated) | 1 |  |
-| `060FE4` | `800603E4` | 0x18 | `src/auto/60FE4.c` | C (generated) | 1 |  |
-| `060FFC` | `800603FC` | 0x14 | `src/auto/60FFC.c` | C (generated) | 1 |  |
-| `061010` | `80060410` | 0x18 | `src/auto/61010.c` | C (generated) | 1 |  |
-| `061028` | `80060428` | 0x8 | `src/auto/61028.c` | C (generated) | 1 |  |
+| `060FCC` | `800603CC` | 0x18 | `src/auto/60FCC.c` | C (generated) | 1 | `Sprite_SetPrimDepth` |
+| `060FE4` | `800603E4` | 0x18 | `src/auto/60FE4.c` | C (generated) | 1 | `Sprite_ClearPrimDepth` |
+| `060FFC` | `800603FC` | 0x14 | `src/auto/60FFC.c` | C (generated) | 1 | `Sprite_EnableAlpha` |
+| `061010` | `80060410` | 0x18 | `src/auto/61010.c` | C (generated) | 1 | `Sprite_DisableAlpha` |
+| `061028` | `80060428` | 0x8 | `src/auto/61028.c` | C (generated) | 1 | `Sprite_SetAlphaValue` |
 | `061030` | `80060430` | 0xc | `src/auto/61030.c` | C (generated) | 1 |  |
 | `06103C` | `8006043C` | 0x34 | `src/auto/6103C.c` | C (generated) | 1 |  |
-| `061070` | `80060470` | 0x94 | `src/auto/61070.c` | C (generated) | 1 |  |
+| `061070` | `80060470` | 0x94 | `src/auto/61070.c` | C (generated) | 1 | `Sprite_Create` |
 | `061104` | `80060504` | 0x4c | `src/auto/61104.c` | C (generated) | 1 |  |
 | `061150` | `80060550` | 0x3c | `src/auto/61150.c` | C (generated) | 1 |  |
 | `06118C` | `8006058C` | 0x4c | `src/auto/6118C.c` | C (generated) | 1 |  |
 | `0611D8` | `800605D8` | 0x4c | `src/auto/611D8.c` | C (generated) | 1 |  |
 | `061224` | `80060624` | 0x1c | `src/auto/61224.c` | C (generated) | 1 |  |
-| `061240` | `80060640` | 0x48 | `src/auto/61240.c` | C (generated) | 1 |  |
+| `061240` | `80060640` | 0x48 | `src/auto/61240.c` | C (generated) | 1 | `Sprite_Destroy` |
 | `061288` | `80060688` | 0x60 | `src/auto/61288.c` | C (generated) | 1 |  |
 | `0612E8` | `800606E8` | 0x128 | `src/auto/612E8.c` | C (generated) | 1 | `Obj_Copy` |
-| `061410` | `80060810` | 0x60 | `src/auto/61410.c` | C (generated) | 5 |  |
+| `061410` | `80060810` | 0x60 | `src/auto/61410.c` | C (generated) | 5 | `Sprite_SetPos`, `Sprite_SetScale`, `Sprite_SetMtxPos`, `Sprite_SetMtx` |
 | `061470` | `80060870` | 0x168 | `src/auto/61470.c` | C (generated) | 1 | `Sprite_SetRotation` |
 | `0615D8` | `800609D8` | 0x15c | `src/auto/615D8.c` | C (generated) | 1 | `Sprite_SetRotationF` |
-| `061734` | `80060B34` | 0x68 | `src/auto/61734.c` | C (generated) | 4 |  |
+| `061734` | `80060B34` | 0x68 | `src/auto/61734.c` | C (generated) | 4 | `Sprite_SetBaseScale` |
 | `06179C` | `80060B9C` | 0x70 | `src/auto/6179C.c` | C (generated) | 1 | `Sprite_InitObjSprite` |
-| `06180C` | `80060C0C` | 0x30 | `src/auto/6180C.c` | C (generated) | 1 |  |
-| `06183C` | `80060C3C` | 0x11c | `src/auto/6183C.c` | C (generated) | 1 |  |
-| `061958` | `80060D58` | 0x50 | `src/auto/61958.c` | C (generated) | 1 |  |
+| `06180C` | `80060C0C` | 0x30 | `src/auto/6180C.c` | C (generated) | 1 | `Sprite_InitMtx` |
+| `06183C` | `80060C3C` | 0x11c | `src/auto/6183C.c` | C (generated) | 1 | `Sprite_InitTxtr` |
+| `061958` | `80060D58` | 0x50 | `src/auto/61958.c` | C (generated) | 1 | `Sprite_InitTlut` |
 | `0619A8` | `80060DA8` | 0x1e4 | `src/auto/619A8.c` | C (generated) | 1 | `Sprite2D_InitObjs` |
 | `061B8C` | `80060F8C` | 0xa0 | `src/auto/61B8C.c` | C (generated) | 1 |  |
-| `061C2C` | `8006102C` | 0x320 | `src/auto/61C2C.c` | C (generated) | 1 |  |
+| `061C2C` | `8006102C` | 0x320 | `src/auto/61C2C.c` | C (generated) | 1 | `Sprite_Draw` |
 | `061F4C` | `8006134C` | 0x134 | `src/auto/61F4C.c` | C (generated) | 1 | `Bg_Init` |
-| `062080` | `80061480` | 0xa4 | `src/auto/62080.c` | C (generated) | 1 |  |
-| `062124` | `80061524` | 0x88 | `src/auto/62124.c` | C (generated) | 8 |  |
+| `062080` | `80061480` | 0xa4 | `src/auto/62080.c` | C (generated) | 1 | `Bg_SetScale` |
+| `062124` | `80061524` | 0x88 | `src/auto/62124.c` | C (generated) | 8 | `Bg_EnableAlpha`, `Bg_DisableAlpha`, `Bg_SetAlphaValue` |
 | `0621AC` | `800615AC` | 0x9c | `src/auto/621AC.c` | C (generated) | 1 | `Sprite_SetSize` |
 | `062248` | `80061648` | 0xe30 | `src/auto/62248.c` | C (generated) | 1 | `Bg_Draw` |
-| `063078` | `80062478` | 0x304 | `src/auto/63078.c` | C (generated) | 8 |  |
-| `063380` | `80062780` | 0x64 | `src/auto/63380.c` | C (generated) | 2 |  |
-| `0633F0` | `800627F0` | 0x3bc | `src/auto/633F0.c` | C (generated) | 1 |  |
+| `063078` | `80062478` | 0x304 | `src/auto/63078.c` | C (generated) | 8 | `Sprite_SetMtxPosF`, `Sprite_SetBaseScaleF`, `Sprite_SetPosF`, `Sprite_SetScaleF` |
+| `063380` | `80062780` | 0x64 | `src/auto/63380.c` | C (generated) | 2 | `Res_LoadAlloc` |
+| `0633F0` | `800627F0` | 0x3bc | `src/auto/633F0.c` | C (generated) | 1 | `View_SetupSplitScreen` |
 | `0637B0` | `80062BB0` | 0x1ec | `src/auto/637B0.c` | C (generated) | 1 | `Fps_Update` |
 | `06399C` | `80062D9C` | 0xb0 | `src/auto/6399C.c` | C (generated) | 1 | `Timer_InitRate` |
 | `063A4C` | `80062E4C` | 0x44 | `src/auto/63A4C.c` | C (generated) | 1 | `Timer_Reset` |
 | `063A90` | `80062E90` | 0x84 | `src/auto/63A90.c` | C (generated) | 1 | `Pad_LatchAll` |
-| `063B14` | `80062F14` | 0xc | `src/auto/63B14.c` | C (generated) | 1 |  |
+| `063B14` | `80062F14` | 0xc | `src/auto/63B14.c` | C (generated) | 1 | `Pad_GetLatched` |
 | `063B20` | `80062F20` | 0x14 | `src/auto/63B20.c` | C (generated) | 1 |  |
-| `063B34` | `80062F34` | 0x30 | `src/auto/63B34.c` | C (generated) | 4 |  |
+| `063B34` | `80062F34` | 0x30 | `src/auto/63B34.c` | C (generated) | 4 | `Timer_GetRate`, `Fps_GetDeltaFrames` |
 | `063B64` | `80062F64` | 0x14 | `src/auto/63B64.c` | C (generated) | 1 |  |
 | `063B80` | `80062F80` | 0x8c | `src/auto/63B80.c` | C (generated) | 5 |  |
 | `063C0C` | `8006300C` | 0x64 | `src/auto/63C0C.c` | C (generated) | 1 |  |
-| `063C70` | `80063070` | 0x170 | `src/auto/63C70.c` | C (generated) | 1 |  |
-| `063DE0` | `800631E0` | 0x120 | `src/auto/63DE0.c` | C (generated) | 1 |  |
-| `063F00` | `80063300` | 0x80 | `src/auto/63F00.c` | C (generated) | 1 |  |
+| `063C70` | `80063070` | 0x170 | `src/auto/63C70.c` | C (generated) | 1 | `Game_Frame` |
+| `063DE0` | `800631E0` | 0x120 | `src/auto/63DE0.c` | C (generated) | 1 | `Game_MainLoop` |
+| `063F00` | `80063300` | 0x80 | `src/auto/63F00.c` | C (generated) | 1 | `Game_Init` |
 | `063F80` | `80063380` | 0x18 | `src/auto/63F80.c` | C (generated) | 1 |  |
 | `063FA0` | `800633A0` | 0x64 | `src/auto/63FA0.c` | C (generated) | 1 |  |
-| `064004` | `80063404` | 0x84 | `src/auto/64004.c` | C (generated) | 1 |  |
+| `064004` | `80063404` | 0x84 | `src/auto/64004.c` | C (generated) | 1 | `Game_StartMode` |
 | `064088` | `80063488` | 0x7c | `src/auto/64088.c` | C (generated) | 1 |  |
-| `064104` | `80063504` | 0x60 | `src/auto/64104.c` | C (generated) | 1 |  |
-| `064164` | `80063564` | 0x14 | `src/auto/64164.c` | C (generated) | 1 |  |
-| `064178` | `80063578` | 0x38 | `src/auto/64178.c` | C (generated) | 1 |  |
-| `0641B0` | `800635B0` | 0x20 | `src/auto/641B0.c` | C (generated) | 1 |  |
+| `064104` | `80063504` | 0x60 | `src/auto/64104.c` | C (generated) | 1 | `Game_EndMode` |
+| `064164` | `80063564` | 0x14 | `src/auto/64164.c` | C (generated) | 1 | `Game_SetNextMode` |
+| `064178` | `80063578` | 0x38 | `src/auto/64178.c` | C (generated) | 1 | `Game_SetMode` |
+| `0641B0` | `800635B0` | 0x20 | `src/auto/641B0.c` | C (generated) | 1 | `Clock_Init` |
 | `0641D0` | `800635D0` | 0x148 | `src/auto/641D0.c` | C (generated) | 1 | `Clock_Update` |
-| `064318` | `80063718` | 0x8 | `src/auto/64318.c` | C (generated) | 1 |  |
+| `064318` | `80063718` | 0x8 | `src/auto/64318.c` | C (generated) | 1 | `Clock_GetDeltaSeconds` |
 | `064320` | `80063720` | 0x24 | `src/auto/64320.c` | C (generated) | 2 | `Time_Get` |
 | `064344` | `80063744` | 0x9c | `src/auto/64344.c` | C (generated) | 1 | `Time_ToSeconds` |
 | `0643E0` | `800637E0` | 0xc | `src/auto/643E0.c` | C (generated) | 1 | `Clock_GetDelta` |
 | `0643EC` | `800637EC` | 0x8 | `src/auto/643EC.c` | C (generated) | 1 | `Clock_GetFrames` |
 | `0643F4` | `800637F4` | 0x9c | `src/auto/643F4.c` | C (generated) | 1 | `Clock_Step` |
-| `064490` | `80063890` | 0x30 | `src/auto/64490.c` | C (generated) | 1 |  |
-| `0644C0` | `800638C0` | 0x14 | `src/auto/644C0.c` | C (generated) | 2 |  |
+| `064490` | `80063890` | 0x30 | `src/auto/64490.c` | C (generated) | 1 | `Clock_Reset` |
+| `0644C0` | `800638C0` | 0x14 | `src/auto/644C0.c` | C (generated) | 2 | `Clock_Resume`, `Clock_Pause` |
 | `0644D4` | `800638D4` | 0x148 | `src/auto/644D4.c` | C (generated) | 1 | `Time_Split` |
 | `064620` | `80063A20` | 0x8c | `src/auto/64620.c` | C (generated) | 1 | `Res_Get` |
-| `0646AC` | `80063AAC` | 0x150 | `src/auto/646AC.c` | C (generated) | 2 |  |
+| `0646AC` | `80063AAC` | 0x150 | `src/auto/646AC.c` | C (generated) | 2 | `Res_Release`, `Res_ReleaseInstance` |
 | `0647FC` | `80063BFC` | 0x4c | `src/auto/647FC.c` | C (generated) | 1 | `Res_Load` |
 | `064848` | `80063C48` | 0x90 | `src/auto/64848.c` | C (generated) | 1 | `Res_ComputeSizes` |
 | `0648D8` | `80063CD8` | 0x94 | `src/auto/648D8.c` | C (generated) | 1 | `Res_FreeAll` |
@@ -985,22 +985,22 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `064A28` | `80063E28` | 0x50 | `src/auto/64A28.c` | C (generated) | 1 | `Res_GetEnd` |
 | `064A78` | `80063E78` | 0x58 | `src/auto/64A78.c` | C (generated) | 1 | `Res_Find` |
 | `064AD0` | `80063ED0` | 0xa8 | `src/auto/64AD0.c` | C (generated) | 1 | `Res_FindType` |
-| `064B78` | `80063F78` | 0x1c | `src/auto/64B78.c` | C (generated) | 2 |  |
-| `064BA0` | `80063FA0` | 0x4c | `src/auto/64BA0.c` | C (generated) | 1 |  |
+| `064B78` | `80063F78` | 0x1c | `src/auto/64B78.c` | C (generated) | 2 | `Res_SetForceLoad`, `Res_ClearForceLoad` |
+| `064BA0` | `80063FA0` | 0x4c | `src/auto/64BA0.c` | C (generated) | 1 | `List_Push` |
 | `064BEC` | `80063FEC` | 0x60 | `src/auto/64BEC.c` | C (generated) | 1 | `List_Remove` |
 | `064C4C` | `8006404C` | 0x50 | `src/auto/64C4C.c` | C (generated) | 1 | `List_Contains` |
 | `064C9C` | `8006409C` | 0x60 | `src/auto/64C9C.c` | C (generated) | 1 | `List_MoveNodeById` |
-| `064D00` | `80064100` | 0x7c | `src/auto/64D00.c` | C (generated) | 1 |  |
-| `064D7C` | `8006417C` | 0xc0 | `src/auto/64D7C.c` | C (generated) | 2 |  |
+| `064D00` | `80064100` | 0x7c | `src/auto/64D00.c` | C (generated) | 1 | `ObjList_Add` |
+| `064D7C` | `8006417C` | 0xc0 | `src/auto/64D7C.c` | C (generated) | 2 | `ObjList_Remove`, `ObjList_Init` |
 | `064E3C` | `8006423C` | 0xc8 | `src/auto/64E3C.c` | C (generated) | 1 | `ObjList_Clear` |
-| `064F04` | `80064304` | 0x60 | `src/auto/64F04.c` | C (generated) | 1 |  |
+| `064F04` | `80064304` | 0x60 | `src/auto/64F04.c` | C (generated) | 1 | `ObjList_DispatchAll` |
 | `064F64` | `80064364` | 0xc4 | `src/auto/64F64.c` | C (generated) | 1 | `ObjList_Reset` |
 | `065028` | `80064428` | 0x3c | `src/auto/65028.c` | C (generated) | 1 | `Array_Find` |
 | `065064` | `80064464` | 0x38 | `src/auto/65064.c` | C (generated) | 1 | `Array_SwapRemove` |
 | `06509C` | `8006449C` | 0x1c | `src/auto/6509C.c` | C (generated) | 1 |  |
 | `0650C0` | `800644C0` | 0x414 | `src/auto/650C0.c` | C (generated) | 1 | `Rules_UpdatePlayer` |
-| `0654D4` | `800648D4` | 0xe4 | `src/auto/654D4.c` | C (generated) | 2 |  |
-| `0655B8` | `800649B8` | 0xb8 | `src/auto/655B8.c` | C (generated) | 1 |  |
+| `0654D4` | `800648D4` | 0xe4 | `src/auto/654D4.c` | C (generated) | 2 | `Players_SyncAll` |
+| `0655B8` | `800649B8` | 0xb8 | `src/auto/655B8.c` | C (generated) | 1 | `Players_SyncTeammate` |
 | `065670` | `80064A70` | 0xc0 | `src/auto/65670.c` | C (generated) | 1 | `Players_Reset` |
 | `065730` | `80064B30` | 0x5c | `src/auto/65730.c` | C (generated) | 1 | `Timer_Start` |
 | `065790` | `80064B90` | 0x21c | `src/main/boot.c` | C | 5 | Boot: idle and main threads, video mode, game init |
@@ -1025,10 +1025,10 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `065FD8` | `800653D8` | 0x28 | `src/auto/65FD8.c` | C (generated) | 3 |  |
 | `066000` | `80065400` | 0x14 | `src/auto/66000.c` | C (generated) | 1 |  |
 | `066014` | `80065414` | 0x14 | `src/auto/66014.c` | C (generated) | 1 |  |
-| `066028` | `80065428` | 0x8 | `src/auto/66028.c` | C (generated) | 1 |  |
+| `066028` | `80065428` | 0x8 | `src/auto/66028.c` | C (generated) | 1 | `Seq_CmdSkip2` |
 | `066030` | `80065430` | 0x28 | `src/auto/66030.c` | C (generated) | 1 |  |
 | `066058` | `80065458` | 0xc | `src/auto/66058.c` | C (generated) | 1 |  |
-| `066064` | `80065464` | 0x8 | `src/auto/66064.c` | C (generated) | 1 |  |
+| `066064` | `80065464` | 0x8 | `src/auto/66064.c` | C (generated) | 1 | `Seq_CmdSkip1` |
 | `06606C` | `8006546C` | 0x70 | `src/auto/6606C.c` | C (generated) | 1 | `Seq_SetLoopPoints` |
 | `0660DC` | `800654DC` | 0x10 | `src/auto/660DC.c` | C (generated) | 1 |  |
 | `0660EC` | `800654EC` | 0xf0 | `src/auto/660EC.c` | C (generated) | 3 |  |
@@ -1036,7 +1036,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0661EC` | `800655EC` | 0xd0 | `src/auto/661EC.c` | C (generated) | 1 | `Seq_CmdPlaySound` |
 | `0662BC` | `800656BC` | 0x3c | `src/auto/662BC.c` | C (generated) | 1 |  |
 | `0662F8` | `800656F8` | 0x10 | `src/auto/662F8.c` | C (generated) | 1 |  |
-| `066308` | `80065708` | 0x324 | `src/auto/66308.c` | C (generated) | 1 |  |
+| `066308` | `80065708` | 0x324 | `src/auto/66308.c` | C (generated) | 1 | `Audio_InitSynth` |
 | `06662C` | `80065A2C` | 0x2c | `src/auto/6662C.c` | C (generated) | 1 | `Sound_SetMasterVolume` |
 | `066658` | `80065A58` | 0x154 | `src/auto/66658.c` | C (generated) | 1 | `Seq_StartVoices` |
 | `0667AC` | `80065BAC` | 0xac | `src/auto/667AC.c` | C (generated) | 1 | `Sound_PlayFindVoice` |

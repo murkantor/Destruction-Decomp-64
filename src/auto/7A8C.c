@@ -73,7 +73,7 @@ extern s32 D_80132164[];
 extern s32 D_801320C8[];
 extern u64 D_80131F90[];
 extern Chan D_8007EDF8[];
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(Pool *, SndReq *);
 Vec3f Car_GetPos(Car *);
@@ -102,7 +102,7 @@ void Sound_PlayContact(Pool *pool, Ctx *c) {
     car = c->x0;
     req.x0 = 0x3F4;
     req.x4 = 0;
-    req.x2 = func_80064D70();
+    req.x2 = Obj_NextId();
     req.x18 = Car_GetPos(car);
     req.x24 = zero;
     req.x44 = 1;

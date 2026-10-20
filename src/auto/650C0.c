@@ -44,8 +44,8 @@ extern Vec3f D_800BBF6C;
 void func_80024840(Car *);
 u64 Time_Get(u64 *);
 void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
-void func_80064948(Player *);
-void func_800649B8(Player *);
+void Players_SyncAll(Player *);
+void Players_SyncTeammate(Player *);
 
 void Rules_UpdatePlayer(Player *arg0) {
     u8 r = 0;
@@ -97,10 +97,10 @@ void Rules_UpdatePlayer(Player *arg0) {
     }
     if (r) {
         if (p->xC == 2) {
-            func_80064948(p);
+            Players_SyncAll(p);
         }
         if (p->xC == 1) {
-            func_800649B8(p);
+            Players_SyncTeammate(p);
         }
     }
     }

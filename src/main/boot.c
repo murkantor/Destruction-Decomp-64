@@ -23,7 +23,7 @@ extern s32 D_800B4D80;
 
 void idle(void *arg);
 void mainproc(void *arg);
-void func_80058800(void);
+void Dma_InitPiManager(void);
 void Main_InitSystems(s32, GameInitConfig *);
 void Boot_LoadData(void);
 
@@ -77,16 +77,16 @@ void mainproc(void *arg) {
         gInitConfig.videoMode = osTvType;
     }
 
-    func_80058800();
+    Dma_InitPiManager();
     Main_InitSystems(120, &gInitConfig);
     Boot_LoadData();
 }
 
-s16 func_80064D70(void) {
+s16 Obj_NextId(void) {
     return D_800B4D80++;
 }
 
-s32 func_80064D90(u8 *arg0) {
+s32 Voice_Clear(u8 *arg0) {
     *(s32 *)(arg0 + 0x34) = 0;
     *(s32 *)(arg0 + 0x30) = 0;
     *(s32 *)(arg0 + 0x70) = 0;

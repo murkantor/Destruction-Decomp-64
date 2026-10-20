@@ -1,11 +1,11 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_800540C0();                            /* extern */
+M2C_UNK DebugMenu_HandleInput();                            /* extern */
 extern u32 D_80125C90;
 
-s32 func_80054B48(void) {
-    func_800540C0();
+s32 DebugMenu_Update(void) {
+    DebugMenu_HandleInput();
     return (((u32) D_80125C90 >> 0xC) & 1) ^ 1;
 }
 

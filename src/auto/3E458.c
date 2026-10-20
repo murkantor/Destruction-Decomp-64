@@ -8,7 +8,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Timer_Start(void *, s64);
 
-s32 func_8003D858(Menu *m) {
+s32 PakMenu_PakFullDown(Menu *m) {
     if (m->x10 == 2) {
         Ui_SetElementColor(0x183, 0x111F8);
         m->x10 = 0;

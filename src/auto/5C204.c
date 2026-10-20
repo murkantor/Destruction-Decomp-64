@@ -8,7 +8,7 @@ typedef struct { u8 pad0[0x5C]; s32 x5C; s32 x60; } Screen;
 typedef struct { u8 pad0[0x8C]; Screen *x8C; } Ctx;
 extern u8 gParticlePool[];
 void *Pool_Alloc(void *);
-void func_80057334(Vp *);
+void Gfx_FreeAfterFrame(Vp *);
 
 Gfx *Gfx_SetViewportScissor(Gfx *gfx, View *v, Ctx *ctx) {
     s32 b[4];
@@ -56,6 +56,6 @@ Gfx *Gfx_SetViewportScissor(Gfx *gfx, View *v, Ctx *ctx) {
         g->w0 = (0xED << 24) | (((s32)((f32)b[0] * 4.0f) & 0xFFF) << 12) | ((s32)((f32)b[2] * 4.0f) & 0xFFF);
         g->w1 = (((s32)((f32)b[1] * 4.0f) & 0xFFF) << 12) | ((s32)((f32)b[3] * 4.0f) & 0xFFF);
     }
-    func_80057334(v->vp);
+    Gfx_FreeAfterFrame(v->vp);
     return gfx;
 }

@@ -4,6 +4,6 @@
 M2C_UNK osContStartReadData(M2C_UNK *);                   /* extern */
 extern M2C_UNK gSiMesgQueue;
 
-void func_80058B58(void) {
+void Pad_StartRead(void) {
     osContStartReadData(&gSiMesgQueue);
 }

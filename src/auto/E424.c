@@ -20,7 +20,7 @@ TimeHMS Time_Split(u64 t);
 void Time_Format(TimeHMS t, char *buf, s32 len);
 char *strcpy(char *, const char *);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void Ui_SetElementColor(s32, s32);
 
 s32 Hud_UpdateRaceTime(s32 arg0, s8 idx) {
@@ -44,7 +44,7 @@ s32 Hud_UpdateRaceTime(s32 arg0, s8 idx) {
         hms = Time_Split(t);
         if ((f64)t >= 11280000000000.0) {
             func_80063380(2);
-            func_80063564(0x19, 1);
+            Game_SetNextMode(0x19, 1);
             D_80095908 = 0;
         }
         Time_Format(hms, buf, 9);

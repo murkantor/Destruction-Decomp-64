@@ -23,7 +23,7 @@ void osWritebackDCache(void *, s32);
 
 #define GFX2(g,a,b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_8006102C(Obj6102C *obj, Gfx *g) {
+Gfx *Sprite_Draw(Obj6102C *obj, Gfx *g) {
     s32 mode;
 
     osWritebackDCache(obj->x14, 0x18);

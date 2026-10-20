@@ -3,7 +3,7 @@
 
 void Handler_Dispatch(s32);
 
-void func_80064304(u8 *obj) {
+void ObjList_DispatchAll(u8 *obj) {
     s32 i;
 
     for (i = 0; i < *(s16 *)(obj + 0xD12); i++) {

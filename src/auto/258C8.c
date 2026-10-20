@@ -45,7 +45,7 @@ void *Mem_Alloc(s32);
 void Surface_InitTable(s32);
 void Surface_AddTexture(s32);
 s32 Res_Get(s32);
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 void Track_ResetAnimTables(void);
 
 s32 Track_LoadResources(Track24CC8 *t, s32 arg1) {
@@ -64,7 +64,7 @@ s32 Track_LoadResources(Track24CC8 *t, s32 arg1) {
         }
     }
     n->x0 = 2;
-    n->x2 = func_80064D70();
+    n->x2 = Obj_NextId();
     n->x4 = n;
     n->xC = t;
     n->x18 = arg1;

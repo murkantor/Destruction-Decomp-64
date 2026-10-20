@@ -20,32 +20,32 @@ typedef struct {
     u8 x8B68;
 } Ui;
 extern Ui *gUi[];
-void func_8005DC68(Ui *);
+void Ui_ClearDrawList(Ui *);
 void func_8005DCC4(Ui *);
-void func_8005DD20(Ui *, s32);
-void func_80060640(void *);
-void func_80063AAC(s32);
+void Ui_LoadResourceFile(Ui *, s32);
+void Sprite_Destroy(void *);
+void Res_Release(s32);
 
 void Ui_ResetScreen(s32 a, s32 b) {
     s32 i;
 
-    func_8005DC68(gUi[0]);
+    Ui_ClearDrawList(gUi[0]);
     func_8005DCC4(gUi[0]);
     gUi[0]->x8B68 = 0;
     for (i = 0; i < gUi[0]->x8B5E; i++) {
-        func_80060640(gUi[0]->a[i].x20);
+        Sprite_Destroy(gUi[0]->a[i].x20);
     }
     for (i = 0; i < gUi[0]->x8B62; i++) {
-        func_80063AAC((s32)gUi[0]->b[i].x0);
+        Res_Release((s32)gUi[0]->b[i].x0);
     }
     for (i = 0; i < gUi[0]->x8B5C; i++) {
-        func_80063AAC(gUi[0]->c[i].x0);
+        Res_Release(gUi[0]->c[i].x0);
     }
     gUi[0]->x8B5C = 0;
     gUi[0]->x8B5E = 0;
     gUi[0]->x8B60 = 0;
     gUi[0]->x8B62 = 0;
     gUi[0]->x8B64 = 0;
-    func_8005DD20(gUi[0], a);
-    func_8005DD20(gUi[0], b);
+    Ui_LoadResourceFile(gUi[0], a);
+    Ui_LoadResourceFile(gUi[0], b);
 }

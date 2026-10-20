@@ -8,7 +8,7 @@ extern u8 D_80097354;
 extern s32 D_80096EB8;
 extern u8 D_80096ED0[];
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 Lights_Cycle(void) {
     u64 lim = 30000000000ULL;
@@ -31,7 +31,7 @@ s32 Lights_Cycle(void) {
             D_80097354 = 0;
             D_80097358[0] = 3;
             func_80063380(1);
-            func_80063564(0x27, 1);
+            Game_SetNextMode(0x27, 1);
             break;
         case 3:
             D_80097354 = ret;

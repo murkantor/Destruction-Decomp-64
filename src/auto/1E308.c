@@ -132,7 +132,7 @@ extern Model D_80125C68;
 extern s32 D_800D1C20[];
 
 void *Mem_Alloc(u32);
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 f64 log(f64);
 void Spline_ComputeCoeffs(void *, void *);
 void func_80012A20(void *);
@@ -140,13 +140,13 @@ void Obj_AllocSubBuffers(void *);
 void Skid_InitMgr(void *);
 void RigidBody_Init(void *, void *);
 void Car_BuildLightDisplayLists(Car *, CarStats *);
-void func_80063F88(void);
+void Res_ClearForceLoad(void);
 s32 Res_Get(s32);
 ResObj *Res_GetEnd(s32);
-void func_8005F9C0(void *, void *, void *, s32, s32, s32, f32);
-void func_8005A970(void *, s32, s32, s32);
-void func_8005AA68(void *, void *);
-void func_8005AB4C(void *, f32);
+void ModelInst_Create(void *, void *, void *, s32, s32, s32, f32);
+void Model_Init(void *, s32, s32, s32);
+void ModelInst_Init(void *, void *);
+void ModelInst_SetScale(void *, f32);
 
 typedef struct { s32 v[12]; } Base12;
 extern Base12 D_800B8978;
@@ -172,7 +172,7 @@ Car *Car_Create(CarStats *s) {
     flags = Mem_Alloc(8);
     car->stats = *s;
     car->x0 = 3;
-    car->x2 = func_80064D70();
+    car->x2 = Obj_NextId();
     car->x4 = car;
     car->xC = 1;
     car->xD = 0;
@@ -410,19 +410,19 @@ Car *Car_Create(CarStats *s) {
     Car_BuildLightDisplayLists(car, s);
     i = car->x34;
     if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {
-        func_80063F88();
+        Res_ClearForceLoad();
     }
     car->x190 = Res_GetEnd(Res_Get(D_800919F4[i]));
-    func_8005F9C0(sp50, car->x160, car->x98, ((ResObj *)car->x190)->x20, 0, 0, 0.01f);
+    ModelInst_Create(sp50, car->x160, car->x98, ((ResObj *)car->x190)->x20, 0, 0, 0.01f);
     if (D_80124360 == 0) {
         D_80124360 = 1;
-        func_8005A970(&D_80125C68, Res_GetEnd(Res_Get(0x4650))->x20, 0, 0);
+        Model_Init(&D_80125C68, Res_GetEnd(Res_Get(0x4650))->x20, 0, 0);
     }
     for (model = 0; model < 4; model++) {
-        func_8005AA68(&car->xC0[model], &D_80125C68);
-        func_8005AB4C(&car->xC0[model], 0.01f);
+        ModelInst_Init(&car->xC0[model], &D_80125C68);
+        ModelInst_SetScale(&car->xC0[model], 0.01f);
     }
-    func_8005A970(car->x178, Res_GetEnd(Res_Get(D_80091A54[i]))->x20, 0, 0);
+    Model_Init(car->x178, Res_GetEnd(Res_Get(D_80091A54[i]))->x20, 0, 0);
     if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {
         if (D_800D31CC == 2) {
             switch (gGame->race->numCars) {

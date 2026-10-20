@@ -3,7 +3,7 @@
 
 void *Mem_AllocAligned(M2C_UNK, M2C_UNK, M2C_UNK);     /* extern */
 
-void *func_80060470(void) {
+void *Sprite_Create(void) {
     void *temp_v0;
 
     temp_v0 = Mem_AllocAligned(0x24, 0x3F, 0);

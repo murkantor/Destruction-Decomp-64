@@ -14,13 +14,13 @@ extern Ui *gUi[];
 extern u8 gMainHeap[];
 extern HeapBlock D_800BC9F8;
 extern void *D_800BCA00;
-void func_8005DC68(Ui *);
+void Ui_ClearDrawList(Ui *);
 s32 Res_GetSize(s32);
 void Res_Load(s32, void *);
 void Heap_AllocAlt(void *heap, HeapBlock *out, u32 size, u32 alignMask, u32 alignOffset);
 void *HeapBlock_Ptr(HeapBlock *);
 void Ui_AddElement(Ui *, s32, s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 void Results_LoadBanner(Obj *o, s32 arg1) {
     void *p;
@@ -30,7 +30,7 @@ void Results_LoadBanner(Obj *o, s32 arg1) {
     s32 n;
     s32 size;
 
-    func_8005DC68(gUi[0]);
+    Ui_ClearDrawList(gUi[0]);
     size = Res_GetSize(0x11424);
     t = &D_800BC9F8;
     Heap_AllocAlt(gMainHeap, t, size, 7, 0);
@@ -45,6 +45,6 @@ void Results_LoadBanner(Obj *o, s32 arg1) {
     D_800BCA00 = e->x4;
     e->x4 = p;
     Ui_AddElement(gUi[0], 2, 0x39);
-    func_80063564(0x1F, 1);
+    Game_SetNextMode(0x1F, 1);
     o->x10 = arg1;
 }

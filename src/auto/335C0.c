@@ -8,7 +8,7 @@ typedef struct {
     s32 xC;
 } Scale;
 
-void func_800329C0(s32 type, Scale *s) {
+void Surface_GetGrip(s32 type, Scale *s) {
     s->xC = type;
     switch (type) {
         case 2:

@@ -3,11 +3,11 @@
 
 extern s8 D_800B4D70;
 
-void func_80063F78(void) {
+void Res_SetForceLoad(void) {
     D_800B4D70 = 1;
 }
 
 
-void func_80063F88(void) {
+void Res_ClearForceLoad(void) {
     D_800B4D70 = 0;
 }

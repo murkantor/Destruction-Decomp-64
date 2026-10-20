@@ -15,9 +15,9 @@ extern f64 D_800BACC0;
 
 void Rumble_DisallowRetry(void);
 void Timer_Reset(void);
-void func_80063564(s32, s32);
-void func_800638C0(void *);
-void func_800638C8(void *);
+void Game_SetNextMode(s32, s32);
+void Clock_Resume(void *);
+void Clock_Pause(void *);
 void func_8005CC98(void *);
 void Ui_RemoveElement(void *, s32);
 s32 Sound_CountPlaying(s32);
@@ -31,9 +31,9 @@ s32 func_8004686C(Menu *m) {
             f32 vol;
             Rumble_DisallowRetry();
             Timer_Reset();
-            func_80063564(D_80125C38, 0);
-            func_800638C0(gGame[0]->x1058);
-            func_800638C8(gGame[0]->x1080);
+            Game_SetNextMode(D_80125C38, 0);
+            Clock_Resume(gGame[0]->x1058);
+            Clock_Pause(gGame[0]->x1080);
             func_8005CC98(D_8011EEF8);
             Ui_RemoveElement(gUi, 0x38);
             Ui_RemoveElement(gUi, 0x39);
@@ -59,7 +59,7 @@ s32 func_8004686C(Menu *m) {
             break;
         }
         case 1:
-            func_80063564(0x21, 1);
+            Game_SetNextMode(0x21, 1);
             break;
         case 2:
             if (Sound_CountPlaying(2) == 0) {
@@ -71,10 +71,10 @@ s32 func_8004686C(Menu *m) {
                     Res_LoadSoundBank(D_8011EEF8->x510[D_8011EEF8->x520]);
                 }
             }
-            func_80063564(0x20, 1);
+            Game_SetNextMode(0x20, 1);
             break;
         case 3:
-            func_80063564(0x27, 1);
+            Game_SetNextMode(0x27, 1);
             break;
     }
     m->x10 = 0;

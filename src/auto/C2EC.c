@@ -9,7 +9,7 @@ typedef struct { u8 pad0[0xC]; s16 xC; } Game;
 extern Game *gGame;
 extern u8 D_800958A1;
 void Mtx_FromBodyMul(Mtx4 *, Mtx4 *, void *);
-void func_8005AB5C(void *, Mtx4 *);
+void ModelInst_SetMatrix(void *, Mtx4 *);
 
 void Car_UpdateModelMatrices(Car *car) {
     Mtx4 m[5];
@@ -45,9 +45,9 @@ void Car_UpdateModelMatrices(Car *car) {
     m[0][2][0] *= s->x11C * f;
     m[0][2][1] *= s->x11C * f;
     m[0][2][2] *= s->x11C * f;
-    func_8005AB5C(car->x98, &m[0]);
-    func_8005AB5C(car->xC0, &m[1]);
-    func_8005AB5C(car->xE8, &m[2]);
-    func_8005AB5C(car->x110, &m[3]);
-    func_8005AB5C(car->x138, &m[4]);
+    ModelInst_SetMatrix(car->x98, &m[0]);
+    ModelInst_SetMatrix(car->xC0, &m[1]);
+    ModelInst_SetMatrix(car->xE8, &m[2]);
+    ModelInst_SetMatrix(car->x110, &m[3]);
+    ModelInst_SetMatrix(car->x138, &m[4]);
 }

@@ -34,12 +34,12 @@ extern u8 D_8007BCC0[];
 extern u8 D_800B7560[];
 void *HeapBlock_Ptr(HeapBlock *);
 Gfx *Gfx_InitRenderState(void *, FrameCfg *);
-Gfx *func_8005793C(Gfx *);
+Gfx *Gfx_EndDisplayList(Gfx *);
 u32 osVirtualToPhysical(void *);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-void func_800565B8(Renderer *r) {
+void Gfx_BeginFrame(Renderer *r) {
     Gfx *g;
 
     D_800B0B5C ^= 1;
@@ -68,7 +68,7 @@ void func_800565B8(Renderer *r) {
         GFX2(g, 0xDE010000, r->x98);
         r->x98 = HeapBlock_Ptr(&D_800BCF98[D_800B0B5C]);
     } else {
-        g = func_8005793C(g);
+        g = Gfx_EndDisplayList(g);
         r->x98 = HeapBlock_Ptr(&D_800BCF98[D_800B0B5C]);
         r->x9C = g;
         r->xA0 = D_8007BCC0;

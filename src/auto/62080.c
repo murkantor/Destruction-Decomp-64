@@ -4,7 +4,7 @@
 M2C_UNK guS2DInitBg();                            /* extern */
 extern f64 D_800BBF00;
 
-void func_80061480(void *arg0, f32 arg1, f32 arg2, s32 arg3) {
+void Bg_SetScale(void *arg0, f32 arg1, f32 arg2, s32 arg3) {
     if (((f64) arg1 == D_800BBF00) && ((f64) arg2 == D_800BBF00)) {
         M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) & 0xFFFE);
         guS2DInitBg();

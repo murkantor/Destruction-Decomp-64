@@ -25,16 +25,16 @@ typedef struct Obj {
     s32 x52C;
     u8 x530;
 } Obj;
-u16 func_80064D70(void);
+u16 Obj_NextId(void);
 void *Mem_Alloc(s32);
 s32 func_80008694(void);
 s32 func_80008688(void);
 
-s32 func_8005C5EC(Obj *obj) {
+s32 World_Init(Obj *obj) {
     s32 i;
 
     obj->x0 = 0x3EB;
-    obj->x2 = func_80064D70();
+    obj->x2 = Obj_NextId();
     obj->x4 = obj;
     obj->xFC = Mem_Alloc(0x14A0);
     obj->x504 = 0;

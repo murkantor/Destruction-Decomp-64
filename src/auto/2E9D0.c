@@ -71,8 +71,8 @@ extern void *D_8011EEF8;
 extern s32 Track_GetGridCell(Vec3f);
 extern Vec3f Vec3f_TransformTransposed(Mtx3f *m, Vec3f *t, Vec3f *v);
 extern u8 Seg2D_Intersects(f32, f32, f32, f32, f32, f32, f32, f32);
-extern void func_8002B7A0(Car *, Item *, s32);
-extern u8 func_800330A8(void *, void *, void *, s32, void *);
+extern void Car_OnTriggerCrossed(Car *, Item *, s32);
+extern u8 Obb_OverlapsSphere(void *, void *, void *, s32, void *);
 extern void Sound_PlayContact(void *, Ev *);
 extern void Pad_Rumble(s32 channel, s32 frames, f32 strength);
 extern void Vec3f_Scale(Vec3f *, Vec3f *, f32);
@@ -159,7 +159,7 @@ void Car_CheckTriggersAndPickups(Car *car) {
                 f32 qx = pts[k + 5].x;
                 f32 qz = pts[k + 5].z;
                 if (Seg2D_Intersects(px, pz, qx, qz, A, B, C, D)) {
-                    func_8002B7A0(car, item, (qz - pz) * (A - C) - (qx - px) * (B - D) > 0.0);
+                    Car_OnTriggerCrossed(car, item, (qz - pz) * (A - C) - (qx - px) * (B - D) > 0.0);
                 }
             }
         } else if (node->x0->x0 == 0x1F) {
@@ -170,7 +170,7 @@ void Car_CheckTriggersAndPickups(Car *car) {
             if (pk->x64 != 0 || pk->x60 == 0) {
                 continue;
             }
-            if (!func_800330A8(&ph->x130, &ph->xC8, &ph->xA4, pk->x6C->x4, pk->x34)) {
+            if (!Obb_OverlapsSphere(&ph->x130, &ph->xC8, &ph->xA4, pk->x6C->x4, pk->x34)) {
                 continue;
             }
             pk->x58 = 0;

@@ -51,7 +51,7 @@ extern void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
 extern void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 extern void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 extern void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
-extern f32 func_800397FC(Car *);
+extern f32 Car_GetDriveTorque(Car *);
 extern void Math_SinCos(f32, f32 *, f32 *);
 extern f64 pow(f64, f64);
 extern f32 fabsf(f32);
@@ -215,7 +215,7 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
         f32 fx;
         f32 aq;
         f32 lim;
-        drive = func_800397FC(car);
+        drive = Car_GetDriveTorque(car);
         if (p1) {
             drive *= 0.1;
         }

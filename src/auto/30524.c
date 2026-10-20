@@ -23,7 +23,7 @@ typedef struct {
 } Trigger;
 
 extern Game *gGame;
-u8 func_800330A8(void *, void *, void *, f32, void *);
+u8 Obb_OverlapsSphere(void *, void *, void *, f32, void *);
 
 void Trigger_CheckCarsInZone(Trigger *t) {
     s32 i;
@@ -31,7 +31,7 @@ void Trigger_CheckCarsInZone(Trigger *t) {
 
     for (i = 0; i < gGame->x1100->xA4; i++) {
         c = gGame->x1100->cars[i];
-        if (func_800330A8(c->x31C, c->x2B4, c->x290, t->x4, t->x8)) {
+        if (Obb_OverlapsSphere(c->x31C, c->x2B4, c->x290, t->x4, t->x8)) {
             t->x0 = 0;
             t->x38 = c->x29C;
             t->x38.y += 2.0f;

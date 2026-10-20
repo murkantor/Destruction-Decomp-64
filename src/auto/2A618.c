@@ -40,7 +40,7 @@ void Msg_Queue(s32, s32, s32, s32);
 void Hud_FlashDamageZone(void *, Car *, s32, s32);
 f32 Car_GetSpeed(Car *);
 void Standings_Resort(void *, Car *);
-void func_8002A5CC(Car *, s32);
+void Car_CheckWrecked(Car *, s32);
 void Commentary_PickRandom(s32 *, s32, s32, s32);
 void Announcer_Request(s32, s32, s32);
 
@@ -174,7 +174,7 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
         if (new != old) {
             Standings_Resort(race->x14, atk);
         }
-        func_8002A5CC(vic, part);
+        Car_CheckWrecked(vic, part);
         return;
     }
     if (gGameA[0]->x10FC != 0x1C) {

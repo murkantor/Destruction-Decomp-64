@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-f32 func_800397FC(void *arg0) {
+f32 Car_GetDriveTorque(void *arg0) {
     f32 temp_f2;
     f32 temp_f4;
 

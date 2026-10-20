@@ -27,15 +27,15 @@ extern s16 D_80125C98;
 extern s16 D_80125C9A;
 extern s32 D_80125C90;
 extern s32 D_80125C8C;
-Menu *func_80054028(void);
+Menu *DebugMenu_GetCurrent(void);
 void Pad_Read(void);
-void func_80054074(void *);
-void func_8005409C(void);
+void DebugMenu_Push(void *);
+void DebugMenu_Pop(void);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-s32 func_800540C0(void) {
-    Menu *m = func_80054028();
+s32 DebugMenu_HandleInput(void) {
+    Menu *m = DebugMenu_GetCurrent();
     s32 changed = 0;
     Item *it = &m->items[m->cur];
     s32 sx;
@@ -129,11 +129,11 @@ s32 func_800540C0(void) {
         }
     }
     if ((D_80125C90 & 0x8000) && it->x0 == 3) {
-        func_80054074(it->x8);
+        DebugMenu_Push(it->x8);
         changed = 1;
     }
     if (D_80125C90 & 0x4000) {
-        func_8005409C();
+        DebugMenu_Pop();
         changed = 1;
     }
     if (D_80125C8C & 0x2000) {

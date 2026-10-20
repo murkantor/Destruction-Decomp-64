@@ -16,7 +16,7 @@ typedef struct {
     f32 unk24;
 } Seq;
 
-u16 func_8005AA68(Seq *s, u16 *src) {
+u16 ModelInst_Init(Seq *s, u16 *src) {
     s->unk8 = 1;
     s->src = src;
     s->unk4 = 0;

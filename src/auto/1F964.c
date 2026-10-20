@@ -45,8 +45,8 @@ extern u8 D_80124360;
 void Obj_FreeSubBuffers(s32 *);
 void Skid_Free(s32 *);
 void func_80013174(s32 *);
-void func_8005AAC0(void *);
-void func_80063AAC(s32);
+void ModelInst_Free(void *);
+void Res_Release(s32);
 void Debris_FreeCar(Car *);
 void Heap_Free(void *, void *);
 void Mem_Free(void *);
@@ -103,18 +103,18 @@ void Car_Destroy(Car *o) {
                 func_80013174(&o->xB80);
             }
         }
-        func_8005AAC0(o->x98);
-        func_8005AAC0(o->xC0);
-        func_8005AAC0(o->xE8);
-        func_8005AAC0(o->x110);
-        func_8005AAC0(o->x138);
-        func_80063AAC(D_800919F4[idx]);
+        ModelInst_Free(o->x98);
+        ModelInst_Free(o->xC0);
+        ModelInst_Free(o->xE8);
+        ModelInst_Free(o->x110);
+        ModelInst_Free(o->x138);
+        Res_Release(D_800919F4[idx]);
         if (D_80124360) {
             D_80124360 = 0;
-            func_80063AAC(0x4650);
+            Res_Release(0x4650);
         }
         Debris_FreeCar(o);
-        func_80063AAC(D_80091A54[idx]);
+        Res_Release(D_80091A54[idx]);
         Heap_Free(gMainHeap, o->xB3C);
         Heap_Free(gMainHeap, o->xB54);
         if (D_800958B4 == 2 || D_800958B4 == 11) {

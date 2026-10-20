@@ -24,8 +24,8 @@ extern s32 D_801320C8[];
 extern f32 D_8007EEC0, D_8007EEC4, D_8007EEC8;
 extern s32 CarEffect_Init(s32, s32, Rec *);
 extern s8 Pool_PushCopy(void *, Rec *);
-extern Ent *func_8005CC00(void *, s16);
-extern f32 func_80063718(u64 *);
+extern Ent *World_FindObject(void *, s16);
+extern f32 Clock_GetDeltaSeconds(u64 *);
 extern Vec3f Car_GetPos(Car *);
 extern Vec3f Car_GetVelocity(Car *);
 extern void List_RemoveById(void *, s16);
@@ -48,12 +48,12 @@ void EngineSfx_Crossfade(void *list, s32 i, s32 snd) {
         t->x0 = id;
         t->xC = 0;
     }
-    e = func_8005CC00(list, t->x0);
+    e = World_FindObject(list, t->x0);
     if (e == NULL) {
         return;
     }
     if (e->x14 < D_801320C8[e->x10]) {
-        e->x14 += (s32)(D_801320C8[e->x10] / D_8007EEC0 * func_80063718(&gGame->x1058));
+        e->x14 += (s32)(D_801320C8[e->x10] / D_8007EEC0 * Clock_GetDeltaSeconds(&gGame->x1058));
         if (D_801320C8[e->x10] < e->x14) {
             e->x14 = D_801320C8[e->x10];
         }
@@ -70,12 +70,12 @@ void EngineSfx_Crossfade(void *list, s32 i, s32 snd) {
     if (t->x4 == 0) {
         return;
     }
-    e = func_8005CC00(list, t->x4);
+    e = World_FindObject(list, t->x4);
     if (e == NULL) {
         return;
     }
     if (e->x14 > 0) {
-        e->x14 -= (s32)(D_801320C8[e->x10] / D_8007EEC0 * func_80063718(&gGame->x1058));
+        e->x14 -= (s32)(D_801320C8[e->x10] / D_8007EEC0 * Clock_GetDeltaSeconds(&gGame->x1058));
         if (e->x14 < 0) {
             e->x14 = 0;
         }

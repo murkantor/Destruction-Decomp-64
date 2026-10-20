@@ -5,14 +5,14 @@ void *Mem_Alloc(M2C_UNK);                           /* extern */
 M2C_UNK func_800168C0(void *, M2C_UNK);             /* extern */
 M2C_UNK func_800170F0(void *, M2C_UNK);             /* extern */
 M2C_UNK Particles_InitTrail(void *, M2C_UNK);             /* extern */
-s16 func_80064D70();                                /* extern */
+s16 Obj_NextId();                                /* extern */
 
 void *ParticleSys_Create(void) {
     void *temp_v0;
 
     temp_v0 = Mem_Alloc(0x1E0);
     M2C_FIELD(temp_v0, s16 *, 0) = 0x3EF;
-    M2C_FIELD(temp_v0, s16 *, 2) = func_80064D70();
+    M2C_FIELD(temp_v0, s16 *, 2) = Obj_NextId();
     M2C_FIELD(temp_v0, void **, 4) = temp_v0;
     func_800168C0(temp_v0 + 0xB0, 0xC8);
     func_800170F0(temp_v0 + 0x148, 0xC8);

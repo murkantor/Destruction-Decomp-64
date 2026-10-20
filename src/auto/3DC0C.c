@@ -11,9 +11,9 @@ u8 Pak_Open(s32 *);
 u8 Menu_HandleSelect(s32);
 void Pak_WriteSave(s32 *);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
-s32 func_8003D00C(Item *item) {
+s32 PakMenu_OverwriteSelect(Item *item) {
     s32 err;
     s32 code;
 
@@ -33,7 +33,7 @@ s32 func_8003D00C(Item *item) {
             Pak_WriteSave(&err);
             if (Menu_HandleSelect(err)) {
                 func_80063380(2);
-                func_80063564(0x19, 1);
+                Game_SetNextMode(0x19, 1);
                 item->x10 = 0;
                 D_8009734C = 0;
                 D_8009734D = 0;
@@ -42,6 +42,6 @@ s32 func_8003D00C(Item *item) {
         default:
             return 1;
     }
-    func_80063564(code, 1);
+    Game_SetNextMode(code, 1);
     return 1;
 }

@@ -7,7 +7,7 @@ void Timer_Start(void *, s64);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 
-s32 func_8003BACC(void *t) {
+s32 SaveMenu_ToggleDelete(void *t) {
     Timer_Start(t, 250000000);
     if (D_800964D0) {
         Ui_RemoveElement(gUi, 3);

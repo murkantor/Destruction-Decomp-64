@@ -15,11 +15,11 @@ extern Game *volatile gGame;
 extern Debris *D_80125B70[];
 extern u32 D_80125C58;
 extern s32 D_801311B8;
-f32 func_80063718(u64 *);
-void func_8005AB1C(void *, f32, f32, f32);
-void func_8005AB34(void *, f32, f32, f32);
+f32 Clock_GetDeltaSeconds(u64 *);
+void ModelInst_SetPos(void *, f32, f32, f32);
+void ModelInst_SetRot(void *, f32, f32, f32);
 void *Model_Draw(void *, void *);
-void func_8005AAC0(void *);
+void ModelInst_Free(void *);
 void Mem_Free(void *);
 
 void *Debris_UpdateDraw(Obj *obj, void *gfx) {
@@ -33,18 +33,18 @@ void *Debris_UpdateDraw(Obj *obj, void *gfx) {
     if (D_80125B70[(s8)id] == NULL) return gfx;
     p = D_80125B70[(s8)id];
     {
-        dt = func_80063718(&gGame->x1058);
+        dt = Clock_GetDeltaSeconds(&gGame->x1058);
         prev = NULL;
         if (gGame->x1074) dt = 0.0f;
         do {
-            func_8005AB1C(p->x28, p->x4, p->x8, p->xC);
-            func_8005AB34(p->x28, p->x10, p->x14, p->x18);
+            ModelInst_SetPos(p->x28, p->x4, p->x8, p->xC);
+            ModelInst_SetRot(p->x28, p->x10, p->x14, p->x18);
             if (D_80125C58 > 0x2000) {
                 gfx = Model_Draw(p->x28, gfx);
             }
             if (p->x8 - p->x0 < -5.0) {
                 tmp = p;
-                func_8005AAC0(p->x28);
+                ModelInst_Free(p->x28);
                 if (prev) {
                     prev->x50 = p->x50;
                 } else {

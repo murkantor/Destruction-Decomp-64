@@ -64,7 +64,7 @@ extern f64 D_800B91F0;
 void Standings_Resort(void *, Car *);
 void Msg_Queue(s32, s32, s32, s32);
 
-void func_8002A8D8(Car *car) {
+void Race_OnLapCompleted(Car *car) {
     Race *race;
     s32 track;
     u64 t;

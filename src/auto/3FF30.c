@@ -24,7 +24,7 @@ extern s32 gControllers;
 extern s32 D_80125D30;
 u8 AnyEntryFlag10(void);
 void func_800505DC(void);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void func_8002D0E0(s32);
 s32 rand(void);
 
@@ -62,7 +62,7 @@ s32 func_8003F330(Obj *o) {
             D_80096068[i] = r;
         }
         D_800958A4 = 1;
-        func_80063564(0x14, 1);
+        Game_SetNextMode(0x14, 1);
         next = D_800958B0;
         break;
     case 1:
@@ -87,7 +87,7 @@ s32 func_8003F330(Obj *o) {
             D_80096068[i] = r;
         }
         D_800958A4 = 1;
-        func_80063564(0x14, 1);
+        Game_SetNextMode(0x14, 1);
         next = D_800958B0;
         break;
     case 2:
@@ -101,7 +101,7 @@ s32 func_8003F330(Obj *o) {
             a = 3;
         }
         func_8002D0E0(a);
-        func_80063564(0x17, 1);
+        Game_SetNextMode(0x17, 1);
         if (D_800958B4[0] < 4) {
             next = 0;
             D_800958B4[0] = 4;
@@ -117,7 +117,7 @@ s32 func_8003F330(Obj *o) {
             return 0;
         }
         D_800958A4 = 4;
-        func_80063564(0x16, 1);
+        Game_SetNextMode(0x16, 1);
         if (D_801253F9 != 0) {
             D_800958B0 = 3;
         } else {

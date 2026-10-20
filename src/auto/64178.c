@@ -3,7 +3,7 @@
 
 extern void *gGame;
 
-void func_80063578(s16 arg0, s32 arg1) {
+void Game_SetMode(s16 arg0, s32 arg1) {
     if (arg1 & 0xFF) {
         M2C_FIELD(gGame, s8 *, 0x10FE) = 1;
     } else {

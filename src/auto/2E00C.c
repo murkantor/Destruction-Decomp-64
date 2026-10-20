@@ -13,10 +13,10 @@ extern char D_800B925C[];
 extern char D_800B9264[];
 extern char D_800B9268[];
 extern char D_800B9270[];
-Ctrl *func_80062F14(void);
+Ctrl *Pad_GetLatched(void);
 void *memset(void *, s32, u32);
 int strcmp(const char *, u8 *);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 static inline void Cheat_Reset(s8 p) {
     memset(D_801253F8.c[p].buf, 0, 0xB);
@@ -27,7 +27,7 @@ void Cheat_UpdateInput(void) {
     Ctrl *c;
     s32 i;
 
-    c = func_80062F14();
+    c = Pad_GetLatched();
     for (i = 0; i < 4; i++) {
         if (c[i].x10 & 0x10) {
             Cheat_Reset(i);
@@ -77,7 +77,7 @@ void Cheat_UpdateInput(void) {
                 D_801253F8.c[i].f14 = 1;
             }
             if (strcmp(D_800B9270, D_801253F8.c[i].buf) == 0) {
-                func_80063564(0x2E, 1);
+                Game_SetNextMode(0x2E, 1);
             }
         }
     }

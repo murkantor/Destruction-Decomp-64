@@ -16,32 +16,32 @@ extern s32 gControllers;
 extern PlayerTab D_800958C0;
 
 void Pad_LatchAll(void);
-Controller *func_80062F14(void);
+Controller *Pad_GetLatched(void);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 u8 Pak_Open(s32 *);
 s32 func_80020F00(void *, s8);
-void func_8002D320(void);
+void Cheat_ResetAll(void);
 
-void func_8002D188(void) {
+void Game_RunStartupChecks(void) {
     Controller *c;
     s32 type;
     s32 i;
 
     D_800D31CC = 1;
     Pad_LatchAll();
-    c = func_80062F14();
+    c = Pad_GetLatched();
     if (osTvType != 1 && osTvType != 2) {
         func_80063380(1);
-        func_80063564(0x11, 1);
+        Game_SetNextMode(0x11, 1);
     } else if (gControllers == 0) {
         func_80063380(1);
-        func_80063564(0x12, 1);
+        Game_SetNextMode(0x12, 1);
     } else if (Pak_Open(&type)) {
         if (type == 0) {
             if ((c->xC & 0x1000) || D_800D31F8) {
                 func_80063380(1);
-                func_80063564(3, 1);
+                Game_SetNextMode(3, 1);
             } else {
                 goto fail;
             }
@@ -50,7 +50,7 @@ void func_8002D188(void) {
                 D_80095898 = 1;
                 if (type == 3 || type == 4 || type == 10) {
                     func_80063380(1);
-                    func_80063564(0xD, 1);
+                    Game_SetNextMode(0xD, 1);
                 }
             }
             if (D_8011EEEA == 0xD) {
@@ -61,12 +61,12 @@ void func_8002D188(void) {
     } else {
     fail:
         func_80063380(0);
-        func_80063564(2, 1);
+        Game_SetNextMode(2, 1);
     }
 loop:
     for (i = 0; i < 4; i++) {
         func_80020F00(D_800958C0.b[i], i);
         D_800958C0.a[i] = -1;
     }
-    func_8002D320();
+    Cheat_ResetAll();
 }

@@ -5,8 +5,8 @@ typedef struct { u8 pad0[0x10]; u32 x10; u8 pad14[4]; u32 x18; u8 pad1C[0x14]; u
 typedef struct { void *x0; void *x4; u8 pad8[4]; void *xC; u8 pad10[4]; void *x14; u8 pad18[0x34]; void *x4C; } Zip;
 extern char D_800BBA5C[];
 Zip *Zip_Open(void *);
-ZipEntry *func_80052AE0(Zip *);
-s32 func_80053050(Zip *, ZipEntry *, void *);
+ZipEntry *Zip_ReadNextEntry(Zip *);
+s32 Zip_ExtractEntry(Zip *, ZipEntry *, void *);
 void *Mem_AllocAligned(u32, s32, s32);
 void Mem_Free(void *);
 void RomFile_Close(void *);
@@ -65,7 +65,7 @@ top:
             if ((*outBuf = Mem_AllocAligned(*outSize = e->x18, 7, 0)) == NULL) {
                 goto fail;
             }
-            if (func_80053050(z, e, *outBuf) != 0) {
+            if (Zip_ExtractEntry(z, e, *outBuf) != 0) {
                 Mem_Free(*outBuf);
                 goto fail;
             }
@@ -73,7 +73,7 @@ top:
             return 0;
         }
 next:
-    if ((e = func_80052AE0(z)) != NULL) {
+    if ((e = Zip_ReadNextEntry(z)) != NULL) {
         goto top;
     }
 fail:

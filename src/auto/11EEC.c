@@ -46,7 +46,7 @@ extern Pool gParticlePool;
 extern void Vec3f_SetLength(Vec3f *out, Vec3f *v, f32 len);
 extern Gfx *Particle_LoadTexFrame(PSys *sys, s32 tex, Gfx *gfx);
 extern void *Pool_Alloc(Pool *pool);
-extern void func_80057334(void *p);
+extern void Gfx_FreeAfterFrame(void *p);
 extern void guPosition(void *m, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
@@ -241,7 +241,7 @@ Gfx *Particles_Draw(PSys *sys, f32 (*m)[4], Gfx *gfx)
                 GFX2(gfx, 0xDE000000, p->dl ? p->dl : sys->dl);
                 break;
         }
-        func_80057334(mem);
+        Gfx_FreeAfterFrame(mem);
     }
     return gfx;
 }

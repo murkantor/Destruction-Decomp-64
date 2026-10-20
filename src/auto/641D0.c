@@ -12,7 +12,7 @@ typedef struct Clock {
     TimeHMS x20;
 } Clock;
 u64 func_80062F20(void);
-s32 func_80062F58(void);
+s32 Fps_GetDeltaFrames(void);
 u64 Clock_GetDelta(Clock *);
 s32 Clock_GetFrames(Clock *);
 TimeHMS Time_Split(u64 t);
@@ -22,7 +22,7 @@ void Clock_Update(Clock *c) {
 
     if (c->x18 == NULL) {
         dt = func_80062F20();
-        c->x14 = func_80062F58();
+        c->x14 = Fps_GetDeltaFrames();
     } else {
         dt = Clock_GetDelta(c->x18);
         c->x14 = Clock_GetFrames(c->x18);

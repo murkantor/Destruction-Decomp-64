@@ -18,7 +18,7 @@ extern s32 D_800958AC;
 extern s32 D_800958BC;
 extern s32 D_80095D94[][3];
 
-void func_8002B66C(void);
+void Race_AwardHealthBonus(void);
 void Results_TallyStandings(void);
 s32 Race_FindCarSlot(s32);
 int rand(void);
@@ -29,7 +29,7 @@ void Race_AwardPot(void) {
     s32 r;
     s32 p;
 
-    func_8002B66C();
+    Race_AwardHealthBonus();
     if (D_800958A8 == 3 && D_800958AC == 1) {
         race = gGame[0]->x1100;
         if (race->x4 > 0) {

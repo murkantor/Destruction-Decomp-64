@@ -30,7 +30,7 @@ extern u8 D_80097335;
 extern s32 D_80097D48;
 u64 Time_Get(u64 *);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
-void func_8002A8D8(Racer *);
+void Race_OnLapCompleted(Racer *);
 
 void Racer_UpdateLapTiming(Racer *o) {
     s32 i;
@@ -95,5 +95,5 @@ void Racer_UpdateLapTiming(Racer *o) {
             D_80097D48 = 0;
         }
     }
-    func_8002A8D8(o);
+    Race_OnLapCompleted(o);
 }

@@ -40,7 +40,7 @@ s32 sprintf(char *, const char *, ...);
 f32 func_8003ECC0(char *, s32, f32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
-void func_80063AAC(s32);
+void Res_Release(s32);
 s32 Res_Get(s32);
 
 #define FIND_ELEM(id_)                                   \
@@ -130,8 +130,8 @@ void Records_Draw(s32 prev, s32 mode, s32 base, s32 cup) {
         break;
     }
     if (base != -1) {
-        func_80063AAC(base + 0x112D0);
-        func_80063AAC(base + 0x112DD);
+        Res_Release(base + 0x112D0);
+        Res_Release(base + 0x112DD);
         FIND_ELEM(base + 0x112D0);
         el->res = Res_Get(cup + 0x112D0);
         el->id = cup + 0x112D0;
@@ -139,11 +139,11 @@ void Records_Draw(s32 prev, s32 mode, s32 base, s32 cup) {
         el->res = Res_Get(cup + 0x112DD);
         el->id = cup + 0x112DD;
         if (prev != mode && prev != -1) {
-            func_80063AAC(a[prev]);
+            Res_Release(a[prev]);
             FIND_ELEM(a[prev]);
             el->res = Res_Get(a[mode]);
             el->id = a[mode];
-            func_80063AAC(b[prev]);
+            Res_Release(b[prev]);
             FIND_ELEM(b[prev]);
             el->res = Res_Get(b[mode]);
             el->id = b[mode];

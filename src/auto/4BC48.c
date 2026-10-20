@@ -37,7 +37,7 @@ extern void Ui_ResetScreen(s32, s32);
 extern void Race_PickRandomTrack(void);
 extern void Ui_SaveElements(void);
 extern void Ctx_FreeAll(void *);
-extern void func_8005DD20(void *, s32);
+extern void Ui_LoadResourceFile(void *, s32);
 extern void Ui_AddModeLabels(s32);
 extern void Ui_AddSpriteElement(void *, Desc *);
 extern void Ui_AddElement(void *, s32, s32);
@@ -81,8 +81,8 @@ void func_8004B048(void) {
     } else {
         Ui_SaveElements();
         Ctx_FreeAll(gUi[0]);
-        func_8005DD20(gUi[0], 0x112F0);
-        func_8005DD20(gUi[0], 0x112F1);
+        Ui_LoadResourceFile(gUi[0], 0x112F0);
+        Ui_LoadResourceFile(gUi[0], 0x112F1);
         if (D_800958A8 == 3 && D_800958AC == 1) {
             labels = 2;
             track = D_80097CC8;

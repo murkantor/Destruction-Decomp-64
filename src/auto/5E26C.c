@@ -20,26 +20,26 @@ typedef struct {
     u8 pad4[2];
     u8 x8B68;
 } Ctx;
-extern void func_8005DC68(Ctx *);
+extern void Ui_ClearDrawList(Ctx *);
 extern void func_8005DCC4(Ctx *);
-extern void func_80063AAC(s32);
-extern void func_80060640(s32);
+extern void Res_Release(s32);
+extern void Sprite_Destroy(s32);
 
 void Ctx_FreeAll(Ctx *ctx) {
     s16 i;
 
-    func_8005DC68(ctx);
+    Ui_ClearDrawList(ctx);
     func_8005DCC4(ctx);
     ctx->x8B68 = 0;
     for (i = 0; i < ctx->x8B62; i++) {
-        func_80063AAC(ctx->a[i].x0);
+        Res_Release(ctx->a[i].x0);
         ctx->a[i].x10 = 0;
     }
     for (i = 0; i < ctx->x8B5E; i++) {
-        func_80060640(ctx->b[i].x0);
+        Sprite_Destroy(ctx->b[i].x0);
     }
     for (i = 0; i < ctx->x8B5C; i++) {
-        func_80063AAC(ctx->c[i].x0);
+        Res_Release(ctx->c[i].x0);
         ctx->c[i].x4 = 0;
     }
     ctx->x8B5C = 0;

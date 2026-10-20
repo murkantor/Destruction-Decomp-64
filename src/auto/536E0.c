@@ -44,7 +44,7 @@ static inline u32 LG(u8 *p) {
 }
 #define P(z) ((z)->buf + (z)->pos)
 
-CdirEntry *func_80052AE0(ZipDir *z) {
+CdirEntry *Zip_ReadNextEntry(ZipDir *z) {
     if (z->pos >= z->size) {
         return NULL;
     }

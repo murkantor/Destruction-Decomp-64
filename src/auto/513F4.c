@@ -6,8 +6,8 @@ extern SaveSlot gSaveSlots[];
 extern u8 D_80097D58;
 extern s32 D_80097D80;
 void Cont_ReadAll(void);
-void func_80058B58(void);
-s32 func_80059ACC(s32, SaveSlot *, s32);
+void Pad_StartRead(void);
+s32 Pak_FileState(s32, SaveSlot *, s32);
 void Pak_FreeBlocks(s32, s32 *);
 
 void Pak_RefreshSaveSlots(void) {
@@ -18,7 +18,7 @@ void Pak_RefreshSaveSlots(void) {
         Cont_ReadAll();
     }
     for (i = 0; i < 16; i++) {
-        if (func_80059ACC(0, &gSaveSlots[i], i)) {
+        if (Pak_FileState(0, &gSaveSlots[i], i)) {
             gSaveSlots[i].x0 = 0;
             gSaveSlots[i].x4 = 0;
             gSaveSlots[i].x8 = 0;
@@ -32,6 +32,6 @@ void Pak_RefreshSaveSlots(void) {
     }
     Pak_FreeBlocks(0, &D_80097D80);
     if (!D_80097D58) {
-        func_80058B58();
+        Pad_StartRead();
     }
 }

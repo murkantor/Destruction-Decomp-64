@@ -26,7 +26,7 @@ extern void *gUi[];
 
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 func_80042224(Obj *o) {
     Tbl tbl = D_800BA5C8;
@@ -94,10 +94,10 @@ s32 func_80042224(Obj *o) {
         }
     }
     if (D_800958A4.x4 == 0) {
-        func_80063564(0x14, 1);
+        Game_SetNextMode(0x14, 1);
         o->x10 = D_800958A4.xC;
     } else {
-        func_80063564(0x17, 1);
+        Game_SetNextMode(0x17, 1);
         o->x10 = D_800958A4.x10;
     }
     return 1;

@@ -13,17 +13,17 @@ void func_8006153C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) & 0xFFFB);
 }
 
-void func_80061554(void *arg0, s32 arg1) {
+void Bg_EnableAlpha(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x4C) = arg1;
     M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) | 8);
 }
 
-void func_80061568(void *arg0) {
+void Bg_DisableAlpha(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x4C) = 0xFF;
     M2C_FIELD(arg0, s32 *, 0x40) = (s32) (M2C_FIELD(arg0, s32 *, 0x40) & 0xFFF7);
 }
 
-void func_80061580(void *arg0, s32 arg1) {
+void Bg_SetAlphaValue(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, s32 *, 0x4C) = arg1;
 }
 

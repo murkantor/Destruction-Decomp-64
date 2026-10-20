@@ -4,7 +4,7 @@
 void *Res_Find();                              /* extern */
 M2C_UNK List_Remove(void *, s32);                 /* extern */
 
-void func_80063AAC(void) {
+void Res_Release(void) {
     s32 *temp_a0;
     void *temp_v0;
 
@@ -28,7 +28,7 @@ void func_80063AAC(void) {
 void *Res_FindType();                              /* extern */
 M2C_UNK List_Remove(void *, s32);                 /* extern */
 
-void func_80063B54(s32 arg0) {
+void Res_ReleaseInstance(s32 arg0) {
     s32 *temp_a0;
     void *temp_v0;
 

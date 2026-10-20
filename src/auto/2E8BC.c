@@ -10,17 +10,17 @@ typedef struct {
 extern Thing *D_800960B0;
 extern s32 D_800960B4;
 void Mem_Free(void *);
-void func_8005AAC0(void *);
-void func_80063B54(s32);
+void ModelInst_Free(void *);
+void Res_ReleaseInstance(s32);
 
-void func_8002DCBC(void) {
+void Track_FreeProps(void) {
     s32 i;
     Thing *t;
 
     for (i = 0; i < D_800960B4; i++) {
         t = &D_800960B0[i];
-        func_8005AAC0(t->x78);
-        func_80063B54(t->x6C);
+        ModelInst_Free(t->x78);
+        Res_ReleaseInstance(t->x6C);
     }
     if (D_800960B0 != NULL) {
         Mem_Free(D_800960B0);

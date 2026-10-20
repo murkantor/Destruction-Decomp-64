@@ -3,7 +3,7 @@ typedef struct { u8 pad0[0x7588]; UiRes res[199]; u8 pad8B4C[0x10]; s16 nres; } 
 extern Ui *gUi[];
 extern u8 D_801253F8;
 extern u8 D_80097A0C[];
-void func_80063AAC(s32);
+void Res_Release(s32);
 s32 Res_Get(s32);
 void Ui_SetElementPos(Ui *, s32, s32, f32, f32);
 
@@ -37,7 +37,7 @@ void Menu_SetCarPreview(s32 arg0, s32 arg1) {
         }
         a0 = fix(arg0);
         id = arg1 + 0x11371;
-        func_80063AAC(id);
+        Res_Release(id);
         { s32 k = id;
         for (i = 0; i < gUi[0]->nres; i++) {
             if (gUi[0]->res[i].id == k) {

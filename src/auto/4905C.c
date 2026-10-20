@@ -26,13 +26,13 @@ extern s32 D_800958A8;
 extern f64 D_800BADE8;
 s32 Sound_CountPlaying(s32);
 void Res_LoadSoundBank(s32);
-void func_8005DC68(void *);
+void Ui_ClearDrawList(void *);
 s32 Res_GetSize(s32);
 void Heap_AllocAlt(void *, void *, s32, s32, s32);
 void *HeapBlock_Ptr(void *);
 void Res_Load(s32, void *);
 void Ui_AddElement(void *, s32, s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void Sound_SetVolume(s32, s32);
 
 s32 func_8004845C(MenuItem *it) {
@@ -64,7 +64,7 @@ s32 func_8004845C(MenuItem *it) {
         s32 i;
         s32 st;
         t = NULL;
-        func_8005DC68(gUi);
+        Ui_ClearDrawList(gUi);
         Heap_AllocAlt(&gMainHeap, &D_800BC9F8, Res_GetSize(0x11424), 7, 0);
         p = HeapBlock_Ptr(&D_800BC9F0.blk);
         st = 2;
@@ -78,7 +78,7 @@ s32 func_8004845C(MenuItem *it) {
         D_800BCA00 = t->x4;
         t->x4 = p;
         Ui_AddElement(gUiA[0], 2, 0x39);
-        func_80063564(0x1F, 1);
+        Game_SetNextMode(0x1F, 1);
         it->x10 = st;
         Sound_SetVolume(D_8011EEE0[0], 0);
     } else {
@@ -87,7 +87,7 @@ s32 func_8004845C(MenuItem *it) {
             v = 0.0f;
         }
         Sound_SetVolume(D_8011EEE0[0], (s32)v);
-        func_80063564(0x13, 1);
+        Game_SetNextMode(0x13, 1);
         it->x10 = D_800958A8;
     }
     return 1;

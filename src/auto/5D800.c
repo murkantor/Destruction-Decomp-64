@@ -7,7 +7,7 @@ typedef struct {
     s32 count;
 } ItemList;
 
-u8 *func_8005CC00(ItemList *list, s16 id) {
+u8 *World_FindObject(ItemList *list, s16 id) {
     s32 i;
 
     for (i = 0; i < list->count; i++) {

@@ -7,7 +7,7 @@ M2C_UNK Save_CopyToGlobal(s32 *);                       /* extern */
 M2C_UNK func_80050684(s32 *);                       /* extern */
 M2C_UNK Mem_Free(s32 *);                       /* extern */
 M2C_UNK Cont_ReadAll();                            /* extern */
-M2C_UNK func_80058B58();                            /* extern */
+M2C_UNK Pad_StartRead();                            /* extern */
 s32 Pak_SetGameInfo(u16, s32, M2C_UNK *, M2C_UNK *, M2C_UNK *); /* extern */
 s32 Pak_Init(M2C_UNK *);                       /* extern */
 s32 Pak_DeleteFile(M2C_UNK);                         /* extern */
@@ -36,14 +36,14 @@ void func_8004FE4C(s32 *arg0) {
     *arg0 = temp_v0;
     if (temp_v0 != 0) {
         if (D_80097D58 == 0) {
-            func_80058B58();
+            Pad_StartRead();
         }
     } else {
         if (*temp_s1 != D_80097A10) {
             *arg0 = Pak_DeleteFile(0);
             D_80097D50 = -1;
             if (D_80097D58 == 0) {
-                func_80058B58();
+                Pad_StartRead();
             }
             Cont_ReadAll();
             D_80097D58 = 1;
@@ -57,11 +57,11 @@ void func_8004FE4C(s32 *arg0) {
                     func_80050684(arg0);
                 }
             }
-            func_80058B58();
+            Pad_StartRead();
             D_80097D58 = 0;
         } else {
             if (D_80097D58 == 0) {
-                func_80058B58();
+                Pad_StartRead();
             }
             Save_CopyToGlobal(temp_s1);
             func_8002D0E0(D_80097A14);

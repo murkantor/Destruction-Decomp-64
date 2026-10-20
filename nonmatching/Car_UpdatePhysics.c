@@ -124,10 +124,10 @@ void Vec3f_TransformTransposed(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
 void Tensor_MulVec3f(Vec3f *, f32 *, Vec3f *);
 void Inertia_RotateDiag(Vec3f *, Vec3f *, f32 *);
 void Mtx2x3_RotateY(Vec3f *, f32);
-void func_8003A568(Vec3f *, Vec3f *, f32);
-void func_8003A4D8(Vec3f *, Vec3f *);
+void Mtx3_RotateAxisAngle(Vec3f *, Vec3f *, f32);
+void Mtx3_RotateByVector(Vec3f *, Vec3f *);
 void Car_ApplySuspensionForces(Car *, Vec3f *, Vec3f *, f32);
-void func_800329C0(s32, Vec3f *);
+void Surface_GetGrip(s32, Vec3f *);
 void Car_ApplyWheelForces(Car *, Vec3f *, Vec3f *, f32 *);
 void Car_SelectGear(Car *, f32);
 void Car_UpdateEngineRpm(Car *);
@@ -346,7 +346,7 @@ void Car_UpdatePhysics(Car *car, f32 dt) {
         Vec3f *m = w->xf.m;
         f32 a = atan2(w->xf.m[2].x, w->xf.m[2].z);
         v30 = D_800B9620;
-        func_8003A568(m, &v30, ramp * (car->xA5C - a));
+        Mtx3_RotateAxisAngle(m, &v30, ramp * (car->xA5C - a));
     }
     Car_SelectGear(car, -car->wheels[0].xf.spin * 9.5493);
     Car_UpdateEngineRpm(car);
@@ -411,7 +411,7 @@ void Car_UpdatePhysics(Car *car, f32 dt) {
         v10.x = angvel->x * h;
         v10.y = angvel->y * h;
         v10.z = angvel->z * h;
-        func_8003A4D8(rot, &v10);
+        Mtx3_RotateByVector(rot, &v10);
         Car_ApplyWheelForces(car, &vD8, &vE8, torque);
         Car_ApplySuspensionForces(car, &vB8, &vC8, h);
         Vec3f_Add(&v30, &vD8, &vB8);
@@ -443,7 +443,7 @@ void Car_UpdatePhysics(Car *car, f32 dt) {
 
         Vec3f_Dot(&f150, vel, vel);
         if (f150 < 4.0) {
-            func_800329C0(car->wheels[0].x1A8, &v120);
+            Surface_GetGrip(car->wheels[0].x1A8, &v120);
             if (!car->x2C->x0) {
                 if (!car->x2C->x3 && !hit) {
                     f32 a;

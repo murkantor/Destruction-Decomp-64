@@ -58,9 +58,9 @@ extern void *Mem_Alloc(s32);
 extern void Res_Load(s32, void *);
 extern Def *Res_Get(s32);
 extern void Grid_AddObjToCellsInRect(void *obj, f32 x0, f32 z0, f32 x1, f32 z1);
-extern void func_8005AA68(void *, Model *);
+extern void ModelInst_Init(void *, Model *);
 extern void Vec3f_Scale(Vec3f *, Vec3f *, f32);
-extern void func_80064100(Obj *);
+extern void ObjList_Add(Obj *);
 
 static inline void Clampf(f32 *v, f32 lo, f32 hi) {
     if (*v < lo) {
@@ -70,7 +70,7 @@ static inline void Clampf(f32 *v, f32 lo, f32 hi) {
     }
 }
 
-Entry *func_8002D81C(s32 res) {
+Entry *Track_LoadProps(s32 res) {
     Grid *grid = gGame->race->track->grid;
     u32 size;
     Entry *data;
@@ -118,7 +118,7 @@ Entry *func_8002D81C(s32 res) {
         Grid_AddObjToCellsInRect(o, x0, z0, x1, z1);
         o->x74 = def->x30;
         o->x70 = def->x30->x18;
-        func_8005AA68(o->x78, o->x74);
+        ModelInst_Init(o->x78, o->x74);
         if (o->x68 == 1) {
             Vec3f_Scale((Vec3f *)o->rot.m[0], (Vec3f *)o->rot.m[0], 0.75f);
             Vec3f_Scale((Vec3f *)o->rot.m[1], (Vec3f *)o->rot.m[1], 0.75f);
@@ -129,7 +129,7 @@ Entry *func_8002D81C(s32 res) {
             Vec3f_Scale((Vec3f *)o->rot.m[1], (Vec3f *)o->rot.m[1], 1.4f);
             Vec3f_Scale((Vec3f *)o->rot.m[2], (Vec3f *)o->rot.m[2], 1.4f);
         }
-        func_80064100(o);
+        ObjList_Add(o);
     }
     return data;
 }

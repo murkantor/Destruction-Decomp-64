@@ -5,7 +5,7 @@ typedef struct { s32 x0; s32 pad[3]; } Entry16;
 extern void *gUi[];
 extern s32 D_80097CC8;
 extern Entry16 D_80095BE8[];
-void func_8005DC68(void *);
+void Ui_ClearDrawList(void *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 void Records_Draw(s32, s32, s32, s32);
@@ -39,7 +39,7 @@ void Menu_ShowVersus(s32 a, s32 b) {
             idA = D_80097CC8;
         }
     }
-    func_8005DC68(gUi[0]);
+    Ui_ClearDrawList(gUi[0]);
     Ui_AddElement(gUi[0], 2, 0xC);
     Ui_AddElement(gUi[0], 2, 0xD);
     Ui_AddElement(gUi[0], 2, 0x12F);

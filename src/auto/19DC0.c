@@ -9,7 +9,7 @@ extern Scene *D_8011EEF0;
 extern u8 D_8012455C;
 extern u8 gParticlePool[];
 void *Pool_Alloc(void *);
-void func_80057334(Vp *);
+void Gfx_FreeAfterFrame(Vp *);
 
 Gfx *Gfx_SetViewport2(Gfx *g, s32 z) {
     View *v = &D_8011EEF0->views[D_8012455C];
@@ -25,6 +25,6 @@ Gfx *Gfx_SetViewport2(Gfx *g, s32 z) {
     vp->vtrans[2] = z * 4;
     vp->vtrans[3] = 0;
     { Gfx *_g = g++; _g->w0 = 0xDC080008; _g->w1 = (u32)vp; }
-    func_80057334(vp);
+    Gfx_FreeAfterFrame(vp);
     return g;
 }

@@ -5,7 +5,7 @@ M2C_UNK Mtx_FromRotPosScaled(void *, s32, s32, s32, void *); /* extern */
 s32 Model_Draw(void *, s32);                     /* extern */
 extern s32 D_80095890;
 
-s32 func_8002DD58(void *arg0, s32 arg1) {
+s32 Prop_Draw(void *arg0, s32 arg1) {
     void *temp_s0;
 
     if ((M2C_FIELD(arg0, s32 *, 0x60) != 0) && (D_80095890 != 0)) {

@@ -14,10 +14,10 @@ extern f32 D_80125BD4;
 f32 Time_ToSeconds(void *);
 void Ui_AddElement(void *, s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
-void func_80063564(s32, s32);
-void func_800638C8(void *);
-void func_80063890(void *);
-void func_800638C0(void *);
+void Game_SetNextMode(s32, s32);
+void Clock_Pause(void *);
+void Clock_Reset(void *);
+void Clock_Resume(void *);
 
 s32 func_80044C84(void) {
     s32 ret = 0;
@@ -30,10 +30,10 @@ s32 func_80044C84(void) {
         D_8009735C[0]++;
     }
     if (Time_ToSeconds(gGame[0]->x1058) >= D_80125BD4 && D_8009735C[0] == 3) {
-        func_80063564(0x1C, 1);
-        func_800638C8(gGame[0]->x10A8);
-        func_80063890(gGame[0]->x10A8);
-        func_800638C0(gGame[0]->x10A8);
+        Game_SetNextMode(0x1C, 1);
+        Clock_Pause(gGame[0]->x10A8);
+        Clock_Reset(gGame[0]->x10A8);
+        Clock_Resume(gGame[0]->x10A8);
         D_80125BD4 += 0.5;
         ret = 1;
     }

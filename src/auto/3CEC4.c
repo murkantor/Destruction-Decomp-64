@@ -4,7 +4,7 @@
 s32 Pak_Open(s32 *);                           /* extern */
 s32 Menu_HandleSelect(s32);                             /* extern */
 M2C_UNK func_80063380(M2C_UNK);                     /* extern */
-M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
+M2C_UNK Game_SetNextMode(M2C_UNK, M2C_UNK);            /* extern */
 extern u8 D_80095898;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
@@ -38,11 +38,11 @@ s32 func_8003C2C4(void) {
             if (M2C_FIELD(gGame, s16 *, 0xC) != 1) {
                 func_80063380(1);
             }
-            func_80063564(6, 1);
+            Game_SetNextMode(6, 1);
         }
         if (D_80095898 != 0) {
 block_13:
-            func_80063564(3, 1);
+            Game_SetNextMode(3, 1);
             D_80095898 = 0;
         }
     } else {
@@ -53,7 +53,7 @@ block_16:
             var_a0 = 6;
         }
 block_17:
-        func_80063564(var_a0, 1);
+        Game_SetNextMode(var_a0, 1);
     }
     return 1;
 }

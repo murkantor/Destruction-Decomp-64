@@ -12,7 +12,7 @@ extern char D_800BA270[];
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 func_8003DD6C(Menu *m) {
     if (D_800964E1) {
@@ -24,12 +24,12 @@ s32 func_8003DD6C(Menu *m) {
         m->x10 = 0;
     } else if (D_80095898) {
         func_80063380(0);
-        func_80063564(2, 1);
+        Game_SetNextMode(2, 1);
         D_80095898 = 0;
         m->x10 = 0;
     } else {
         func_80063380(2);
-        func_80063564(0x19, 1);
+        Game_SetNextMode(0x19, 1);
         m->x10 = 0;
     }
     D_800964E1 = 0;

@@ -11,7 +11,7 @@ s32 Res_Get(s32);
 void Race_LoadCarResources(void);
 void AiDriver_LoadAll(void);
 s32 ParticleSys_Create(void);
-void func_80064100(s32);
+void ObjList_Add(s32);
 
 void Race_LoadTrackResources(u32 idx) {
     s32 a[12] = { 40000, 40100, 40200, 40300, 50000, 50100, 50300, 50400, 50200, 50600, 50500, 50700 };
@@ -29,5 +29,5 @@ void Race_LoadTrackResources(u32 idx) {
     Race_LoadCarResources();
     AiDriver_LoadAll();
     D_801245A4 = ParticleSys_Create();
-    func_80064100(D_801245A4);
+    ObjList_Add(D_801245A4);
 }

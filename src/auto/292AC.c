@@ -10,7 +10,7 @@ void func_8001FC08(Vec3f *, Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 
-s32 func_800286AC(Car *car, Vec3f dir) {
+s32 Car_GetHitZone(Car *car, Vec3f dir) {
     Vec3f fwd;
     Vec3f d;
     F5 t;

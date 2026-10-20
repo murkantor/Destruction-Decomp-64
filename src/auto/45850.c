@@ -1,12 +1,12 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80063564(M2C_UNK, M2C_UNK);            /* extern */
+M2C_UNK Game_SetNextMode(M2C_UNK, M2C_UNK);            /* extern */
 extern s32 D_80125C38;
 
 s32 func_80044C50(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x10) = 0;
     D_80125C38 = 0x1B;
-    func_80063564(0x1F, 1);
+    Game_SetNextMode(0x1F, 1);
     return 1;
 }

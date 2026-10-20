@@ -21,7 +21,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 u64 Time_Get(u64 *);
 
-void func_8002A68C(s32 *arg0, Target *t) {
+void Team_ScoreFlagAtBase(s32 *arg0, Target *t) {
     if (*arg0 == 0) {
         if (D_80096078->x8 == t) {
             t->x18++;

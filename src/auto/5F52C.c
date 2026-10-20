@@ -21,7 +21,7 @@ typedef struct {
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_8005E92C(Gfx *gfx, Font *f, u8 *str, s16 x, s16 y, s16 maxPerLine) {
+Gfx *Font_DrawText(Gfx *gfx, Font *f, u8 *str, s16 x, s16 y, s16 maxPerLine) {
     s16 n;
     s16 cx;
     s16 cy;

@@ -8,14 +8,14 @@ typedef struct { u8 pad0[0xC]; Lvl *xC; u8 pad10[8]; void *x18; } Obj;
 typedef struct { u8 pad0[0x10]; s32 x10; u8 pad14[0x18]; s32 x2C; } Sub;
 typedef struct { u8 pad0[0x1100]; Sub *x1100; } Game;
 extern Game *gGame;
-void func_8002BED4(void);
+void Track_FreeGridObjects(void);
 void Surface_FreeTable(void);
-void func_80063B54(void *);
+void Res_ReleaseInstance(void *);
 void func_8000217C(s32);
 void Track_FreeNodes(void);
 void Track_FreeBranches(void);
 void Track_FreeAnims(void);
-void func_8002DCBC(void);
+void Track_FreeProps(void);
 void List_Remove(Node **, Node *);
 void Mem_Free(void *);
 
@@ -23,13 +23,13 @@ void Track_FreeResources(Obj *arg0) {
     s32 i;
     Sub *s;
 
-    func_8002BED4();
+    Track_FreeGridObjects();
     Surface_FreeTable();
     for (i = 0; i < arg0->xC->x24; i++) {
         if (arg0->xC->x28[i].x24 != NULL) {
-            func_80063B54(arg0->xC->x28[i].x24);
+            Res_ReleaseInstance(arg0->xC->x28[i].x24);
         }
-        func_80063B54(arg0->xC->x28[i].x0);
+        Res_ReleaseInstance(arg0->xC->x28[i].x0);
     }
     s = gGame->x1100;
     if (s->x10 == 1) {
@@ -39,7 +39,7 @@ void Track_FreeResources(Obj *arg0) {
         Track_FreeBranches();
     }
     Track_FreeAnims();
-    func_8002DCBC();
+    Track_FreeProps();
     for (i = 0; i < arg0->xC->x4 * arg0->xC->x5; i++) {
         while (arg0->xC->x2C[i] != NULL) {
             List_Remove(&arg0->xC->x2C[i], arg0->xC->x2C[i]->next);

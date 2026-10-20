@@ -13,14 +13,14 @@ typedef struct {
 typedef struct { s32 sel; s32 count; Item items[1]; } Menu;
 typedef struct { u8 pad[0x8C]; void *x8C; void *x90; } Ctx;
 extern char D_800BBB44[], D_800BBB48[], D_800BBB4C[], D_800BBB54[], D_800BBB5C[], D_800BBB60[], D_800BBB64[];
-extern Menu *func_80054028(void);
+extern Menu *DebugMenu_GetCurrent(void);
 extern void Font_BlitString(void *, s32, s32, char *);
-extern void func_80055F70(void *);
-extern void func_80056098(void *);
+extern void Vi_ApplyConfig(void *);
+extern void Vi_SwapBuffer(void *);
 extern int sprintf(char *, const char *, ...);
 
 void DebugMenu_DrawPage(Ctx *ctx) {
-    Menu *menu = func_80054028();
+    Menu *menu = DebugMenu_GetCurrent();
     Item *it;
     s32 i;
     char buf[0x40];
@@ -82,6 +82,6 @@ void DebugMenu_DrawPage(Ctx *ctx) {
             break;
         }
     }
-    func_80055F70(ctx->x8C);
-    func_80056098(ctx->x90);
+    Vi_ApplyConfig(ctx->x8C);
+    Vi_SwapBuffer(ctx->x90);
 }

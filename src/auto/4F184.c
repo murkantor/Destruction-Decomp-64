@@ -7,7 +7,7 @@ extern u8 D_80097335;
 extern s32 D_800958A8;
 extern s32 D_80097320[];
 void func_80063380(s32);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 
 s32 func_8004E584(Menu *m) {
     s32 i;
@@ -15,14 +15,14 @@ s32 func_8004E584(Menu *m) {
     if (D_800958BC == 3) {
         if (D_80097335) {
             m->x10 = 0;
-            func_80063564(0x26, 1);
+            Game_SetNextMode(0x26, 1);
         } else {
             m->x10 = D_800958A8;
-            func_80063564(0x13, 1);
+            Game_SetNextMode(0x13, 1);
         }
     } else {
         func_80063380(2);
-        func_80063564(0x1A, 1);
+        Game_SetNextMode(0x1A, 1);
     }
     {
         s32 *p;

@@ -10,7 +10,7 @@ extern s32 D_800959D8;
 extern s32 D_80095A3C;
 extern s32 D_80095A40;
 
-void func_800649B8(void *arg0) {
+void Players_SyncTeammate(void *arg0) {
     s8 temp_v1;
 
     temp_v1 = M2C_FIELD(M2C_FIELD(arg0, void **, 0x28), s8 *, 0x10);

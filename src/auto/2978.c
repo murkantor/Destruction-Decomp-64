@@ -57,14 +57,14 @@ typedef struct Obj {
 extern s32 D_800958A8[];
 extern s32 D_800958AC;
 void *Mem_Alloc(s32);
-s16 func_80064D70(void);
+s16 Obj_NextId(void);
 
 Obj *Obj_CreateFromCfg(Cfg *c) {
     Obj *o = Mem_Alloc(sizeof(Obj));
 
     if (o != NULL) {
         o->x0 = 7;
-        o->x2 = func_80064D70();
+        o->x2 = Obj_NextId();
         o->x4 = o;
         o->xC = c->x4;
         o->x1C = c->x34;

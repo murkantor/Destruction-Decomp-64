@@ -86,10 +86,10 @@ extern s32 D_80095CB8[];
 extern s32 D_801252F4;
 extern s8 D_800D31CC[];
 
-void func_800635B0(void *, void *);
-void func_800638C8(void *);
-void func_800638C0(void *);
-void func_80064948(void *);
+void Clock_Init(void *, void *);
+void Clock_Pause(void *);
+void Clock_Resume(void *);
+void Players_SyncAll(void *);
 void Race_PickRandomTrack(void);
 void Race_LoadTrackResources(s32);
 void List_BuildSorted(void *);
@@ -98,7 +98,7 @@ void func_80062FD4(void *);
 
 static inline void Clock_Start(s32 idx, void *src) {
     gGame[0]->x10F8++;
-    func_800635B0(&gGame[0]->clocks[idx], src);
+    Clock_Init(&gGame[0]->clocks[idx], src);
 }
 
 void Race_Start(void) {
@@ -110,7 +110,7 @@ void Race_Start(void) {
     s32 k;
 
     Clock_Start(1, &gGameTime);
-    func_800638C8(&gGame[0]->clocks[1]);
+    Clock_Pause(&gGame[0]->clocks[1]);
     D_80095830 = 0;
     for (k = 0, p = D_800958F8; k < 4; k++) {
         gGame[0]->x740[gGame[0]->x1046++] = p++;
@@ -122,7 +122,7 @@ void Race_Start(void) {
     case 0:
         D_800D31CC[0] = 1;
         Clock_Start(2, &gGame[0]->clocks[0]);
-        func_800638C8(&gGame[0]->clocks[2]);
+        Clock_Pause(&gGame[0]->clocks[2]);
         break;
     case 1:
         D_800D31CC[0] = 1;
@@ -139,7 +139,7 @@ void Race_Start(void) {
             D_800958C0[3] = 3;
         }
         D_80095908 = D_800958A8[0];
-        func_80064948(D_800958A0 + 0x58);
+        Players_SyncAll(D_800958A0 + 0x58);
         D_800958A1 = 0;
         break;
     case 2:
@@ -182,7 +182,7 @@ void Race_Start(void) {
         }
         Race_LoadTrackResources(D_800958B4);
         Clock_Start(2, &gGame[0]->clocks[0]);
-        func_800638C0(&gGame[0]->clocks[2]);
+        Clock_Resume(&gGame[0]->clocks[2]);
         if (race->x10 != 1) {
             List_BuildSorted(race->x20);
         }

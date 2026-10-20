@@ -47,22 +47,22 @@ typedef struct Node { ElemA *x0; struct Node *x4; } Node;
 typedef struct { u8 pad[0x8B54]; Node *x8B54; } Ctx;
 
 Gfx *Gfx_SetupRenderModes(Gfx *);
-void func_80062478(void *, f32, f32);
-void func_80062598(void *, f32, f32);
+void Sprite_SetMtxPosF(void *, f32, f32);
+void Sprite_SetBaseScaleF(void *, f32, f32);
 void func_800626A8(void *, f32, f32);
 void Sprite_SetRotationF(void *, f32);
-void func_80062644(void *, f32, f32);
-void func_800625F8(void *, s32, s32);
-Gfx *func_8006102C(void *, Gfx *);
-void func_80061480(void *, f32, f32, s32);
+void Sprite_SetScaleF(void *, f32, f32);
+void Sprite_SetPosF(void *, s32, s32);
+Gfx *Sprite_Draw(void *, Gfx *);
+void Bg_SetScale(void *, f32, f32, s32);
 void Sprite_SetSize(void *, s32, s32, s32, s32);
 Gfx *Bg_Draw(void *, Gfx *, s32);
-Gfx *func_8005E92C(Gfx *, s32, s32, s32, s32, s32);
-Gfx *Gfx_SetTextureLUT(Gfx *);
+Gfx *Font_DrawText(Gfx *, s32, s32, s32, s32, s32);
+Gfx *Gfx_RestoreF3dexUcode(Gfx *);
 
 #define GFX2(g,a,b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_8005E2AC(Ctx *ctx, Gfx *g) {
+Gfx *Ui_Draw(Ctx *ctx, Gfx *g) {
     Node *n;
     ElemA *e;
 
@@ -76,9 +76,9 @@ Gfx *func_8005E2AC(Ctx *ctx, Gfx *g) {
         switch (e->x4) {
         case 1: {
             ElemA *a = e;
-            func_80062478(a->x14, a->x18, a->x1C);
+            Sprite_SetMtxPosF(a->x14, a->x18, a->x1C);
             if (a->x28 != 1.0f || a->x2C != 1.0f) {
-                func_80062598(a->x14, a->x28, a->x2C);
+                Sprite_SetBaseScaleF(a->x14, a->x28, a->x2C);
             }
             if (a->x20 != 0.0f || a->x24 != 0.0f) {
                 func_800626A8(a->x14, a->x20, a->x24);
@@ -87,18 +87,18 @@ Gfx *func_8005E2AC(Ctx *ctx, Gfx *g) {
                 Sprite_SetRotationF(a->x14, a->x30);
             }
             if ((f32)a->x10->xC != a->x3C || (f32)a->x10->x10 != a->x40) {
-                func_80062644(a->x14, a->x3C, a->x40);
+                Sprite_SetScaleF(a->x14, a->x3C, a->x40);
             }
             if (a->x3C != 0.0f || a->x40 != 0.0f) {
-                func_800625F8(a->x14, a->x34, a->x38);
+                Sprite_SetPosF(a->x14, a->x34, a->x38);
             }
-            g = func_8006102C(a->x14, g);
+            g = Sprite_Draw(a->x14, g);
             break;
         }
         case 2: {
             ElemB *b = (ElemB *)e;
             if (b->x78 != 1.0 || b->x7C != 1.0) {
-                func_80061480(b->x18, b->x78, b->x7C, 0);
+                Bg_SetScale(b->x18, b->x78, b->x7C, 0);
             }
             Sprite_SetSize(b->x18, b->x80, b->x84, b->x88 * b->x78, b->x8C * b->x7C);
             g = Bg_Draw(b->x18, g, 0);
@@ -109,10 +109,10 @@ Gfx *func_8005E2AC(Ctx *ctx, Gfx *g) {
             GFX2(g, 0xE200001C, 0x503048);
             GFX2(g, 0xE3000A01, 0);
             GFX2(g, 0xE3001201, 0x2000);
-            g = func_8005E92C(g, c->x10, c->x14, c->x18, c->x1A, c->x1C);
+            g = Font_DrawText(g, c->x10, c->x14, c->x18, c->x1A, c->x1C);
             break;
         }
         }
     }
-    return Gfx_SetTextureLUT(g);
+    return Gfx_RestoreF3dexUcode(g);
 }

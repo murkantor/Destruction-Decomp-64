@@ -3,7 +3,7 @@
 
 M2C_UNK guMtxIdentF(void *);
 
-void func_8005B220(void *arg0, s32 arg1)
+void Camera_Init(void *arg0, s32 arg1)
 {
   int new_var;
   *((s32 *) (((s8 *) arg0) + 0)) = 0;

@@ -8,7 +8,7 @@ extern u8 D_8012455C;
 extern u8 *D_8011EEF0;
 extern u8 gParticlePool[];
 void *Pool_Alloc(void *pool);
-void func_80057334(UnkVp *);
+void Gfx_FreeAfterFrame(UnkVp *);
 
 Gfx *Gfx_SetViewport(Gfx *g, s32 a1, s32 a2) {
     UnkCam *c = (UnkCam *)(D_8011EEF0 + (D_8012455C * 28 + 0x198));
@@ -27,6 +27,6 @@ Gfx *Gfx_SetViewport(Gfx *g, s32 a1, s32 a2) {
     p = g++;
     p->w0 = 0xDC080008;
     p->w1 = (u32)v;
-    func_80057334(v);
+    Gfx_FreeAfterFrame(v);
     return g;
 }

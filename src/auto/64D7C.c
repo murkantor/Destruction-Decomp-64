@@ -5,7 +5,7 @@ M2C_UNK Handler_CallX8ById(void *, M2C_UNK);             /* extern */
 s32 Array_Find(M2C_UNK, void *, s16);            /* extern */
 M2C_UNK Array_SwapRemove(void *, s32, s16);            /* extern */
 
-void func_8006417C(void *arg0, M2C_UNK arg1) {
+void ObjList_Remove(void *arg0, M2C_UNK arg1) {
     s32 temp_v0;
     void *temp_s1;
 
@@ -18,10 +18,10 @@ void func_8006417C(void *arg0, M2C_UNK arg1) {
     Handler_CallX8ById(arg0, arg1);
 }
 
-s16 func_80064D70();                                /* extern */
+s16 Obj_NextId();                                /* extern */
 
-s32 func_800641F0(void *arg0) {
-    M2C_FIELD(arg0, s16 *, 2) = func_80064D70();
+s32 ObjList_Init(void *arg0) {
+    M2C_FIELD(arg0, s16 *, 2) = Obj_NextId();
     M2C_FIELD(arg0, s16 *, 0xD10) = 0;
     M2C_FIELD(arg0, s16 *, 0xD12) = 0;
     M2C_FIELD(arg0, s16 *, 0xD14) = 0;

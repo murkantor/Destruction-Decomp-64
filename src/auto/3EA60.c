@@ -7,14 +7,14 @@ extern void *gUi[];
 extern char D_80123BF2[];
 extern char D_800BA288[];
 void func_800500A0(void);
-void func_80063564(s32, s32);
+void Game_SetNextMode(s32, s32);
 void Ui_RemoveElement(void *, s32);
 s32 sprintf(char *, const char *, ...);
 
 s32 func_8003DE60(Menu *m) {
     if (D_800964E1) {
         func_800500A0();
-        func_80063564(5, 1);
+        Game_SetNextMode(5, 1);
         D_800964E1 = 0;
         m->x10 = 0;
     } else {

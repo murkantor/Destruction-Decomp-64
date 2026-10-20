@@ -28,7 +28,7 @@ extern void Vec3f_Scale(Vec3f *out, Vec3f *v, f32 s);
 extern void Vec3f_Cross(Vec3f *out, Vec3f *a, Vec3f *b);
 extern s32 Track_GetCellsInBox(Vec3f *a, Vec3f *b, s32 *cells, s32 max);
 extern void Track_GetFace(Face *face, s32 cell);
-extern u8 func_80034794(Face *face, f32 r, Vec3f *a, Vec3f *b, Vec3f *hit, void *x, f32 *t);
+extern u8 Poly_SegmentHit(Face *face, f32 r, Vec3f *a, Vec3f *b, Vec3f *hit, void *x, f32 *t);
 extern u8 Math_SolveQuadratic(f32 a, f32 b, f32 c, f32 *r0, f32 *r1);
 
 void Camera_CollideTrack(Car *car)
@@ -84,7 +84,7 @@ void Camera_CollideTrack(Car *car)
         for (i = 0; i < n; i++) {
             t = -1.0f;
             Track_GetFace(&face, cells[i]);
-            if (func_80034794(&face, 0.25f, &a, &b, &v, x1100, &t)) {
+            if (Poly_SegmentHit(&face, 0.25f, &a, &b, &v, x1100, &t)) {
                 if (t < tmin && t > 0.0) {
                     tmin = t;
                     faceN = face.n;
