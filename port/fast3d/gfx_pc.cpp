@@ -686,10 +686,12 @@ static void import_texture(int i, int tile) {
     }
     gfx_rapi->upload_texture(tex_upload_buffer, w, h);
     {
-        /* DD64_TEXDUMP=1: save each upload as tex_<n>_<w>x<h>.bmp */
+        /* DD64_TEXDUMP=1: save each upload as tex_<n>_<w>x<h>.bmp (the first 200; with
+         * DD64_DLDUMP set, only the uploads of the dumped task) */
         static const char *dump = getenv("DD64_TEXDUMP");
+        static const char *dldump = getenv("DD64_DLDUMP");
         static int n;
-        if (dump != NULL && n < 200) {
+        if (dump != NULL && n < 200 && (dldump == NULL || dl_dumping)) {
             char path[64];
             snprintf(path, sizeof(path), "tex_%03d_%ux%u_f%us%u.bmp", n++, w, h, fmt, siz);
             SDL_Surface *s = SDL_CreateSurfaceFrom(w, h, SDL_PIXELFORMAT_ABGR8888, tex_upload_buffer, w * 4);
@@ -1007,6 +1009,13 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
         alpha_threshold = use_alpha;
         use_fog = false;
         texture_edge = false;
+    } else if ((rdp.other_mode_l & (ALPHA_CVG_SEL | CVG_X_ALPHA)) == ALPHA_CVG_SEL && cycle_type != G_CYC_FILL) {
+        /* ALPHA_CVG_SEL without CVG_X_ALPHA: the RDP compares the pixel's coverage, not the
+         * combined alpha, so the alpha compare passes everywhere inside a primitive. The menu
+         * backgrounds are RGBA16 images whose alpha bits are all 0, drawn with G_AC_THRESHOLD
+         * in this mode; a texel alpha test would discard them whole. */
+        alpha_threshold = false;
+        use_noise = false;
     } else if (cycle_type == G_CYC_FILL) {
         /* fill mode writes the fill colour straight to memory: no blending */
         use_alpha = false;
@@ -1457,7 +1466,12 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
                                bool flip, bool textured) {
     uint32_t saved_geometry_mode = rsp.geometry_mode;
     struct XYWidthHeight saved_viewport = rdp.viewport;
-    rsp.geometry_mode = 0;
+    /* A rectangle has no z of its own: it is depth tested only with the primitive depth
+     * (G_ZS_PRIM, gDPSetPrimDepth). The menus draw their backgrounds after the 3D scene at
+     * prim depth 0xFFFF, the far plane, which the RDP passes wherever nothing was drawn. */
+    bool prim_z = (rdp.other_mode_l & G_ZS_PRIM) != 0;
+    float z = prim_z ? std::min(rdp.prim_depth / 32767.0f, 1.0f) * 2.0f - 1.0f : -1.0f;
+    rsp.geometry_mode = prim_z ? G_ZBUFFER : 0;
     rdp.viewport.x = 0;
     rdp.viewport.y = 0;
     rdp.viewport.width = NATIVE_WIDTH;
@@ -1477,7 +1491,7 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     v[2].x = x1, v[2].y = y0; /* ur */
     v[3].x = x1, v[3].y = y1; /* lr */
     for (int i = 0; i < 4; i++) {
-        v[i].z = -1.0f;
+        v[i].z = z;
         v[i].w = 1.0f;
         v[i].color = rdp.fill_color;
     }
@@ -1698,6 +1712,24 @@ static void s2_bg(const uint8_t *bg, bool scaled) {
         sysLogPrintf(LOG_NOTE, "bg %s: image %u,%u %ux%u frame %d,%d %ux%u fmt %u siz %u ptr %p: %u bytes, %u nonzero (last %u), %u marked",
                      scaled ? "1cyc" : "copy", imageX, imageY, imageW, imageH, frameX, frameY, frameW, frameH, fmt,
                      siz, (const void *)image, total, nz, lastnz, be);
+        if (dl_dumping && siz == G_IM_SIZ_16b) {
+            /* with DD64_DLDUMP: save the dumped task's RGBA16 backgrounds as bg_<addr>.bmp */
+            uint32_t w = imageW / 4, h = imageH / 4;
+            std::vector<uint32_t> px(w * h);
+            for (uint32_t i = 0; i < w * h; i++) {
+                uint16_t p = rd16(image + i * 2);
+                /* alpha-0 texels (transparent under G_AC_THRESHOLD) are shown magenta */
+                px[i] = (p & 1) ? (p >> 11) * 255 / 31 | ((p >> 6 & 31) * 255 / 31) << 8 | ((p >> 1 & 31) * 255 / 31) << 16 | 0xFF000000u
+                                : 0xFFFF00FFu;
+            }
+            char path[64];
+            snprintf(path, sizeof(path), "bg_%p.bmp", (const void *)image);
+            SDL_Surface *s = SDL_CreateSurfaceFrom(w, h, SDL_PIXELFORMAT_ABGR8888, px.data(), w * 4);
+            if (s != NULL) {
+                SDL_SaveBMP(s, path);
+                SDL_DestroySurface(s);
+            }
+        }
     }
     uint32_t w = imageW / 4, h = imageH / 4;
     uint32_t bpp_bytes2 = siz == G_IM_SIZ_4b ? 1 : siz == G_IM_SIZ_8b ? 2 : siz == G_IM_SIZ_16b ? 4 : 8;
