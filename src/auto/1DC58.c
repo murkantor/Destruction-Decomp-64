@@ -139,6 +139,9 @@ void RigidBody_Init(RigidBody *rb, RigidBodyParams *p) {
     f32 x2, y2, z2, m;
     f32 r, I, wm;
 
+    /* all f32, from the car's spec as loaded: converted before being copied into the
+       body and wheels, where the physics copies them into locals */
+    PORT_CONVERT(p, sizeof(RigidBodyParams) / 4, 4);
     rb->xC = p->x0;
     rb->x10 = 1.0f / p->x0;
     rb->x130 = p->xC;

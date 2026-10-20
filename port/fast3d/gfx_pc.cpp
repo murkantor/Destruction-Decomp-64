@@ -290,6 +290,11 @@ static struct GfxWindowManagerAPI *gfx_wapi;
 /* Frames presented so far (DD64_SHOT and DD64_PRESS count these) */
 extern "C" unsigned gfx_presents;
 unsigned gfx_presents;
+
+/* The FPS counter in the top-left corner (set by port/src/video.c) */
+extern "C" bool gfx_show_fps;
+bool gfx_show_fps;
+extern "C" void gfx_opengl_draw_counter(int value);
 static struct GfxRenderingAPI *gfx_rapi;
 
 static uint32_t window_width, window_height;
@@ -631,7 +636,15 @@ static void import_texture(int i, int tile) {
         }
     }
 
-    TextureCacheKey key = { addr, fmt == G_IM_FMT_CI ? rdp.palette_sum : 0, size_bytes, line_bytes, fmt, siz };
+    /* With TLUT mode on, the RDP looks every 4- and 8-bit texel up in the palette,
+       whatever the tile's format says (DD64's car bodies are "RGBA 8-bit") */
+    uint32_t tlut = rdp.other_mode_h & (3U << G_MDSFT_TEXTLUT);
+    if ((siz == G_IM_SIZ_4b || siz == G_IM_SIZ_8b) && tlut != G_TT_NONE) {
+        fmt = G_IM_FMT_CI;
+    }
+
+    TextureCacheKey key = { addr, fmt == G_IM_FMT_CI ? rdp.palette_sum ^ tlut : 0, size_bytes, line_bytes, fmt,
+                            siz };
     uint32_t sum = texture_checksum(addr, size_bytes);
     auto it = texture_cache.find(key);
     if (it != texture_cache.end() && it->second.checksum == sum) {
@@ -2125,6 +2138,23 @@ void gfx_present(bool black) {
             gfx_rapi->resolve_msaa_color_buffer(0, game_fb);
         }
         g_GfxPresentX = g_GfxPresentW = 0;
+    }
+    {
+        /* Frames presented per second, counted over the last second */
+        static uint64_t since;
+        static unsigned frames, shown;
+        uint64_t now = SDL_GetTicksNS();
+        frames++;
+        if (since == 0) {
+            since = now;
+        } else if (now - since >= 1000000000ULL) {
+            shown = (unsigned)((frames * 1000000000ULL + (now - since) / 2) / (now - since));
+            frames = 0;
+            since = now;
+        }
+        if (gfx_show_fps) {
+            gfx_opengl_draw_counter((int)shown);
+        }
     }
     {
         /* DD64_SHOT=n[,n...]: save presents number n as shot_<n>.bmp (for testing) */

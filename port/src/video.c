@@ -11,6 +11,7 @@
 #include "gfx_opengl.h"
 
 extern struct GfxWindowManagerAPI gfx_sdl;
+extern bool gfx_show_fps;
 
 static int sBlack;
 static int sFramesDrawn;
@@ -35,6 +36,7 @@ void Port_VideoInit(void) {
     gfx_init(&set);
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
+    gfx_show_fps = true; /* always shown */
 }
 
 /* The N64 address of the microcode a task starts with (F3DEX2 or S2DEX2) */

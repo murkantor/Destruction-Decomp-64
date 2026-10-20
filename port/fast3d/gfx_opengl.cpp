@@ -1961,6 +1961,46 @@ void gfx_opengl_copy_framebuffer(int fb_dst, int fb_src, int left, int top, bool
     glEnable(GL_SCISSOR_TEST);
 }
 
+/*
+ * DD64: draw a number (the FPS counter) in the top-left corner of the window's
+ * back buffer, in a 3x5 pixel font scaled to the window, as scissored clears.
+ */
+extern "C" void gfx_opengl_draw_counter(int value) {
+    static const uint16_t font[10] = {
+        /* 3x5 digits, 15 bits each, row-major from the top */
+        0x7B6F, 0x2C97, 0x73E7, 0x73CF, 0x5BC9, 0x79CF, 0x79EF, 0x7249, 0x7BEF, 0x7BCF,
+    };
+    char text[12];
+    GLint vp[4];
+    int h, scale, n, i, r, c;
+
+    glGetIntegerv(GL_VIEWPORT, vp);
+    h = framebuffers.empty() ? vp[3] : (int)framebuffers[0].height;
+    scale = h / 240 > 1 ? h / 240 : 1;
+    n = snprintf(text, sizeof(text), "%d", value < 0 ? 0 : value);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glEnable(GL_SCISSOR_TEST);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    /* a dark backing box, then the digits */
+    glScissor(2 * scale, h - 2 * scale - 7 * scale, (4 * n + 1) * scale, 7 * scale);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(1.0f, 1.0f, 0.2f, 1.0f);
+    for (i = 0; i < n; i++) {
+        uint16_t bits = font[text[i] - '0'];
+        for (r = 0; r < 5; r++) {
+            for (c = 0; c < 3; c++) {
+                if (bits & (1 << (14 - (r * 3 + c)))) {
+                    glScissor((3 + 4 * i + c) * scale, h - (3 + r + 1) * scale - scale, scale, scale);
+                    glClear(GL_COLOR_BUFFER_BIT);
+                }
+            }
+        }
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.empty() ? 0 : framebuffers[current_framebuffer].fbo);
+}
+
 /* DD64: save the window's back buffer as a BMP (before the swap) */
 extern "C" void gfx_opengl_screenshot(const char* path) {
     GLint vp[4];
