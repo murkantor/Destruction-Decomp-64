@@ -70,7 +70,7 @@ void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
         Grid_GetCell(g, &verts[g->idx[k]], &cx, &cz);
         ci = cz * g->nx + cx;
         while (k < g->cells[ci].start || k >= g->cells[ci].start + g->cells[ci].count) {
-            p = &g->idx[g->cells[ci].start + g->cells[ci].count++];
+            p = (u16 *)((g->cells[ci].start + g->cells[ci].count++) * 2 + (u32)g->idx);
             t = *p;
             *p = g->idx[k];
             g->idx[k] = t;
@@ -79,3 +79,8 @@ void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
         }
     }
 }
+/* agent61: 14 diff lines (was 15). The swap loop's address now has the offset first ("addu a0,a0,v0") by writing
+ * p = (u16 *)(off * 2 + (u32)g->idx). Left: i/j/sum/bound registers in loops 1 and 3 (original j=a3, i=a2, sum=a0,
+ * nx=a1; ours j=a1, sum=a3, nx=a0: global alloc takes the loop 3 nx bound and then j first) and the idx value register
+ * in Grid_GetCell (original lhu a0 then sll v1,a0; ours ties both to v1). Tried: separate loop 3 counters, sum init
+ * placements, an inline taking the vertex index, verts + idx, and a do{}while(0) sweep over every statement. */

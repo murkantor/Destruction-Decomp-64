@@ -139,3 +139,6 @@ s32 MapUi_Init(void *ui) {
     }
     return 0;
 }
+/* agent61: unchanged (8 diff lines: li s7 order + car/bound a3/t0 swap). Car refs are set 2 + xC 2 + x34 3 = 7 (flow weights refs by loop depth).
+ * Splitting car into a short-lived car and a long-lived copy c2 used for x34 (scratch mu_H) gives the bound a3 as in the original but leaves a
+ * "move t3,v1" copy (13 diffs). Inline IsCoop() condition helper and a do{}while(0) sweep over every i-loop statement: no gain. */
