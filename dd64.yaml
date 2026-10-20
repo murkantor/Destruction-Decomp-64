@@ -680,6 +680,7 @@ segments:
       - [0x43494, c, auto/43494]
       - [0x435F4, c, auto/435F4]
       - [0x437F4, asm]
+      - [0x43988, c, auto/43988]
       - [0x43B2C, c, auto/43B2C]
       - [0x43CE8, c, auto/43CE8]
       - [0x43E30, c, auto/43E30]
