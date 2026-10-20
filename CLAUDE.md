@@ -72,6 +72,13 @@ m2c output often only works because of MIPS registers. On x86 arguments go on th
   "struct return"; callers include `include/port_sret.h` on PC.
 - Floats returned or passed where the declaration says `int` (or no prototype): reported
   by `check_protos.py`.
+- A struct return or by-value struct argument of a different size in a caller's
+  declaration (`Pos2 Ui_GetElementPos()`, 8 bytes, for a function returning a 12-byte
+  `Vec3f`): MinGW returns 8-byte structs in registers, so the call breaks on Windows only.
+  `tools/port/check_struct_sizes.py @build_linux/gen/game_objects.txt`, from the PC
+  build's debug info.
+- A local too small for what the callee writes (`M2C_UNK sp18` passed as a `HeapBlock *`):
+  harmless in the N64 and Linux stack layouts, it can overwrite saved registers on Windows.
 
 Run the checkers from the repo root after `make`; they must report nothing new.
 

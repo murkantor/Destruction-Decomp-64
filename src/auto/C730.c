@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-typedef struct { f32 x, y; } Pos2;
+typedef struct { f32 x, y, z; } Pos2; /* Ui_GetElementPos returns 12 bytes (a Vec3f) */
 typedef struct { void *x0; u8 pad[0x64]; } Ent68;
 extern s8 D_800B8180;
 extern s8 D_800B8181;
