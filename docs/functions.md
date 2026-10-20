@@ -294,7 +294,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8001A388` | `01AF88` | 0x24 | `Grid_AddItem` | `src/auto/1AF88.c` | C (generated) |
 | `8001A3AC` | `01AFAC` | 0xcc | `Mesh_ComputeBoundsXZ` | `src/auto/1AFAC.c` | C (generated) |
 | `8001A478` | `01B078` | 0xa8 | `Grid_PosToCell` | `src/auto/1B078.c` | C (generated) |
-| `8001A520` | `01B120` | 0x490 | `Grid_BuildCellsXZ` | `asm/1B120.s` | asm |
+| `8001A520` | `01B120` | 0x488 | `Grid_BuildCellsXZ` | `src/auto/1B120.c` | C (generated) |
 | `8001A9B0` | `01B5B0` | 0x15c | `Gfx_SetupRenderMode` | `src/auto/1B5B0.c` | C (generated) |
 | `8001AB10` | `01B710` | 0x1d8 | `Track_FindPolyUnder` | `src/auto/1B710.c` | C (generated) |
 | `8001ACE8` | `01B8E8` | 0x388 | `Track_SampleFaceColor` | `src/auto/1B8E8.c` | C (generated) |

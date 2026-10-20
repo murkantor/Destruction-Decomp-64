@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s16 x;
     s16 y;
@@ -41,7 +44,7 @@ void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
     register s32 j asm("$7");
     s32 k;
     s32 y;
-    register s32 sum asm("$4");
+    s32 sum;
     s32 ci;
     s32 cx;
     s32 cz;
@@ -56,7 +59,7 @@ void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
         }
     }
     for (k = 0; k < g->count; k++) {
-        Grid_GetCell(g, &verts[g->idx[k]], &cx, &cz);
+        sum = g->idx[k]; Grid_GetCell(g, &verts[sum], &cx, &cz);
         g->cells[cz * g->nx + cx].count++;
     }
     y = 0;
@@ -73,22 +76,18 @@ void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
         } while (y < g->nz);
     }
     for (k = 0; k < g->count; k++) {
-        Grid_GetCell(g, &verts[g->idx[k]], &cx, &cz);
+        sum = g->idx[k]; Grid_GetCell(g, &verts[sum], &cx, &cz);
         ci = cz * g->nx + cx;
         while (k < g->cells[ci].start || k >= g->cells[ci].start + g->cells[ci].count) {
             p = (u16 *)((g->cells[ci].start + g->cells[ci].count++) * 2 + (u32)g->idx);
             t = *p;
             *p = g->idx[k];
             g->idx[k] = t;
-            Grid_GetCell(g, &verts[g->idx[k]], &cx, &cz);
+            sum = g->idx[k]; Grid_GetCell(g, &verts[sum], &cx, &cz);
             ci = cz * g->nx + cx;
         }
     }
 }
-/* agent63: 11 diff lines (was 25). Fixed loops 1 and 3 with hard-register locals j asm("$7") and sum asm("$4"),
- * loop 3 written as "if (g->nz > 0) do { ... y++; } while (y < g->nz);" with its own counter y (so combine does not
- * re-emit j=0 after sum=0; the blez delay slot then gets move a0,zero), plus "char unused[8]" inside the do body to
- * restore the 88-byte frame. Left: the three Grid_GetCell idx/vertex-pointer registers (local-alloc ties lhu->sll
- * in loop 2 and loop 4 first call; original keeps idx in a0 apart, and in loop 4's second call uses a0 for the chain
- * and v1 for minX). Hard-reg idx locals are copy-propagated away by CSE; shared idx variables, F2-F5 inline forms
- * (locals for x/z/minX, result temps, nx*(..)) and macros did not help. */
+/* agent68: MATCH. The idx in all three Grid_GetCell calls goes through the same variable as the loop-3 running
+ * total (sum = g->idx[k]; Grid_GetCell(g, &verts[sum], ...)), with sum a plain s32 (no asm("$4")). That makes it one
+ * global pseudo that global-alloc puts in a0, which breaks the lhu->sll tie. j asm("$7") is still needed. */
