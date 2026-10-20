@@ -26,8 +26,8 @@ For a port, `Mem_Alloc`/`Mem_Free` map straight to `malloc`/`free`.
 | Symbol | File | Notes |
 |---|---|---|
 | `RomFile_Open`, `Read`, `Seek`, `Tell`, `Close` | `src/romfile.c` | One read-only "file": the `zippeddata.zip` area of ROM. DMA needs aligned buffers, so odd reads go through an 8 KB buffer |
-| `Zip_Open`, `Zip_ReadEndOfCentralDir` | asm | Info-ZIP style reader; inflate uses `gInflateMaskBits` |
-| `Elf_FindSymbol`, `Elf_ResolveSymbols`, `Elf_Relocate` | asm | Load the track `.o` files from the zip and link them at run time |
+| `Zip_Open`, `Zip_ReadEndOfCentralDir` | `src/auto/53470.c`, `src/auto/53328.c` | Info-ZIP style reader; inflate uses `gInflateMaskBits` |
+| `Elf_FindSymbol`, `Elf_ResolveSymbols`, `Elf_Relocate` | `src/auto/54170.c`, `src/auto/5438C.c`, `src/auto/54500.c` | Load the track `.o` files from the zip and link them at run time |
 
 Each track is two MIPS ELF objects (`<track>.o`, `<track>_sdl.o`) with symbol tables, for example `pit_TrackInfo`, `pit_Physics_Polys`, `pit_Physics_Verts`, `pit_Textures`. A port can read the zip and the ELF objects directly on the host instead of emulating ROM DMA.
 
