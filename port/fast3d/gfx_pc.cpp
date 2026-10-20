@@ -859,7 +859,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         d->y = y;
         d->z = z;
         d->w = w;
-        if (dl_dumping && dl_dumped_vtx < 200000) {
+        if (dl_dumping && dl_dumped_vtx < 3000) {
             dl_dumped_vtx++;
             sysLogPrintf(LOG_NOTE, "vtx %p: ob %g %g %g col %02X%02X%02X%02X -> clip %g %g %g %g rej %X", (const void *)vtx, ob[0], ob[1],
                          ob[2], cn[0], cn[1], cn[2], cn[3], x, y, z, w, d->clip_rej);
@@ -1744,9 +1744,10 @@ static void gfx_run_dl(const uint8_t *cmd) {
 
         stats.cmds++;
         {
-            /* DD64_DLDUMP=n: log every command of task number n */
+            /* DD64_DLDUMP=n: log every command of the task drawn for presented frame n
+               (as DD64_SHOT counts) */
             static const char *dump = getenv("DD64_DLDUMP");
-            dl_dumping = dump != NULL && (unsigned)atoi(dump) == task_counter;
+            dl_dumping = dump != NULL && (unsigned)atoi(dump) == gfx_presents + 1;
             if (dl_dumping) {
                 sysLogPrintf(LOG_NOTE, "dl %p d%d %s: %08X %08X", (const void *)cmd, depth, s2dex ? "s2" : "f3", w0, w1);
             }

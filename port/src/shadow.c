@@ -145,10 +145,16 @@ static inline u32 spread(u32 n) {
     return widthMark(n) * 0x01010101u;
 }
 
+static u32 sWatch = 1; /* DD64_WATCH, below */
+static void watchStore(u32 addr, u32 n, void *site);
+
 /* A typed load of n bytes touching big-endian data. */
 static void convert(u32 addr, u8 *s, u32 n, void *site) {
     u32 be = 0, i;
 
+    if (sWatch != 0) {
+        watchStore(addr, n, site); /* conversions are logged with the stores */
+    }
     for (i = 0; i < n; i++) {
         be += s[i] & SH_BE;
     }
@@ -288,8 +294,8 @@ static inline void load(u32 addr, u32 n, void *site) {
     }
 }
 
-/* DD64_WATCH=hexaddr: log each code site that stores over that address */
-static u32 sWatch = 1;
+/* DD64_WATCH=hexaddr: log each code site that stores over that address or
+   converts it (a load at a width that swaps it in place) */
 
 static void watchStore(u32 addr, u32 n, void *site) {
     if (sWatch == 1) {

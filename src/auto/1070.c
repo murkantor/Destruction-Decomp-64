@@ -32,5 +32,11 @@ void Boot_LoadData(void) {
     start = (u32)D_BF790;
     Dma_LoadAndFlush(D_80134280, start, (u32)gResArchiveRom - start);
     PORT_BLOCK_LOADED(D_80134280, (u32)gResArchiveRom - start);
+#ifdef TARGET_PC
+    {
+        void Port_DevBoot(void); /* port/game/devboot.c: DD64_BOOT */
+        Port_DevBoot();
+    }
+#endif
     Game_MainLoop(D_800D31C0);
 }

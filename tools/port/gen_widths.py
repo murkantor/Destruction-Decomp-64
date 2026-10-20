@@ -107,6 +107,12 @@ class Layout:
             return None if count is None or es is None else count * es
         return None
 
+    def is_struct(self, off, depth=0):
+        tag, a, _ = self.dies.get(off, (None, {}, []))
+        if tag in ('DW_TAG_typedef', 'DW_TAG_const_type', 'DW_TAG_volatile_type') and depth < 40:
+            return self.is_struct(attr_ref(a), depth + 1)
+        return tag in ('DW_TAG_structure_type', 'DW_TAG_union_type')
+
     def count(self, kids):
         total = 1
         subs = [k for k in kids if self.dies[k][0] == 'DW_TAG_subrange_type']
@@ -158,8 +164,10 @@ class Layout:
             count = self.count(kids)
             et = attr_ref(a)
             es = self.size(et)
-            if count is None and room and es:
-                count = room // es  # `T x[]`: up to the next symbol
+            if count is None and room and es and self.is_struct(et):
+                # `T x[]` of a struct type: up to the next symbol. Not for scalar
+                # element types: m2c declares unknown data as `s32 D_x[]`.
+                count = room // es
             if count is None or not es:
                 return
             one = []
