@@ -97,6 +97,8 @@ Run the checkers from the repo root after `make`; they must report nothing new.
   `DD64_PRESS=frame:input ...`, `DD64_BOOT="track=5,type=1"` starts a race directly
   (port/game/devboot.c; `menu=23` opens track select, `menu=32` the options screen, or any
   other menu mode instead), `DD64_FAKEKEY=frame:Key` sends a real SDL key press,
+  `DD64_FAKERSTICK=frame:x,y` and `DD64_FAKEGAS=frame:amount` hold player 1's right stick and
+  gas, `DD64_PROFILE=file` (Linux) writes a sampling profile (addresses and counts),
   `DD64_BECOPIES=1` reports struct copies of unconverted data, `DD64_DLDUMP=n` logs a display list with its matrices, vertices
   and S2DEX objects, `DD64_TEXDUMP=1` saves the textures uploaded (with DLDUMP: that frame's),
   `DD64_GFXLOG=1` logs draw counts every 60 frames, `DD64_WATCH=addr` logs stores to an

@@ -108,6 +108,10 @@ int main(int argc, char **argv) {
     Port_AudioInit();
     Port_InputInit();
 
+    {
+        void Port_ProfileStart(void);
+        Port_ProfileStart(); /* DD64_PROFILE (testing) */
+    }
     boot();
     Port_ViStart();
 
