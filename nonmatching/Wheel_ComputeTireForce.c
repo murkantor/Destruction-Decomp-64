@@ -335,3 +335,14 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
  * the pseudo would need >= 5 refs and to conflict with all of f20-f30 (only true around Vec3f_Dot)
  * or all s-regs; no visible value fits, and ~70 constant/temp insertions (exp/, bf1.py) did not
  * produce vars=200 with identical code. */
+/* agent60: unchanged code (frame 8 short). Built a detector (build/agent60/bf/det.py: compile with
+ * -dl -dg, list pseudos with crosses>0 in call-clobbered regs = what makes setup_save_areas add a slot)
+ * and brute-forced with it: bf.py (V_2 = V copies before every call, all vars, all positions, uses after
+ * the call renamed), bf2.py (constant temps cT = <literal> before each call; moving each call +-3
+ * lines), bf3.py (every simple statement moved +-3 lines). No variant gives vars=200 with identical
+ * code. Findings: in our code the only global pseudo in a call-clobbered reg with >= 5 refs is k (f12);
+ * fx (f14) has exactly 5 refs and would take the caller-save path if its live range covered the
+ * Vec3f_Dot branch test (all f20-f30 live there), e.g. 'fx = q' before Vec3f_Dot (wh_a1-style) gives
+ * the right frame but then fx coalesces with q and lat moves to f14 with real saves. The original
+ * keeps both fx assignments inside the branches (mov.s f14,f28 / mtc1 s1,f14), so a default fx before
+ * the call does not fit. Copies of idx/p2 give vars=200 but add a real spill slot. */

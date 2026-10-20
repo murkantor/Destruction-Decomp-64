@@ -1,4 +1,7 @@
-typedef struct { s32 a; s32 b; } Pair;
+#include "common.h"
+#include "m2c.h"
+
+typedef struct { s32 a; s32 b; } __attribute__((aligned(8))) Pair;
 typedef struct { s32 x0; s32 x4; Pair x8; Pair x10; } Slot;
 typedef struct {
     u8 name0[9];
@@ -73,3 +76,6 @@ void HiScore_ApplyNewEntries(void) {
         }
     }
 }
+/* agent60: match. The 8-byte Pair must be 8-aligned (DImode struct): its copy is then a movdi that is
+ * split after reload, so sched2 can put the j = 0 / pointer setup between the loads and stores.
+ * With a 4-aligned Pair the copy is one movstrsi_internal insn and the registers swap. */

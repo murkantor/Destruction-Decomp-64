@@ -736,7 +736,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004FFDC` | `050BDC` | 0xc4 | `Pak_WriteSave` | `src/auto/50BDC.c` | C (generated) |
 | `800500A0` | `050CA0` | 0x2c | `Pak_RepairId` | `src/auto/50CA0.c` | C (generated) |
 | `800500CC` | `050CCC` | 0x208 | `Save_CopyToGlobal` | `src/auto/50CCC.c` | C (generated) |
-| `800502D4` | `050ED4` | 0x308 | `HiScore_ApplyNewEntries` | `asm/50ED4.s` | asm |
+| `800502D4` | `050ED4` | 0x308 | `HiScore_ApplyNewEntries` | `src/auto/50ED4.c` | C (generated) |
 | `800505DC` | `0511DC` | 0xa8 | `Records_ClearNew` | `src/auto/511DC.c` | C (generated) |
 | `80050684` | `051284` | 0x60 | `Pak_FindSave` | `src/auto/51284.c` | C (generated) |
 | `800506E4` | `0512E4` | 0x110 | `Pak_SaveGame` | `src/auto/512E4.c` | C (generated) |
