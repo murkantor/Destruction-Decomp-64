@@ -10,7 +10,7 @@ void Ui_SetElementPos(Ui *, s32, s32, f32, f32);
 
 
 static inline s32 fix(s32 x) {
-    s32 r = x;
+    register s32 r asm("$18") = x;
     if (x != -1) {
         if (D_801253F8 || x < 12) {
         } else if (x >= 12 && D_80097A0C[x]) {
@@ -23,7 +23,7 @@ static inline s32 fix(s32 x) {
 }
 
 void Menu_SetCarPreview(s32 arg0, s32 arg1) {
-    f32 y0 = 78.0f;
+    register f32 y0 asm("$f20") = 78.0f;
     f32 y1 = y0;
     UiRes *r = NULL;
     s32 id;
@@ -53,21 +53,12 @@ void Menu_SetCarPreview(s32 arg0, s32 arg1) {
     Ui_SetElementPos(gUi[0], 2, 10, 197.0f, y0);
     Ui_SetElementPos(gUi[0], 2, 11, 289.0f, y1);
 }
-/* agent55: score 33 (ds). The inline fix() with 'r = x' and an early 'return r' in the D_80097A0C branch recreates the j before the loop, so loop.c now puts the found block where the original has it; id = 0x11371; id += a0 builds the constant in s0. Still wrong: fix()'s r lands in a0 and is copied to s2 at the join (the original copies arg0 to s2 before the -1 test), the loop's id copy is in a0 rather than a1 (so there is no gUi copy into a2), and f20/f22 are swapped on the two calls. Tried: if/else, goto and shared-label forms of the fixup, 13 inline bodies x 3 call forms, y0/y1 init forms, local u/k/n copies in the loop. */
-/* agent60: unchanged (size 0x1a0, 4 short). Tried: a second fixup written like the first (a0 = arg0
- * then the same if/else, both forms: -8/-4 bytes), every placement of y1 = y0, y0/y1 decl orders, two
- * 78.0f constants, swapped call args (f20/f22 order does not follow the source), y[2] array.
- * Prototypes checked (Res_Release(s32), Res_Get(s32)). Idea not tried: the loop as an inline
- * FindRes(ui, id) returning an index, given the a0/a1 param-style copies (move a1,s0 / move a2,a0). */
-/* agent64: unchanged (4 short). The 4 bytes are the missing 'move a2,a0' (gUi copy for the loop
- * pointer) plus 'move s2,a0' in the wrong place. Tried: the loop as inline FindRes (void with
- * UiRes **out: r goes to the stack; returning r with an r param: +4 bytes, extra moves v1/s1 but
- * gets 'move s2,a0' before the -1 test like the original), FindRes without a ui param, fixup
- * written directly on arg0 (loses the j before the found block, -4/-8 bytes), fix() bodies that
- * modify x or a copy r, arg0 = fix(arg0), a local Ui *ui / Ui *ui + n = ui->nres / UiRes *p pointer
- * loop. Best lead: sp/f0_c0_h2-style FindRes(ui, id, r) returning r gets the s2 copy right; it needs
- * the r param copies removed. */
-/* agent64 (cont.): 'register s32 k asm("$5") = id;' (sp/r2.c) gets gUi into a0 and k into a1 as in the
- * original, but the loop pointer then shares a0 (global prefers the copy source's hard reg), so the
- * 'move a2,a0' copy is still missing (+ offset/count giv in a2/a3 instead of a3/t0). Forcing ui
- * into $4 as well adds 8-12 bytes. */
+/* agent65: size 0x1a0 (4 short), 9 words off. New fixes: 'register s32 r asm("$18") = x;' in fix()
+ * puts 'move s2,a0' in the delay slot of the -1 test like the original, and
+ * 'register f32 y0 asm("$f20")' fixes the f20/f22 swap. Left: the loop. In the original the gUi
+ * load (pseudo 128) gets a0, k gets a1 and the pointer giv gets a2 via 'move a2,a0'. Here the giv
+ * (allocated first, a2 because k prefers a0/a1) is copy-coalesced with 128 (copy 134 = 128 where 128
+ * dies), so 128 takes a2 too and k gets a0. 128 must conflict with the giv (be live after its init)
+ * or lose the copy preference. Tried: k as hard $5 (k copy moves before blez), u local in cond/body,
+ * hard $4 u (no strength reduction, +8..16), n = nres local, if/do-while loop (+0x24), inline
+ * FindRes(ui,id,r) (right size but r copies), GetUi() getters, dead branches around the loop. */
