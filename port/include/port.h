@@ -29,7 +29,6 @@ u32 Port_RomRead32(u32 offset);
 void Port_RamInit(void);
 void *Port_N64ToHost(uint32_t addr);
 uint32_t Port_HostToN64(const void *p);
-void *Port_FuncFromN64(u32 addr);
 void Port_BlockLoaded(void *dst, u32 size);
 
 /* os_thread.c: threads, message queues, events and timers */
@@ -62,11 +61,9 @@ void Port_VideoInit(void);
 void Port_VideoRunTask(OSTask *task);
 void Port_VideoSwap(void *framebuffer);
 void Port_VideoSetBlack(int black);
-void Port_VideoPresentIdle(void);
 
 /* input.c */
 void Port_InputInit(void);
-void Port_InputUpdate(void);
 int Port_InputConnected(int channel);
 void Port_InputGetPad(int channel, OSContPad *pad);
 void Port_InputRumble(int channel, int on);

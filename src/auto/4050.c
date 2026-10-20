@@ -9,7 +9,8 @@ typedef struct { u8 pad[0x28]; s32 x28; u8 pad2C[0x58 - 0x2C]; s32 x58; } Car;
 extern Game *gGame;
 Vec3f Car_GetPos(Car *);
 #ifdef TARGET_PC
-/* returns its Vec3f by value: see include/port_sret.h */
+/* returns its Vec3f by value: see include/port_sret.h. Not included here: its
+   Car_GetPos wrapper would clash with this file's by-value declaration above */
 Vec3f func_8001FC08(Car *);
 #define func_8001FC08(out, c) (*(out) = func_8001FC08(c))
 #else

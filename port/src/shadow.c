@@ -14,10 +14,11 @@
  *
  * Code that reads part of a word the rest of the game reads whole (an access
  * that only partly covers converted bytes, or straddles marked and unmarked
- * bytes) is reported once per call site; such places need BE_OFF8/BE_OFF16.
+ * bytes) is reported once per call site (CLAUDE.md lists the fixes).
  *
  * Host code that reads game memory directly (the renderer, the audio mixer)
- * uses Port_Rd16/32 and friends, which byte-swap marked data as they read it.
+ * uses Port_RdN64 and Port_ReadN64Bytes (port_shadow.h), which read a value
+ * the way it is stored, converted or not.
  */
 #include <SDL3/SDL.h>
 #include <string.h>
@@ -120,12 +121,6 @@ void Port_MarkNative(const void *p, uint32_t len) {
     if (s != NULL) {
         memset(s, 0, len);
     }
-}
-
-int Port_IsBE(const void *p) {
-    u8 *s = shadowOf((u32)p, 1);
-
-    return s != NULL && (*s & SH_BE);
 }
 
 static void swapInPlace(u8 *p, u32 n) {
@@ -548,26 +543,6 @@ void Port_ConvertStaticData(const void *lo, uint32_t len) {
 }
 
 /* ---- Readers for host code ---- */
-
-uint16_t Port_Rd16(const void *p) {
-    uint16_t v;
-
-    memcpy(&v, p, 2);
-    if (Port_IsBE(p)) {
-        v = (u16)(v << 8 | v >> 8);
-    }
-    return v;
-}
-
-uint32_t Port_Rd32(const void *p) {
-    uint32_t v;
-
-    memcpy(&v, p, 4);
-    if (Port_IsBE(p)) {
-        v = __builtin_bswap32(v);
-    }
-    return v;
-}
 
 /*
  * Game memory as the N64 would hold it, for data leaving the game (Controller

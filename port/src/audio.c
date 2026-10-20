@@ -33,13 +33,8 @@
  * between the host's field rate and the device's clock) is unchanged. The
  * device starts pulling once the ring has filled to the latency.
  *
- * Testing aids: DD64_WAVOUT=path writes the samples the game queued (before
- * the volume setting) to a WAV file; DD64_AUDIO_DUMP=path records every ADPCM
- * command of the first voice (state, book, input bytes, output; checked
- * against an independent decoder by tools/port/adpcm_check.py) and, in
- * path.sizes, a record per buffer queued (bytes, ms, ring fill, last length
- * reported), and logs the ADPCM book, the first frames and the frame-header
- * histograms; DD64_AUDIO_LATENCY=ms overrides the dd64.ini latency.
+ * Testing aid: DD64_WAVOUT=path writes the samples the game queued (before
+ * the volume setting) to a WAV file.
  */
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -70,13 +65,10 @@ static struct {
     u32 size;
 } sDmas[MAX_DMAS];             /* the buffers the game queued (the AI's DMAs), oldest first */
 static u32 sDmaHead, sDmaCount;
-static u32 sLastReport;        /* what osAiGetLength last returned */
 static u32 sUnderruns;
 static u64 sFirstQueueNs;
-static int sQueueLogs;
 static FILE *sWav;
 static u32 sWavBytes;
-static FILE *sDump, *sSizes;
 
 static void SDLCALL pullFromRing(void *userdata, SDL_AudioStream *stream, int additional, int total) {
     u8 buf[4096];
@@ -150,12 +142,9 @@ static void wavFinish(void) {
     sWav = NULL;
 }
 
-static void dumpStats(void);
-
 static void audioAtExit(void) {
     u64 now = SDL_GetTicksNS();
 
-    dumpStats();
     if (sFirstQueueNs != 0 && now > sFirstQueueNs) {
         double secs = (double)(now - sFirstQueueNs) / 1e9;
         Port_Log("audio: %llu frames queued in %.2f s = %.1f Hz (rate %u Hz), %u underruns, ring %u bytes",
@@ -182,19 +171,12 @@ void Port_AudioInit(void) {
             Port_Log("audio: cannot write %s", wav);
         }
     }
-    if (SDL_getenv("DD64_AUDIO_DUMP") != NULL) {
-        char path[1024];
-        sDump = fopen(SDL_getenv("DD64_AUDIO_DUMP"), "wb");
-        SDL_snprintf(path, sizeof(path), "%s.sizes", SDL_getenv("DD64_AUDIO_DUMP")); /* bytes of each buffer queued, u32 */
-        sSizes = fopen(path, "wb");
-    }
     atexit(audioAtExit);
 }
 
 void Port_AudioSetFrequency(u32 freq) {
     SDL_AudioSpec spec;
-    const char *lat = SDL_getenv("DD64_AUDIO_LATENCY");
-    u32 ms = lat != NULL ? (u32)SDL_strtoul(lat, NULL, 10) : (u32)SDL_clamp(gPortConfig.audioLatency, 20, 1000);
+    u32 ms = (u32)SDL_clamp(gPortConfig.audioLatency, 20, 1000);
 
     SDL_AudioStream *old, *stream;
 
@@ -259,11 +241,6 @@ void Port_AudioQueue(const void *buf, u32 bytes) {
     if (sFirstQueueNs == 0) {
         sFirstQueueNs = SDL_GetTicksNS();
     }
-    if (sQueueLogs < 3) {
-        sQueueLogs++;
-        Port_Log("audio: queue %u bytes (%u samples), %u bytes in the ring", (unsigned)bytes, (unsigned)bytes / 4,
-                 (unsigned)sFill);
-    }
     if (bytes > RING_BYTES - sFill) {
         /* The device is not keeping up (or there is none): drop the oldest, as if played */
         u32 drop = bytes - (RING_BYTES - sFill);
@@ -277,10 +254,6 @@ void Port_AudioQueue(const void *buf, u32 bytes) {
         if (sWav != NULL) {
             fwrite(&v, 2, 1, sWav);
         }
-    }
-    if (sSizes != NULL) {
-        u32 rec[4] = { bytes, (u32)SDL_GetTicks(), sFill, sLastReport };
-        fwrite(rec, sizeof(rec), 1, sSizes);
     }
     sFill += bytes;
     if (sDmaCount == MAX_DMAS) {
@@ -321,7 +294,6 @@ u32 Port_AudioQueuedBytes(void) {
         u64 end = sDmas[sDmaHead].start + sDmas[sDmaHead].size;
         n = pos > sDmas[sDmaHead].start ? (u32)(end - pos) : sDmas[sDmaHead].size;
     }
-    sLastReport = n;
     SDL_UnlockMutex(sLock);
     return n;
 }
@@ -490,55 +462,9 @@ static void adpcmResiduals(s16 *dst, const s16 *src, const s16 *book, const s16 
     }
 }
 
-/* DD64_AUDIO_DUMP=path: what the first ADPCM voice decodes, raw s16 mono, to check the decoder offline */
-static u32 sDumpVoice, sDumpSamples, sDumpFrames;
-static u32 sDumpScales[16], sDumpPreds[16];
-
-static void dumpStats(void) {
-    u32 i;
-    char line[256], *p = line;
-
-    if (sDumpFrames == 0) {
-        return;
-    }
-    for (i = 0; i < 16; i++) {
-        p += SDL_snprintf(p, line + sizeof(line) - p, " %u", (unsigned)sDumpScales[i]);
-    }
-    Port_Log("audio: %u adpcm frames; scale histogram:%s", (unsigned)sDumpFrames, line);
-    p = line;
-    for (i = 0; i < 16; i++) {
-        p += SDL_snprintf(p, line + sizeof(line) - p, " %u", (unsigned)sDumpPreds[i]);
-    }
-    Port_Log("audio: predictor histogram:%s", line);
-}
-
-/* One record per ADPCM command of the first voice: what went in and what came out, for an independent re-decode */
-static void audioDump(u32 stateAddr, u32 flags, const s16 *stateIn, u32 in, u32 count, const s16 *samples) {
-    u32 hdr[4] = { 0xADC0ADC0u, flags, count, 0 };
-    u32 i, n = count >> 1;
-
-    if (sDump == NULL) {
-        return;
-    }
-    if (sDumpVoice == 0) {
-        sDumpVoice = stateAddr;
-    }
-    if (stateAddr != sDumpVoice || sDumpSamples >= 400000) {
-        return;
-    }
-    fwrite(hdr, sizeof(hdr), 1, sDump);
-    fwrite(stateIn, 2, 16, sDump);
-    fwrite(sTable, 2, 128, sDump);
-    for (i = 0; i < (count / 32) * 9; i++) {
-        fputc(*dmem8(in + i), sDump);
-    }
-    fwrite(samples, 2, n, sDump);
-    sDumpSamples += n;
-}
-
 static void cmdAdpcm(u32 flags, u32 addr) {
     void *state = ramPtr(addr, 32, "ADPCM state");
-    s16 last[16], stateIn[16];
+    s16 last[16];
     u32 count = align(sCount, 32), in = sIn, out = sOut, i;
 
     if (state == NULL) {
@@ -554,7 +480,6 @@ static void cmdAdpcm(u32 flags, u32 addr) {
     } else {
         memcpy(last, state, sizeof(last)); /* our own, host order: read as written (the shadow map knows nothing of it) */
     }
-    memcpy(stateIn, last, sizeof(stateIn));
     for (i = 0; i < 16; i++, out += 2) {
         *dmem16(out) = last[i];
     }
@@ -563,16 +488,6 @@ static void cmdAdpcm(u32 flags, u32 addr) {
         u8 code = *dmem8(in++);
         u32 scale = code >> 4, rshift = scale < 12 ? 12 - scale : 0;
         const s16 *book = &sTable[(code & 0xF) << 4];
-
-        if (sDump != NULL) {
-            sDumpScales[scale]++;
-            sDumpPreds[code & 0xF]++;
-            if (sDumpFrames++ < 4) {
-                Port_Log("audio: adpcm frame %u: in dmem %04X code %02X bytes %02X %02X %02X %02X book %04X %04X %04X %04X / %04X %04X %04X %04X",
-                         sDumpFrames, (unsigned)(in - 1), code, *dmem8(in), *dmem8(in + 1), *dmem8(in + 2), *dmem8(in + 3),
-                         (u16)book[0], (u16)book[1], (u16)book[2], (u16)book[3], (u16)book[8], (u16)book[9], (u16)book[10], (u16)book[11]);
-            }
-        }
 
         for (i = 0; i < 8; i++) {
             u8 b = *dmem8(in++);
@@ -587,7 +502,6 @@ static void cmdAdpcm(u32 flags, u32 addr) {
         count -= 32;
     }
     storeState(state, last, sizeof(last));
-    audioDump(addr, flags, stateIn, sIn, align(sCount, 32), dmem16(sOut + 32));
 }
 
 static void cmdResample(u32 flags, u32 pitch, u32 addr) {
@@ -904,15 +818,11 @@ static void runCommand(u32 w0, u32 w1) {
 void Port_AudioRunTask(OSTask *task) {
     const u8 *list = (const u8 *)task->t.data_ptr;
     u32 n = task->t.data_size / 8, i;
-    static int sTasks;
 
     if (ramPtr((u32)list, task->t.data_size, "command list") == NULL) {
         return;
     }
     for (i = 0; i < n; i++) {
         runCommand(Port_RdN64(list + 8 * i, 4), Port_RdN64(list + 8 * i + 4, 4));
-    }
-    if (sTasks++ == 0) {
-        Port_Log("audio: first task, %u commands", (unsigned)n);
     }
 }

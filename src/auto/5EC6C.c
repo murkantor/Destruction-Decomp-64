@@ -94,3 +94,6 @@ void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
     }
     Ui_DisableElementAlpha(gUi, 1, e->x0);
 }
+#ifdef TARGET_PC
+#undef res
+#endif

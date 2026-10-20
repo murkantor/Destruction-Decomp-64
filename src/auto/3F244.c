@@ -148,3 +148,6 @@ Obj14 *CarObj_Create(s32 id, s32 slot) {
     ObjList_Add(obj);
     return obj;
 }
+#ifdef TARGET_PC
+#undef buf
+#endif

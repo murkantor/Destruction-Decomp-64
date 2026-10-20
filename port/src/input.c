@@ -240,10 +240,6 @@ void Port_InputGamepadRemoved(SDL_JoystickID id) {
     SDL_UnlockMutex(sLock);
 }
 
-void Port_InputUpdate(void) {
-    /* Gamepad and keyboard state is kept current by the event pump */
-}
-
 int Port_InputConnected(int channel) {
     int connected;
 
@@ -262,7 +258,9 @@ static float keyAmount(const KeyBind *b, const bool *keys) {
     int i;
 
     for (i = 0; i < b->n; i++) {
-        if (keys[b->keys[i]]) {
+        SDL_Scancode sc = b->keys[i];
+        /* Alt+Enter is the window's fullscreen key, not Start */
+        if (keys[sc] && !(sc == SDL_SCANCODE_RETURN && (keys[SDL_SCANCODE_LALT] || keys[SDL_SCANCODE_RALT]))) {
             return 1.0f;
         }
     }
@@ -298,7 +296,7 @@ static s8 stickAxis(float pos, float neg) {
     if (mag > 1.0f) {
         mag = 1.0f;
     }
-    v = (v < 0 ? -mag : mag) * gPortConfig.stickRange;
+    v = (v < 0 ? -mag : mag) * SDL_clamp(gPortConfig.stickRange, 0, 127);
     return (s8)(v < 0 ? v - 0.5f : v + 0.5f);
 }
 

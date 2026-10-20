@@ -92,5 +92,13 @@ Run the checkers from the repo root after `make`; they must report nothing new.
 - PC, Windows (cross from Linux): `cmake -B build_win -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/mingw-i686.cmake`.
 - Put the ROM in `Data/` next to the executable. Testing aids (environment variables):
   `DD64_SHOT=n,m` screenshots, `DD64_EXIT_AFTER=n`, `DD64_TAP=a:60` taps A every 60 frames,
-  `DD64_PRESS=frame:input ...`, `DD64_DLDUMP=n` logs a display list with its matrices and
-  vertices, `DD64_WATCH=addr` logs stores to an address.
+  `DD64_PRESS=frame:input ...`, `DD64_BOOT="track=5,type=1"` starts a race directly
+  (port/game/devboot.c), `DD64_DLDUMP=n` logs a display list with its matrices, vertices
+  and S2DEX objects, `DD64_TEXDUMP=1` saves the textures uploaded (with DLDUMP: that frame's),
+  `DD64_GFXLOG=1` logs draw counts every 60 frames, `DD64_WATCH=addr` logs stores to an
+  address, `DD64_WAVOUT=file.wav` records the sound, `DD64_RAPHDBG=1` logs raphnet adapter
+  exchanges (`DD64_RAPHNET_SYNC=1` polls it without the thread).
+- Tests must not write the user's files: run copies of the exe from a scratch folder.
+- Known harmless shadow reports (zero tests, same answer in either byte order):
+  `25080.c` `*(u16 *)&w->x0`; the car config's `x2` read as s16 in `38128.c` and as u8
+  elsewhere.

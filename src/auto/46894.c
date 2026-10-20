@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-typedef struct { u8 pad0[0x14]; s32 x14; s32 x18; u8 pad1C[0x2C]; } UiDesc;
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; u8 x10; u8 pad11[3]; s32 x14; s32 x18; f32 x1C[7]; u8 x38; u8 pad39[3]; u8 x3C; u8 pad3D[3]; s32 x40; s32 x44; } UiDesc; /* the real layout (as UiElemDesc in 3E0D4.c): the PC port converts these static descriptors at boot by their declared widths */
 typedef struct { s32 v[4]; } S4;
 typedef struct { s32 v[12]; } S12;
 typedef struct { s32 v[3]; } S3;
@@ -60,8 +60,8 @@ void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 
 void Race_WaitForOthers(void) {
     s32 counts[4];
-    UiDesc d1 = (PORT_CONVERT(&D_800BAC14, 18, 4), D_800BAC14); /* 18 s32, copied into locals */
-    UiDesc d2 = (PORT_CONVERT(&D_800BAB50, 18, 4), D_800BAB50);
+    UiDesc d1 = D_800BAC14;
+    UiDesc d2 = D_800BAB50;
     Race *race;
     s32 i;
     s32 j;

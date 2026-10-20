@@ -206,11 +206,18 @@ void *osViGetNextFramebuffer(void) {
  * the game's frame and audio threads keep their beat while the main thread is
  * busy drawing or loading. The main thread presents the frame when it next
  * comes round (Port_ViRetrace).
+ *
+ * The main thread is also the RCP, though: if it stalls (a burst of shader
+ * compiles, a window being dragged on Windows), the retraces wait for it, as if
+ * the whole console paused. Counting on would look like a hung RDP to the game,
+ * whose watchdog (Gfx_WaitTask) gives up after 100 retraces.
  */
 #define VI_RATE_NS (1000000000ull / 60)
+#define VI_STALL_MS 100 /* the main thread has not come round for this long */
 
 static SDL_Thread *sViThread;
 static SDL_AtomicInt sViPresent;
+static SDL_AtomicU32 sMainBeatMs; /* when the main thread last came round, SDL_GetTicks */
 
 static int viClock(void *data) {
     u64 next = SDL_GetTicksNS() + VI_RATE_NS;
@@ -225,6 +232,9 @@ static int viClock(void *data) {
         if (SDL_GetTicksNS() > next + 4 * VI_RATE_NS) {
             next = SDL_GetTicksNS() + VI_RATE_NS; /* the host slept; don't try to catch up */
         }
+        if ((u32)SDL_GetTicks() - SDL_GetAtomicU32(&sMainBeatMs) > VI_STALL_MS) {
+            continue;
+        }
         sViRetraces++;
         SDL_SetAtomicInt(&sViPresent, 1);
         Port_RcpWake();
@@ -236,6 +246,7 @@ static int viClock(void *data) {
 }
 
 void Port_ViStart(void) {
+    SDL_SetAtomicU32(&sMainBeatMs, (u32)SDL_GetTicks());
     sViThread = SDL_CreateThread(viClock, "vi clock", NULL);
     if (sViThread == NULL) {
         Port_Fatal("VI clock thread: %s", SDL_GetError());
@@ -244,6 +255,7 @@ void Port_ViStart(void) {
 
 /* Host main thread, each time round its loop: show the frame the retrace started scanning out. */
 void Port_ViRetrace(void) {
+    SDL_SetAtomicU32(&sMainBeatMs, (u32)SDL_GetTicks());
     if (SDL_CompareAndSwapAtomicInt(&sViPresent, 1, 0) && sViNextFb != sViCurrentFb) {
         sViCurrentFb = sViNextFb;
         Port_VideoSwap(sViCurrentFb);
@@ -316,7 +328,10 @@ void osDpSetStatus(u32 data) {
 }
 
 void osDpGetCounters(u32 *counters) {
-    counters[0] = counters[1] = counters[2] = counters[3] = 0;
+    /* clock, cmd busy, pipe busy, TMEM busy: an idle RDP. The clock count is a
+       divisor in the game's hang screen, and never 0 on hardware. */
+    counters[0] = 1;
+    counters[1] = counters[2] = counters[3] = 0;
 }
 
 s32 osDpSetNextBuffer(void *bufPtr, u64 size) {
@@ -363,7 +378,6 @@ void osContGetQuery(OSContStatus *data) {
 }
 
 s32 osContStartReadData(OSMesgQueue *mq) {
-    Port_InputUpdate();
     Port_PostEvent(OS_EVENT_SI);
     return 0;
 }

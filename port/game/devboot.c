@@ -47,6 +47,17 @@ static s32 option(const char *spec, const char *key, s32 def) {
     return def;
 }
 
+/* An option within lo..hi (the game indexes tables with these unchecked) */
+static s32 optionIn(const char *spec, const char *key, s32 def, s32 lo, s32 hi) {
+    s32 v = option(spec, key, def);
+
+    if (v < lo || v > hi) {
+        Port_Log("devboot: %s=%d is not %d-%d; using %d", key, v, lo, hi, def);
+        return def;
+    }
+    return v;
+}
+
 /* Called by Boot_LoadData once the game is initialised and its data loaded */
 void Port_DevBoot(void) {
     const char *spec = getenv("DD64_BOOT");
@@ -55,13 +66,13 @@ void Port_DevBoot(void) {
     if (spec == NULL) {
         return;
     }
-    car = option(spec, "car", 0);
-    players = option(spec, "players", 1);
+    car = optionIn(spec, "car", 0, 0, 23);
+    players = optionIn(spec, "players", 1, 1, 4);
     D_800958A4 = players;
-    D_800958A8 = option(spec, "type", 1);
+    D_800958A8 = optionIn(spec, "type", 1, 0, 2);
     D_800958AC = 0;
-    D_800958B0 = option(spec, "cup", 0);
-    D_800958B4 = option(spec, "track", 5);
+    D_800958B0 = optionIn(spec, "cup", 0, 0, 3);
+    D_800958B4 = optionIn(spec, "track", 5, 0, 11);
     D_800958BC = 0;
     for (i = 0; i < 4; i++) {
         D_800958C0[i] = i == 0 ? car : i;

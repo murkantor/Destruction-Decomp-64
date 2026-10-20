@@ -48,30 +48,10 @@ uint32_t Port_HostToN64(const void *p) {
     return a >= RAM_VRAM && a < MAP_END ? a : 0;
 }
 
-void *Port_FuncFromN64(u32 addr) {
-    u32 lo = 0, hi = gPortAllFuncCount;
-
-    while (lo < hi) {
-        u32 mid = (lo + hi) / 2;
-        if (gPortAllFuncs[mid].addr < addr) {
-            lo = mid + 1;
-        } else {
-            hi = mid;
-        }
-    }
-    if (lo < gPortAllFuncCount && gPortAllFuncs[lo].addr == addr) {
-        return (void *)gPortAllFuncs[lo].func;
-    }
-    return NULL;
-}
-
 static void protect(u32 start, u32 end, int exec, int write) {
 #ifdef _WIN32
     DWORD old, prot = !write ? (exec ? PAGE_EXECUTE_READ : PAGE_NOACCESS)
                              : (exec ? PAGE_EXECUTE_READWRITE : PAGE_READWRITE);
-    if (!write && !exec) {
-        prot = PAGE_NOACCESS;
-    }
     VirtualProtect((void *)start, end - start, prot, &old);
 #else
     int prot = (write || exec) ? PROT_READ : PROT_NONE;

@@ -59,6 +59,6 @@ s32 Car_CompareRacePosition(Car *a, Car *b) {
     segs = gGame->x1100->x30;
     PORT_CONVERT(&segs[sa], 6, 4); /* passed by value */
     PORT_CONVERT(&segs[sb], 6, 4);
-    da =Math_PointLineDist2D(segs[sa].a, segs[sa].b, Car_GetPos(a));
+    da = Math_PointLineDist2D(segs[sa].a, segs[sa].b, Car_GetPos(a));
     return da < Math_PointLineDist2D(segs[sb].a, segs[sb].b, Car_GetPos(b));
 }

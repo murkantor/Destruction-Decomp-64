@@ -3,16 +3,7 @@
 
 typedef struct { u8 pad[0x1058]; u64 x1058; u8 pad1060[0x1100 - 0x1060]; struct Info *x1100; } Game;
 typedef struct Info { u8 pad[0x10]; s32 x10; } Info;
-typedef struct {
-    s32 x0;
-    s32 x4;
-    s32 x8;
-    s32 xC;
-    s32 x10;
-    s32 x14;
-    s32 x18;
-    u8 pad1C[0x48 - 0x1C];
-} UiDesc;
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; u8 x10; u8 pad11[3]; s32 x14; s32 x18; f32 x1C[7]; u8 x38; u8 pad39[3]; u8 x3C; u8 pad3D[3]; s32 x40; s32 x44; } UiDesc; /* the real layout (as UiElemDesc in 3E0D4.c): the PC port converts these static descriptors at boot by their declared widths */
 typedef struct { char s[13]; } Str13;
 typedef struct { s32 v[12]; } List12;
 typedef struct { s32 v[3]; } List3;

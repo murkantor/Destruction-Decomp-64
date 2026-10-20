@@ -191,9 +191,33 @@ void Port_ConfigLoad(void) {
     }
 }
 
+/* The entries of a section that are not settings (key bindings, keys a newer or
+   older version knows), each written once */
+static void writeOthers(FILE *f, const char *section, char *written) {
+    int j;
+    size_t i;
+
+    for (j = 0; j < sNumEntries; j++) {
+        if (written[j] || SDL_strcasecmp(sEntries[j].section, section) != 0) {
+            continue;
+        }
+        written[j] = 1;
+        for (i = 0; i < SDL_arraysize(sSettings); i++) {
+            if (SDL_strcasecmp(sEntries[j].section, sSettings[i].section) == 0 &&
+                SDL_strcasecmp(sEntries[j].key, sSettings[i].key) == 0) {
+                break;
+            }
+        }
+        if (i == SDL_arraysize(sSettings)) {
+            fprintf(f, "%s = %s\n", sEntries[j].key, sEntries[j].value);
+        }
+    }
+}
+
 void Port_ConfigSave(void) {
     FILE *f = fopen(sIniPath, "w");
-    const char *section = "";
+    char written[MAX_ENTRIES] = { 0 };
+    const char *section = NULL;
     size_t i;
     int j;
 
@@ -205,53 +229,26 @@ void Port_ConfigSave(void) {
     for (i = 0; i < SDL_arraysize(sSettings); i++) {
         const Setting *s = &sSettings[i];
         Port_IniSetInt(s->section, s->key, *s->field);
-        if (strcmp(section, s->section) != 0) {
+        if (section == NULL || strcmp(section, s->section) != 0) {
+            if (section != NULL) {
+                writeOthers(f, section, written);
+            }
             section = s->section;
             fprintf(f, "\n[%s]\n", section);
-            /* entries other code keeps in this section (key bindings and the like) */
         }
         if (s->help != NULL) {
             fprintf(f, "; %s\n", s->help);
         }
         fprintf(f, "%s = %d\n", s->key, *s->field);
     }
-    /* everything else, by section */
+    if (section != NULL) {
+        writeOthers(f, section, written);
+    }
+    /* sections with no settings, in the order they were read */
     for (j = 0; j < sNumEntries; j++) {
-        int known = 0;
-        for (i = 0; i < SDL_arraysize(sSettings); i++) {
-            if (SDL_strcasecmp(sEntries[j].section, sSettings[i].section) == 0 &&
-                SDL_strcasecmp(sEntries[j].key, sSettings[i].key) == 0) {
-                known = 1;
-                break;
-            }
-        }
-        if (!known) {
-            int first = 1, k;
-            for (k = 0; k < j; k++) {
-                if (SDL_strcasecmp(sEntries[k].section, sEntries[j].section) == 0) {
-                    first = 0;
-                    break;
-                }
-            }
-            if (first) {
-                fprintf(f, "\n[%s]\n", sEntries[j].section);
-                for (k = j; k < sNumEntries; k++) {
-                    int known2 = 0;
-                    size_t m;
-                    if (SDL_strcasecmp(sEntries[k].section, sEntries[j].section) != 0) {
-                        continue;
-                    }
-                    for (m = 0; m < SDL_arraysize(sSettings); m++) {
-                        if (SDL_strcasecmp(sEntries[k].section, sSettings[m].section) == 0 &&
-                            SDL_strcasecmp(sEntries[k].key, sSettings[m].key) == 0) {
-                            known2 = 1;
-                        }
-                    }
-                    if (!known2) {
-                        fprintf(f, "%s = %s\n", sEntries[k].key, sEntries[k].value);
-                    }
-                }
-            }
+        if (!written[j]) {
+            fprintf(f, "\n[%s]\n", sEntries[j].section);
+            writeOthers(f, sEntries[j].section, written);
         }
     }
     fclose(f);

@@ -14,7 +14,6 @@ extern struct GfxWindowManagerAPI gfx_sdl;
 extern bool gfx_show_fps;
 
 static int sBlack;
-static int sFramesDrawn;
 
 void Port_VideoInit(void) {
     struct GfxInitSettings set;
@@ -52,7 +51,6 @@ static u32 ucodeAddr(const void *p) {
 void Port_VideoRunTask(OSTask *task) {
     gfx_run(task->t.data_ptr, ucodeAddr(task->t.ucode));
     gfx_end_frame();
-    sFramesDrawn++;
 }
 
 void Port_VideoSwap(void *framebuffer) {
@@ -73,10 +71,6 @@ u64 Port_FrameIntervalNs(s32 rate) {
 
 void Port_VideoSetBlack(int black) {
     sBlack = black;
-}
-
-void Port_VideoPresentIdle(void) {
-    gfx_present(true);
 }
 
 void Port_VideoToggleFullscreen(void) {

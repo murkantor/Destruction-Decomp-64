@@ -36,7 +36,7 @@ else()
     add_library(SDL3 ALIAS PkgConfig::SDL3)
 endif()
 
-# ---- Generated: symbol placement and the data fix-up table ----
+# ---- Generated: symbol placement and the function tables ----
 set(GEN_SYMS ${GEN_DIR}/dd64_syms.ld)
 set(GEN_FIX ${GEN_DIR}/dd64_fix.c)
 if(WIN32)
