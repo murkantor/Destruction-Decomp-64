@@ -27,29 +27,24 @@ void Menu_InitPlayerViews(void) {
         D_801242C0[i] = mats.v[i];
         D_801242C0[i].x1C = sel[i];
     }
-    { f32 z = 0.0f; f32 m = -1.0f; func_8006300C(D_800958DC, z, z, z, z, z, m); }
+    { s32 *p = &D_800958DC; f32 z = 0.0f; f32 m = -1.0f; func_8006300C(*p, z, z, z, z, z, m); }
     if (D_800958A4[0] == 1) {
         Menu_SetupTrackSelect();
     } else {
         CarSelect_ShowMulti();
     }
 }
-/* agent54: volatile D_80097350 + loop bound fixes the store order (from agent49 v17/D). Left:
- * the original passes args 5 and 6 with sw a1 (a GPR copy of the mfc1'd 0.0f) and loads
- * D_800958DC after the mfc1. Tried literals, inline helpers (with const or variable params give
- * move a1,zero / sw zero), f32 array, s32 bit-pattern params, z set before the loop. */
-/* agent58: unchanged. expand_call stores stack args before loading reg args, so sw a1 for args 5/6
- * means the original's stack-arg source was already a1 at cse time. Tried a Vec3f-by-value prototype,
- * inline wrappers taking (x), (a, x, m), (x, m) with const and variable args, z/m order: no gain. */
-/* agent59: unchanged. The trick that fixed Car_UpdatePhysics (an inline wrapper
- * that passes one f32 param twice) gives move a1,zero / sw zero here, and a
- * union bit-cast with an s32 asm-label prototype folds to constants too. The
- * stack args need a GPR-class pseudo P = mfc1 Z that is also a1's source. */
-/* agent63: unchanged (12 diff lines). Findings: (1) i=0: combine re-emits it at the copied loop test, then sched1
- * (bottom-up, priority 1) hoists it to the top of the block; the original has it as the first insn of the
- * fallthrough (reorg's eager fill puts it in the blez slot), i.e. after the test. "if (n > 0) { i = 0; do ... }"
- * gives that (move t5,zero in the slot) but changes the struct-copy schedule and the t-register numbering (49 diffs).
- * (2) Hard-register locals: f32 z0 = 0.0f; register f32 z asm("$5"); z = z0; func(D, z, z, z, z, z, m) gives
- * "sw a1,16/20(sp)" for the stack args, but then a2/a3 get mfc1 from z0 (CSE prefers the pseudo); brute force of
- * z/z0 per argument (mpb/) and z0 in $f0 did not get both. Wrapping the D_80097350 store in do{}while(0), moving
- * the sel load, a V2/V3 struct-by-value or union prototype: worse. */
+/* agent69: call fixed. Passing D_800958DC through a pointer local (s32 *p = &D_800958DC; func(*p, ...))
+ * keeps the arg as (mem (reg p)) at expand (rtx_cost <= 2, so no precompute into a pseudo); a0 is then
+ * loaded directly, sched1 puts the a1 = z copy before the two stack stores, and local-alloc's
+ * optimize_reg_copy_1 rewrites the stack stores and a2/a3 to use a1: sw a1 / move a2,a1 / move a3,a1
+ * exactly as the original. Only diff left: move t2,zero (i = 0) sits after lw v1 instead of in the blez slot.
+ * Why: reorg cannot pull an insn back across a volatile mem ref (resource_conflicts_p), so i = 0 must be
+ * after the volatile loop-bound load or in the fallthrough. i has 2 sets so it is never "birthing" in
+ * sched1 (priority stays 1) and gets hoisted to T-9, where it is also the filler that keeps the ptrs copy
+ * above the sel index load (30 is blocked one cycle by the volatile store's memory unit). The if/do form
+ * puts i = 0 in the fallthrough (correct slot) but loses that filler (ptrs copy goes below the index load)
+ * and i drops to 7 refs (priority below base/offset pseudos: t5 instead of t2). Tried: int/s32/u32/register,
+ * scoped for, sel/store/init orders, i reused for the sel index (gets i=0 in the slot but i takes the first
+ * value in t2), idx/n locals before/after the volatile store, guard forms (> 0, 0 <, i < with double init),
+ * goto loop, pointer-walk sel, hard-reg i: none better than this. */
