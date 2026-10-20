@@ -356,3 +356,19 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
  * (code moves), selq() inline for fx = q, one/zero/flag temps across the first Vec3f_Scale. None
  * gave vars=200 with identical code. Caller-save with real liveness always inserts save code, so a
  * caller-save slot needs a set that sched1 moves past the call (pseudo counted as crossing by flow). */
+/* agent66: unchanged code (frame 8 short). Tried: (1) hard-register locals: every local bound to every
+ * FP/GPR (bf/bf.py hard): q asm("$17") is neutral (identical code), all others change code or add a
+ * real spill; toy test shows a 2.7.2 hard-reg local live across a call is simply clobbered (no
+ * caller-save slot), since setup_save_areas only looks at pseudos. (2) dead branches
+ * 'if (c) { t_++; t_ *= 3; }' at every statement x 7 conds (bf.py dead): vars=200 only via real spills.
+ * (3) fx = <q|fl|ft|drive|aq|lim|lat|lon|load|0.0f|invR|radius> at every line of the drive block,
+ * with/without the branch copies and with q in $17 (bf2.py): vars=200 only when fx becomes a real
+ * spill (slot 0xD0 used). With q in $17 and 'fx = q' before Vec3f_Dot, sched1 moves the copy after the
+ * call (after the compare), so fx gets f20, not a caller-save reg. (4) all pairs of +-3 line moves in
+ * the drive block (bf3.py, 4753 variants): none with vars=200 and identical code.
+ * Analysis: the slot must be a caller-save area: a pseudo with reg_n_calls_crossed>0 (stale: kept by
+ * sched for multi-block pseudos, or combine moving a constant across a call) in a call-used reg, not
+ * live at any call. For FP it must conflict with all f20-f30, which only happens in the Vec3f_Dot
+ * block between lim's set and the lim<aq compare; ints always have s5/s7 free there. Every code-free
+ * way to be live there that I found (copy after the call, no-op copy deleted by jump2) needs code that
+ * the original does not have. Scripts: build/agent66/bf/, build/agent66/t/run.sh, df.sh. */
