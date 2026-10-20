@@ -346,3 +346,13 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
  * the right frame but then fx coalesces with q and lat moves to f14 with real saves. The original
  * keeps both fx assignments inside the branches (mov.s f14,f28 / mtc1 s1,f14), so a default fx before
  * the call does not fit. Copies of idx/p2 give vars=200 but add a real spill slot. */
+/* agent64: unchanged code (frame 8 short). The hole at 0xD0 is exactly one more 8-byte slot after the
+ * six pseudo spill slots 0xA0..0xC8 (retptr, 2 floats, 3 u8s), so it is either a 7th spilled pseudo
+ * numbered after rear with stale reg_n_refs and no remaining insns, or a caller-save area.
+ * GCC 2.7 combine zeroes reg_n_refs of a merged-away pseudo only when its reg_n_sets drops to 0 AND it
+ * is not live at function start (combine.c ~2313), so a pseudo with a second set elsewhere, or one
+ * used uninitialised on some path, keeps stale refs. Tried here: fx = aq / fx = lim before Vec3f_Dot
+ * with the copy used in the following compare (fx goes to f22, not merged), fx = fl before Vec3f_Dot
+ * (code moves), selq() inline for fx = q, one/zero/flag temps across the first Vec3f_Scale. None
+ * gave vars=200 with identical code. Caller-save with real liveness always inserts save code, so a
+ * caller-save slot needs a set that sched1 moves past the call (pseudo counted as crossing by flow). */

@@ -106,3 +106,12 @@ s32 Menu_ConfirmTrackSelect(Menu *m) {
  * a3/t0 swap). Left: case 3 reads players[2].x4 and sel[2] off the struct base t6 (308/36) where the
  * original uses t2 (280/8), and addiu t7 is one slot later in the preheader. Tried every order and
  * [2]/[i - 1]/[3]/[i] form of the three case-3 statements, and a local s32 *sel pointer. */
+/* agent64: still 4 words. Cause found (cse.c use_related_value): the case 3 reads (sym+308, sym+36)
+ * look up the class of the bare symbol D_800958A4; on cse's 3rd path through the EBB starting at the
+ * second mode/count test, insn "135 = 128 - 28" (the count address, kept with a REG_EQUAL sym note
+ * added on path 1) puts reg 135 (t6) in that class, so case 3 uses t6. Case 1 is on path 1, before
+ * the note exists, so it gets t2. If case 3 did not use 135, 135 would die and the symbol register
+ * would first appear in the else branch, after &numCars, which also fixes the t7/t6 preheader order.
+ * So one change should fix both diffs: case 3 must not see a register equal to the bare symbol.
+ * Tried: inline IsQuad() for the tests (size changes), 4 == count, x14[-5] for count, players[i - 1]
+ * (absolute addressing), a pointer cast off &sel[i] + 0x10C, &players[i])[-1]. */
