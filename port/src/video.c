@@ -59,6 +59,18 @@ void Port_VideoSwap(void *framebuffer) {
     gfx_present(sBlack);
 }
 
+/* The shortest time between frames, for Fps_Update: one field at the game's
+   rate (the N64's fastest), or longer for a lower [video] max_fps. Rates above
+   the field rate would need frames drawn between the game's updates. */
+u64 Port_FrameIntervalNs(s32 rate) {
+    s32 fps = gPortConfig.maxFps;
+
+    if (fps <= 0 || fps > rate) {
+        fps = rate;
+    }
+    return 1000000000ULL / (u64)fps;
+}
+
 void Port_VideoSetBlack(int black) {
     sBlack = black;
 }
