@@ -37,6 +37,7 @@ s32 Arc_SeekToEntryData(Arc *arc, ArcEntry *e) {
     if (RomFile_Read(hdr, 30, 1, arc->x4) != 1) {
         return -1;
     }
+    PORT_MARK_RAW(hdr, 30);
     n = (hdr[27] << 8) | hdr[26];
     m = (hdr[29] << 8) | hdr[28];
     if (RomFile_Seek(arc->x4, e->x2C + 30 + n + m, 0) != 0) {

@@ -69,7 +69,9 @@ typedef double f64;
  * `type *name` there; offsets are per call site, so each slice has one user.
  */
 #ifdef TARGET_PC
-extern u8 gPortScratch[];
+/* aligned: otherwise GCC checks every field access as possibly unaligned, as a
+   bulk access (__asan_loadN), which never converts */
+extern u8 gPortScratch[] __attribute__((aligned(16)));
 #define PORT_DMA_BUF(type, name, offset) type *name = (type *)(gPortScratch + (offset))
 #endif
 
@@ -83,6 +85,30 @@ void Port_MarkBE(const void *p, unsigned int len);
 #define PORT_MARK_BE(p, len) Port_MarkBE((const void *)(p), (len))
 #else
 #define PORT_MARK_BE(p, len)
+#endif
+
+/* Loaded data the game reads only as bytes, in its own byte order (zip headers,
+   little-endian by format): PORT_MARK_RAW keeps it as it is, even where GCC
+   merges the byte reads into one wider load */
+#ifdef TARGET_PC
+void Port_MarkNative(const void *p, unsigned int len);
+#define PORT_MARK_RAW(p, len) Port_MarkNative((const void *)(p), (len))
+#else
+#define PORT_MARK_RAW(p, len)
+#endif
+
+/*
+ * Loaded data the game copies into a local or passes by value before reading
+ * it (`f(obj, sp->pos)`): GCC does not instrument that copy, so it would stay
+ * big-endian. PORT_CONVERT(p, count, width) converts count values of width
+ * bytes at p first. The port logs such copies ("copy of big-endian data into
+ * a local or argument").
+ */
+#ifdef TARGET_PC
+void Port_Convert(void *p, unsigned int count, unsigned int width);
+#define PORT_CONVERT(p, count, width) Port_Convert((void *)(p), (count), (width))
+#else
+#define PORT_CONVERT(p, count, width)
 #endif
 
 #ifdef TARGET_PC

@@ -75,6 +75,7 @@ ZipFile *Zip_Open(char *name) {
     if (RomFile_Read(z->cdir, z->cdSize, 1, z->file) != 1) {
         goto fail3;
     }
+    PORT_MARK_RAW(z->cdir, z->cdSize);
     z->x4C = 0;
     z->x18 = 0;
     if ((z->name = Mem_AllocAlt(strlen(name) + 1)) == NULL) {

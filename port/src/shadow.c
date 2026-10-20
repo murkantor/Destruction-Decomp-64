@@ -55,6 +55,7 @@ static inline u8 *shadowOf(u32 addr, u32 n) {
 
 /* A bulk read of marked bytes, waiting for the bulk store that copies them */
 static __thread u32 tPendingSrc, tPendingLen, tPendingDst, tPendingDstLen;
+static __thread void *tPendingSrcSite;
 
 #define MAX_REPORTS 4096
 static void *sReported[MAX_REPORTS];
@@ -233,10 +234,26 @@ static inline void flushPendingByte(void) {
     }
 }
 
+/*
+ * A bulk read of big-endian data with no store paired with it: a struct copied
+ * into a local or passed by value, where GCC does not instrument the store, so
+ * the copy is never converted. Reported for PORT_CONVERT at the source.
+ */
+static void unpairedBulk(void) {
+    if (tPendingLen != 0 && tPendingSrcSite != NULL) {
+        report("copy of big-endian data into a local or argument", tPendingSrc, tPendingLen, tPendingSrcSite);
+    }
+    tPendingLen = tPendingDstLen = 0;
+    tPendingSrcSite = NULL;
+}
+
 static inline void load(u32 addr, u32 n, void *site) {
     u8 *s;
     u32 bits;
 
+    if (tPendingLen != 0) {
+        unpairedBulk();
+    }
     tPendingLen = tPendingDstLen = 0; /* a bulk copy's two checks are adjacent */
     flushPendingByte();
     s = shadowOf(addr, n);
@@ -301,6 +318,9 @@ static inline void store(u32 addr, u32 n) {
     if (sWatch != 0) {
         watchStore(addr, n, __builtin_return_address(0));
     }
+    if (tPendingLen != 0) {
+        unpairedBulk();
+    }
     tPendingLen = tPendingDstLen = 0; /* a bulk copy's two checks are adjacent */
     if (n == 1) {
         tPendingSite = NULL; /* the byte just loaded is being copied */
@@ -333,19 +353,28 @@ static void bulkPair(void) {
     if (tPendingLen != 0 && tPendingLen == tPendingDstLen) {
         copyMarks((void *)tPendingDst, (const void *)tPendingSrc, tPendingLen);
         tPendingLen = tPendingDstLen = 0;
+        tPendingSrcSite = NULL;
     }
 }
 
-static inline void loadN(u32 addr, u32 n) {
+static inline void loadN(u32 addr, u32 n, void *site) {
     u8 *s;
+    u32 i, be = 0;
 
     tLastByte = -1;
+    if (tPendingLen != 0) {
+        unpairedBulk();
+    }
     if (n == 0 || (s = shadowOf(addr, n)) == NULL || !shadowBits(s, n)) {
         tPendingLen = 0;
         return;
     }
+    for (i = 0; i < n && !be; i++) {
+        be = s[i] & SH_BE;
+    }
     tPendingSrc = addr;
     tPendingLen = n;
+    tPendingSrcSite = be ? site : NULL; /* only big-endian sources matter if unpaired */
     bulkPair();
 }
 
@@ -353,6 +382,9 @@ static inline void storeN(u32 addr, u32 n) {
     u8 *s;
 
     tLastByte = -1;
+    if (tPendingLen != 0 && tPendingLen != n) {
+        unpairedBulk();
+    }
     if (n != 0 && (s = shadowOf(addr, n)) != NULL) {
         memset(s, 0, n);
     }
@@ -367,8 +399,8 @@ void __asan_load1_noabort(u32 a) { load(a, 1, SITE); }
 void __asan_load2_noabort(u32 a) { load(a, 2, SITE); }
 void __asan_load4_noabort(u32 a) { load(a, 4, SITE); }
 void __asan_load8_noabort(u32 a) { load(a, 8, SITE); }
-void __asan_load16_noabort(u32 a) { loadN(a, 16); }
-void __asan_loadN_noabort(u32 a, u32 n) { loadN(a, n); }
+void __asan_load16_noabort(u32 a) { loadN(a, 16, SITE); }
+void __asan_loadN_noabort(u32 a, u32 n) { loadN(a, n, SITE); }
 void __asan_store1_noabort(u32 a) { store(a, 1); }
 void __asan_store2_noabort(u32 a) { store(a, 2); }
 void __asan_store4_noabort(u32 a) { store(a, 4); }
@@ -410,6 +442,29 @@ void *__wrap_memmove(void *d, const void *s, size_t n) {
 void *__wrap_memset(void *d, int c, size_t n) {
     Port_MarkNative(d, n);
     return __real_memset(d, c, n);
+}
+
+/*
+ * PORT_CONVERT (ultra64.h): game code converting count values of width bytes at
+ * p before copying them where conversion on read cannot follow (a local, an
+ * argument by value). Values already in host order are left alone.
+ */
+void Port_Convert(void *p, uint32_t count, uint32_t width) {
+    u32 addr = (u32)p, k, j, be;
+    u8 *s;
+
+    for (k = 0; k < count; k++, addr += width) {
+        if ((s = shadowOf(addr, width)) == NULL) {
+            continue;
+        }
+        for (j = be = 0; j < width; j++) {
+            be += s[j] & SH_BE;
+        }
+        if (be == width) {
+            swapInPlace((u8 *)addr, width);
+            memset(s, widthMark(width), width);
+        }
+    }
 }
 
 /*

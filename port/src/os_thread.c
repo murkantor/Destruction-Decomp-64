@@ -463,6 +463,27 @@ u32 osGetCount(void) {
     return (u32)Port_GetTime();
 }
 
+/*
+ * Block the calling game thread until the game clock (osGetTime in ns, as the
+ * game converts it) reaches ns, letting the other game threads run meanwhile.
+ * Called from one game thread at a time (the main loop's frame pacing).
+ */
+s32 osSetTimer(OSTimer *timer, OSTime countdown, OSTime interval, OSMesgQueue *mq, OSMesg msg);
+
+void Port_WaitUntilNs(u64 ns) {
+    static OSMesgQueue mq;
+    static OSMesg buf[1];
+    static OSTimer timer;
+    OSTime target = ns * 3 / 64, now = Port_GetTime();
+
+    if (target <= now) {
+        return;
+    }
+    osCreateMesgQueue(&mq, buf, 1);
+    osSetTimer(&timer, target - now, 0, &mq, NULL);
+    osRecvMesg(&mq, NULL, OS_MESG_BLOCK);
+}
+
 s32 osSetTimer(OSTimer *timer, OSTime countdown, OSTime interval, OSMesgQueue *mq, OSMesg msg) {
     int i;
 

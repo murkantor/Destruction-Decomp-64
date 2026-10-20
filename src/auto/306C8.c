@@ -98,6 +98,7 @@ void Wheel_ProbeGround(Obj *obj, Car *car) {
     b = &car->body;
     ph = &obj->phys;
     h.t = 1.25f;
+    PORT_CONVERT(&b->x2C, 3, 4); /* copied into a local */
     pA0 = b->x2C;
     pA0.y = 0.6f;
     p90 = Vec3f_TransformTransposed(m, &obj->phys.pos, &pA0);

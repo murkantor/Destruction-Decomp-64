@@ -143,7 +143,7 @@ void Car_UpdateWreck(Car *car) {
                 Gfx *g = mdl->x20;
                 Gfx *cur = NULL;
                 for (; g != NULL; g++) {
-                    u8 op = *(u8 *)g;
+                    u8 op = g->w0 >> 24;
                     if (op == 0xFD) {
                         cur = g;
                     } else if (op == 0xF0) {

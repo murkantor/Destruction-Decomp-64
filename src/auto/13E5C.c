@@ -53,6 +53,8 @@ Obj *Obj_CreateFromSpawn(Spawn *sp) {
     Obj *obj = Mem_AllocAligned(0x3C, 7, 0);
     s32 kind;
 
+    PORT_CONVERT(&sp->x8, 6, 4); /* the two Vec3f below go by value */
+
     switch ((s16)sp->x0) {
     case 23:
         kind = 0;

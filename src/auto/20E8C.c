@@ -99,6 +99,7 @@ void Car_UpdateTrackSegment(Car *car)
         }
     }
     slot = i;
+    PORT_CONVERT(&car->pos, 3, 4); /* copied into a local */
     pos = car->pos;
     if (D_800D1B08[slot].x == pos.x && D_800D1B08[slot].z == pos.z)
         return;

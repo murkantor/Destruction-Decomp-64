@@ -42,6 +42,7 @@ s32 Zip_ReadEndOfCentralDir(ZipFile *zip) {
             Mem_Free(buf);
             return -1;
         }
+        PORT_MARK_RAW(buf, size);
         if (findSig(buf, size, &off)) {
             zip->x10 = size - off;
             zip->xC = Mem_AllocAlt(zip->x10);
