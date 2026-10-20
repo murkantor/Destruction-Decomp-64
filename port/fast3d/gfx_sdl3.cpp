@@ -2,7 +2,9 @@
  * SDL3 window and OpenGL context for Fast3D (GfxWindowManagerAPI).
  *
  * The window is created on the host main thread, which also owns the GL
- * context and pumps SDL events (port/src/events.c). Fullscreen is either
+ * context and pumps SDL events (port/src/events.c). With the SDL_gpu renderer
+ * (gfx_sdl_use_gpu) the window has no GL context: gfx_sdlgpu.cpp claims it,
+ * and does the swap and the vsync. Fullscreen is either
  * borderless desktop or an exclusive mode at the closest resolution.
  */
 #include <SDL3/SDL.h>
@@ -17,6 +19,16 @@ static SDL_GLContext ctx;
 static int swap_interval = 1;
 static bool fullscreen_state;
 static bool fullscreen_exclusive;
+
+/* Set before init: the SDL_gpu renderer draws (port/src/video.c) */
+extern "C" bool gfx_sdl_use_gpu;
+bool gfx_sdl_use_gpu;
+extern "C" void gfx_sdlgpu_swap(void);
+extern "C" bool gfx_sdlgpu_set_swap_interval(int interval);
+
+extern "C" SDL_Window *gfx_sdl_window(void) {
+    return wnd;
+}
 
 static void apply_fullscreen(bool enable) {
     if (enable) {
@@ -53,6 +65,20 @@ static void gfx_sdl_init(const struct GfxWindowInitSettings *set) {
         flags |= SDL_WINDOW_HIGH_PIXEL_DENSITY;
     }
     fullscreen_exclusive = set->fullscreen_is_exclusive;
+
+    if (gfx_sdl_use_gpu) {
+        wnd = SDL_CreateWindow(set->title, w, h, (flags & ~SDL_WINDOW_OPENGL) | SDL_WINDOW_VULKAN);
+        if (wnd == NULL) {
+            sysFatalError("Could not open a window:\n%s", SDL_GetError());
+        }
+        sysLogPrintf(LOG_NOTE, "SDL: window for SDL_gpu, video driver %s", SDL_GetCurrentVideoDriver());
+        SDL_SetWindowPosition(wnd, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+        SDL_ShowWindow(wnd);
+        if (set->fullscreen) {
+            apply_fullscreen(true);
+        }
+        return;
+    }
 
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -116,13 +142,21 @@ static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height, int32_t *p
 }
 
 static void gfx_sdl_swap_buffers_begin(void) {
-    SDL_GL_SwapWindow(wnd);
+    if (gfx_sdl_use_gpu) {
+        gfx_sdlgpu_swap();
+    } else {
+        SDL_GL_SwapWindow(wnd);
+    }
 }
 
 static void gfx_sdl_swap_buffers_end(void) {
 }
 
 static bool gfx_sdl_set_swap_interval(int interval) {
+    if (gfx_sdl_use_gpu) {
+        swap_interval = interval;
+        return gfx_sdlgpu_set_swap_interval(interval);
+    }
     /* -1 is adaptive vsync; fall back to plain vsync where the driver lacks it */
     if (!SDL_GL_SetSwapInterval(interval)) {
         if (interval != -1 || !SDL_GL_SetSwapInterval(1)) {

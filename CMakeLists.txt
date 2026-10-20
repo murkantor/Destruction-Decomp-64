@@ -122,7 +122,24 @@ add_custom_command(
     DEPENDS ${SHADER_GLSL} ${CMAKE_SOURCE_DIR}/cmake/embed_text.cmake
     COMMENT "Embedding the combiner shader's GLSL" VERBATIM)
 
-add_executable(dd64 ${PORT_SRC} ${GEN_WIDTHS} ${GEN_SHADER_SRC} $<TARGET_OBJECTS:game>)
+# The SDL_gpu backend's shaders as SPIR-V: shaders/spirv.h is in the repository,
+# and made again here when a shader changes, if glslangValidator is installed
+set(SHADER_SPIRV ${SHADER_DIR}/spirv.h)
+find_program(GLSLANG_VALIDATOR glslangValidator)
+if(GLSLANG_VALIDATOR)
+    file(GLOB SHADER_SOURCES CONFIGURE_DEPENDS ${SHADER_DIR}/*.glsl ${SHADER_DIR}/*.vert ${SHADER_DIR}/*.frag)
+    file(MAKE_DIRECTORY ${GEN_DIR}/spirv)
+    add_custom_command(
+        OUTPUT ${SHADER_SPIRV}
+        COMMAND ${CMAKE_COMMAND} -DGLSLANG=${GLSLANG_VALIDATOR} -DDIR=${SHADER_DIR} -DOUT=${SHADER_SPIRV}
+                -DTMP=${GEN_DIR}/spirv -P ${CMAKE_SOURCE_DIR}/cmake/spirv.cmake
+        DEPENDS ${SHADER_SOURCES} ${CMAKE_SOURCE_DIR}/cmake/spirv.cmake
+        COMMENT "Compiling the SDL_gpu shaders to SPIR-V" VERBATIM)
+else()
+    message(STATUS "No glslangValidator: the SDL_gpu shaders come from ${SHADER_SPIRV} as it is")
+endif()
+
+add_executable(dd64 ${PORT_SRC} ${GEN_WIDTHS} ${GEN_SHADER_SRC} ${SHADER_SPIRV} $<TARGET_OBJECTS:game>)
 target_include_directories(dd64 PRIVATE include port/include port/fast3d ${GEN_DIR})
 target_compile_definitions(dd64 PRIVATE TARGET_PC)
 target_compile_options(dd64 PRIVATE ${COMMON_FLAGS} -Wall -Wno-unused-parameter -Wno-unused-function

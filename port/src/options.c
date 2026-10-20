@@ -53,6 +53,8 @@ static const int kFilter[] = { 0, 1, 2 };
 static const char *const kFilterN[] = { "nearest", "bilinear", "n64 3-point" };
 static const int kAniso[] = { 1, 2, 4, 8, 16 };
 static const char *const kAnisoN[] = { "off", "2x", "4x", "8x", "16x" };
+static const int kRenderer[] = { 0, 1 };
+static const char *const kRendererN[] = { "opengl", "sdl gpu - vulkan" };
 static const int kRes[] = { 0, 240, 480, 720, 1080 };
 static const char *const kResN[] = { "window", "240 - n64", "480", "720", "1080" };
 
@@ -85,6 +87,7 @@ static const Option kVideo[] = {
     { "texture filter", &gPortConfig.textureFilter, kFilter, kFilterN, N(kFilter), 1, 0 },
     { "anisotropy", &gPortConfig.anisotropy, kAniso, kAnisoN, N(kAniso), 1, 1 },
     { "fps counter", &gPortConfig.showFps, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
+    { "renderer", &gPortConfig.renderer, kRenderer, kRendererN, N(kRenderer), 0, 1 },
 };
 static const Option kAudio[] = {
     { "master volume", &gPortConfig.volume, kVolume, kVolumeN, N(kVolume), 0, 0 },

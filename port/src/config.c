@@ -135,7 +135,10 @@ typedef struct {
     int *field;
     int def;
     const char *help;
+    const char *const *names; /* the values as words (0, 1 ...) in the file, not numbers */
 } Setting;
+
+static const char *const kRendererNames[] = { "opengl", "sdlgpu", NULL };
 
 static const Setting sSettings[] = {
     { "video", "window_width", &gPortConfig.windowWidth, 960, "Window size in pixels" },
@@ -159,6 +162,8 @@ static const Setting sSettings[] = {
       "1 = a wide window shows more of the 3D view, unstretched, with the HUD and menus 4:3 in the middle" },
     { "video", "stretch", &gPortConfig.stretch, 0, "0 = keep 4:3 with side bars, 1 = stretch to the window" },
     { "video", "texture_filter", &gPortConfig.textureFilter, 1, "0 = nearest, 1 = bilinear, 2 = three-point (N64)" },
+    { "video", "renderer", &gPortConfig.renderer, 0,
+      "opengl, or sdlgpu: SDL's GPU API (Vulkan). Takes effect the next time the game starts", kRendererNames },
     { "audio", "volume", &gPortConfig.volume, 100, "Master volume, 0-100" },
     { "audio", "latency", &gPortConfig.audioLatency, 80,
       "Output delay in milliseconds (N64: about 20); raise it if the sound stutters" },
@@ -198,6 +203,15 @@ void Port_ConfigLoad(void) {
     }
     for (i = 0; i < SDL_arraysize(sSettings); i++) {
         *sSettings[i].field = Port_IniGetInt(sSettings[i].section, sSettings[i].key, sSettings[i].def);
+        if (sSettings[i].names != NULL) {
+            const char *v = Port_IniGet(sSettings[i].section, sSettings[i].key, "");
+            int n;
+            for (n = 0; sSettings[i].names[n] != NULL; n++) {
+                if (SDL_strcasecmp(v, sSettings[i].names[n]) == 0) {
+                    *sSettings[i].field = n;
+                }
+            }
+        }
     }
     if (text == NULL) {
         Port_ConfigSave();
@@ -227,6 +241,18 @@ static void writeOthers(FILE *f, const char *section, char *written) {
     }
 }
 
+/* A worded setting's value as its word (NULL: written as a number) */
+static const char *settingName(const Setting *s) {
+    int n;
+
+    for (n = 0; s->names != NULL && s->names[n] != NULL; n++) {
+        if (n == *s->field) {
+            return s->names[n];
+        }
+    }
+    return NULL;
+}
+
 void Port_ConfigSave(void) {
     FILE *f = fopen(sIniPath, "w");
     char written[MAX_ENTRIES] = { 0 };
@@ -241,7 +267,12 @@ void Port_ConfigSave(void) {
     fprintf(f, "; Destruction Derby 64 settings. Delete this file to restore the defaults.\n");
     for (i = 0; i < SDL_arraysize(sSettings); i++) {
         const Setting *s = &sSettings[i];
-        Port_IniSetInt(s->section, s->key, *s->field);
+        const char *name = settingName(s);
+        if (name != NULL) {
+            Port_IniSet(s->section, s->key, name);
+        } else {
+            Port_IniSetInt(s->section, s->key, *s->field);
+        }
         if (section == NULL || strcmp(section, s->section) != 0) {
             if (section != NULL) {
                 writeOthers(f, section, written);
@@ -252,7 +283,11 @@ void Port_ConfigSave(void) {
         if (s->help != NULL) {
             fprintf(f, "; %s\n", s->help);
         }
-        fprintf(f, "%s = %d\n", s->key, *s->field);
+        if (name != NULL) {
+            fprintf(f, "%s = %s\n", s->key, name);
+        } else {
+            fprintf(f, "%s = %d\n", s->key, *s->field);
+        }
     }
     if (section != NULL) {
         writeOthers(f, section, written);

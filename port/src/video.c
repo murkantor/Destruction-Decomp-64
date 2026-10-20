@@ -18,6 +18,7 @@
 
 extern struct GfxWindowManagerAPI gfx_sdl;
 extern bool gfx_show_fps;
+extern bool gfx_sdl_use_gpu;
 
 static int sBlack;
 static int sInterp;       /* frames in between are drawn (the mode, 0 = off) */
@@ -59,6 +60,16 @@ void Port_VideoInit(void) {
     SDL_zero(set);
     set.wapi = &gfx_sdl;
     set.rapi = &gfx_opengl_api;
+    if (gPortConfig.renderer == 1) {
+        /* SDL_gpu on Vulkan, if there is one; OpenGL otherwise */
+        if (SDL_GPUSupportsShaderFormats(SDL_GPU_SHADERFORMAT_SPIRV, "vulkan")) {
+            gfx_sdl_use_gpu = true;
+            set.rapi = &gfx_sdlgpu_api;
+            Port_Log("video: the SDL_gpu renderer (Vulkan)");
+        } else {
+            Port_Log("video: no Vulkan for the SDL_gpu renderer (%s), OpenGL instead", SDL_GetError());
+        }
+    }
     set.window_settings.title = "Destruction Derby 64";
     set.window_settings.width = gPortConfig.windowWidth;
     set.window_settings.height = gPortConfig.windowHeight;

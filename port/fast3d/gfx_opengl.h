@@ -4,5 +4,6 @@
 #include "gfx_rendering_api.h"
 
 extern struct GfxRenderingAPI gfx_opengl_api;
+extern struct GfxRenderingAPI gfx_sdlgpu_api; /* gfx_sdlgpu.cpp */
 
 #endif

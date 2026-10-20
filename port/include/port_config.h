@@ -23,6 +23,7 @@ typedef struct {
     int widescreen;          /* 1 = 3D fills the window, 2D stays 4:3 in the middle */
     int textureFilter;       /* 0 point, 1 bilinear, 2 three-point (N64) */
     int showFps;             /* the frame counter in the corner */
+    int renderer;            /* 0 OpenGL, 1 SDL_gpu (Vulkan); read at start */
     /* [audio] */
     int volume;              /* 0-100 */
     int audioLatency;        /* output delay, ms */
