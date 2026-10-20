@@ -92,3 +92,27 @@ void Port_FieldShowPlace(s32 place) {
     Ui_AddElement(gUi[0], 0, 0x17B);
     Ui_SetElementX(gUi[0], 0, 0x17B, Font_CenterX(gSaveSlotText[1], 0x111F8, 160.0f));
 }
+
+s32 Res_Get(s32);
+void Res_SetForceLoad(void);
+void Res_ClearForceLoad(void);
+
+/* AiDriver_LoadAll (2AC0.c) loads one computer driver object per car type (resources
+   0x4E21 + type, each made once and shared), and Race_AssignSlotObjects (27B0.c)
+   gives each car the one of its type: an extra car would share its twin's target
+   and state. Each extra car gets one of its own, force-loaded as the extra cars are
+   (Race_LoadCarResources); it is in the game's object list, which frees it with the
+   race (ObjList_Clear), and Res_FreeAll forgets the instances. */
+void Port_FieldLoadDrivers(void) {
+    Race *race = gGame->race;
+    s32 i;
+
+    if (race == NULL || race->ncars <= 12) {
+        return;
+    }
+    for (i = 12; i < race->ncars && i < RACE_CARS; i++) {
+        Res_SetForceLoad();
+        Res_Get(0x4E21 + gFieldCarIds[i] % 12);
+    }
+    Res_ClearForceLoad();
+}

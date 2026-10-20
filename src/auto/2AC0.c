@@ -30,6 +30,9 @@ void AiDriver_Free(void *arg0) {
 }
 
 M2C_UNK Res_Get(s32);                         /* extern */
+#ifdef TARGET_PC
+void Port_FieldLoadDrivers(void);
+#endif
 
 void AiDriver_LoadAll(void) {
     s32 var_s0;
@@ -39,4 +42,7 @@ void AiDriver_LoadAll(void) {
         Res_Get(var_s0);
         var_s0 += 1;
     } while (var_s0 < 0x4E2D);
+#ifdef TARGET_PC
+    Port_FieldLoadDrivers(); /* the doubled field: one for each extra car */
+#endif
 }
