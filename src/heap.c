@@ -1,218 +1,206 @@
 #include "common.h"
 #include "heap.h"
 
-#ifdef NON_MATCHING
-/* Behaves like the original; written for the PC port from the assembly. */
-
-/* First fit from the low end. alignOffset is where in the alignment the pointer must land. */
 void Heap_Alloc(Heap *heap, HeapBlock *out, u32 size, u32 alignMask, u32 alignOffset) {
-    FreeBlock *prev = NULL;
-    FreeBlock *blk;
-    FreeBlock *rest;
+    FreeBlock *prev;
+    FreeBlock *b;
     u32 pad;
-    u32 have;
+    FreeBlock *nb;
+    u32 min;
+    u32 sz;
 
     if (size == 0) {
         goto fail;
     }
-    size = (size + 3) & ~3;
-    blk = heap->free;
+    sz = (size + 3) & ~3;
+    prev = NULL;
+    b = heap->free;
     for (;;) {
-        while (blk != NULL && blk->size < size) {
-            prev = blk;
-            blk = blk->next;
-        }
-        if (blk == NULL) {
+        if (b == NULL) {
             goto fail;
         }
-        if (alignOffset < ((u32)blk & alignMask)) {
-            pad = alignMask + alignOffset + 1 - ((u32)blk & alignMask);
-        } else {
-            pad = alignOffset - ((u32)blk & alignMask);
+        while (b != NULL && b->size < sz) {
+            prev = b;
+            b = b->next;
         }
-        if (blk->size >= size + pad) {
+        if (b == NULL) {
+            goto fail;
+        }
+        if (alignOffset < ((u32)b & alignMask)) {
+            pad = alignMask + 1 + alignOffset - ((u32)b & alignMask);
+        } else {
+            pad = alignOffset - ((u32)b & alignMask);
+        }
+        if (b->size >= sz + pad) {
             break;
         }
-        prev = blk;
-        blk = blk->next;
+        prev = b;
+        b = b->next;
     }
-
-    have = blk->size;
-    if (have >= size + pad + 8) {
-        rest = (FreeBlock *)((u8 *)blk + size + pad);
-        rest->size = have - size - pad;
-        rest->next = blk->next;
+    if (b->size >= sz + pad + 8) {
+        nb = (FreeBlock *)((u8 *)b + sz + pad);
+        nb->size = b->size - sz - pad;
+        nb->next = b->next;
         if (prev != NULL) {
-            prev->next = rest;
+            prev->next = nb;
         } else {
-            heap->free = rest;
+            heap->free = nb;
         }
     } else {
-        size = have - pad;
+        sz = b->size - pad;
         if (prev != NULL) {
-            prev->next = blk->next;
+            prev->next = b->next;
         } else {
-            heap->free = blk->next;
+            heap->free = b->next;
         }
     }
-    out->ptr = (u8 *)blk + pad;
-    out->size = size;
+    out->ptr = (u8 *)b + pad;
+    out->size = sz;
     out->pad = pad;
-    heap->bytesFree -= size + pad;
-    heap->numAllocs++;
-    if (heap->bytesFree < heap->minFree) {
-        heap->minFree = heap->bytesFree;
-    }
-    return;
-
+    goto done;
 fail:
     out->ptr = NULL;
     out->size = 0;
     out->pad = 0;
+    return;
+done:
+    heap->bytesFree -= sz + pad;
+    heap->numAllocs++;
+    min = heap->minFree;
+    if (heap->bytesFree < min) {
+        min = heap->bytesFree;
+    }
+    heap->minFree = min;
 }
 
-/*
- * Last fit, taken from the top of the block. The original adds each candidate's
- * alignment trim to size as it goes, so size can grow past what was asked for;
- * that is kept.
- */
 void Heap_AllocAlt(Heap *heap, HeapBlock *out, u32 size, u32 alignMask, u32 alignOffset) {
-    FreeBlock *prev = NULL;
-    FreeBlock *best = NULL;
-    FreeBlock *bestPrev = NULL;
-    FreeBlock *cur;
-    u32 pad = 0;
-    u32 low;
-    u32 have;
+    FreeBlock *prev;
+    FreeBlock *b;
+    FreeBlock *best;
+    FreeBlock *bestPrev;
+    u32 pad;
+    u32 adj;
+    u32 min;
 
     if (size == 0) {
         goto fail;
     }
-    for (cur = heap->free; cur != NULL; cur = cur->next) {
-        if (cur->size < size) {
-            prev = cur;
-            continue;
+    pad = 0;
+    prev = NULL;
+    best = NULL;
+    bestPrev = NULL;
+    for (b = heap->free; b != NULL; b = b->next) {
+        if (b->size >= size) {
+            adj = ((u32)b + b->size - size) & alignMask;
+            if (adj < alignOffset) {
+                size += adj + (alignMask + 1 - alignOffset);
+            } else {
+                size += adj - alignOffset;
+            }
+            pad = ((u32)b + b->size - size) & 3;
+            if (b->size >= size + pad) {
+                best = b;
+                bestPrev = prev;
+            }
         }
-        low = ((u32)cur + cur->size - size) & alignMask;
-        if (low < alignOffset) {
-            size += low + alignMask - (alignOffset - 1);
-        } else {
-            size += low - alignOffset;
-        }
-        pad = ((u32)cur + cur->size - size) & 3;
-        if (cur->size < size + pad) {
-            prev = cur;
-            continue;
-        }
-        best = cur;
-        bestPrev = prev;
-        prev = cur;
+        prev = b;
     }
     if (best == NULL) {
         goto fail;
     }
-
-    have = best->size;
-    if (have < size + pad + 8) {
-        pad += have - size;
+    if (best->size >= size + pad + 8) {
+        best->size -= size + pad;
+        out->ptr = (u8 *)best + best->size + pad;
+        out->size = size;
+        out->pad = pad;
+    } else {
+        pad += best->size - size;
         if (bestPrev != NULL) {
             bestPrev->next = best->next;
         } else {
             heap->free = best->next;
         }
         out->ptr = (u8 *)best + pad;
-    } else {
-        best->size = have - (size + pad);
-        out->ptr = (u8 *)best + best->size + pad;
+        out->size = size;
+        out->pad = pad;
     }
-    out->size = size;
-    out->pad = pad;
-    heap->bytesFree -= size + pad;
-    heap->numAllocs++;
-    if (heap->bytesFree < heap->minFree) {
-        heap->minFree = heap->bytesFree;
-    }
-    return;
-
+    goto done;
 fail:
     out->ptr = NULL;
     out->size = 0;
     out->pad = 0;
+    return;
+done:
+    heap->bytesFree -= size + pad;
+    heap->numAllocs++;
+    min = heap->minFree;
+    if (heap->bytesFree < min) {
+        min = heap->bytesFree;
+    }
+    heap->minFree = min;
 }
 
-/* Put the block back in the address-sorted free list, merging with its neighbours. */
-void Heap_Free(Heap *heap, HeapBlock *blk) {
-    FreeBlock *prev = NULL;
-    FreeBlock *cur;
+void Heap_Free(Heap *heap0, HeapBlock *blk) {
+    Heap *heap = heap0;
     FreeBlock *f;
-    FreeBlock *next;
+    FreeBlock *prev;
+    FreeBlock *p;
+    FreeBlock *nb;
 
     if (blk->ptr == NULL) {
         return;
     }
     blk->ptr = (u8 *)blk->ptr - blk->pad;
-    blk->size = blk->size + blk->pad;
+    blk->size += blk->pad;
     blk->pad = 0;
-
-    cur = heap->free;
-    if (cur == NULL) {
-        f = blk->ptr;
-        f->size = blk->size;
-        f->next = NULL;
-        heap->free = f;
+    f = heap->free;
+    prev = NULL;
+    if (f == NULL) {
+        nb = blk->ptr;
+        nb->size = blk->size;
+        nb->next = NULL;
+        heap->free = nb;
         goto done;
     }
-    for (;;) {
-        f = blk->ptr;
-        if (cur < f) {
-            if ((u8 *)cur + cur->size == (u8 *)f) {
-                next = cur->next;
-                cur->size += blk->size;
-                if (next != NULL && (u8 *)cur + cur->size == (u8 *)next) {
-                    cur->size += next->size;
-                    cur->next = next->next;
+    do {
+        p = blk->ptr;
+        if (f < p) {
+            if ((FreeBlock *)((u8 *)f + f->size) == p) {
+                f->size += blk->size;
+                if (f->next != NULL && (FreeBlock *)((u8 *)f + f->size) == f->next) {
+                    f->size += ((FreeBlock *)((u8 *)f + f->size))->size;
+                    f->next = f->next->next;
                 }
                 goto done;
             }
-        } else if (f < cur) {
-            if ((u8 *)f + blk->size == (u8 *)cur) {
-                f->size = blk->size + cur->size;
-                f->next = cur->next;
+        } else if (p < f) {
+            if ((FreeBlock *)((u8 *)p + blk->size) == f) {
+                p->size = blk->size + f->size;
+                p->next = f->next;
             } else {
-                f->size = blk->size;
-                f->next = cur;
+                p->size = blk->size;
+                p->next = f;
             }
             if (prev != NULL) {
-                prev->next = f;
+                prev->next = p;
             } else {
-                heap->free = f;
+                heap->free = p;
             }
             goto done;
         }
-        prev = cur;
-        cur = cur->next;
-        if (cur == NULL) {
-            break;
-        }
-    }
-    f = blk->ptr;
-    f->size = blk->size;
-    f->next = NULL;
-    prev->next = f;
-
+        prev = f;
+        f = f->next;
+    } while (f != NULL);
+    nb = blk->ptr;
+    nb->size = blk->size;
+    nb->next = NULL;
+    prev->next = nb;
 done:
     heap->bytesFree += blk->size;
     heap->numAllocs--;
     blk->ptr = NULL;
     blk->size = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/heap", Heap_Alloc);
-
-INCLUDE_ASM("asm/nonmatchings/heap", Heap_AllocAlt);
-
-INCLUDE_ASM("asm/nonmatchings/heap", Heap_Free);
-#endif
 
 /* Give back the end of an allocation, keeping its first size bytes. */
 void Heap_Shrink(Heap *heap, HeapBlock *blk, u32 size) {

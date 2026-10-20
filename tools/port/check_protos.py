@@ -162,7 +162,6 @@ def main():
         files = [l.strip() for l in open(args.files) if l.strip()]
     else:
         files = sorted(str(p) for p in Path('src').rglob('*.c'))
-        files.append('nonmatching/Wheel_ComputeTireForce.c')
 
     # Typedef names of structs, so struct-by-value parameters are recognised
     for f in files:

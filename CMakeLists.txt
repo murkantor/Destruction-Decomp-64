@@ -55,10 +55,6 @@ file(GLOB_RECURSE GAME_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.c)
 foreach(f ${PORT_SDK_EXCLUDED})
     list(REMOVE_ITEM GAME_SRC ${CMAKE_SOURCE_DIR}/${f})
 endforeach()
-# The last function not yet matched; this C behaves like the original.
-list(APPEND GAME_SRC ${CMAKE_SOURCE_DIR}/nonmatching/Wheel_ComputeTireForce.c)
-set_source_files_properties(${CMAKE_SOURCE_DIR}/nonmatching/Wheel_ComputeTireForce.c
-    PROPERTIES COMPILE_OPTIONS "-include;common.h")
 
 set(COMMON_FLAGS
     -m32 -g -O2

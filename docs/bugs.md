@@ -30,6 +30,8 @@ Likelihood is for normal play. "Data" means it depends on values in the ROM data
 | 16 | `Fb_CreateContext` | `src/auto/57008.c:63` | Stores the address of a local struct in a global and keeps using a framebuffer it has freed | The assert screen, or an RCP stall of more than 100 retraces. Rare | Traced |
 | 17 | `Pool_Alloc(gParticlePool)` users | `Camera_BuildProjection`, `ModelInst_BuildMatrix` and others | Results never checked; NULL goes into `guMtxF2L` | More than about 500 matrices in flight. Unlikely | Traced |
 | 18 | `Save_CopyToGlobal` | `src/auto/50CCC.c:31` | Cup progress from the Controller Pak is not range-checked before use as an index | Corrupt save data only | Traced |
+| 54 | `Heap_AllocAlt` | `src/heap.c:92` | `size` and `pad` are changed in place for every candidate block, so they end up describing the last block examined, not the one picked. The result can be misaligned, and on an exact fit `pad` wraps, so the block overlaps its neighbour and freeing it corrupts the free list | The highest fitting free block fails its own alignment test. Uncommon (misaligned), rare (overlap) | Traced |
+| 55 | `Race_AssignSlotObjects` | `src/auto/27B0.c:34` | The match loop always reads 12 list entries, though only `n` were filled; with no match, `o->x10` is written to the last entry read (an unrelated object or a stale stack pointer) | A track with fewer than 12 type 7 objects, or a car with no matching object. Data | Checked |
 
 ## Gameplay logic
 
@@ -66,6 +68,8 @@ Likelihood is for normal play. "Data" means it depends on values in the ROM data
 | 42 | `Sound_RemoveEmitter` | `src/auto/A634.c:24` | Removes the last emitter when the id is not found | An id removed twice in one pass. Rare | Traced |
 | 43 | `Announcer_Update` | `src/auto/9418.c:58` | Writes index 15 of two 15-entry arrays when the queue is full | Full announcer queue. Low impact | Traced |
 | 44 | `__amDMA` | `src/auto/68964.c` | When the DMA free list is empty it returns the buffer header address instead of sample data (same as the SDK demo) | Many sample DMAs in one frame. Brief noise | Traced |
+| 56 | `Sound_UpdateCarSurfaces` | `src/auto/84C0.c:45` | The surface counts are set once, before the loop over player cars, so each car starts with the earlier cars' tallies | Players 2 to 4 skidding in multiplayer | Checked |
+| 57 | `Sound_UpdateCarSurfaces` | `src/auto/84C0.c:74` | The tally loop never checks whether a wheel is slipping, so a non-slipping wheel can be picked and its stale volume and mode used | One wheel skidding with the others on another surface. Common | Traced |
 
 ## Graphics
 

@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f r[3]; } Mtx3f;
 typedef struct {
@@ -128,6 +131,7 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
     f32 d;
     f32 al;
     f64 dl;
+    u8 slipPad; /* never assigned, see note */
 
     radius = w->x120;
     invR = 1.0f / radius;
@@ -201,7 +205,7 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
     fs = cv->x * m->r[0].x + cv->y * m->r[0].y + cv->z * m->r[0].z;
     if ((p3 && fs > 3.0) || (p0 && !p3 && fs < -3.0)) {
         w->x1AC = 1;
-        w->x1B4 = 0;
+        w->x1B4 = slipPad >> 8; /* always 0, see note */
         w->x1B0 = ramp0(fabsf(fs), 30.0f);
         fl *= 1.3;
         ft *= 1.3;
@@ -391,3 +395,17 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
  *   uses renamed over 1..60 following lines, for Cross/GetDriveTorque/Dot/Scale): no vars=200 with
  *   identical code. Closest: idx2 = idx before Vec3f_Cross used in 'else if (idx2 >= 2)': its slot
  *   lands exactly at 0xD0 but adds lw/sw. */
+/* agent72: MATCH. The missing 8 bytes of frame (0x128 vs 0x130) are a spill slot for a pseudo
+ * that leaves no code: slipPad is never assigned, and its only use (slipPad >> 8, an unsigned
+ * byte shifted out) is folded to 0 by combine, which runs after flow. combine does not reset
+ * reg_n_refs of a pseudo that is live at function entry (uninitialised), so the pseudo keeps
+ * 1 ref, no insns, and a stale live range from entry to the fs branch. In global-alloc that
+ * range conflicts with every callee-saved GPR (it also "crosses" the calls), caller-save is not
+ * profitable (1 ref), so it stays unallocated and reload's alter_reg gives it an 8-byte slot
+ * above the six real spill slots (0xD0). The fold must be one CSE cannot do (CSE associates
+ * same-opcode chains like (x & 1) & 2, and folds (x | c) == 0), e.g. u8 >> 8, u16 >> 16,
+ * (x & 0xFF) >> 8, (u8)x >> 8, ((x | 1) & 1) - 1, in any block after lon is set (the fs branch
+ * or the Vec3f_Dot branch both work). A plain copy, hard-register local, dead branch, or
+ * caller-save/secondary-memory route cannot produce this slot: a local in $f18 would need to
+ * span the dot-product peak with one use (the k multiply), which the backward list scheduler
+ * places next to its consumer, and k would then prefer $f18 via set_preference. */

@@ -513,7 +513,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80035E78` | `036A78` | 0x35c | `Seg_SphereSweepIntersect` | `src/auto/36A78.c` | C (generated) |
 | `800361E0` | `036DE0` | 0x1e4 | `CarAI_InitTarget` | `src/auto/36DE0.c` | C (generated) |
 | `800363C4` | `036FC4` | 0x368 | `CarAI_SteerToTarget` | `src/auto/36FC4.c` | C (generated) |
-| `8003672C` | `03732C` | 0xdfc | `Wheel_ComputeTireForce` | `asm/3732C.s` | asm |
+| `8003672C` | `03732C` | 0xdfc | `Wheel_ComputeTireForce` | `src/auto/3732C.c` | C (generated) |
 | `80037528` | `038128` | 0x828 | `Car_ApplyWheelForces` | `src/auto/38128.c` | C (generated) |
 | `80037D50` | `038950` | 0x40c | `Car_ApplySuspensionForces` | `src/auto/38950.c` | C (generated) |
 | `8003815C` | `038D5C` | 0x14f4 | `Car_UpdatePhysics` | `src/auto/38D5C.c` | C (generated) |
@@ -634,7 +634,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80042114` | `042D14` | 0x110 | `CarSelect_SetStatBars` | `src/auto/42D14.c` | C (generated) |
 | `80042224` | `042E24` | 0x2f0 | `CarSelect_Back` | `src/auto/42E24.c` | C (generated) |
 | `80042514` | `043114` | 0x380 | `CarSelect_Confirm` | `src/auto/43114.c` | C (generated) |
-| `80042894` | `043494` | 0x160 | `Race_FreeItemsCheckQualify` | `src/auto/43494.c` | C (generated) |
+| `80042894` | `043494` | 0x160 | `CarSelect_Update` | `src/auto/43494.c` | C (generated) |
 | `800429F4` | `0435F4` | 0x200 | `Menu_ToggleHelpOverlay` | `src/auto/435F4.c` | C (generated) |
 | `80042BF4` | `0437F4` | 0x194 | `Menu_InitPlayerViews` | `src/auto/437F4.c` | C (generated) |
 | `80042D88` | `043988` | 0x1a4 | `Menu_SetCarPreview` | `src/auto/43988.c` | C (generated) |
