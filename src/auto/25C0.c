@@ -4,7 +4,7 @@
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 pad[0x24]; s32 x24; } Ctrl;
 typedef struct { u8 pad[0x28]; s32 x28; u8 pad2[4]; s32 x30; u8 pad3[4]; Ctrl *x38; u8 pad4[0x1C]; s32 x58; } Car;
-typedef struct { u8 pad[0x74]; Car *x74[12]; s32 xA4; } Level;
+typedef struct { u8 pad[0x74]; Car *x74[RACE_CARS]; s32 xA4; } Level;
 typedef struct { u8 pad[0x1100]; Level *level; } Game;
 extern Game *gGame;
 #ifdef TARGET_PC

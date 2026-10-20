@@ -21,7 +21,7 @@ typedef struct {
 
 typedef struct {
     u8 pad[0x74];
-    Car *cars[12];
+    Car *cars[RACE_CARS];
     u8 pad2[0xA4 - 0xA4];
     s32 xA4;
 } Race;

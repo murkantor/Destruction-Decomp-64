@@ -3,7 +3,7 @@
 
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 pad[0x30]; s32 x30; u8 pad34[0x160]; s32 x194; } Car;
-typedef struct { u8 pad0[0x74]; Car *cars[12]; s32 xA4; } Race;
+typedef struct { u8 pad0[0x74]; Car *cars[RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1058]; u64 x1058; u8 pad1060[0xA0]; Race *x1100; } Game;
 
 typedef struct {

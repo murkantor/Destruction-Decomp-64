@@ -3,7 +3,7 @@
 
 typedef struct { u8 pad[0x18]; void *x18; u8 pad1C[0x30]; s32 x4C; } Sub066D0;
 typedef struct { u8 pad[0x30]; s32 x30; u8 pad34[4]; Sub066D0 *x38; } Obj066D0;
-typedef struct { u8 pad[8]; s32 x8; u8 padC[0x68]; Obj066D0 *x74[12]; s32 xA4; } Track066D0;
+typedef struct { u8 pad[8]; s32 x8; u8 padC[0x68]; Obj066D0 *x74[RACE_CARS]; s32 xA4; } Track066D0;
 typedef struct { u8 pad[0x1100]; Track066D0 *x1100; } Game066D0;
 extern Game066D0 *gGame;
 void Ai_PickTarget(Obj066D0 *);

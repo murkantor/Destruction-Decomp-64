@@ -24,7 +24,7 @@ typedef struct {
     s32 x10;
     Node *x14;
     u8 pad18[0x5C];
-    Car *cars[12];
+    Car *cars[RACE_CARS];
     s32 xA4;
 } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;

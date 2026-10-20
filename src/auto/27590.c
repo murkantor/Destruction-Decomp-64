@@ -35,7 +35,7 @@ typedef struct {
     TrackObj *objs;
     u8 pad4C[0x70 - 0x4C];
     TrackInfo *info;
-    Car *cars[12];
+    Car *cars[RACE_CARS];
     s32 ncars;
 } Track;
 typedef struct { u8 pad[0x10FC]; s16 x10FC; u8 pad10FE[2]; Track *track; } Game;
@@ -47,6 +47,9 @@ extern s32 D_801252F4;
 extern StartDef *D_80095CA8[];
 extern s32 D_80095CB8[];
 extern Vec3f D_800D1B08[];
+#ifdef TARGET_PC
+f32 sqrtf(f32);
+#endif
 extern void *Res_Get(s32 id);
 extern void Mem_Free(void *p);
 extern void Basis_Orthonormalize(Vec3f *v);
@@ -118,6 +121,28 @@ void Race_PlaceCarsOnGrid(void)
         data = Res_Get(track->info->res->x6C);
         for (nc = 0; nc < gGame[0]->track->ncars; nc++) {
             car = gGame[0]->track->cars[nc];
+#ifdef TARGET_PC
+            if (nc >= 12) {
+                /* the doubled field: an arena has 12 starting places; the extra car
+                   starts behind the car on place nc - 12, facing the same way */
+                GridSlot *s0 = &data[nc - 12];
+                f32 dx = s0->b.x - s0->a.x, dy = s0->b.y - s0->a.y, dz = s0->b.z - s0->a.z;
+                f32 l = sqrtf(dx * dx + dy * dy + dz * dz);
+                if (l > 0.001f) {
+                    dx /= l, dy /= l, dz /= l;
+                }
+                car->pos.x = s0->a.x - dx * 7.0f;
+                car->pos.y = s0->a.y - dy * 7.0f;
+                car->pos.z = s0->a.z - dz * 7.0f;
+                car->pos2 = car->pos;
+                dir.x = dx, dir.y = dy, dir.z = dz;
+                car->basis = dir;
+                Basis_Orthonormalize(&car->basis);
+                car->basis2 = dir;
+                Basis_Orthonormalize(&car->basis2);
+                continue;
+            }
+#endif
             /* copied twice below: GCC checks the source once, so the second copy
                (car->pos2) would carry the raw big-endian bytes */
             PORT_CONVERT(&data[nc], sizeof(GridSlot) / 4, 4);

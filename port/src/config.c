@@ -177,6 +177,10 @@ static const Setting sSettings[] = {
       "1 = read raphnet N64 adapters raw: real stick values, no dead zone, the Rumble Pak driven directly" },
     { "input", "raphnet_player", &gPortConfig.raphnetPlayer, 1,
       "Controller the raphnet adapter's first port is, 1-4 (a second port is the next one)" },
+    { "game", "double_field", &gPortConfig.doubleField, 0,
+      "1 = twice the cars in every race (up to 24); the announcer counts the cars left once there are 11" },
+    { "game", "cpu_unlockables", &gPortConfig.cpuUnlockables, 0,
+      "1 = computer cars may drive the unlockable cars too" },
     { "saves", "pak_on_all_ports", &gPortConfig.pakOnAllPorts, 0,
       "1 = every controller has a Controller Pak; 0 = only controller 1" },
 };

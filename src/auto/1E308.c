@@ -105,7 +105,7 @@ typedef struct {
     CarStats stats;
     u8 padE9C[4];
 } Car;
-typedef struct { u8 pad0[0xA4]; s32 numCars; } Race;
+typedef struct { u8 pad0[0x74 + 4 * RACE_CARS]; s32 numCars; } Race;
 typedef struct { u8 pad0[0x1100]; Race *race; } Game;
 typedef struct { u8 x0, x1, x2, x3, x4; u8 pad5[0x13]; } PadCfg;
 typedef struct { u8 pad0[0x20]; s32 x20; } ResObj;

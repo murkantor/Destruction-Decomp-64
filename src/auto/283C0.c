@@ -15,7 +15,7 @@ typedef struct {
 
 typedef struct {
     u8 pad0[0x74];
-    s32 x74[12];
+    s32 x74[RACE_CARS];
     s32 xA4;
 } Track;
 

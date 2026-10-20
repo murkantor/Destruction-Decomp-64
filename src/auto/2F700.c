@@ -66,7 +66,7 @@ typedef struct {
     u8 pad34[4];
     s32 x38;
     u8 pad3C[0x38];
-    Car *x74[12];
+    Car *x74[RACE_CARS];
     s32 xA4;
 } Race;
 typedef struct { u8 pad0[0x1100]; Race *x1100; } Game;

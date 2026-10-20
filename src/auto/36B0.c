@@ -18,7 +18,7 @@ typedef struct {
     s32 x58;
 } Ai;
 struct Car { u8 pad[0xD]; u8 xD; u8 padE[2]; s32 x10; u8 pad14[0x24]; Ai *x38; };
-typedef struct { u8 pad[0x74]; Car *x74[12]; s32 xA4; } Race;
+typedef struct { u8 pad[0x74]; Car *x74[RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame;
 extern void Ai_ComputeIntercept(Car *, Car *, Target *);

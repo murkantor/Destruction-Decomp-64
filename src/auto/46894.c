@@ -12,7 +12,7 @@ typedef struct { u8 pad0[0xB4]; u8 xB4; } CarCfg;
 typedef struct { u8 pad0[0xC]; CarCfg *xC; } CarInfo;
 typedef struct { u8 pad0[0x10]; s32 x10; } CarStat;
 typedef struct { u8 pad0[0x38]; CarStat *x38; CarInfo *x3C; } Car;
-typedef struct { u8 pad0[4]; s32 x4; u8 pad8[8]; s32 x10; u8 pad14[0x60]; Car *cars[12]; } Race;
+typedef struct { u8 pad0[4]; s32 x4; u8 pad8[8]; s32 x10; u8 pad14[0x60]; Car *cars[RACE_CARS]; } Race;
 typedef struct { u8 pad0[0x1058]; u64 x1058; u8 pad1060[0xA0]; Race *race; } Game;
 typedef struct { u8 pad0[0xD]; u8 xD; u8 padE[0x26]; s32 x34; } PlayerInfo;
 typedef struct { PlayerInfo *x0; u8 pad4[0x64]; } Player;

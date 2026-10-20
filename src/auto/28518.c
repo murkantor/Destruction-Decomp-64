@@ -3,7 +3,7 @@
 
 typedef struct { u8 pad[0x34]; s32 x34; } Item;
 typedef struct ItemNode { Item *item; struct ItemNode *next; struct ItemNode *prev; } ItemNode;
-typedef struct { u8 pad[0xA4]; s32 xA4; } Race;
+typedef struct { u8 pad[0x74 + 4 * RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame;
 

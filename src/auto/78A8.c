@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 typedef struct { u8 pad[0xC]; u8 xC; u8 xD; u8 xE; u8 pad2[0x194 - 0xF]; s32 x194; } Slot;
-typedef struct { u8 pad[0x74]; Slot *x74[12]; s32 xA4; } Race;
+typedef struct { u8 pad[0x74]; Slot *x74[RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 typedef struct { s32 x0; s32 x4; u8 x8; u8 pad[7]; } Track;
 typedef struct { s32 x0; s32 x4; s32 x8; } Snd3;

@@ -15,5 +15,12 @@ void Dma_LoadAndFlush(void *, u32, u32);
 void Res_Load(s32 id, void *dst) {
     ResEntry *e = Res_Find(id);
 
+#ifdef TARGET_PC
+    if (e == NULL) {
+        extern void Port_Log(const char *, ...);
+        Port_Log("Res_Load: no resource %d (0x%X), from %p", id, id, __builtin_return_address(0));
+        return;
+    }
+#endif
     Dma_LoadAndFlush(dst, e->offset - ((u32)D_00000000 - (u32)gResArchiveRom), e->size);
 }

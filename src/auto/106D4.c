@@ -15,7 +15,7 @@ typedef struct {
     u8 pad39[0xF];
 } UiDesc48;
 typedef struct { u8 pad[0xC]; u8 xC; u8 padD[0x34 - 0xD]; s32 x34; u8 pad38[0x10]; void *x48; } CarInfo;
-typedef struct { u8 pad[0x74]; CarInfo *x74[12]; u8 padA4[0xA4 - 0x74 - 0x30]; s32 xA4; } Race;
+typedef struct { u8 pad[0x74]; CarInfo *x74[RACE_CARS]; u8 padA4[0xA4 - 0x74 - 0x30]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 typedef struct { s32 a4; s32 a8; s32 ac; } Mode;
 typedef struct { s32 *x0; } Img;
@@ -95,6 +95,42 @@ s32 MapUi_Init(void *ui) {
                 break;
             }
         }
+#ifdef TARGET_PC
+        {
+            /* the doubled field: computer cars past the 11 the map has markers for
+               use the first ones' marker under a new element id */
+            s32 clone = 0;
+            if (!found && k >= 11) {
+                clone = 0x200 + k;
+                id = D_8007F298[k % 11];
+                k++;
+            } else if (!found) {
+                id = D_8007F298[k];
+                k++;
+            } else {
+                found = 0;
+            }
+            d = descs;
+            for (m = 0; m < count; m++, d++) {
+                if (d->x4 == id) {
+                    break;
+                }
+            }
+            if (D_800958A4.a8 == 3 && D_800958A4.ac == 2 && D_800D31CC[0] == 2 && (i == 1 || i == 2)) {
+                d->x14 = 0x11310;
+                d->x18 = 0x11311;
+            }
+            if (clone) {
+                s32 orig = d->x4;
+                d->x4 = clone;
+                Ui_AddSprite(ui, d);
+                d->x4 = orig;
+                id = clone;
+            } else {
+                Ui_AddSprite(ui, d);
+            }
+        }
+#else
         if (!found) {
             id = D_8007F298[k];
             k++;
@@ -112,6 +148,7 @@ s32 MapUi_Init(void *ui) {
             d->x18 = 0x11311;
         }
         Ui_AddSprite(ui, d);
+#endif
         if (d->x38) {
             func_8005D8B8(ui, 1, id);
         }

@@ -36,6 +36,9 @@ typedef struct {
     int analogPedals;        /* the triggers are gas and brake, by how far they are pressed */
     int raphnet;             /* read raphnet N64 adapters raw */
     int raphnetPlayer;       /* the controller the adapter's first port is, 1-4 */
+    /* [game] */
+    int doubleField;         /* races with twice the cars (up to 24) */
+    int cpuUnlockables;      /* computer cars may drive the unlockable cars */
     /* [saves] */
     int pakOnAllPorts;       /* every controller has a Controller Pak, not only the first */
 } PortConfig;

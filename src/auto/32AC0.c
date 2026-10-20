@@ -31,7 +31,7 @@ typedef struct {
     u8 pad[0x88C];
     u8 xBAC;
 } Car;
-typedef struct { u8 pad0[0x74]; Car *cars[12]; s32 numCars; } Race;
+typedef struct { u8 pad0[0x74]; Car *cars[RACE_CARS]; s32 numCars; } Race;
 typedef struct { u8 pad0[0x1100]; Race *race; } Game;
 typedef struct {
     f32 x0, x4, x8;

@@ -4,7 +4,7 @@
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { s32 x0; u8 pad4[0x14]; f32 x18; f32 x1C; } Marker;
 typedef struct { u8 pad0[0xD]; u8 xD; u8 padE[0x3A]; Marker *x48; } Car;
-typedef struct { u8 pad0[0x74]; Car *x74[12]; u8 padA4_[0xA4 - 0x74 - 48]; s32 xA4; } Track;
+typedef struct { u8 pad0[0x74]; Car *x74[RACE_CARS]; u8 padA4_[0xA4 - 0x74 - 48]; s32 xA4; } Track;
 typedef struct { u8 pad[0x1100]; Track *x1100; } Game;
 typedef struct { s32 x0; u8 pad4[0x7C]; s32 x80; s32 x84; s32 x88; s32 x8C; } Widget;
 typedef struct UiNode { Widget *x0; struct UiNode *x4; } UiNode;

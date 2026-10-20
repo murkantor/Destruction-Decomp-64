@@ -4,7 +4,7 @@
 typedef struct { u8 pad[0x34]; s32 x34; } Car;
 typedef struct Node { Car *car; struct Node *next; struct Node *prev; } Node;
 typedef struct { Node *head; s32 x4; u8 (*cmp)(Car *, Car *); } List;
-typedef struct { u8 pad[0xA4]; s32 xA4; } Race;
+typedef struct { u8 pad[0x74 + 4 * RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame[];
 

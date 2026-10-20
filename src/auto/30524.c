@@ -10,7 +10,7 @@ typedef struct {
     u8 x2B4[0x31C - 0x2B4];
     u8 x31C[4];
 } Car;
-typedef struct { u8 pad[0x74]; Car *cars[12]; s32 xA4; } CarList;
+typedef struct { u8 pad[0x74]; Car *cars[RACE_CARS]; s32 xA4; } CarList;
 typedef struct { u8 pad[0x1100]; CarList *x1100; } Game;
 typedef struct {
     s32 x0;

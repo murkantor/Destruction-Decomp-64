@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-typedef struct { u8 pad[0x74]; void *x74[12]; s32 xA4; } Sub1100;
+typedef struct { u8 pad[0x74]; void *x74[RACE_CARS]; s32 xA4; } Sub1100;
 typedef struct { u8 pad[0x1100]; Sub1100 *x1100; } Game;
 extern Game *gGame;
 extern u8 Obb_OverlapsSphere(void *, void *, void *, s32, void *);

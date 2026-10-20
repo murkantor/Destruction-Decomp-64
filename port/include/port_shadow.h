@@ -13,9 +13,12 @@ extern "C" {
 #endif
 
 #define PORT_RAM_VRAM 0x8007ADD0u
-/* N64 RAM up to 0x80400000, then 64 KB of scratch for PORT_DMA_BUF */
+/* RAM up to PORT_RAM_END, then 64 KB of scratch for PORT_DMA_BUF. The N64's 4 MB ends
+   at 0x80400000; the port has 8 MB, as with an Expansion Pak, for the game's heap
+   (the cars of a doubled field) */
+#define PORT_RAM_END 0x80800000u
 #define PORT_SCRATCH_SIZE 0x10000u
-#define PORT_RAM_SIZE (0x80400000u + PORT_SCRATCH_SIZE - PORT_RAM_VRAM)
+#define PORT_RAM_SIZE (PORT_RAM_END + PORT_SCRATCH_SIZE - PORT_RAM_VRAM)
 
 extern unsigned char gRam[];
 extern unsigned char gPortShadow[];

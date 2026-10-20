@@ -5,7 +5,7 @@ typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { u8 data[0x58]; } Rec;
 typedef struct { s32 x0; s32 x4; s32 x8; u8 xC; u8 pad[3]; } Track;
 typedef struct { u8 pad[0x198]; s32 x198; u8 pad2[0xBA8 - 0x19C]; f32 xBA8; } Car;
-typedef struct { u8 pad[0x74]; Car *x74[12]; } Race;
+typedef struct { u8 pad[0x74]; Car *x74[RACE_CARS]; } Race;
 typedef struct { u8 pad[0x1058]; u64 x1058; u8 pad2[0x1100 - 0x1060]; Race *x1100; } Game;
 typedef struct {
     u8 pad[2];

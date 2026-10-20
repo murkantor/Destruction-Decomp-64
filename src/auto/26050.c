@@ -13,13 +13,14 @@ typedef struct {
     s32 x2C, x30, x34, x38, x3C, x40, x44, x48, x4C;
     s64 x50;
     s64 x58;
-    u8 pad[0x44];
+    u8 pad[0x14];
+    void *x74[RACE_CARS]; /* the cars */
     s32 xA4, xA8, xAC;
 } Sub;
 void Race_Create(Game *g) {
     Sub *s;
     s32 c;
-    s = Mem_Alloc(0xB0);
+    s = Mem_Alloc(sizeof(Sub)); /* 0xB0 on the N64 */
     c = 12;
     s->x10 = 0;
     s->x0 = c;

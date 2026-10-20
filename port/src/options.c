@@ -90,6 +90,10 @@ static const Option kAudio[] = {
     { "master volume", &gPortConfig.volume, kVolume, kVolumeN, N(kVolume), 0, 0 },
     { "audio delay", &gPortConfig.audioLatency, kLatency, kLatencyN, N(kLatency), 0, 1 },
 };
+static const Option kGame[] = {
+    { "double field", &gPortConfig.doubleField, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
+    { "cpu unlockables", &gPortConfig.cpuUnlockables, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
+};
 static const Option kControls[] = {
     { "rumble", &gPortConfig.rumble, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "rumble strength", &gPortConfig.rumbleStrength, kStrength, kStrengthN, N(kStrength), 0, 0 },
@@ -116,6 +120,7 @@ static const Page kPages[] = {
     { "video", kVideo, N(kVideo), 0 },
     { "sound", kAudio, N(kAudio), 0 },
     { "controls", kControls, N(kControls), 0 },
+    { "game", kGame, N(kGame), 0 },
     { "keys", NULL, 0, 1 },
     { "pad", NULL, 0, 2 },
 };

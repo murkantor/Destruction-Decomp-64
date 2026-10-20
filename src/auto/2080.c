@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 typedef struct { u8 pad[0xD]; u8 xD; } Car;
-typedef struct { u8 pad[0x74]; Car *x74[12]; s32 xA4; } Sub1100;
+typedef struct { u8 pad[0x74]; Car *x74[RACE_CARS]; s32 xA4; } Sub1100;
 typedef struct { u8 pad[0x1100]; Sub1100 *x1100; } Game;
 extern Game *gGame;
 extern s32 rand(void);

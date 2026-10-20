@@ -9,7 +9,8 @@
  *                          in data the game loads are callable
  *   0x8007ADD0-0x80400000  rsp_text, data, rodata, bss, the two boot blocks and
  *                          the heap, where the N64 has them
- *   0x80400000-0x80410000  scratch for PORT_DMA_BUF (ultra64.h)
+ *   0x80400000-0x80800000  more heap: the port's RAM is 8 MB (PORT_RAM_END)
+ *   0x80800000-0x80810000  scratch for PORT_DMA_BUF (ultra64.h)
  *   then a no-access guard page, so a write past the end faults where it happens
  *
  * So every N64 pointer, in the data, in the boot blocks or in anything the game
@@ -30,7 +31,7 @@
 
 #define MAP_BASE 0x80000000u
 #define RAM_VRAM PORT_RAM_VRAM
-#define RAM_END 0x80400000u
+#define RAM_END PORT_RAM_END
 #define MAP_END (RAM_END + PORT_SCRATCH_SIZE)
 #define CODE_END 0x8007ADD0u
 #define PAGE 0x1000u

@@ -29,7 +29,7 @@ typedef struct {
     s32 x8;
     u8 padC[8];
     u8 x14[0x60];
-    Car *x74[12];
+    Car *x74[RACE_CARS];
     s32 xA4;
 } Race;
 typedef struct {

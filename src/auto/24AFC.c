@@ -3,7 +3,7 @@
 
 typedef struct {
     u8 pad[0x74];
-    s32 cars[12];
+    s32 cars[RACE_CARS];
     s32 numCars;
 } Race;
 typedef struct {

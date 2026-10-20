@@ -15,7 +15,7 @@ typedef struct {
     PadInfo *x3C;
 } Car;
 typedef struct { u8 pad0[0x16C]; s32 x16C; } Coll;
-typedef struct { u8 pad0[0x74]; Car *cars[12]; u8 padA4_[0xA4 - 0x74 - 48]; s32 xA4; } CarList;
+typedef struct { u8 pad0[0x74]; Car *cars[RACE_CARS]; u8 padA4_[0xA4 - 0x74 - 48]; s32 xA4; } CarList;
 typedef struct { u8 pad0[0x10FC]; s16 x10FC; u8 pad10FE[2]; CarList *x1100; } Game;
 typedef struct { Car *x0; Car *x4; s32 x8; s32 xC; f32 x10; s32 x14; } HitMsg;
 
