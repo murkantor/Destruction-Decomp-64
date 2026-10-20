@@ -29,6 +29,7 @@
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
 #include "gfx_pc.h"
+#include "shader_src.h" /* generated: shaders/combiner.*.glsl */
 
 using namespace std;
 
@@ -41,6 +42,12 @@ struct ShaderProgram {
     GLint frame_count_location;
     GLint noise_scale_location;
     GLint three_point_filter_locations[2];
+    /* The combiner shader (DD64_UBERSHADER=1, shaders/combiner.frag.glsl): one
+       program for every combiner, with these in its uniforms */
+    bool uber;
+    GLint cc[4][4];  /* uCC */
+    GLint form[4];   /* uForm */
+    GLint opt[2];    /* uOpt.x and .y, without the three-point bits */
 };
 
 struct Framebuffer {
@@ -159,7 +166,30 @@ static void gfx_opengl_vertex_array_set_attribs(struct ShaderProgram* prg) {
     }
 }
 
+/* The combiner shader's uniforms */
+static bool gl_uber;
+static GLuint uber_program;
+static GLint uber_loc_cc = -1, uber_loc_form = -1, uber_loc_opt = -1, uber_loc_noise = -1;
+static GLint uber_pushed_y = -1; /* the uOpt.y the program holds (the three-point bits change it) */
+
+/* uOpt.y: the program's flags and the three-point state the draw wants */
+static GLint uber_opt_y(const struct ShaderProgram* prg) {
+    GLint y = prg->opt[1];
+    if (y & 4) {
+        y |= (current_textures_linear_filter[0] ? 8 : 0) | (current_textures_linear_filter[1] ? 16 : 0);
+    }
+    return y;
+}
+
 static void gfx_opengl_set_uniforms(struct ShaderProgram* prg) {
+    if (prg->uber) {
+        uber_pushed_y = uber_opt_y(prg);
+        glUniform4iv(uber_loc_cc, 4, &prg->cc[0][0]);
+        glUniform4iv(uber_loc_form, 1, prg->form);
+        glUniform4i(uber_loc_opt, prg->opt[0], uber_pushed_y, (GLint)frame_count, 0);
+        glUniform4f(uber_loc_noise, current_noise_scale, 0.0f, 0.0f, 0.0f);
+        return;
+    }
     if (prg->frame_count_location >= 0) {
         glUniform1i(prg->frame_count_location, frame_count);
     }
@@ -185,6 +215,14 @@ static void gfx_opengl_sync_three_point(void) {
     struct ShaderProgram* prg = gl_current_prg;
 
     if (prg == NULL) {
+        return;
+    }
+    if (prg->uber) {
+        const GLint y = uber_opt_y(prg);
+        if (y != uber_pushed_y) {
+            uber_pushed_y = y;
+            glUniform4i(uber_loc_opt, prg->opt[0], y, (GLint)frame_count, 0);
+        }
         return;
     }
     for (int t = 0; t < 2; t++) {
@@ -217,7 +255,7 @@ static void gfx_opengl_load_shader(struct ShaderProgram* new_prg) {
 
 /* A shader's source, appended to with bounds checks */
 struct ShaderText {
-    char buf[8192];
+    char buf[16384];
     size_t len;
 };
 
@@ -358,7 +396,120 @@ static GLuint compile_shader(GLenum type, const ShaderText* src, const char* wha
     return shader;
 }
 
+/* The combiner shader's program, compiled once */
+static GLuint gl_uber_build(void) {
+    static ShaderText vs, fs;
+    static const char* attribs[] = { "aVtxPos", "aTexCoord0", "aTexCoord1", "aFog", "aInput1", "aInput2",
+                                     "aInput3", "aInput4", "aInput5", "aInput6", "aInput7" };
+
+    vs.len = fs.len = 0;
+    st_add(&vs, "#version %s\n", gl_glsl_version_str);
+    st_add(&fs, "#version %s\n", gl_glsl_version_str);
+    if (gl_es) {
+        st_line(&vs, "precision mediump float;");
+        st_line(&fs, "precision mediump float;");
+    }
+    if (!GLAD_GL_ARB_depth_clamp) {
+        st_line(&vs, "#define NO_DEPTH_CLAMP");
+    }
+    st_add(&vs, "%s", combiner_vert_glsl);
+    st_add(&fs, "%s", combiner_frag_glsl);
+
+    GLuint vertex_shader = compile_shader(GL_VERTEX_SHADER, &vs, "combiner vertex", 0, 0);
+    GLuint fragment_shader = compile_shader(GL_FRAGMENT_SHADER, &fs, "combiner fragment", 0, 0);
+    GLuint program = glCreateProgram();
+    GLint ok = 0;
+    glAttachShader(program, vertex_shader);
+    glAttachShader(program, fragment_shader);
+    for (int i = 0; i < 11; i++) {
+        glBindAttribLocation(program, i, attribs[i]);
+    }
+    glLinkProgram(program);
+    glDetachShader(program, vertex_shader);
+    glDetachShader(program, fragment_shader);
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
+    glGetProgramiv(program, GL_LINK_STATUS, &ok);
+    if (!ok) {
+        char log[1024];
+        glGetProgramInfoLog(program, sizeof(log), NULL, log);
+        sysFatalError("Combiner shader link failed:\n%s", log);
+    }
+
+    glUseProgram(program);
+    glUniform1i(glGetUniformLocation(program, "uTex0"), 0);
+    glUniform1i(glGetUniformLocation(program, "uTex1"), 1);
+    uber_loc_cc = glGetUniformLocation(program, "uCC");
+    uber_loc_form = glGetUniformLocation(program, "uForm");
+    uber_loc_opt = glGetUniformLocation(program, "uOpt");
+    uber_loc_noise = glGetUniformLocation(program, "uNoise");
+    sysLogPrintf(LOG_NOTE, "GL: the combiner shader is one program (DD64_UBERSHADER)");
+    return program;
+}
+
+/* A combiner on the combiner shader: its uniforms, and the vertex layout the
+ * generated shader would have read */
+static struct ShaderProgram* gl_uber_create(uint64_t shader_id0, uint32_t shader_id1) {
+    struct CCFeatures cc_features = { 0 };
+    gfx_cc_get_features(shader_id0, shader_id1, &cc_features);
+    const int input_size = cc_features.opt_alpha ? 4 : 3;
+    struct ShaderProgram* prg = &shader_program_pool[make_pair(shader_id0, shader_id1)];
+    size_t cnt = 0, num_floats = 4;
+
+    if (uber_program == 0) {
+        uber_program = gl_uber_build();
+    }
+    memset(prg, 0, sizeof(*prg));
+    prg->uber = true;
+    prg->opengl_program_id = uber_program;
+    prg->frame_count_location = prg->noise_scale_location = -1;
+    prg->three_point_filter_locations[0] = prg->three_point_filter_locations[1] = -1;
+
+    prg->attrib_locations[cnt] = 0;
+    prg->attrib_sizes[cnt++] = 4;
+    for (int i = 0; i < 2; i++) {
+        if (cc_features.used_textures[i]) {
+            prg->attrib_locations[cnt] = 1 + i;
+            prg->attrib_sizes[cnt++] = 2;
+            num_floats += 2;
+        }
+    }
+    if (cc_features.opt_fog) {
+        prg->attrib_locations[cnt] = 3;
+        prg->attrib_sizes[cnt++] = 4;
+        num_floats += 4;
+    }
+    for (int i = 0; i < cc_features.num_inputs; i++) {
+        prg->attrib_locations[cnt] = 4 + i;
+        prg->attrib_sizes[cnt++] = input_size;
+        num_floats += input_size;
+    }
+    prg->num_floats = num_floats;
+    prg->num_attribs = cnt;
+
+    for (int c = 0; c < 2; c++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 4; k++) {
+                prg->cc[c * 2 + j][k] = cc_features.c[c][j][k];
+            }
+            /* the generator's choice, in its order (append_formula) */
+            prg->form[c * 2 + j] = cc_features.do_single[c][j] ? 1 : cc_features.do_multiply[c][j] ? 2
+                                 : cc_features.do_mix[c][j]    ? 3 : 0;
+        }
+    }
+    prg->opt[0] = (GLint)shader_id1;
+    prg->opt[1] = (cc_features.used_textures[0] ? 1 : 0) | (cc_features.used_textures[1] ? 2 : 0) |
+                  (current_filter_mode == FILTER_THREE_POINT ? 4 : 0);
+
+    gfx_opengl_load_shader(prg);
+    return prg;
+}
+
 static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shader_id0, uint32_t shader_id1) {
+    if (gl_uber) {
+        return gl_uber_create(shader_id0, shader_id1);
+    }
+
     struct CCFeatures cc_features = { 0 };
     gfx_cc_get_features(shader_id0, shader_id1, &cc_features);
 
@@ -1118,6 +1269,18 @@ static void gfx_opengl_init(void) {
         snprintf(gl_glsl_version_str, sizeof(gl_glsl_version_str), "%d core", gl_glsl_version);
     }
     sysLogPrintf(LOG_NOTE, "GL: using GLSL version %s", gl_glsl_version_str);
+
+    /* DD64_UBERSHADER=1: the combiner shader the SDL_gpu backend uses, here
+       instead of a generated shader per combiner (it needs GLSL 1.30) */
+    {
+        const char* e = getenv("DD64_UBERSHADER");
+        gl_uber = e != NULL && e[0] == '1';
+        if (gl_uber && gl_glsl_version < 130) {
+            sysLogPrintf(LOG_WARNING, "GL: GLSL %s cannot run the combiner shader, generating shaders instead",
+                         gl_glsl_version_str);
+            gl_uber = false;
+        }
+    }
 
     glGenBuffers(1, &opengl_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, opengl_vbo);

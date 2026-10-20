@@ -112,8 +112,18 @@ add_custom_command(
 # ---- Port ----
 file(GLOB PORT_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/port/src/*.c ${CMAKE_SOURCE_DIR}/port/src/*.cpp
                                      ${CMAKE_SOURCE_DIR}/port/fast3d/*.cpp ${CMAKE_SOURCE_DIR}/port/fast3d/glad/*.c)
-add_executable(dd64 ${PORT_SRC} ${GEN_WIDTHS} $<TARGET_OBJECTS:game>)
-target_include_directories(dd64 PRIVATE include port/include port/fast3d)
+# The combiner shader's GLSL, as text for the OpenGL backend
+set(SHADER_DIR ${CMAKE_SOURCE_DIR}/port/fast3d/shaders)
+set(GEN_SHADER_SRC ${GEN_DIR}/shader_src.h)
+set(SHADER_GLSL ${SHADER_DIR}/combiner.vert.glsl ${SHADER_DIR}/combiner.frag.glsl)
+add_custom_command(
+    OUTPUT ${GEN_SHADER_SRC}
+    COMMAND ${CMAKE_COMMAND} -DOUT=${GEN_SHADER_SRC} "-DIN=${SHADER_GLSL}" -P ${CMAKE_SOURCE_DIR}/cmake/embed_text.cmake
+    DEPENDS ${SHADER_GLSL} ${CMAKE_SOURCE_DIR}/cmake/embed_text.cmake
+    COMMENT "Embedding the combiner shader's GLSL" VERBATIM)
+
+add_executable(dd64 ${PORT_SRC} ${GEN_WIDTHS} ${GEN_SHADER_SRC} $<TARGET_OBJECTS:game>)
+target_include_directories(dd64 PRIVATE include port/include port/fast3d ${GEN_DIR})
 target_compile_definitions(dd64 PRIVATE TARGET_PC)
 target_compile_options(dd64 PRIVATE ${COMMON_FLAGS} -Wall -Wno-unused-parameter -Wno-unused-function
     # Fast3D from Project Midas: keep its own warnings quiet
