@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 data[8]; } HeapBlock;
 typedef struct {
     s32 x0;
@@ -53,7 +56,8 @@ s32 MapUi_Init(void *ui) {
     u32 m;
     s32 id;
     s32 *data;
-    CarInfo *car;
+    s32 two;
+    register CarInfo *car asm("$8");
 
     size = Res_GetSize(0x1129C);
     Res_Load(0x1129C, descs);
@@ -63,13 +67,14 @@ s32 MapUi_Init(void *ui) {
     k = 0;
     data = NULL;
     for (i = 0; i < gGame->x1100->xA4; i++) {
+        two = 2;
         car = gGame->x1100->x74[i];
         if (car->xC == 0) {
             continue;
         }
         for (j = 0; j < D_800D31CC[0]; j++) {
-            if (D_800958A4.a8 == 3 && D_800958A4.ac == 2) {
-                if (D_800958A4.a4 == 2) {
+            if (D_800958A4.a8 == 3 && D_800958A4.ac == two) {
+                if (D_800958A4.a4 == two) {
                     if (i == 0 && j == 0) {
                         found = 1;
                     } else if (i == 3 && j == 1) {
@@ -139,6 +144,3 @@ s32 MapUi_Init(void *ui) {
     }
     return 0;
 }
-/* agent61: unchanged (8 diff lines: li s7 order + car/bound a3/t0 swap). Car refs are set 2 + xC 2 + x34 3 = 7 (flow weights refs by loop depth).
- * Splitting car into a short-lived car and a long-lived copy c2 used for x34 (scratch mu_H) gives the bound a3 as in the original but leaves a
- * "move t3,v1" copy (13 diffs). Inline IsCoop() condition helper and a do{}while(0) sweep over every i-loop statement: no gain. */

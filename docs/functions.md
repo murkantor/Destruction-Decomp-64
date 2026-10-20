@@ -158,7 +158,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000F980` | `010580` | 0x8 | `func_8000F980` | `src/auto/10580.c` | C (generated) |
 | `8000F988` | `010588` | 0x144 | `Hud_InitForMode` | `src/auto/10588.c` | C (generated) |
 | `8000FACC` | `0106CC` | 0x8 | `func_8000FACC` | `src/auto/106CC.c` | C (generated) |
-| `8000FAD4` | `0106D4` | 0x488 | `MapUi_Init` | `asm/106D4.s` | asm |
+| `8000FAD4` | `0106D4` | 0x488 | `MapUi_Init` | `src/auto/106D4.c` | C (generated) |
 | `8000FF5C` | `010B5C` | 0x120 | `Ui_UpdateElements` | `src/auto/10B5C.c` | C (generated) |
 | `8001007C` | `010C7C` | 0x40 | `Ui_LookupTextId` | `src/auto/10C7C.c` | C (generated) |
 | `800100BC` | `010CBC` | 0x158 | `Ui_SetElementColor` | `src/auto/10CBC.c` | C (generated) |
@@ -622,7 +622,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80040A28` | `041628` | 0x78 | `Menu_Prev` | `src/auto/41628.c` | C (generated) |
 | `80040AA0` | `0416A0` | 0x84 | `Menu_Next` | `src/auto/416A0.c` | C (generated) |
 | `80040B24` | `041724` | 0xe8 | `TrackMenu_Back` | `src/auto/41724.c` | C (generated) |
-| `80040C0C` | `04180C` | 0x300 | `Menu_ConfirmTrackSelect` | `asm/4180C.s` | asm |
+| `80040C0C` | `04180C` | 0x300 | `Menu_ConfirmTrackSelect` | `src/auto/4180C.c` | C (generated) |
 | `80040F0C` | `041B0C` | 0xcc | `Ui_RemapTextures` | `src/auto/41B0C.c` | C (generated) |
 | `80040FD8` | `041BD8` | 0x4a4 | `TrackMenu_Highlight` | `src/auto/41BD8.c` | C (generated) |
 | `8004147C` | `04207C` | 0x1e8 | `TrackMenu_FormatRecords` | `src/auto/4207C.c` | C (generated) |

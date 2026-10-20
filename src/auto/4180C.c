@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad[0x10]; s32 x10; } Menu;
 typedef struct { s32 x0; s32 x4; u8 pad8[0x60]; } Player;
 typedef struct {
@@ -71,8 +74,8 @@ s32 Menu_ConfirmTrackSelect(Menu *m) {
                         break;
                     case 3:
                         D_80097340.flags[3] = 0;
-                        D_80095A40 = D_800958A4.players[2].x4;
-                        D_800958A4.sel[i] = D_800958A4.sel[2];
+                        D_80095A40 = D_800958A4.sel[i * 70 / 3];
+                        D_800958A4.sel[i] = D_800958A4.sel[i * 2 / 3];
                         break;
                 }
             } else {
@@ -96,22 +99,3 @@ s32 Menu_ConfirmTrackSelect(Menu *m) {
     D_80096EA0 = 1;
     return 1;
 }
-/* agent60: 9 words off. Writing the stores as sel[i] (case 2: sel[i] = v; case 3: sel[i] = sel[2])
- * makes them t2-relative like the original (8(t2), 12(t2)). Still off: in case 3 the reads of
- * players[2].x4 and sel[2] use the struct base (308/36(t6)) instead of t2 (280/8(t2)); forms with
- * [i - 1] give absolute addressing (+4 bytes). Also 'again' and the j-loop count limit are swapped
- * (a3/t0) and addiu t7 is scheduled one slot later. */
-/* agent60: 4 words off. Fixes: case 2 'sel[i] = v' and case 3 'sel[i] = sel[2]' (t2-relative
- * stores like the original), do { if (j == count) again = 0; } while (0) (fixes the again/limit
- * a3/t0 swap). Left: case 3 reads players[2].x4 and sel[2] off the struct base t6 (308/36) where the
- * original uses t2 (280/8), and addiu t7 is one slot later in the preheader. Tried every order and
- * [2]/[i - 1]/[3]/[i] form of the three case-3 statements, and a local s32 *sel pointer. */
-/* agent64: still 4 words. Cause found (cse.c use_related_value): the case 3 reads (sym+308, sym+36)
- * look up the class of the bare symbol D_800958A4; on cse's 3rd path through the EBB starting at the
- * second mode/count test, insn "135 = 128 - 28" (the count address, kept with a REG_EQUAL sym note
- * added on path 1) puts reg 135 (t6) in that class, so case 3 uses t6. Case 1 is on path 1, before
- * the note exists, so it gets t2. If case 3 did not use 135, 135 would die and the symbol register
- * would first appear in the else branch, after &numCars, which also fixes the t7/t6 preheader order.
- * So one change should fix both diffs: case 3 must not see a register equal to the bare symbol.
- * Tried: inline IsQuad() for the tests (size changes), 4 == count, x14[-5] for count, players[i - 1]
- * (absolute addressing), a pointer cast off &sel[i] + 0x10C, &players[i])[-1]. */
