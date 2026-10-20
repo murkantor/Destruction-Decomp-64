@@ -14,12 +14,6 @@ struct XYWidthHeight {
     uint32_t width, height;
 };
 
-struct GfxDimensions {
-    float internal_mul;
-    uint32_t width, height;
-    float aspect_ratio;
-};
-
 struct GfxInitSettings {
     struct GfxWindowManagerAPI *wapi;
     struct GfxRenderingAPI *rapi;
@@ -35,7 +29,6 @@ extern uint32_t gfx_internal_height; /* lines the game is drawn at; 0 = the wind
 extern uint32_t gfx_aspect_mode; /* 0 = 4:3 with side bars, 1 = stretch to the window, 2 = widescreen */
 
 void gfx_init(const struct GfxInitSettings *settings);
-struct GfxWindowManagerAPI *gfx_get_window_api(void);
 
 /* One RSP graphics task: a display list started under the given microcode
  * (the N64 address of its text, so F3DEX2 or S2DEX2 is known). */

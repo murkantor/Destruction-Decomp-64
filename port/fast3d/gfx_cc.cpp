@@ -15,20 +15,6 @@ void gfx_cc_get_features(uint64_t shader_id0, uint32_t shader_id1, struct CCFeat
     cc_features->opt_noise = (shader_id1 & SHADER_OPT_NOISE) != 0;
     cc_features->opt_2cyc = (shader_id1 & SHADER_OPT_2CYC) != 0;
     cc_features->opt_alpha_threshold = (shader_id1 & SHADER_OPT_ALPHA_THRESHOLD) != 0;
-    cc_features->opt_invisible = (shader_id1 & SHADER_OPT_INVISIBLE) != 0;
-    cc_features->opt_grayscale = (shader_id1 & SHADER_OPT_GRAYSCALE) != 0;
-    cc_features->opt_blur = (shader_id1 & SHADER_OPT_BLUR) != 0;
-    cc_features->opt_alpha_cvg_sel = (shader_id1 & SHADER_OPT_ALPHA_CVG_SEL) != 0;
-    cc_features->opt_nopersp_shade = (shader_id1 & SHADER_OPT_NOPERSP_SHADE) != 0;
-    cc_features->opt_sky_rgb5 = (shader_id1 & SHADER_OPT_SKY_RGB5) != 0;
-    cc_features->opt_ge_farclip = (shader_id1 & SHADER_OPT_GE_FARCLIP) != 0;
-    cc_features->opt_ge_pixfog = (shader_id1 & SHADER_OPT_GE_PIXFOG) != 0;
-    cc_features->opt_ge_sky_pixdiv = (shader_id1 & SHADER_OPT_GE_SKY_PIXDIV) != 0;
-
-    cc_features->clamp[0][0] = (shader_id1 & SHADER_OPT_TEXEL0_CLAMP_S);
-    cc_features->clamp[0][1] = (shader_id1 & SHADER_OPT_TEXEL0_CLAMP_T);
-    cc_features->clamp[1][0] = (shader_id1 & SHADER_OPT_TEXEL1_CLAMP_S);
-    cc_features->clamp[1][1] = (shader_id1 & SHADER_OPT_TEXEL1_CLAMP_T);
 
     cc_features->used_textures[0] = false;
     cc_features->used_textures[1] = false;

@@ -2,8 +2,8 @@
 #define FAST3D_SYSTEM_SHIM_H
 
 /**
- * Minimal stand-in for PD's port/include/system.h - only what the vendored
- * fast3d sources use. Implementations in port/src/sysstubs.c.
+ * The system hooks the fast3d sources call (logging, fatal errors, command-line
+ * switches). Implementations in port/src/fast3d_glue.c.
  */
 
 #include <stdint.h>
@@ -29,10 +29,6 @@ s32 sysArgCheck(const char *arg);
 const char *sysArgGetString(const char *arg);
 void sysFatalError(const char *fmt, ...) __attribute__((noreturn));
 void sysLogPrintf(s32 level, const char *fmt, ...);
-void sysSleep(const s64 hns);
-void sysCpuRelax(void);
-void sysLogSystemInfo(void);     /* `ge: sys:` boot lines - build, CPU, RAM, OS, timer, GE_* env, power */
-void sysLogPowerIfChanged(void); /* AC / battery / battery saver, only when it changed */
 
 #ifdef __cplusplus
 }
