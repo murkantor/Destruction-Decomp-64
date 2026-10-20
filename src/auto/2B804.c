@@ -17,6 +17,13 @@ extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern s32 D_800958BC;
 extern s32 D_80095D94[][3];
+#ifdef TARGET_PC
+/* Slots past the N64's 12 (the doubled field) are kept in port/game/field_part1.c */
+extern s32 gFieldD_80095D94[][3];
+#define FIELD_ROW(t, i) ((i) < 12 ? t[i] : gField##t[(i) - 12])
+#else
+#define FIELD_ROW(t, i) t[i]
+#endif
 
 void Race_AwardHealthBonus(void);
 void Results_TallyStandings(void);
@@ -42,7 +49,7 @@ void Race_AwardPot(void) {
                     race->x4--;
                     if (r == 0) {
                         gGame[0]->x1100->cars[i]->x18 += 50;
-                        D_80095D94[p][D_800958BC] = 50;
+                        FIELD_ROW(D_80095D94, p)[D_800958BC] = 50;
                     }
                     r--;
                 }
@@ -53,7 +60,7 @@ void Race_AwardPot(void) {
                 if (gGame[0]->x1100->cars[i]->x10 > 0) {
                     p = Race_FindCarSlot(gGame[0]->x1100->cars[i]->x34);
                     gGame[0]->x1100->cars[i]->x18 += 50;
-                    D_80095D94[p][D_800958BC] = 50;
+                    FIELD_ROW(D_80095D94, p)[D_800958BC] = 50;
                 }
             }
         }

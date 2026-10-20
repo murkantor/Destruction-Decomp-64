@@ -102,8 +102,8 @@ void Basis_Orthonormalize(Vec3f *);
 f64 fabs(f64);
 
 void Car_PhysicsStep(void *w, f32 dt) {
-    Buf180 buf1[12];
-    Buf180 buf2[12];
+    Buf180 buf1[RACE_CARS]; /* one per car not wrecked */
+    Buf180 buf2[RACE_CARS];
     u8 buf3[0x12C0];
     s32 cnt;
     f32 dot;

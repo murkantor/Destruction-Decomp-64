@@ -74,6 +74,20 @@ typedef struct { s32 v[3]; } V3;
 extern V3 D_80097D18[];
 extern s32 D_80095894;
 extern Vec3f D_800D1B08[];
+#ifdef TARGET_PC
+/* Slots and cars past the N64's 12 (the doubled field) are kept in
+   port/game/field_part1.c; FIELD_SLOTS also covers Race_FindCarSlot's "not found" */
+extern s32 gFieldD_80095D04[];
+extern s32 gFieldD_80095D34[];
+extern s32 gFieldD_80095D64[];
+extern S12 gFieldD_80095D94[];
+extern Vec3f gFieldD_800D1B08[];
+#define FIELD_SLOT(t, i) (*((i) < 12 ? &t[i] : &gField##t[(i) - 12]))
+#define FIELD_SLOTS (RACE_CARS + 1)
+#else
+#define FIELD_SLOT(t, i) t[i]
+#define FIELD_SLOTS 12
+#endif
 extern s32 D_800958B4;
 extern s32 D_800958A4;
 void Players_Reset(void);
@@ -143,24 +157,24 @@ void Race_Setup(void) {
         D_80097A00[0] = 0;
         switch (D_800958A8) {
         case 0:
-            for (i = 0; i < 12; i++) {
-                D_80095D04[i] = -1;
-                D_80095D34[i] = -1;
-                D_80095D64[i] = -1;
+            for (i = 0; i < FIELD_SLOTS; i++) {
+                FIELD_SLOT(D_80095D04, i) = -1;
+                FIELD_SLOT(D_80095D34, i) = -1;
+                FIELD_SLOT(D_80095D64, i) = -1;
             }
             break;
         case 1:
-            for (i = 0; i < 12; i++) {
-                D_80095D04[i] = -1;
-                D_80095D34[i] = -1;
-                D_80095D64[i] = -1;
+            for (i = 0; i < FIELD_SLOTS; i++) {
+                FIELD_SLOT(D_80095D04, i) = -1;
+                FIELD_SLOT(D_80095D34, i) = -1;
+                FIELD_SLOT(D_80095D64, i) = -1;
             }
             break;
         case 2:
-            for (i = 0; i < 12; i++) {
-                D_80095D04[i] = -1;
-                D_80095D34[i] = -1;
-                D_80095D64[i] = -1;
+            for (i = 0; i < FIELD_SLOTS; i++) {
+                FIELD_SLOT(D_80095D04, i) = -1;
+                FIELD_SLOT(D_80095D34, i) = -1;
+                FIELD_SLOT(D_80095D64, i) = -1;
             }
             break;
         case 3:
@@ -180,14 +194,19 @@ void Race_Setup(void) {
                 Tag_PassTo(NULL);
                 if (D_800958BC == 0) {
                     for (i = 0; i < gGame[0]->x1100->xA4; i++) {
-                        D_80095D04[i] = 0;
-                        D_80095D94[i].x0 = 0;
-                        D_80095D94[i].x4 = 0;
-                        D_80095D94[i].x8 = 0;
+                        FIELD_SLOT(D_80095D04, i) = 0;
+                        FIELD_SLOT(D_80095D94, i).x0 = 0;
+                        FIELD_SLOT(D_80095D94, i).x4 = 0;
+                        FIELD_SLOT(D_80095D94, i).x8 = 0;
                     }
                 } else {
                     for (i = 0; i < gGame[0]->x1100->xA4; i++) {
+#ifdef TARGET_PC
+                        s32 slot = Race_FindCarSlot(gGame[0]->x1100->x74[i]->x34);
+                        gGame[0]->x1100->x74[i]->x18 = FIELD_SLOT(D_80095D04, slot);
+#else
                         gGame[0]->x1100->x74[i]->x18 = D_80095D04[Race_FindCarSlot(gGame[0]->x1100->x74[i]->x34)];
+#endif
                         Standings_Resort(race->x14, gGame[0]->x1100->x74[i]);
                     }
                 }
@@ -245,10 +264,10 @@ void Race_Setup(void) {
                 }
             }
             if (D_800958AC != 1) {
-                for (i = 0; i < 12; i++) {
-                    D_80095D04[i] = -1;
-                    D_80095D34[i] = -1;
-                    D_80095D64[i] = -1;
+                for (i = 0; i < FIELD_SLOTS; i++) {
+                    FIELD_SLOT(D_80095D04, i) = -1;
+                    FIELD_SLOT(D_80095D34, i) = -1;
+                    FIELD_SLOT(D_80095D64, i) = -1;
                 }
             }
             break;
@@ -266,7 +285,7 @@ void Race_Setup(void) {
         }
         D_80095894 = 0;
         for (i = 0; i < gGame[0]->x1100->xA4; i++) {
-            D_800D1B08[i] = gGame[0]->x1100->x74[i]->x290;
+            FIELD_SLOT(D_800D1B08, i) = gGame[0]->x1100->x74[i]->x290;
         }
         gGame[0]->x10FC = saved;
         for (k = 0; k < D_800D31CC[0]; k++) {
