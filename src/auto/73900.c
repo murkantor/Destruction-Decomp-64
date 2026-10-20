@@ -46,6 +46,14 @@ u32 osVirtualToPhysical(void *);
 #define aSetBuffer(pkt, f, i, o, c) { Acmd *_a = (Acmd *)pkt; _a->w0 = (_SHIFTL(8, 24, 8) | _SHIFTL(f, 16, 8) | _SHIFTL(i, 0, 16)); _a->w1 = (_SHIFTL(o, 16, 16) | _SHIFTL(c, 0, 16)); }
 #define aSetVolume(pkt, f, v, t, r) { Acmd *_a = (Acmd *)pkt; _a->w0 = (_SHIFTL(9, 24, 8) | _SHIFTL(f, 16, 16) | _SHIFTL(v, 0, 16)); _a->w1 = _SHIFTL(t, 16, 16) | _SHIFTL(r, 0, 16); }
 #define aEnvMixer(pkt, f, s) { Acmd *_a = (Acmd *)pkt; _a->w0 = (_SHIFTL(3, 24, 8) | _SHIFTL(f, 16, 8)); _a->w1 = (u32)(s); }
+#ifdef TARGET_PC
+/* GCC merges the loads of the adjacent ratl and ratm halfwords in the aSetVolume
+   below into one word load, which the shadow map reports (they were stored as
+   halfwords; the value is right either way). Keep them separate loads. */
+#define RAT(x) (*(volatile u16 *)&(x))
+#else
+#define RAT(x) (x)
+#endif
 
 Acmd *_pullSubFrame(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
@@ -74,8 +82,8 @@ Acmd *_pullSubFrame(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleO
 
         aSetVolume(ptr++, 6, e->cvolL, 0, 0);
         aSetVolume(ptr++, 4, e->cvolR, 0, 0);
-        aSetVolume(ptr++, 2, e->ltgt, e->lratm, e->lratl);
-        aSetVolume(ptr++, 0, e->rtgt, e->rratm, e->rratl);
+        aSetVolume(ptr++, 2, e->ltgt, RAT(e->lratm), RAT(e->lratl));
+        aSetVolume(ptr++, 0, e->rtgt, RAT(e->rratm), RAT(e->rratl));
         aSetVolume(ptr++, 8, e->dryamt, 0, e->wetamt);
         aEnvMixer(ptr++, 1 | 8, osVirtualToPhysical(e->state));
     } else

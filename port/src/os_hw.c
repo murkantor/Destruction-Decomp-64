@@ -219,12 +219,25 @@ void Port_ViRetrace(void) {
 
 /* ---- AI ---- */
 
+#define VI_NTSC_CLOCK 48681812 /* osViClock */
+
 static u32 sAiFrequency = 22050;
 
+/*
+ * As libultra's: the DAC divides the VI clock, so the rate it gives (returned,
+ * and what the game sizes its frames and pitches by) is not quite the one
+ * asked for. The output plays at that rate.
+ */
 s32 osAiSetFrequency(u32 frequency) {
-    sAiFrequency = frequency;
-    Port_AudioSetFrequency(frequency);
-    return frequency;
+    f32 f = VI_NTSC_CLOCK / (f32)frequency + .5f;
+    u32 dacRate = f;
+
+    if (dacRate < 132) {
+        return -1;
+    }
+    sAiFrequency = VI_NTSC_CLOCK / (s32)dacRate;
+    Port_AudioSetFrequency(sAiFrequency);
+    return sAiFrequency;
 }
 
 s32 osAiSetNextBuffer(void *bufPtr, u32 size) {
@@ -232,11 +245,9 @@ s32 osAiSetNextBuffer(void *bufPtr, u32 size) {
     return 0;
 }
 
-/* Bytes still to play in the current AI DMA; the audio manager sizes frames from it. */
+/* Bytes still to play in the current AI DMA; the audio manager sizes frames from it (port/src/audio.c). */
 u32 osAiGetLength(void) {
-    u32 queued = Port_AudioQueuedBytes();
-    /* Two AI buffers at most are in flight on the N64. */
-    return queued;
+    return Port_AudioQueuedBytes();
 }
 
 u32 osAiGetStatus(void) {

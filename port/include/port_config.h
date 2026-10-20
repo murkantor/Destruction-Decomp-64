@@ -19,8 +19,10 @@ typedef struct {
     int internalHeight;      /* lines the game is drawn at; 0 = the window's */
     int stretch;             /* 0 = 4:3 with side bars, 1 = fill the window */
     int widescreen;          /* 1 = 3D fills the window, 2D stays 4:3 in the middle */
-    int textureFilter;       /* 0 point, 1 bilinear, 2 three-point (N64) */    /* [audio] */
+    int textureFilter;       /* 0 point, 1 bilinear, 2 three-point (N64) */
+    /* [audio] */
     int volume;              /* 0-100 */
+    int audioLatency;        /* output delay, ms */
     /* [input] */
     int rumble;              /* 0 off, 1 on */
     int rumbleStrength;      /* 0-100 */
