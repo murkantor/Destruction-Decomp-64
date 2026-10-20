@@ -381,7 +381,8 @@ static inline void loadN(u32 addr, u32 n, void *site) {
         return;
     }
     for (i = 0; i < n && !be; i++) {
-        be = s[i] & SH_BE;
+        /* a zero byte reads the same at any width: padding after a struct's u8 fields */
+        be = (s[i] & SH_BE) && *(const u8 *)(addr + i) != 0;
     }
     tPendingSrc = addr;
     tPendingLen = n;
