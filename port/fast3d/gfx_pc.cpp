@@ -299,6 +299,12 @@ static struct GfxRenderingAPI *gfx_rapi;
 
 static uint32_t window_width, window_height;
 static uint32_t fb_width, fb_height;   /* the game framebuffer (internal resolution) */
+/* Widescreen (gfx_aspect_mode 2): the framebuffer has the window's shape. Perspective
+ * (3D) draws use the whole width, with clip x scaled by wide_k so nothing is stretched
+ * and more of the scene shows at the sides; everything else (the HUD, menus, screens
+ * drawn in 2D) keeps its 4:3 area in the middle. */
+static float wide_k = 1.0f;            /* 4:3 width / framebuffer width */
+static bool vp_wide;                   /* the current draw uses the whole width */
 static int game_fb;                    /* the game draws here, presented to framebuffer 0 */
 static int game_fb_resolved;           /* single-sample copy when MSAA is on */
 static bool frame_started;
@@ -819,6 +825,10 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         float w = ob[0] * rsp.MP_matrix[0][3] + ob[1] * rsp.MP_matrix[1][3] + ob[2] * rsp.MP_matrix[2][3] +
                   rsp.MP_matrix[3][3];
 
+        if (gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f) {
+            x *= wide_k; /* perspective: widen the view (see vp_wide) */
+        }
+
         short U = tc0 * rsp.texture_scaling_factor.s >> 16;
         short V = tc1 * rsp.texture_scaling_factor.t >> 16;
 
@@ -919,7 +929,12 @@ static void gfx_sp_modify_vertex(uint16_t vtx_idx, uint8_t where, uint32_t val) 
 static void gfx_adjust_rect(struct XYWidthHeight *area) {
     /* N64 pixels (top-left origin) to game framebuffer pixels (bottom-left origin) */
     float sx = (float)fb_width / NATIVE_WIDTH, sy = (float)fb_height / NATIVE_HEIGHT;
-    float x = area->x * sx, w = area->width * sx;
+    float x0 = 0.0f;
+    if (gfx_aspect_mode == 2 && !vp_wide) {
+        sx = sy; /* the 4:3 area in the middle */
+        x0 = (fb_width - NATIVE_WIDTH * sx) / 2.0f;
+    }
+    float x = x0 + area->x * sx, w = area->width * sx;
     float y = (NATIVE_HEIGHT - area->y - (int)area->height) * sy, h = area->height * sy;
     area->x = (int16_t)x;
     area->y = (int16_t)y;
@@ -1254,6 +1269,11 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
         }
     }
 
+    bool wide = gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f;
+    if (wide != vp_wide) {
+        vp_wide = wide;
+        rdp.viewport_or_scissor_changed = true;
+    }
     apply_viewport_and_scissor();
     bool use_alpha, use_fog, texture_edge;
     struct ColorCombiner *comb = prepare_draw(true, &use_alpha, &use_fog, &texture_edge);
@@ -1496,6 +1516,8 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     rdp.viewport.y = 0;
     rdp.viewport.width = NATIVE_WIDTH;
     rdp.viewport.height = NATIVE_HEIGHT;
+    /* widescreen: a fill across the whole screen (a clear, a fade) covers the sides too */
+    vp_wide = gfx_aspect_mode == 2 && !textured && ulx <= 0.0f && lrx >= NATIVE_WIDTH;
     rdp.viewport_or_scissor_changed = true;
     apply_viewport_and_scissor();
 
@@ -2105,9 +2127,10 @@ static void update_framebuffer_sizes(void) {
     /* The game is 4:3; it is drawn at the window's height (or the set line count) */
     fb_height = gfx_internal_height ? gfx_internal_height : h;
     fb_width = fb_height * 4 / 3;
-    if (gfx_aspect_mode == 1) {
+    if (gfx_aspect_mode != 0 && w * 3 > h * 4) {
         fb_width = gfx_internal_height ? fb_height * w / h : w;
     }
+    wide_k = (float)(fb_height * 4 / 3) / fb_width;
     gfx_rapi->update_framebuffer_parameters(0, window_width, window_height, 1, false, true, true, true);
     gfx_rapi->update_framebuffer_parameters(game_fb, fb_width, fb_height, gfx_msaa_level, true, true, true, true);
     if (gfx_msaa_level > 1) {
@@ -2181,7 +2204,7 @@ void gfx_present(bool black) {
     gfx_rapi->clear_framebuffer(true, true);
     if (!black) {
         uint32_t pw = window_height * 4 / 3;
-        if (gfx_aspect_mode == 1 || pw > window_width) {
+        if (gfx_aspect_mode != 0 || pw > window_width) {
             pw = window_width;
         }
         g_GfxPresentX = (window_width - pw) / 2;

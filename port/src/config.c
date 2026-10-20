@@ -149,6 +149,8 @@ static const Setting sSettings[] = {
     { "video", "anisotropy", &gPortConfig.anisotropy, 1, "Anisotropic filtering: 1 (off) to 16" },
     { "video", "internal_height", &gPortConfig.internalHeight, 0,
       "Lines the game is drawn at: 0 = the window's, 240 = the N64's" },
+    { "video", "widescreen", &gPortConfig.widescreen, 1,
+      "1 = a wide window shows more of the 3D view, unstretched, with the HUD and menus 4:3 in the middle" },
     { "video", "stretch", &gPortConfig.stretch, 0, "0 = keep 4:3 with side bars, 1 = stretch to the window" },
     { "video", "texture_filter", &gPortConfig.textureFilter, 1, "0 = nearest, 1 = bilinear, 2 = three-point (N64)" },    { "audio", "volume", &gPortConfig.volume, 100, "Master volume, 0-100" },
     { "input", "rumble", &gPortConfig.rumble, 1, "1 = Rumble Pak on every controller that can rumble" },

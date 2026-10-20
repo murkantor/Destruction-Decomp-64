@@ -32,7 +32,7 @@ void Port_VideoInit(void) {
     gfx_n64_aa = gPortConfig.n64AA;
     gfx_anisotropy = gPortConfig.anisotropy;
     gfx_internal_height = gPortConfig.internalHeight;
-    gfx_aspect_mode = gPortConfig.stretch;
+    gfx_aspect_mode = gPortConfig.stretch ? 1 : gPortConfig.widescreen ? 2 : 0;
     gfx_init(&set);
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
