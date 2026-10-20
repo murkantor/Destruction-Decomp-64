@@ -118,3 +118,4 @@ void Sound_UpdateCarSurfaces(void *pool)
         }
     }
 }
+/* agent55: no gain (score 20). Tried for(;;)/do-while(0)/switch/if-goto/rotated while(type != t) forms, inline getters in the while condition (to stop exit-test duplication), and if/else update/play layouts. The original's 'j CHECK' sits in the i loop outside any inner loop, so loop.c uses it as the first barrier after the k loop; ours has none until 'goto done'. */

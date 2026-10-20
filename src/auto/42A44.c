@@ -13,7 +13,7 @@ extern u8 D_80097A0C[];
 extern s32 D_800964F0[];
 extern s32 D_80096500[];
 void func_80042114(void);
-void func_80042D88(s32, s32);
+void Menu_SetCarPreview(s32, s32);
 char *strcpy(char *, const char *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
@@ -28,7 +28,7 @@ void TrackSelect_Update(s32 cur, s32 prev, s32 slot) {
 
     if (D_800958A8 != 3) {
         func_80042114();
-        func_80042D88(cur, prev);
+        Menu_SetCarPreview(cur, prev);
         if (cur < 12) {
             k = 0;
         } else {

@@ -593,7 +593,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `043114` | `80042514` | 0x380 | `src/auto/43114.c` | C (generated) | 1 |  |
 | `043494` | `80042894` | 0x160 | `asm/43494.s` | asm | 1 | `Race_FreeItemsCheckQualify` |
 | `0435F4` | `800429F4` | 0x200 | `src/auto/435F4.c` | C (generated) | 1 | `Menu_ToggleHelpOverlay` |
-| `0437F4` | `80042BF4` | 0x338 | `asm/437F4.s` | asm | 2 | `Menu_InitPlayerViews` |
+| `0437F4` | `80042BF4` | 0x338 | `asm/437F4.s` | asm | 2 | `Menu_InitPlayerViews`, `Menu_SetCarPreview` |
 | `043B2C` | `80042F2C` | 0x1bc | `src/auto/43B2C.c` | C (generated) | 1 | `Menu_SetupTrackSelect` |
 | `043CE8` | `800430E8` | 0x148 | `src/auto/43CE8.c` | C (generated) | 1 |  |
 | `043E30` | `80043230` | 0xb0 | `src/auto/43E30.c` | C (generated) | 1 |  |

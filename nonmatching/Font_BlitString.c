@@ -47,3 +47,4 @@ void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     }
     osWritebackDCacheAll();
 }
+/* agent55: score 2 (one addu). The original computes (b0 + xx) + yy*pp with b0 in v1; every form that adds b0 + xx first (168 statement orders x base forms, decl orders, s32/u32 types, &b0[..], b0 += xx) swaps v0/v1 throughout (score 10-14). */
