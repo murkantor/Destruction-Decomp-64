@@ -770,9 +770,33 @@ static void gfx_opengl_set_use_alpha(bool use_alpha, bool modulate) {
     }
 }
 
+/*
+ * The vertex stream: each batch is appended to one large buffer and drawn from
+ * where it landed (at a whole vertex, as the attributes start at 0), and the
+ * buffer is given fresh storage when full. A frame is ~1300 small batches;
+ * glBufferData on each made the driver allocate storage every time.
+ */
+#define STREAM_VBO_BYTES (8u * 1024 * 1024)
+static size_t stream_vbo_off = STREAM_VBO_BYTES; /* full: the first batch allocates it */
+
 static void gfx_opengl_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t buf_vbo_num_tris) {
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buf_vbo_len, buf_vbo, GL_STREAM_DRAW);
-    glDrawArrays(GL_TRIANGLES, 0, 3 * buf_vbo_num_tris);
+    size_t bytes = sizeof(float) * buf_vbo_len, verts = 3 * buf_vbo_num_tris;
+    size_t stride = bytes / verts, first = (stream_vbo_off + stride - 1) / stride, off = first * stride;
+
+    if (bytes > STREAM_VBO_BYTES) { /* (never in practice) */
+        glBufferData(GL_ARRAY_BUFFER, bytes, buf_vbo, GL_STREAM_DRAW);
+        glDrawArrays(GL_TRIANGLES, 0, verts);
+        stream_vbo_off = STREAM_VBO_BYTES;
+        return;
+    }
+    if (off + bytes > STREAM_VBO_BYTES) {
+        glBufferData(GL_ARRAY_BUFFER, STREAM_VBO_BYTES, NULL, GL_STREAM_DRAW);
+        first = 0;
+        off = 0;
+    }
+    glBufferSubData(GL_ARRAY_BUFFER, off, bytes, buf_vbo);
+    glDrawArrays(GL_TRIANGLES, (GLint)first, (GLsizei)verts);
+    stream_vbo_off = off + bytes;
 }
 
 /* ---- Initialisation ---- */
