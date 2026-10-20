@@ -4,10 +4,13 @@
 `port-pc` adds a native 32-bit PC port (SDL3, OpenGL, Windows and Linux) built from the same C;
 see `docs/porting.md` for the plan and `port/` for the host runtime.
 
-Rules that hold on every branch:
+Rules:
 
-- The N64 build must keep matching. Port-only changes go under `#ifdef TARGET_PC` (or a macro
-  that expands to the original code on the N64); check with `make` after editing `src/`.
+- On `main`, the N64 build must keep matching. `main` is finished, and `port-pc` does not take
+  merges from it any more.
+- On `port-pc`, the C does not have to rebuild the matching ROM: fix game code directly where
+  that is clearest. The PC build still reads symbol addresses from `build/dd64.elf`, so keep
+  that N64 build compiling (`make`); it need not match.
 - No ROM data in the repository: the port reads the user's own ROM at run time.
 - N64 bugs stay. Where one would crash on PC (a stack overflow the N64 layout absorbs, say),
   give it room on PC and keep the behaviour.
