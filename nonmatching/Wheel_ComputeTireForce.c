@@ -324,3 +324,14 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
  * r = x1F8 * 1.2 before Math_SinCos; w->x1B4 = 2 in the o-copy branch; ws->xC4 > *out.
  * Unused char/s32 arrays shift the spill slots (locals sit below them), so the 8 bytes are
  * probably a spill slot reload allocated and then did not use, or a caller-save slot. */
+/* agent58: unchanged code. Findings on the 8-byte hole (208..215, above the last pseudo slot):
+ * reload allocates frame space after the pseudo slots only for (a) alter_reg slots of pseudos
+ * numbered after rear or spilled later, (b) caller-save areas (setup_save_areas), (c) secondary
+ * memory (MODE_INT moves FP<->GR). Toy tests confirm (b) leaves an unused slot when a pseudo has a
+ * stale reg_n_calls_crossed (flow count not updated after combine/sched) and sits in a call-clobbered
+ * reg: e.g. an f32 var set to 0.0f before a call and stored after it (combine turns the store into
+ * sw $0 across the call), or a copy/const set that sched1 moves past a call (multi-block pseudos keep
+ * the old count). That is how Car_ApplySuspensionForces got its +8 (w2 = w before the calls). For this function
+ * the pseudo would need >= 5 refs and to conflict with all of f20-f30 (only true around Vec3f_Dot)
+ * or all s-regs; no visible value fits, and ~70 constant/temp insertions (exp/, bf1.py) did not
+ * produce vars=200 with identical code. */

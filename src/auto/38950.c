@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { f32 m[9]; } Mtx3;
 typedef struct {
@@ -66,14 +69,14 @@ void Car_ApplySuspensionForces(Car *car, Vec3f *force, Vec3f *torque, f32 mass) 
             f32 res;
             Wheel *w2;
 
-            v.x = D_800960D4[i];
-            v.y = -0.095f;
-            v.z = w->x190;
+            w2 = w;
             susp = (w->x184 - w->x178) - w->xA8;
+            v.x = D_800960D4[i];
+            v.z = w->x190;
+            v.y = -0.095f;
             v = Mtx3_MulVec3fTransposed(&rb->xC8, &v);
             Vec3f_Cross(&c, av, &v);
             vel = c.x * up->x + c.y * up->y + c.z * up->z;
-            w2 = w;
             if (vel > 4.0) {
                 vel = 4.0f;
             } else if (vel < -4.0) {
@@ -81,9 +84,7 @@ void Car_ApplySuspensionForces(Car *car, Vec3f *force, Vec3f *torque, f32 mass) 
             }
             vel += lv->x * up->x + lv->y * up->y + lv->z * up->z;
             slip = (w2->x30 - w2->xA8) / mass;
-            if (fabs(vel) < 2.0 || fabs(vel) < fabs(slip)) {
-                slip = vel;
-            }
+            slip = (fabs(vel) < 2.0 || fabs(vel) < fabs(slip)) ? vel : slip;
             if (slip > 20.0) {
                 slip = 20.0f;
             } else if (slip < -20.0) {
@@ -115,3 +116,6 @@ void Car_ApplySuspensionForces(Car *car, Vec3f *force, Vec3f *torque, f32 mass) 
         w->x30 = w->xA8;
     }
 }
+/* agent58: match. w2 = w is set before the calls (sched moves it down, leaving a stale
+ * calls-crossed count, so w2 gets s1 and &v spills), susp first, v.z before v.y, and the
+ * slip clamp is a ternary. */

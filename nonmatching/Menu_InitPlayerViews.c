@@ -9,7 +9,7 @@ extern s32 D_800958DC;
 extern Mat9 D_801242C0[];
 void func_8006300C(s32, f32, f32, f32, f32, f32, f32);
 
-void CarSelect_Show(void);
+void Menu_SetupTrackSelect(void);
 void CarSelect_ShowMulti(void);
 
 
@@ -29,7 +29,7 @@ void Menu_InitPlayerViews(void) {
     }
     { f32 z = 0.0f; f32 m = -1.0f; func_8006300C(D_800958DC, z, z, z, z, z, m); }
     if (D_800958A4[0] == 1) {
-        CarSelect_Show();
+        Menu_SetupTrackSelect();
     } else {
         CarSelect_ShowMulti();
     }
@@ -38,3 +38,6 @@ void Menu_InitPlayerViews(void) {
  * the original passes args 5 and 6 with sw a1 (a GPR copy of the mfc1'd 0.0f) and loads
  * D_800958DC after the mfc1. Tried literals, inline helpers (with const or variable params give
  * move a1,zero / sw zero), f32 array, s32 bit-pattern params, z set before the loop. */
+/* agent58: unchanged. expand_call stores stack args before loading reg args, so sw a1 for args 5/6
+ * means the original's stack-arg source was already a1 at cse time. Tried a Vec3f-by-value prototype,
+ * inline wrappers taking (x), (a, x, m), (x, m) with const and variable args, z/m order: no gain. */

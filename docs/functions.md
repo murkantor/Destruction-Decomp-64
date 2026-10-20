@@ -515,8 +515,8 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800363C4` | `036FC4` | 0x368 | `CarAI_SteerToTarget` | `src/auto/36FC4.c` | C (generated) |
 | `8003672C` | `03732C` | 0xdfc | `Wheel_ComputeTireForce` | `asm/3732C.s` | asm |
 | `80037528` | `038128` | 0x828 | `Car_ApplyWheelForces` | `src/auto/38128.c` | C (generated) |
-| `80037D50` | `038950` | 0x40c | `Car_ApplySuspensionForces` | `asm/38950.s` | asm |
-| `8003815C` | `038D5C` | 0x14f4 | `Car_UpdatePhysics` | `asm/38950.s` | asm |
+| `80037D50` | `038950` | 0x40c | `Car_ApplySuspensionForces` | `src/auto/38950.c` | C (generated) |
+| `8003815C` | `038D5C` | 0x14f4 | `Car_UpdatePhysics` | `asm/38D5C.s` | asm |
 | `80039650` | `03A250` | 0x1ac | `Car_SelectGear` | `src/auto/3A250.c` | C (generated) |
 | `800397FC` | `03A3FC` | 0x74 | `Car_GetDriveTorque` | `src/auto/3A3FC.c` | C (generated) |
 | `80039870` | `03A470` | 0xe8 | `Car_UpdateRpm` | `src/auto/3A470.c` | C (generated) |
