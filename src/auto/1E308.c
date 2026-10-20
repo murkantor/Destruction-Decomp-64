@@ -130,6 +130,9 @@ extern s32 D_80091A54[];
 extern u8 D_80124360;
 extern Model D_80125C68;
 extern s32 D_800D1C20[];
+#ifdef TARGET_PC
+void Port_Field0SetCarType(s32 index, s32 type);
+#endif
 
 void *Mem_Alloc(u32);
 s16 Obj_NextId(void);
@@ -412,6 +415,16 @@ Car *Car_Create(CarStats *s) {
     if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {
         Res_ClearForceLoad();
     }
+#ifdef TARGET_PC
+    /* The doubled field force-loads the extra cars (Race_LoadCarResources) so each is
+       a car of its own; their models are shared, as in the mode above: a second
+       instance of a model would be released in the wrong order (Res_Release frees
+       the instance after the newest, Res_ReleaseInstance as well, and the cars go
+       in another order than they came) and free its textures twice */
+    if (gGame->race->numCars >= 12) {
+        Res_ClearForceLoad();
+    }
+#endif
     car->x190 = Res_GetEnd(Res_Get(D_800919F4[i]));
     ModelInst_Create(sp50, car->x160, car->x98, ((ResObj *)car->x190)->x20, 0, 0, 0.01f);
     if (D_80124360 == 0) {
@@ -449,6 +462,12 @@ Car *Car_Create(CarStats *s) {
             car->x34 = gGame->race->numCars;
         }
     }
+#ifdef TARGET_PC
+    /* D_800D1C20 holds 12: the doubled field keeps every car's type in a longer
+       table as well (port/game/field_part0.c) */
+    Port_Field0SetCarType(gGame->race->numCars, car->x34);
+#else
     D_800D1C20[gGame->race->numCars] = car->x34;
+#endif
     return car;
 }

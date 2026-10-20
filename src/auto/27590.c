@@ -56,6 +56,14 @@ extern void Basis_Orthonormalize(Vec3f *v);
 extern f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 extern s32 Track_FindNearestSegment(Vec3f p);
 extern s32 Race_FindCarSlot(s32 id);
+#ifdef TARGET_PC
+/* the doubled field: an extra car has its own slot past the 12 (port/game/field_part0.c) */
+s32 Port_Field0CarSlot(void *car, s32 slot);
+Vec3f *Port_Field0LastPos(s32 slot);
+#define LASTPOS(s) (*Port_Field0LastPos(s))
+#else
+#define LASTPOS(s) D_800D1B08[s]
+#endif
 
 void Race_PlaceCarsOnGrid(void)
 {
@@ -210,9 +218,9 @@ void Race_PlaceCarsOnGrid(void)
             car->basis2 = dir;
             Basis_Orthonormalize(&car->basis2);
             k = Race_FindCarSlot(car->id);
-            D_800D1B08[k].x = p0.x;
-            D_800D1B08[k].y = p0.y;
-            D_800D1B08[k].z = p0.z;
+            LASTPOS(k).x = p0.x;
+            LASTPOS(k).y = p0.y;
+            LASTPOS(k).z = p0.z;
             return;
         }
         for (i = 0; i < track->nobjs; i++) {
@@ -319,12 +327,15 @@ void Race_PlaceCarsOnGrid(void)
                 car->basis2 = dir;
                 Basis_Orthonormalize(&car->basis2);
                 k = Race_FindCarSlot(car->id);
-                D_800D1B08[k].x = p1.x;
-                D_800D1B08[k].y = p1.y;
+#ifdef TARGET_PC
+                k = Port_Field0CarSlot(car, k);
+#endif
+                LASTPOS(k).x = p1.x;
+                LASTPOS(k).y = p1.y;
                 if (unk > 0) {
-                    D_800D1B08[k].z = p1.z;
+                    LASTPOS(k).z = p1.z;
                 } else {
-                    D_800D1B08[k].z = p1.z;
+                    LASTPOS(k).z = p1.z;
                 }
                 if (gGame[0]->track->ncars == nc) {
                     i = n2;

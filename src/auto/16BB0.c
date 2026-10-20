@@ -28,7 +28,7 @@ typedef struct {
     s32 x50;
 } Obj;
 typedef struct {
-    u8 pad[0xA8];
+    u8 pad[0x74 + 4 * RACE_CARS + 4]; /* 0xA8 on the N64: past the car list and its count */
     Obj *xA8;
 } RaceState;
 typedef struct {

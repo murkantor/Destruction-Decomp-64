@@ -78,7 +78,12 @@ void Tag_PassTo(Car *car) {
         } else {
             tag->x0 = Car_PickRandomOther(car);
             if (gGame[0]->x10FC == 0x1C) {
+#ifdef TARGET_PC
+                /* 3-8 cars left have a time; the doubled field's more take the last */
+                tag->x10 = times[race->x0 - 3 < 6 ? race->x0 - 3 : 5];
+#else
                 tag->x10 = times[race->x0 - 3];
+#endif
             }
         }
         tag->x4 = car;

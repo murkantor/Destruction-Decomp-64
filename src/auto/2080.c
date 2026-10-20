@@ -7,7 +7,7 @@ typedef struct { u8 pad[0x1100]; Sub1100 *x1100; } Game;
 extern Game *gGame;
 extern s32 rand(void);
 Car *Car_PickRandomOther(Car *exclude) {
-    s32 idx[12];
+    s32 idx[RACE_CARS];
     s32 i;
     s32 n = 0;
     for (i = 0; i < gGame->x1100->xA4; i++) {

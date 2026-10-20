@@ -6,6 +6,9 @@ typedef struct ItemNode { Item *item; struct ItemNode *next; struct ItemNode *pr
 typedef struct { u8 pad[0x74 + 4 * RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame;
+#ifdef TARGET_PC
+s32 Port_Field0Doubled(void);
+#endif
 
 void ItemList_MoveUp(ItemNode **list, Item *x) {
     ItemNode *n = *list;
@@ -15,7 +18,12 @@ void ItemList_MoveUp(ItemNode **list, Item *x) {
     s32 i;
 
     for (i = 0; i < gGame->x1100->xA4; i++) {
+#ifdef TARGET_PC
+        /* the doubled field's extra cars share their types: tell them apart */
+        if (Port_Field0Doubled() ? n->item == x : x->x34 == n->item->x34) {
+#else
         if (x->x34 == n->item->x34) {
+#endif
             p = n->prev;
             nx = n->next;
             pp = p->prev;
@@ -52,7 +60,12 @@ void ItemList_MoveDown(ItemNode **list, Item *x) {
     s32 i;
 
     for (i = 0; i < gGame->x1100->xA4; i++) {
+#ifdef TARGET_PC
+        /* the doubled field's extra cars share their types: tell them apart */
+        if (Port_Field0Doubled() ? n->item == x : x->x34 == n->item->x34) {
+#else
         if (x->x34 == n->item->x34) {
+#endif
             nx = n->next;
             p = n->prev;
             nn = nx->next;

@@ -36,6 +36,14 @@ extern u8 D_80091B14[];
 extern s32 D_80091B18[];
 
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
+#ifdef TARGET_PC
+/* the doubled field: an extra car has its own slot past the 12 (port/game/field_part0.c) */
+s32 Port_Field0CarSlot(void *car, s32 slot);
+Vec3f *Port_Field0LastPos(s32 slot);
+#define LASTPOS(s) (*Port_Field0LastPos(s))
+#else
+#define LASTPOS(s) D_800D1B08[s]
+#endif
 u8 Seg2D_Intersects(f32, f32, f32, f32, f32, f32, f32, f32);
 s32 Racer_WrapNode(Car *, s32);
 void Race_AddNodeDistance(Car *, s32);
@@ -50,12 +58,12 @@ void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
      p0.z = w->segs[n].a.z + (w->segs[n].b.z - w->segs[n].a.z) / d * K,                   \
      p1.x = w->segs[n].b.x + (w->segs[n].a.x - w->segs[n].b.x) / d * K,                   \
      p1.z = w->segs[n].b.z + (w->segs[n].a.z - w->segs[n].b.z) / d * K,                   \
-     Seg2D_Intersects(D_800D1B08[slot].x, D_800D1B08[slot].z, pos.x, pos.z, p0.x, p0.z, p1.x, p1.z))
+     Seg2D_Intersects(LASTPOS(slot).x, LASTPOS(slot).z, pos.x, pos.z, p0.x, p0.z, p1.x, p1.z))
 
 #define CROSS()                                                                                  \
-    ca = D_800D1B08[slot].z - pos.z;                                                             \
+    ca = LASTPOS(slot).z - pos.z;                                                             \
     cb = p0.x - p1.x;                                                                            \
-    cc = D_800D1B08[slot].x - pos.x;                                                             \
+    cc = LASTPOS(slot).x - pos.x;                                                             \
     ce = p0.z - p1.z;                                                                            \
     cross = (ca * cb - cc * ce > 0.0);                                                           \
     if (D_800958B4 == 7)                                                                         \
@@ -99,9 +107,12 @@ void Car_UpdateTrackSegment(Car *car)
         }
     }
     slot = i;
+#ifdef TARGET_PC
+    slot = Port_Field0CarSlot(car, slot);
+#endif
     PORT_CONVERT(&car->pos, 3, 4); /* copied into a local */
     pos = car->pos;
-    if (D_800D1B08[slot].x == pos.x && D_800D1B08[slot].z == pos.z)
+    if (LASTPOS(slot).x == pos.x && LASTPOS(slot).z == pos.z)
         return;
 
     if (CHECK(seg, D_800B8AB0)) {
@@ -192,6 +203,6 @@ void Car_UpdateTrackSegment(Car *car)
             }
         }
     }
-    D_800D1B08[slot].x = pos.x;
-    D_800D1B08[slot].z = pos.z;
+    LASTPOS(slot).x = pos.x;
+    LASTPOS(slot).z = pos.z;
 }

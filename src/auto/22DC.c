@@ -24,7 +24,7 @@ typedef struct Node {
 typedef struct {
     u8 pad0[0x20];
     Node *x20;
-    u8 pad24[0xA4 - 0x24];
+    u8 pad24[0x74 + 4 * RACE_CARS - 0x24]; /* to the end of the car list */
     s32 xA4;
 } Race;
 
@@ -34,6 +34,9 @@ typedef struct {
 } Game;
 
 extern Game *gGame;
+#ifdef TARGET_PC
+s32 Port_Field0Doubled(void);
+#endif
 Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f64 acos(f64);
@@ -74,7 +77,12 @@ s32 AI_FindTargetAhead(Car *self) {
     f32 ang;
 
     for (i = 0; i < gGame->x1100->xA4; node = node->next, i++) {
+#ifdef TARGET_PC
+        /* the doubled field's extra cars share their types: tell them apart */
+        if (Port_Field0Doubled() ? node->car == self : node->car->x34 == self->x34) {
+#else
         if (node->car->x34 == self->x34) {
+#endif
             break;
         }
         c = node->car;

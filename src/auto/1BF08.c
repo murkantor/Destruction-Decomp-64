@@ -41,6 +41,11 @@ extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 uniq
 extern void Announcer_Request(s32 id, s32 arg1, s32 check);
 extern void Commentary_PickRandom(s32 *, s32, s32, s32);
 extern f32 Car_GetSpeed(Car *);
+#ifdef TARGET_PC
+s32 Port_FieldAnnounceCarsLeft(s32 left);
+/* the race record's car count, after its list */
+typedef struct { u8 pad[0x74 + 4 * RACE_CARS]; s32 ncars; } RaceCars;
+#endif
 
 typedef struct { s32 v[11]; } L11;
 typedef struct { s32 v[5]; } L5;
@@ -73,7 +78,13 @@ void Announcer_UpdateRace(void) {
         return;
     }
     n = race->x0 - 1;
+#ifdef TARGET_PC
+    /* the doubled field: no call-out while more cars are left than the original
+       game's field has (port/src/field.c), and the lines (tbl) go to 10 */
+    if (n < D_80125C1C && n > 0 && Port_FieldAnnounceCarsLeft(n) && n < 11) {
+#else
     if (n < D_80125C1C && n > 0) {
+#endif
         tbl = D_800B8840;
         D_80125C1C = n;
         if (n == 1) {
@@ -137,6 +148,23 @@ void Announcer_UpdateRace(void) {
         D_80124598[0] = 1;
         Commentary_PickRandom(lines5.v, 5, 0, 1);
     }
+#ifdef TARGET_PC
+    {
+        /* the doubled field: last place (12th of the N64's 12) and the last three are
+           those of the whole field */
+        s32 last = ((RaceCars *)race)->ncars;
+
+        if (last <= 12) {
+            /* as on the N64 */
+        } else if (pos == last) {
+            pos = 12;
+        } else if (pos >= last - 2) {
+            pos = 10;
+        } else if (pos >= 10) {
+            pos = 9;
+        }
+    }
+#endif
     if (car->x5C == 1 && pos == 12 && !D_8012459C[0]) {
         D_8012459C[0] = 1;
         Announcer_Request(0xBD, 0, 0);

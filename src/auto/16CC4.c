@@ -20,7 +20,7 @@ typedef struct {
     u16 x1E;
 } Spr;
 typedef struct { Vec3f pos; u8 padC[4]; Spr spr; } Sun;
-typedef struct { u8 pad0[0xA8]; Sun *xA8; } World;
+typedef struct { u8 pad0[0x74 + 4 * RACE_CARS + 4]; Sun *xA8; } World; /* 0xA8 on the N64 */
 typedef struct { u8 pad0[0x1100]; World *x1100; } Game;
 typedef struct { s32 mtx; u8 pad4[0x28]; u8 x2C[1]; } Cam;
 typedef struct { f32 pos; f32 size; u8 r, g, b, a; } FlareDef;

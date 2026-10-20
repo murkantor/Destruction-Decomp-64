@@ -43,7 +43,7 @@ typedef struct {
 typedef struct { s32 x0; s32 x4; s32 x8; u8 padC[4]; s32 x10; u8 x14[1]; } Race;
 typedef struct { u8 pad[0x10]; f32 x10; } TrackC;
 typedef struct { u8 pad[0xC]; TrackC *xC; } Track70;
-typedef struct { u8 pad[0x70]; Track70 *x70; u8 pad74[0xA4 - 0x74]; s32 xA4; } Track;
+typedef struct { u8 pad[0x70]; Track70 *x70; u8 pad74[4 * RACE_CARS]; s32 xA4; } Track; /* the car list, then its count */
 typedef struct { u8 pad[0x10A8]; u64 x10A8; u8 pad10B0[0x10FC - 0x10B0]; s16 x10FC; u8 pad10FE[2]; Track *x1100; } Game;
 typedef struct { u8 pad[0x14]; f32 x14; } Hud;
 typedef struct { Hud *x0; u8 pad[0x68 - 4]; } HudSlot;
@@ -80,6 +80,10 @@ extern void Car_UpdateTrackSegment(Car *);
 extern void func_80020FB0(Car *);
 extern f32 Car_GetSpeed(Car *);
 extern void Standings_Resort(void *, Car *);
+#ifdef TARGET_PC
+s32 Port_Field0CarSlot(void *car, s32 slot);
+s32 *Port_Field0WreckPlace(s32 slot);
+#endif
 
 void Car_UpdateWreck(Car *car) {
     Vec3f pos;
@@ -119,7 +123,12 @@ void Car_UpdateWreck(Car *car) {
                         }
                     }
                 }
+#ifdef TARGET_PC
+                /* the doubled field: an extra car has its own slot, not its twin's */
+                *Port_Field0WreckPlace(Port_Field0CarSlot(car, i)) = gGame[0]->x1100->xA4 - race->x0 + 1;
+#else
                 D_80095DF4[i] = gGame[0]->x1100->xA4 - race->x0 + 1;
+#endif
             }
             race->x0--;
             if (car->x30 == 0) {
