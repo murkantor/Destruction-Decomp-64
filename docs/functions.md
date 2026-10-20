@@ -490,7 +490,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80032EA4` | `033AA4` | 0x11c | `Points_ComputeAABB` | `src/auto/33AA4.c` | C (generated) |
 | `80032FC0` | `033BC0` | 0xe8 | `func_80032FC0` | `src/auto/33BC0.c` | C (generated) |
 | `800330A8` | `033CA8` | 0xc0 | `func_800330A8` | `src/auto/33CA8.c` | C (generated) |
-| `80033168` | `033D68` | 0xb54 | `Obb_Overlap` | `asm/33D68.s` | asm |
+| `80033168` | `033D68` | 0xb54 | `Obb_Overlap` | `src/auto/33D68.c` | C (generated) |
 | `80033CBC` | `0348BC` | 0x344 | `Poly_IntersectSegment` | `src/auto/348BC.c` | C (generated) |
 | `80034000` | `034C00` | 0xe0 | `Poly_StraddlesPlane` | `src/auto/34C00.c` | C (generated) |
 | `800340E0` | `034CE0` | 0x2b0 | `Poly_ClipAgainstPlane` | `src/auto/34CE0.c` | C (generated) |

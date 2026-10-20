@@ -533,7 +533,7 @@ segments:
       - [0x33AA4, c, auto/33AA4]
       - [0x33BC0, c, auto/33BC0]
       - [0x33CA8, c, auto/33CA8]
-      - [0x33D68, asm]
+      - [0x33D68, c, auto/33D68]
       - [0x348BC, c, auto/348BC]
       - [0x34C00, c, auto/34C00]
       - [0x34CE0, c, auto/34CE0]
