@@ -474,7 +474,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8002FA2C` | `03062C` | 0x9c | `Car_UpdateWheels` | `src/auto/3062C.c` | C (generated) |
 | `8002FAC8` | `0306C8` | 0x610 | `Car_CheckRamps` | `src/auto/306C8.c` | C (generated) |
 | `800300D8` | `030CD8` | 0x10c | `func_800300D8` | `src/auto/30CD8.c` | C (generated) |
-| `800301E4` | `030DE4` | 0xf74 | `Car_SweepTrackFaces` | `asm/30DE4.s` | asm |
+| `800301E4` | `030DE4` | 0xf74 | `Car_CollideTrack` | `src/auto/30DE4.c` | C (generated) |
 | `80031158` | `031D58` | 0x1ec | `Line_ClosestPoints` | `src/auto/31D58.c` | C (generated) |
 | `80031344` | `031F44` | 0x1e0 | `Track_GetFacesInRadius` | `src/auto/31F44.c` | C (generated) |
 | `80031524` | `032124` | 0x27c | `Track_LineOfSight` | `src/auto/32124.c` | C (generated) |

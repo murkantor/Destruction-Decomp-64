@@ -90,7 +90,7 @@ void func_8002F66C(void *);
 void Cars_CheckCollisions(void *);
 void Car_UpdateWheels(Car *);
 void func_80031EC0(Car *, s32);
-void Car_SweepTrackFaces(Body *, void *, s32 *);
+void Car_CollideTrack(Body *, void *, s32 *);
 void Car_ApplyContactImpulses(Car *, Body *);
 void Car_CheckTriggersAndPickups(Car *);
 void func_8002E740(void);
@@ -168,7 +168,7 @@ void Car_PhysicsStep(void *w, f32 dt) {
             if (c->xC) {
                 func_80031EC0(c, i);
             }
-            Car_SweepTrackFaces(b, buf3, &cnt);
+            Car_CollideTrack(b, buf3, &cnt);
             Car_ApplyContactImpulses(c, b);
         }
         Car_CheckTriggersAndPickups(c);

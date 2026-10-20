@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f min; Vec3f max; } AABB;
 typedef struct { s32 x0; Vec3f n; s32 count; Vec3f v[4]; } Poly;
@@ -11,6 +14,7 @@ typedef struct {
     s32 x1C;
     Vec3f vel;
     Vec3f rel;
+    s32 x38;
     Vec3f x3C;
     Vec3f x48;
     u8 pad54[0xC];
@@ -52,7 +56,7 @@ f32 sqrtf(f32);
 f64 fabs(f64);
 f32 fabsf(f32);
 
-void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
+void Car_CollideTrack(Body *b, void *buf, s32 *cnt) {
     FaceEnt faces[128];
     Vec3f center;
     AABB box;
@@ -65,45 +69,32 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
     Vec3f tmp;
     Vec3f tmp2;
     f32 len;
-    AABB fbox;
-    Vec3f p0;
-    Vec3f p1;
-    Vec3f hit;
-    Vec3f d;
-    Vec3f mv;
-    Vec3f en;
-    f32 dist;
-    f32 dist2;
-    Contact contact;
     f32 dd;
-    Vec3f c1;
-    Vec3f c2;
     f32 dd2;
     f32 dd3;
+    s32 nFaces;
+    s32 j;
+    f32 diam;
+    f32 t;
+    s32 iter;
+    s32 nHit;
+    Poly *prevFace;
+    f32 k;
+    Poly *bestFace;
+    s32 bestPt;
+    s32 flag2;
     f32 ex, ey, ez;
     f32 r, x, y, z, w, top;
-    f32 diam;
-    f32 k;
-    f32 t;
     f32 depth;
     f32 lim;
     f32 d0, d1;
     f32 frac, tol;
-    s32 nFaces;
-    s32 iter;
-    s32 nHit;
-    s32 i, j, e;
-    s32 bestPt;
-    s32 flag2;
-    s32 edgeHit;
-    s32 inside;
-    s32 flag3;
+    s32 i, e;
     s32 found;
     s32 hitf;
+    s32 cmp;
     s32 dup;
     s32 fp;
-    Poly *prevFace;
-    Poly *bestFace;
     Poly *p;
     Vec3f *n;
     Vec3f *vp;
@@ -124,24 +115,22 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
         Vec3f_Set(&pts[1], x, y, -z);
         Vec3f_Set(&pts[2], -x, y, -z);
         Vec3f_Set(&pts[3], -x, y, z);
-        w = 0.0f;
-        Vec3f_Set(&pts[4], w, y, z);
-        Vec3f_Set(&pts[5], w, y, -z);
-        top = 0.55f;
+        Vec3f_Set(&pts[4], 0.0f, y, z);
+        Vec3f_Set(&pts[5], 0.0f, y, -z);
+        Vec3f_Set(&pts[6], 0.0f, 0.55f, 0.0f);
     } else {
         r = 0.5f;
         x = b->x130 - r;
-        w = 0.0f;
         z = b->x138 - r;
-        Vec3f_Set(&pts[0], x, w, z);
-        Vec3f_Set(&pts[1], x, w, -z);
-        Vec3f_Set(&pts[2], -x, w, -z);
-        Vec3f_Set(&pts[3], -x, w, z);
-        Vec3f_Set(&pts[4], w, w, z);
-        Vec3f_Set(&pts[5], w, w, -z);
-        top = 0.4f;
+        Vec3f_Set(&pts[0], x, 0.0f, z);
+        Vec3f_Set(&pts[1], x, 0.0f, -z);
+        Vec3f_Set(&pts[2], -x, 0.0f, -z);
+        Vec3f_Set(&pts[3], -x, 0.0f, z);
+        Vec3f_Set(&pts[4], 0.0f, 0.0f, z);
+        Vec3f_Set(&pts[5], 0.0f, 0.0f, -z);
+        Vec3f_Set(&pts[6], 0.0f, 0.4f, 0.0f);
     }
-    Vec3f_Set(&pts[6], w, top, w);
+
     diam = r * 2.0;
     for (i = 0; i < 7; i++) {
         Vec3f_TransformTransposed(&tmp, b->m, &b->pos0, &pts[i]);
@@ -166,10 +155,18 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
         k = 1.0f;
     }
     do {
+        AABB fbox;
+        Vec3f p0;
+        Vec3f p1;
+        Vec3f hit;
+        Vec3f d;
+        Vec3f mv;
+        Vec3f en;
+        f32 dist[2];
+        bestPt = -1;
         t = 2.0f;
         depth = 0.0f;
         fp = 0;
-        bestPt = -1;
         flag2 = 0;
         bestFace = NULL;
         for (j = 0; j < nFaces; j++) {
@@ -180,6 +177,9 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
                 continue;
             }
             for (i = 0; i < 7; i++) {
+                s32 inside;
+                s32 edgeHit;
+                s32 flag3;
                 p0 = A[i];
                 p1 = B[i];
                 vp = &p->v[p->count - 1];
@@ -203,12 +203,12 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
                 hitf = 0;
                 if (d0 >= 0.0 && d1 < 0.0) {
                     frac = d0 / (d0 - d1);
-                    if ((frac < t) | fp) {
+                    if ((cmp = (frac < t)) | fp) {
                         hitf = 1;
                         tol = r;
                     }
                 } else if (d0 < 0.0 && -lim < d0) {
-                    if ((depth < -d0) | fp) {
+                    if ((cmp = (depth < -d0)) | fp) {
                         tol = 0.15f;
                         frac = 0.0f;
                         hitf = 1;
@@ -231,25 +231,26 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
                 hit.z = p0.z + frac * (p1.z - p0.z);
                 found = 0;
                 for (e = 0; e < p->count; e++) {
-                    Vec3f_Sub(&mv, &p->v[e], vp);
+                    Vec3f *cur = &p->v[e];
+                    Vec3f_Sub(&mv, cur, vp);
                     Vec3f_Cross(&en, &mv, n);
                     Vec3f_Normalize(&en, &en);
                     Vec3f_Sub(&d, &hit, vp);
-                    Vec3f_Dot(&dist, &d, &en);
-                    if (tol < dist) {
+                    Vec3f_Dot(&dist[0], &d, &en);
+                    if (tol < dist[0]) {
                         inside = 0;
                         break;
                     }
                     if (flag3) {
                         Vec3f_Sub(&d, &p0, vp);
-                        Vec3f_Dot(&dist2, &d, &en);
-                        if (tol < dist2) {
+                        Vec3f_Dot(&dist[1], &d, &en);
+                        if (tol < dist[1]) {
                             tmp = en;
                             found = 1;
-                            d1 = dist - r;
+                            d1 = dist[0] - r;
                         }
                     }
-                    vp = &p->v[e];
+                    vp = cur;
                 }
                 if (inside) {
                     t = frac;
@@ -276,6 +277,7 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
         }
         iter++;
         if (t <= 1.0) {
+            Contact contact;
             pa = &A[bestPt];
             pb = &B[bestPt];
             if (t > 0.01) {
@@ -296,6 +298,8 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
                 if (prevFace != NULL) {
                     Vec3f_Dot(&dd, &bestFace->n, &prevFace->n);
                     if (dd < 0.0) {
+                        Vec3f c1;
+                        Vec3f c2;
                         Vec3f_Cross(&c1, &prevFace->n, &bestFace->n);
                         Vec3f_Normalize(&c1, &c1);
                         Vec3f_Cross(&c2, &c1, &prevFace->n);
@@ -335,9 +339,9 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
             Vec3f_Set(&contact.x48, 0.0f, 0.0f, 0.0f);
             Vec3f_Set(&contact.x3C, 0.0f, 0.0f, 0.0f);
             func_800329C0(bestFace->x0, &contact);
+            contact.xC = bestFace->x0;
             contact.x4 = contact.x4 * 0.1;
             contact.x8 = contact.x8 * 0.1;
-            contact.xC = bestFace->x0;
             dup = 0;
             for (i = 0; i < nHit; i++) {
                 if (hitFaces[i] == bestFace) {
@@ -358,11 +362,7 @@ void Car_SweepTrackFaces(Body *b, void *buf, s32 *cnt) {
     } while (t <= 1.0);
     b->pos1 = pos1;
 }
-/* agent51: first draft written from the asm; needs --flags -ffast-math (sqrt.s). Same size as
-   the original (0xf74). Known differences: frame is 16 bytes smaller (locals 8 bytes short,
-   spill area 8 short: Contact size or an extra local), and register allocation in the pts
-   setup: original gives w (the 0.0 used in pts[4..6]) f20 shared with -x, y f22, -z f24,
-   x f26, z f28, r f30, and top (0.55/0.4) lives in a2 as an int constant (lui/ori a2 in
-   each branch, common "mfc1 a1,f20; jal Vec3f_Set; move a3,a1" tail). Writing the pts[6]
-   call in each branch instead of using top gets the a2 form but loses 0x18 bytes.
-   Later loops look structurally right; registers not checked in detail. */
+/* agent56: match with --flags -ffast-math. Keys: locals scoped to the do body / i-loop / if blocks
+   (stack and spill-slot order), f32 dist[2], Contact pad at 0x38, cur = &p->v[e] local, literal 0.0f
+   args in the pts setup with pts[6] set in each branch (cross-jumped tail), cmp temp for the
+   non-short-circuit "(cmp = a < b) | fp", bestPt = -1 first at the loop top, contact.xC before x4/x8. */
