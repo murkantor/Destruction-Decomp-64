@@ -155,7 +155,12 @@ Gfx *Bg_Draw(Bg *bg, Gfx *g, s32 flags) {
             } else {
                 GFX2(g, 0xE200001C, 0x552230);
             }
+#ifdef TARGET_PC
+            /* the prim depth is the low halfword of each s32 func_80061524 stores at 0x44 and 0x48 */
+            GFX2(g, 0xEE000000, ((u16)*(s32 *)((u8 *)bg + 0x44) << 16) | (u16)*(s32 *)((u8 *)bg + 0x48));
+#else
             GFX2(g, 0xEE000000, (bg->x46 << 16) | bg->x4A);
+#endif
         } else {
             GFX2(g, 0xE2001D00, 0);
             if (bg->imageSiz == 3) {
