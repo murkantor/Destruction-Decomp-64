@@ -571,10 +571,16 @@ static void import_texture_ia16(const uint8_t *addr, uint32_t size_bytes, uint32
 }
 
 static uint32_t texture_checksum(const uint8_t *addr, uint32_t size) {
-    /* Cheap content check so textures the game rewrites in place are re-imported */
-    uint32_t h = 2166136261u;
-    uint32_t step = size > 256 ? size / 64 : 1;
-    for (uint32_t i = 0; i < size; i += step) {
+    /* Content check so textures the game rewrites in place are re-imported. It
+       covers every byte: a sampled check misses partial rewrites (the THQ logo
+       reveal changes every 11th texel a step). */
+    uint32_t h = 2166136261u, i = 0, w;
+    for (; i + 4 <= size; i += 4) {
+        memcpy(&w, addr + i, 4);
+        h = (h ^ w) * 16777619u;
+        h ^= h >> 15;
+    }
+    for (; i < size; i++) {
         h = (h ^ addr[i]) * 16777619u;
     }
     return h;
