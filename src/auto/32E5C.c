@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { s32 x0; s32 count; s32 idx[4]; } Face;
 typedef struct {
@@ -33,11 +36,6 @@ typedef struct {
 typedef struct { u8 pad[0x10]; s32 x10; } Race;
 typedef struct { u8 pad[0x1100]; Race *race; } Game;
 extern Game *gGame;
-extern const f64 D_800B94E8;
-extern const f64 D_800B94F0;
-extern const f64 D_800B94F8;
-extern const f64 D_800B9500;
-extern const f64 D_800B9508;
 extern f32 D_800D2E78;
 u8 Poly_IntersectSegment(Poly *, f32 *, Poly *, f32 *, Vec3f *);
 void Vec3f_Cross(Vec3f *, Vec3f *, Vec3f *);
@@ -47,12 +45,13 @@ void Car_ApplyCollisionImpulse(Car *, Car *, Hit *);
 f32 sqrtf(f32);
 
 static inline void LoadPoly(Poly *p, Phys *ph, s32 i) {
-    Face *fc = &ph->faces[i];
+    Face *fc = (Face *)(i * 24 + (s32)ph->faces);
+    Vec3f *nrm = (Vec3f *)(i * 12 + (s32)ph->normals);
     Vec3f *verts = ph->verts;
     s32 k;
 
     p->x0 = fc->x0;
-    p->n = ph->normals[i];
+    p->n = *nrm;
     p->count = fc->count;
     for (k = 0; k < p->count; k++) {
         p->v[k] = verts[fc->idx[k]];
@@ -102,15 +101,13 @@ u8 Car_CollideCars(Car *a, Car *b) {
             }
             posA = A->pos;
             posB = B->pos;
-            mid.x = (pts[0].x + pts[1].x) * D_800B94E8;
-            mid.y = (pts[0].y + pts[1].y) * D_800B94E8;
-            mid.z = (pts[0].z + pts[1].z) * D_800B94E8;
-            {
-                f64 off = D_800B94F0;
-                if (!gGame->race->x10) {
-                    off = D_800B94F8;
-                }
-                mid.y += off;
+            mid.x = (pts[0].x + pts[1].x) * 0.5;
+            mid.y = (pts[0].y + pts[1].y) * 0.5;
+            mid.z = (pts[0].z + pts[1].z) * 0.5;
+            if (!gGame->race->x10) {
+                mid.y += 0.08;
+            } else {
+                mid.y += 0.22;
             }
             ra.x = mid.x - posA.x;
             ra.y = mid.y - posA.y;
@@ -131,13 +128,13 @@ u8 Car_CollideCars(Car *a, Car *b) {
                 continue;
             }
             if (dotB < dotA) {
-                depth = d[0] * D_800B9500;
+                depth = d[0] * -0.5;
                 n1 = pb.n;
                 n2.x = -n1.x;
                 n2.y = -n1.y;
                 n2.z = -n1.z;
             } else {
-                depth = d[1] * D_800B9508;
+                depth = d[1] * -0.5;
                 n2 = pa.n;
                 n1.x = -n2.x;
                 n1.y = -n2.y;
@@ -159,7 +156,7 @@ u8 Car_CollideCars(Car *a, Car *b) {
                 }
             }
             found = 1;
-            m = (depth <= speed) ? depth : speed;
+            m = !(depth <= speed) ? speed : depth;
             if (!(m <= f)) {
                 f = m;
             }
@@ -184,9 +181,6 @@ u8 Car_CollideCars(Car *a, Car *b) {
     }
     return found;
 }
-/* agent45: needs --flags -ffast-math (sqrt.s). Same size as original now (inline LoadPoly,
-   f32 d[2] for da/db, off temp for mid.y, f = 0.1f placed before the best update).
-   Remaining: (1) FP callee regs: best gets f24, D_800B94E8 const f22 (orig swapped;
-   global-alloc priority best 13 refs/324 vs const DF 10/319); (2) normals index uses a
-   shared i*3 giv instead of i*12; (3) orig reloads mid.x/y/z from the stack after the
-   off branch, ours keeps them in registers. */
+/* agent56: match with --flags -ffast-math. Keys: literal doubles (rodata 0.5, 0.22, 0.08, -0.5, -0.5
+   is emitted by the assembler in use order), if (!x10) mid.y += 0.08; else += 0.22, separate nrm
+   pointer in LoadPoly, int-cast address sums (giv first), m = !(depth <= speed) ? speed : depth. */

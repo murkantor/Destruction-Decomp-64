@@ -482,7 +482,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80031990` | `032590` | 0x60 | `Vec3_AddToArray` | `src/auto/32590.c` | C (generated) |
 | `800319F0` | `0325F0` | 0x4d0 | `Car_ApplyCollisionImpulse` | `src/auto/325F0.c` | C (generated) |
 | `80031EC0` | `032AC0` | 0x39c | `func_80031EC0` | `src/auto/32AC0.c` | C (generated) |
-| `8003225C` | `032E5C` | 0x764 | `Car_CollideCars` | `asm/32E5C.s` | asm |
+| `8003225C` | `032E5C` | 0x764 | `Car_CollideCars` | `src/auto/32E5C.c` | C (generated) |
 | `800329C0` | `0335C0` | 0x164 | `func_800329C0` | `src/auto/335C0.c` | C (generated) |
 | `80032B24` | `033724` | 0xb4 | `func_80032B24` | `src/auto/33724.c` | C (generated) |
 | `80032BD8` | `0337D8` | 0x1b0 | `Model_TransformVerts` | `src/auto/337D8.c` | C (generated) |
