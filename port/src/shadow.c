@@ -237,6 +237,7 @@ static inline void load(u32 addr, u32 n, void *site) {
     u8 *s;
     u32 bits;
 
+    tPendingLen = tPendingDstLen = 0; /* a bulk copy's two checks are adjacent */
     flushPendingByte();
     s = shadowOf(addr, n);
     if (s == NULL) {
@@ -300,6 +301,7 @@ static inline void store(u32 addr, u32 n) {
     if (sWatch != 0) {
         watchStore(addr, n, __builtin_return_address(0));
     }
+    tPendingLen = tPendingDstLen = 0; /* a bulk copy's two checks are adjacent */
     if (n == 1) {
         tPendingSite = NULL; /* the byte just loaded is being copied */
     } else {

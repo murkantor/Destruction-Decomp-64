@@ -861,8 +861,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         d->w = w;
         if (dl_dumping && dl_dumped_vtx < 40) {
             dl_dumped_vtx++;
-            sysLogPrintf(LOG_NOTE, "vtx %p: ob %g %g %g -> clip %g %g %g %g rej %X", (const void *)vtx, ob[0], ob[1],
-                         ob[2], x, y, z, w, d->clip_rej);
+            sysLogPrintf(LOG_NOTE, "vtx %p: ob %g %g %g col %02X%02X%02X%02X -> clip %g %g %g %g rej %X", (const void *)vtx, ob[0], ob[1],
+                         ob[2], cn[0], cn[1], cn[2], cn[3], x, y, z, w, d->clip_rej);
         }
 
         if (rsp.geometry_mode & G_FOG) {
