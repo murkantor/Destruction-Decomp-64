@@ -62,6 +62,8 @@ The N64 is big-endian and PC is little-endian.
 - ZIP headers are little-endian by format. Check how `Zip_Open` and `Zip_ReadEndOfCentralDir` read them before changing them.
 - Code that reads a word as bytes, or bytes as a word, through a pointer cast needs checking one case at a time.
 
+The `port-pc` branch converts data as the game reads it and logs reads at the wrong width; `CLAUDE.md` lists the patterns that break and how each is fixed.
+
 ## Files and saves
 
 - `RomFile_*` (`src/romfile.c`) reads the `zippeddata.zip` area of the ROM through PI DMA. A port can open the user's own ROM and read the same area, or read an extracted copy of the zip. Neither the ROM nor data from it goes in the repository.
