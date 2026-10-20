@@ -21,8 +21,14 @@ void Pak_SaveGame(s32 *res) {
         Pad_StartRead();
     }
     if (*res == 0) {
+#ifdef TARGET_PC
+        /* Written from the global itself: the PC port knows the byte order of
+           game memory (to save the note big-endian), not of a stack copy */
+        p = &D_80097A10;
+#else
         buf = D_80097A10;
         p = &buf;
+#endif
         if (!D_80097D58) {
             Cont_ReadAll();
         }

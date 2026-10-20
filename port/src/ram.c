@@ -14,8 +14,8 @@
  *
  * So every N64 pointer, in the data, in the boot blocks or in anything the game
  * loads from ROM, is a valid pointer as it stands. The data and rodata are
- * copied from the user's ROM and stay big-endian until the game reads them
- * (shadow.c).
+ * copied from the user's ROM; the globals the game's C names are converted to
+ * host order at once, the rest when the game reads it (shadow.c).
  */
 #include <string.h>
 #ifdef _WIN32
@@ -128,6 +128,7 @@ void Port_RamInit(void) {
     memcpy(gRam, gPortRom + gPortRamRomStart, gPortRamRomEnd - gPortRamRomStart);
     memset(gRam + (gPortRamRomEnd - gPortRamRomStart), 0, MAP_END - RAM_VRAM - (gPortRamRomEnd - gPortRamRomStart));
     Port_MarkBE(gRam, gPortRamRomEnd - gPortRamRomStart);
+    Port_ConvertStaticData(gRam, gPortRamRomEnd - gPortRamRomStart);
 
     /* The code pages read and execute only; the page shared with rsp_text stays
        writable; the guard page nothing. */
@@ -144,6 +145,8 @@ void Port_RamInit(void) {
  */
 void Port_BlockLoaded(void *dst, u32 size) {
     u32 start = (u32)dst, i;
+
+    Port_ConvertStaticData(dst, size);
 
     for (i = 0; i < gPortOverlayFuncCount; i++) {
         u32 a = gPortOverlayFuncs[i].addr;

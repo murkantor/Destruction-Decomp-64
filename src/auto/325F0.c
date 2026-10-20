@@ -38,8 +38,12 @@ void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Length(f32 *, Vec3f *);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Tensor_MulVec3f(Vec3f *, void *, Vec3f *);
 void Contact_ComputeImpulse(Vec3fPair *, Car *, Hit *);
+#endif
 void Car_OnCollision2(void *, Vec3f, void *, Vec3f, f32);
 f32 fabsf(f32);
 

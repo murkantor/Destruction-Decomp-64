@@ -91,6 +91,27 @@ def parse_decl(decl, named):
     return name, abi_class(ret), plist
 
 
+def struct_typedefs(text):
+    """Names given to structs and unions by typedef, with or without a body."""
+    names = set()
+    for m in re.finditer(r'\btypedef\s+(?:struct|union)\b\s*\w*\s*', text):
+        i = m.end()
+        if i < len(text) and text[i] == '{':
+            depth = 0
+            for j in range(i, len(text)):
+                if text[j] == '{':
+                    depth += 1
+                elif text[j] == '}':
+                    depth -= 1
+                    if depth == 0:
+                        i = j + 1
+                        break
+        n = re.match(r'\s*(\w+)\s*[;,\[]', text[i:])
+        if n:
+            names.add(n.group(1))
+    return names
+
+
 def strip_comments(text):
     text = re.sub(r'/\*.*?\*/', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text, flags=re.S)
     text = re.sub(r'//[^\n]*', '', text)
@@ -163,13 +184,9 @@ def main():
     else:
         files = sorted(str(p) for p in Path('src').rglob('*.c'))
 
-    # Typedef names of structs, so struct-by-value parameters are recognised
-    for f in files:
-        for m in re.finditer(r'typedef\s+(?:struct|union)\b[^;]*?\}\s*(\w+)\s*;', Path(f).read_text(), re.S):
-            STRUCT_TYPEDEFS.add(m.group(1))
-    for h in Path('include').glob('*.h'):
-        for m in re.finditer(r'typedef\s+(?:struct|union)\b[^;]*?\}\s*(\w+)\s*;', h.read_text(), re.S):
-            STRUCT_TYPEDEFS.add(m.group(1))
+    # Typedef names of structs, so struct-by-value parameters and returns are recognised
+    for f in [*files, *Path('include').glob('*.h')]:
+        STRUCT_TYPEDEFS.update(struct_typedefs(strip_comments(Path(f).read_text())))
 
     defs = {}
     decls = defaultdict(list)
@@ -207,8 +224,12 @@ def main():
             issues = []
             if ret != dret and not (ret == 'v' or {ret, dret} <= {'i'}):
                 issues.append(f'returns {ret} vs {dret}')
-            if ret == 'v' and dret in ('f', 'd', 'l', 's'):
+            if ret == 'v' and dret in ('f', 'd', 'l'):
                 pass  # result ignored by the caller: harmless
+            if (ret == 's') != (dret == 's'):
+                # MIPS passes the hidden result pointer in a0 like a first argument; i386
+                # Linux has the callee pop it, and MinGW returns 8-byte structs in registers
+                issues.append(f'struct return declared as {ret} vs {dret}')
             if plist is not None and dparams is not None:
                 a = [c for c in plist if c != '...']
                 b = [c for c in dparams if c != '...']

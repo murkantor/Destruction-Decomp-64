@@ -22,7 +22,11 @@ extern s32 osRecvMesg(OSMesgQueue *, OSMesg *, s32);
 extern void osDpGetCounters(u32 *);
 extern void osDpSetStatus(u32);
 extern u32 osDpGetStatus(void);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 extern void Fb_CreateContext(void *);
+#endif
 extern void Font_BlitString(void *, s32, s32, char *);
 extern s32 sprintf(char *, const char *, ...);
 extern void Vi_ApplyConfig(void *);

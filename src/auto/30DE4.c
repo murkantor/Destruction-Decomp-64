@@ -39,7 +39,11 @@ typedef struct {
 
 extern f32 D_800D2E78;
 void Vec3f_Set(Vec3f *, f32, f32, f32);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Vec3f_TransformTransposed(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
+#endif
 s32 Track_GetFacesInRadius(Vec3f *, f32, FaceEnt *);
 void Vec3f_Length(f32 *, Vec3f *);
 void Points_ComputeAABB(Poly *, AABB *);

@@ -12,8 +12,13 @@ void Pad_StartRead(void);
 s32 Pak_WriteFile(s32, s32, s32, s32, void *);
 
 void Pak_WriteSave(s32 *out) {
+#ifdef TARGET_PC
+    /* Written from the global itself: see Pak_SaveGame */
+    SaveBuf *p = &D_80097A10;
+#else
     SaveBuf buf = D_80097A10;
     SaveBuf *p = &buf;
+#endif
 
     if (!D_80097D58) {
         Cont_ReadAll();

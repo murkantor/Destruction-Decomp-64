@@ -1,7 +1,11 @@
 #include "common.h"
 #include "m2c.h"
 
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Mtx3_MulDiff(f32 *, s32, s32, s32);
+#endif
 
 s32 Obb_OverlapsSphere(f32 *ext, s32 arg1, s32 arg2, f32 radius, s32 id) {
     f32 p[3];

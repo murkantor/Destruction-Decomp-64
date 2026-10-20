@@ -64,3 +64,9 @@ void Port_VideoSetBlack(int black) {
 void Port_VideoPresentIdle(void) {
     gfx_present(true);
 }
+
+void Port_VideoToggleFullscreen(void) {
+    gPortConfig.fullscreen = !gfx_sdl.get_fullscreen_state();
+    gfx_sdl.set_fullscreen(gPortConfig.fullscreen);
+    Port_ConfigSave();
+}

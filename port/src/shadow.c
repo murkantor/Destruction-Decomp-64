@@ -3,13 +3,14 @@
  *
  * Data loaded from the ROM at run time (PI DMA, inflated zip entries) arrives
  * big-endian. The bytes are marked in a shadow map, one byte per byte of the
- * RAM image (gRam). The game code is built with -fsanitize=kernel-address, so
- * GCC puts a call to one of the __asan_* hooks below before each of its memory
- * accesses, with the address and width. The first 2-, 4- or 8-byte access to a
- * marked location byte-swaps it in place and clears the mark; single bytes are
- * the same in either order and stay marked until a wider access. A store over
- * marked bytes clears them. Bulk copies carry the marks along, so a block copied
- * before it is read is converted at its new place.
+ * RAM image (gRam). The game code is built with
+ * -fsanitize=kernel-address, so GCC puts a call to one of the __asan_* hooks
+ * below before each of its memory accesses, with the address and width. The
+ * first 2-, 4- or 8-byte access to a marked location byte-swaps it in place and
+ * clears the mark; single bytes are the same in either order and stay marked
+ * until a wider access. A store over marked bytes clears them. Bulk copies
+ * carry the marks along, so a block copied before it is read is converted at
+ * its new place.
  *
  * Code that reads part of a word the rest of the game reads whole (an access
  * that only partly covers converted bytes, or straddles marked and unmarked
@@ -37,18 +38,35 @@ void *__real_memcpy(void *d, const void *s, size_t n);
 void *__real_memmove(void *d, const void *s, size_t n);
 void *__real_memset(void *d, int c, size_t n);
 
+/*
+ * The shadow of n bytes at addr, or NULL outside the RAM image. Stacks are not
+ * shadowed: GCC does not instrument a function's direct accesses to its own
+ * locals, so marks there would go stale. Static data copied into locals is
+ * converted at boot instead (Port_ConvertStaticData).
+ */
+static inline u8 *shadowOf(u32 addr, u32 n) {
+    u32 off = addr - (u32)gRam;
+
+    if (off < RAM_SIZE && n <= RAM_SIZE - off) {
+        return gPortShadow + off;
+    }
+    return NULL;
+}
+
 /* A bulk read of marked bytes, waiting for the bulk store that copies them */
 static __thread u32 tPendingSrc, tPendingLen, tPendingDst, tPendingDstLen;
-/* The last single-byte load read a marked byte: a byte-by-byte copy carries the mark */
 
 #define MAX_REPORTS 4096
 static void *sReported[MAX_REPORTS];
 static int sNumReported;
 
-static void report(const char *what, u32 off, u32 n, void *site) {
-    int i;
+static void report(const char *what, u32 addr, u32 n, void *site) {
+    u32 a = addr & ~3u, i;
+    u8 *s = shadowOf(a, 8);
+    const u8 *m = (const u8 *)a;
+    char mem[20], sh[20];
 
-    for (i = 0; i < sNumReported; i++) {
+    for (i = 0; i < (u32)sNumReported; i++) {
         if (sReported[i] == site) {
             return;
         }
@@ -56,42 +74,38 @@ static void report(const char *what, u32 off, u32 n, void *site) {
     if (sNumReported < MAX_REPORTS) {
         sReported[sNumReported++] = site;
     }
-    {
-        u32 a = off & ~3u;
-        Port_Log("shadow: %s, %u bytes at %08X (N64 %08X), from code %p [mem %02X%02X%02X%02X %02X%02X%02X%02X sh %02X%02X%02X%02X %02X%02X%02X%02X]",
-                 what, (unsigned)n, (unsigned)(u32)(gRam + off), (unsigned)(RAM_VRAM + off), site, gRam[a],
-                 gRam[a + 1], gRam[a + 2], gRam[a + 3], gRam[a + 4], gRam[a + 5], gRam[a + 6], gRam[a + 7],
-                 gPortShadow[a], gPortShadow[a + 1], gPortShadow[a + 2], gPortShadow[a + 3], gPortShadow[a + 4],
-                 gPortShadow[a + 5], gPortShadow[a + 6], gPortShadow[a + 7]);
+    SDL_snprintf(mem, sizeof(mem), "%02X%02X%02X%02X %02X%02X%02X%02X", m[0], m[1], m[2], m[3], m[4], m[5], m[6],
+                 m[7]);
+    if (s != NULL) {
+        SDL_snprintf(sh, sizeof(sh), "%02X%02X%02X%02X %02X%02X%02X%02X", s[0], s[1], s[2], s[3], s[4], s[5], s[6],
+                     s[7]);
+    } else {
+        SDL_strlcpy(sh, "?", sizeof(sh));
     }
+    Port_Log("shadow: %s, %u bytes at %08X, from code %p [mem %s sh %s]", what, (unsigned)n, (unsigned)addr, site,
+             mem, sh);
 }
 
 void Port_MarkBE(const void *p, uint32_t len) {
-    u32 off = (u32)p - (u32)gRam;
+    u8 *s = shadowOf((u32)p, len);
 
-    if (off < RAM_SIZE) {
-        if (len > RAM_SIZE - off) {
-            len = RAM_SIZE - off;
-        }
-        memset(gPortShadow + off, SH_BE, len);
+    if (s != NULL) {
+        memset(s, SH_BE, len);
     }
 }
 
 void Port_MarkNative(const void *p, uint32_t len) {
-    u32 off = (u32)p - (u32)gRam;
+    u8 *s = shadowOf((u32)p, len);
 
-    if (off < RAM_SIZE) {
-        if (len > RAM_SIZE - off) {
-            len = RAM_SIZE - off;
-        }
-        memset(gPortShadow + off, 0, len);
+    if (s != NULL) {
+        memset(s, 0, len);
     }
 }
 
 int Port_IsBE(const void *p) {
-    u32 off = (u32)p - (u32)gRam;
+    u8 *s = shadowOf((u32)p, 1);
 
-    return off < RAM_SIZE && (gPortShadow[off] & SH_BE);
+    return s != NULL && (*s & SH_BE);
 }
 
 static void swapInPlace(u8 *p, u32 n) {
@@ -131,24 +145,21 @@ static inline u32 spread(u32 n) {
 }
 
 /* A typed load of n bytes touching big-endian data. */
-static void convert(u32 off, u32 n, void *site) {
-    u8 *s = gPortShadow + off;
+static void convert(u32 addr, u8 *s, u32 n, void *site) {
     u32 be = 0, i;
 
     for (i = 0; i < n; i++) {
         be += s[i] & SH_BE;
     }
     if (be == n) {
-        swapInPlace(gRam + off, n);
+        swapInPlace((u8 *)addr, n);
     } else {
-        report("load of a partly converted value", off, n, site);
+        report("load of a partly converted value", addr, n, site);
     }
     memset(s, widthMark(n), n);
 }
 
-static inline u32 shadowBits(u32 off, u32 n) {
-    const u8 *s = gPortShadow + off;
-
+static inline u32 shadowBits(const u8 *s, u32 n) {
     switch (n) {
         case 1:
             return s[0];
@@ -171,25 +182,30 @@ static inline u32 shadowBits(u32 off, u32 n) {
  * bytes of the units involved differ: a block filled with one byte value (zeroed,
  * typically) reads the same either way.
  */
-static void reportWidth(const char *what, u32 off, u32 n, void *site) {
+static void reportWidth(const char *what, u32 addr, u32 n, void *site) {
     u32 unit = n, i, lo, hi;
-    u8 *s = gPortShadow + off;
+    u8 *s = shadowOf(addr, n);
 
+    if (s == NULL) {
+        return;
+    }
     for (i = 0; i < n; i++) {
         u32 w = (s[i] >> 4) & 0xF;
         if (w > unit) {
             unit = w;
         }
     }
-    lo = off & ~(unit - 1);
+    lo = addr & ~(unit - 1);
     hi = lo + unit;
-    if (hi < off + n) {
-        hi = off + n;
+    if (hi < addr + n) {
+        hi = addr + n;
     }
-    for (i = lo + 1; i < hi && i < RAM_SIZE; i++) {
-        if (gRam[i] != gRam[lo]) {
-            report(what, off, n, site);
-            return;
+    if (shadowOf(lo, hi - lo) != NULL) {
+        for (i = lo + 1; i < hi; i++) {
+            if (*(const u8 *)i != *(const u8 *)lo) {
+                report(what, addr, n, site);
+                return;
+            }
         }
     }
     /* All the bytes are equal (zero-filled, typically), so they read the same
@@ -207,49 +223,50 @@ static void reportWidth(const char *what, u32 off, u32 n, void *site) {
  * access is not the store of that copy.
  */
 static __thread int tLastByte = -1;       /* shadow of the last byte loaded, or -1 */
-static __thread u32 tPendingOff;
+static __thread u32 tPendingAddr;
 static __thread void *tPendingSite;
 
 static inline void flushPendingByte(void) {
     if (tPendingSite != NULL) {
-        reportWidth("byte load of a wider value", tPendingOff, 1, tPendingSite);
+        reportWidth("byte load of a wider value", tPendingAddr, 1, tPendingSite);
         tPendingSite = NULL;
     }
 }
 
 static inline void load(u32 addr, u32 n, void *site) {
-    u32 off = addr - (u32)gRam, bits;
+    u8 *s;
+    u32 bits;
 
     flushPendingByte();
-    if (off >= RAM_SIZE) {
+    s = shadowOf(addr, n);
+    if (s == NULL) {
         tLastByte = -1;
         return;
     }
     if (n == 1) {
-        u8 s = gPortShadow[off];
-        tLastByte = s;
-        if ((s & 0xF0) && (s & 0xF0) != widthMark(1)) {
-            tPendingOff = off;
+        tLastByte = *s;
+        if ((*s & 0xF0) && (*s & 0xF0) != widthMark(1)) {
+            tPendingAddr = addr;
             tPendingSite = site;
         }
         return;
     }
     tLastByte = -1;
     if (n == 8) {
-        bits = *(const u32 *)(gPortShadow + off) | *(const u32 *)(gPortShadow + off + 4);
+        u32 a = *(const u32 *)s, b = *(const u32 *)(s + 4);
+        bits = a | b;
         if (bits & (SH_BE * 0x01010101u)) {
-            convert(off, n, site);
-        } else if (bits != 0 && (*(const u32 *)(gPortShadow + off) != spread(8) ||
-                                 *(const u32 *)(gPortShadow + off + 4) != spread(8))) {
-            reportWidth("load at another width than stored", off, n, site);
+            convert(addr, s, n, site);
+        } else if (bits != 0 && (a != spread(8) || b != spread(8))) {
+            reportWidth("load at another width than stored", addr, n, site);
         }
         return;
     }
-    bits = shadowBits(off, n);
+    bits = shadowBits(s, n);
     if (bits & (SH_BE * 0x01010101u)) {
-        convert(off, n, site);
+        convert(addr, s, n, site);
     } else if (bits != 0 && bits != (n == 2 ? (spread(2) & 0xFFFF) : spread(4))) {
-        reportWidth("load at another width than stored", off, n, site);
+        reportWidth("load at another width than stored", addr, n, site);
     }
 }
 
@@ -278,7 +295,7 @@ static void watchStore(u32 addr, u32 n, void *site) {
 }
 
 static inline void store(u32 addr, u32 n) {
-    u32 off = addr - (u32)gRam;
+    u8 *s;
 
     if (sWatch != 0) {
         watchStore(addr, n, __builtin_return_address(0));
@@ -288,14 +305,14 @@ static inline void store(u32 addr, u32 n) {
     } else {
         flushPendingByte();
     }
-    if (off >= RAM_SIZE) {
+    s = shadowOf(addr, n);
+    if (s == NULL) {
         tLastByte = -1;
         return;
     }
     if (n == 1) {
         /* A byte copied keeps its source's shadow; a byte stored into
            big-endian data keeps its word's big-endian layout. */
-        u8 *s = gPortShadow + off;
         if (tLastByte >= 0) {
             *s = (u8)tLastByte;
         } else if (!(*s & SH_BE)) {
@@ -305,7 +322,7 @@ static inline void store(u32 addr, u32 n) {
         return;
     }
     tLastByte = -1;
-    memset(gPortShadow + off, widthMark(n), n);
+    memset(s, widthMark(n), n);
 }
 
 /* Struct copies: GCC checks the whole destination and source before an inline
@@ -318,10 +335,10 @@ static void bulkPair(void) {
 }
 
 static inline void loadN(u32 addr, u32 n) {
-    u32 off = addr - (u32)gRam;
+    u8 *s;
 
     tLastByte = -1;
-    if (off >= RAM_SIZE || n == 0 || n > RAM_SIZE - off || !shadowBits(off, n)) {
+    if (n == 0 || (s = shadowOf(addr, n)) == NULL || !shadowBits(s, n)) {
         tPendingLen = 0;
         return;
     }
@@ -331,11 +348,11 @@ static inline void loadN(u32 addr, u32 n) {
 }
 
 static inline void storeN(u32 addr, u32 n) {
-    u32 off = addr - (u32)gRam;
+    u8 *s;
 
     tLastByte = -1;
-    if (off < RAM_SIZE && n != 0) {
-        memset(gPortShadow + off, 0, n < RAM_SIZE - off ? n : RAM_SIZE - off);
+    if (n != 0 && (s = shadowOf(addr, n)) != NULL) {
+        memset(s, 0, n);
     }
     tPendingDst = addr;
     tPendingDstLen = n;
@@ -363,20 +380,18 @@ void __asan_unregister_globals(void *globals, size_t n) {}
 
 /* Block copies from game code (and anything else linked in) carry the marks. */
 
-/* Copy the marks of n bytes from s to d, as far as either lies in gRam. */
+/* Copy the marks of n bytes from s to d, as far as d is shadowed. */
 static void copyMarks(void *d, const void *s, size_t n) {
-    u32 so = (u32)s - (u32)gRam, dOff = (u32)d - (u32)gRam;
+    u8 *ds = shadowOf((u32)d, n), *ss;
 
-    if (dOff >= RAM_SIZE) {
+    if (ds == NULL || n == 0) {
         return;
     }
-    if (n > RAM_SIZE - dOff) {
-        n = RAM_SIZE - dOff;
-    }
-    if (so < RAM_SIZE && n <= RAM_SIZE - so) {
-        __real_memmove(gPortShadow + dOff, gPortShadow + so, n);
+    ss = shadowOf((u32)s, n);
+    if (ss != NULL) {
+        __real_memmove(ds, ss, n);
     } else {
-        __real_memset(gPortShadow + dOff, 0, n);
+        __real_memset(ds, 0, n);
     }
 }
 
@@ -393,6 +408,40 @@ void *__wrap_memmove(void *d, const void *s, size_t n) {
 void *__wrap_memset(void *d, int c, size_t n) {
     Port_MarkNative(d, n);
     return __real_memset(d, c, n);
+}
+
+/*
+ * Static data the game's C names, converted now by its declared type
+ * (tools/port/gen_widths.py): the game may copy it into locals before reading
+ * it, where the conversion on read cannot follow. Only values still wholly
+ * big-endian in [lo, hi) are converted.
+ */
+extern const uint32_t gPortStaticWidths[][2];
+extern const uint32_t gPortStaticWidthCount;
+
+void Port_ConvertStaticData(const void *lo, uint32_t len) {
+    u32 start = (u32)lo, end = start + len, i, k, done = 0;
+
+    for (i = 0; i < gPortStaticWidthCount; i++) {
+        u32 addr = gPortStaticWidths[i][0];
+        u32 width = gPortStaticWidths[i][1] >> 24, count = gPortStaticWidths[i][1] & 0xFFFFFF;
+        for (k = 0; k < count; k++, addr += width) {
+            u8 *s;
+            if (addr < start || addr + width > end || (s = shadowOf(addr, width)) == NULL) {
+                continue;
+            }
+            u32 j, be = 0;
+            for (j = 0; j < width; j++) {
+                be += s[j] & SH_BE;
+            }
+            if (be == width) {
+                swapInPlace((u8 *)addr, width);
+                memset(s, widthMark(width), width);
+                done++;
+            }
+        }
+    }
+    Port_Log("shadow: %u static values converted at %08X-%08X", (unsigned)done, (unsigned)start, (unsigned)end);
 }
 
 /* ---- Readers for host code ---- */
@@ -415,4 +464,43 @@ uint32_t Port_Rd32(const void *p) {
         v = __builtin_bswap32(v);
     }
     return v;
+}
+
+/*
+ * Game memory as the N64 would hold it, for data leaving the game (Controller
+ * Pak notes). A byte still big-endian, or stored as a byte, is where it is; a
+ * byte of a value stored n bytes wide in host order is mirrored within its
+ * n-byte unit (game data is naturally aligned). Returns 0 if some bytes are not
+ * shadowed (no widths are known there), and copies those as they are.
+ */
+int Port_ReadN64Bytes(void *dst, const void *src, uint32_t n) {
+    u8 *out = dst;
+    u32 addr = (u32)src, i;
+    int known = 1;
+
+    for (i = 0; i < n; i++, addr++) {
+        u8 *s = shadowOf(addr, 1);
+        u32 w = s != NULL ? (*s >> 4) & 0xF : 0;
+        if (s == NULL) {
+            known = 0;
+        }
+        if (s == NULL || (*s & SH_BE) || w < 2) {
+            out[i] = *(const u8 *)addr;
+        } else {
+            u32 base = addr & ~(w - 1);
+            out[i] = *(const u8 *)(base + (w - 1) - (addr - base));
+        }
+    }
+    return known;
+}
+
+/* Bytes in N64 order into game memory, converted where the game reads them.
+   Returns 0 if the destination is not shadowed, where nothing would convert them. */
+int Port_WriteN64Bytes(void *dst, const void *src, uint32_t n) {
+    __real_memmove(dst, src, n);
+    if (shadowOf((u32)dst, n) == NULL) {
+        return 0;
+    }
+    Port_MarkBE(dst, n);
+    return 1;
 }

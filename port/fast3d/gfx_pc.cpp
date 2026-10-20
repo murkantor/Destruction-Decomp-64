@@ -279,6 +279,10 @@ static struct RenderingState {
 struct XYWidthHeight gfx_native = { 0, 0, NATIVE_WIDTH, NATIVE_HEIGHT };
 
 static struct GfxWindowManagerAPI *gfx_wapi;
+
+/* Frames presented so far (DD64_SHOT and DD64_PRESS count these) */
+extern "C" unsigned gfx_presents;
+unsigned gfx_presents;
 static struct GfxRenderingAPI *gfx_rapi;
 
 static uint32_t window_width, window_height;
@@ -2107,8 +2111,7 @@ void gfx_present(bool black) {
     {
         /* DD64_SHOT=n[,n...]: save presents number n as shot_<n>.bmp (for testing) */
         static const char *shots = getenv("DD64_SHOT");
-        static unsigned presents;
-        presents++;
+        unsigned presents = ++gfx_presents;
         if (shots != NULL) {
             char buf[256];
             snprintf(buf, sizeof(buf), ",%s,", shots);

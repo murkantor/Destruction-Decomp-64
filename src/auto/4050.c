@@ -8,7 +8,13 @@ typedef struct { u8 pad[0x1100]; Track *x1100; } Game;
 typedef struct { u8 pad[0x28]; s32 x28; u8 pad2C[0x58 - 0x2C]; s32 x58; } Car;
 extern Game *gGame;
 Vec3f Car_GetPos(Car *);
+#ifdef TARGET_PC
+/* returns its Vec3f by value: see include/port_sret.h */
+Vec3f func_8001FC08(Car *);
+#define func_8001FC08(out, c) (*(out) = func_8001FC08(c))
+#else
 void func_8001FC08(Vec3f *, Car *);
+#endif
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 s32 Racer_WrapNode(Car *, s32);
 int abs(int);

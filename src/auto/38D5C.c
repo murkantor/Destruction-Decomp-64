@@ -123,8 +123,12 @@ void Vec3f_Set(Vec3f *, f32, f32, f32);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Vec3f_TransformTransposed(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
 void Tensor_MulVec3f(Vec3f *, f32 *, Vec3f *);
+#endif
 void Inertia_RotateDiag(Vec3f *, Vec3f *, f32 *);
 void Mtx2x3_RotateY(Vec3f *, f32);
 void Mtx3_RotateAxisAngle(Vec3f *, Vec3f *, f32);

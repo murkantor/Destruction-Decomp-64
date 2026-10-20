@@ -24,6 +24,9 @@ void Port_MarkNative(const void *p, uint32_t len);
 int Port_IsBE(const void *p);
 uint16_t Port_Rd16(const void *p);
 uint32_t Port_Rd32(const void *p);
+void Port_ConvertStaticData(const void *lo, uint32_t len);
+int Port_ReadN64Bytes(void *dst, const void *src, uint32_t n);
+int Port_WriteN64Bytes(void *dst, const void *src, uint32_t n);
 void *Port_N64ToHost(uint32_t addr);
 uint32_t Port_HostToN64(const void *p);
 

@@ -20,7 +20,11 @@ typedef struct { u8 pad[0x10]; Gfx *x10; } Disp;
 typedef struct { u8 pad[0x190]; Disp *x190; } Obj;
 
 extern Game *gGame;
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Car_GetPos(Vec3f *, void *);
+#endif
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
 void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 void Track_FindPolyUnder(s32 *idx, Vec3f *pos, s32 *list, s32 n);

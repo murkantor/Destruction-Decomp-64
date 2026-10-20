@@ -60,6 +60,9 @@ set(COMMON_FLAGS
     -m32 -g -O2
     # SSE floats round to single precision like the N64 FPU; x87 excess precision would not
     -msse2 -mfpmath=sse
+    # Do not count on a 16-byte aligned stack (Windows threads start 4-byte aligned):
+    # functions keeping SSE values on the stack realign it themselves
+    -mincoming-stack-boundary=2
     -fno-strict-aliasing -fwrapv -fno-omit-frame-pointer)
 
 # Game code the port adds (pieces of the ROM that are not in the decompilation),
@@ -90,10 +93,26 @@ target_compile_options(game PRIVATE ${COMMON_FLAGS}
     -fsanitize=kernel-address "SHELL:--param asan-stack=0" "SHELL:--param asan-globals=1"
     "SHELL:--param asan-instrumentation-with-call-threshold=0")
 
+# Static data converted at boot, by the types the game's C gives it
+# (tools/port/gen_widths.py reads them from the game objects' debug info)
+set(GEN_WIDTHS ${GEN_DIR}/dd64_widths.c)
+file(GENERATE OUTPUT ${GEN_DIR}/game_objects.txt CONTENT "$<JOIN:$<TARGET_OBJECTS:game>,\n>\n")
+if(NOT CMAKE_OBJDUMP)
+    set(CMAKE_OBJDUMP objdump)
+endif()
+add_custom_command(
+    OUTPUT ${GEN_WIDTHS}
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/port/gen_widths.py
+            --elf ${CMAKE_SOURCE_DIR}/build/dd64.elf --objdump ${CMAKE_OBJDUMP} --out ${GEN_WIDTHS}
+            @${GEN_DIR}/game_objects.txt
+    DEPENDS ${CMAKE_SOURCE_DIR}/tools/port/gen_widths.py ${CMAKE_SOURCE_DIR}/tools/port/gen_data.py
+            ${CMAKE_SOURCE_DIR}/build/dd64.elf $<TARGET_OBJECTS:game>
+    COMMENT "Generating the static data conversion table")
+
 # ---- Port ----
 file(GLOB PORT_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/port/src/*.c ${CMAKE_SOURCE_DIR}/port/src/*.cpp
                                      ${CMAKE_SOURCE_DIR}/port/fast3d/*.cpp ${CMAKE_SOURCE_DIR}/port/fast3d/glad/*.c)
-add_executable(dd64 ${PORT_SRC} $<TARGET_OBJECTS:game>)
+add_executable(dd64 ${PORT_SRC} ${GEN_WIDTHS} $<TARGET_OBJECTS:game>)
 target_include_directories(dd64 PRIVATE include port/include port/fast3d)
 target_compile_definitions(dd64 PRIVATE TARGET_PC)
 target_compile_options(dd64 PRIVATE ${COMMON_FLAGS} -Wall -Wno-unused-parameter -Wno-unused-function

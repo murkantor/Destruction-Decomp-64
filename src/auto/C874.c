@@ -44,7 +44,11 @@ extern ScoreSlot D_800958F0[];
 extern CountFx D_8007EEE8[];
 extern s8 D_800D31CC;
 UiElem *Ui_FindElement(void *, s32, s32);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Ui_GetElementPos(Vec2f *, void *, s32, s32);
+#endif
 void Ui_RemoveElement(void *, s32);
 void func_8005D8B8(void *, s32, s32);
 void func_80061598(void *, s32, s32);

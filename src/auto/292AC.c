@@ -6,7 +6,11 @@ typedef struct { f32 v[5]; } F5;
 typedef struct { u8 pad0[0x248]; Vec3f x248; } Car;
 extern F5 D_800B9020;
 void Vec3f_Dot(f32 *out, Vec3f *a, Vec3f *b);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void func_8001FC08(Vec3f *, Car *);
+#endif
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 f32 Vec3f_CrossYSign(Vec3f, Vec3f);
 

@@ -38,7 +38,11 @@ extern ElemTbl D_800B8290;
 extern f64 D_800B8330, D_800B8338, D_800B8340;
 extern u64 Time_Get(u64 *t);
 extern void Ui_SetElementPos(Ui *ui, s32 type, s32 elem, f32 x, f32 y);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 extern void Ui_GetElementPos(Vec3f *out, Ui *ui, s32 type, s32 elem);
+#endif
 extern void Ui_InsertElementAfter(Ui *ui, s32 type, s32 elem, s32 after);
 extern void Ui_RemoveElement(Ui *ui, s32 elem);
 extern void func_8005DBDC(Obj *obj);

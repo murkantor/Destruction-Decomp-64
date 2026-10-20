@@ -46,7 +46,11 @@ extern f64 D_800B81E8;
 extern u64 D_8007EF48;
 
 int sprintf(char *, const char *, ...);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Ui_GetElementPos(f32 *, void *, s32, s32);
+#endif
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 u64 Time_Get(void *);
 

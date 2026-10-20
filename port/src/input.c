@@ -1,0 +1,391 @@
+/*
+ * Controllers: SDL3 gamepads and the keyboard, as N64 controllers.
+ *
+ * Gamepads take controllers 1-4 in the order they are connected; the keyboard
+ * drives the controller [input] keyboard_player names, alongside any gamepad
+ * on it. Controller 1 is always connected, so the game can be played with no
+ * gamepad. Bindings are in dd64.ini, [keyboard] and [gamepad]: a comma
+ * separated list per N64 input, of SDL key names ("Left Shift", "X") or SDL
+ * gamepad button names ("a", "leftshoulder", "dpup") and axis directions
+ * ("+righty", "-leftx", "+lefttrigger").
+ */
+#include <SDL3/SDL.h>
+#include <string.h>
+
+#include "port.h"
+#include "port_config.h"
+#include "port_ini.h"
+
+#define CONT_A 0x8000
+#define CONT_B 0x4000
+#define CONT_G 0x2000 /* Z */
+#define CONT_START 0x1000
+#define CONT_UP 0x0800
+#define CONT_DOWN 0x0400
+#define CONT_LEFT 0x0200
+#define CONT_RIGHT 0x0100
+#define CONT_L 0x0020
+#define CONT_R 0x0010
+#define CONT_E 0x0008 /* C up */
+#define CONT_D 0x0004 /* C down */
+#define CONT_C 0x0002 /* C left */
+#define CONT_F 0x0001 /* C right */
+
+/* Stick directions, after the button bits */
+enum { IN_STICK_UP = 14, IN_STICK_DOWN, IN_STICK_LEFT, IN_STICK_RIGHT, IN_COUNT };
+
+typedef struct {
+    const char *key;
+    u16 bit; /* 0 for the stick directions */
+    const char *keyboard;
+    const char *gamepad;
+} InputDef;
+
+static const InputDef sInputs[IN_COUNT] = {
+    { "a", CONT_A, "X", "a" },
+    { "b", CONT_B, "C", "x,b" },
+    { "z", CONT_G, "Z", "lefttrigger" },
+    { "start", CONT_START, "Return", "start" },
+    { "l", CONT_L, "A", "leftshoulder" },
+    { "r", CONT_R, "S", "rightshoulder,righttrigger" },
+    { "dpad_up", CONT_UP, "T", "dpup" },
+    { "dpad_down", CONT_DOWN, "G", "dpdown" },
+    { "dpad_left", CONT_LEFT, "F", "dpleft" },
+    { "dpad_right", CONT_RIGHT, "H", "dpright" },
+    { "c_up", CONT_E, "I", "-righty,y" },
+    { "c_down", CONT_D, "K", "+righty" },
+    { "c_left", CONT_C, "J", "-rightx" },
+    { "c_right", CONT_F, "L", "+rightx" },
+    { "stick_up", 0, "Up", "-lefty" },
+    { "stick_down", 0, "Down", "+lefty" },
+    { "stick_left", 0, "Left", "-leftx" },
+    { "stick_right", 0, "Right", "+leftx" },
+};
+
+#define MAX_BINDS 4
+
+typedef struct {
+    int n;
+    SDL_Scancode keys[MAX_BINDS];
+} KeyBind;
+
+typedef struct {
+    int n;
+    struct {
+        int axis;   /* SDL_GamepadAxis, or -1 for a button */
+        int button; /* SDL_GamepadButton */
+        int sign;   /* +1 or -1 for an axis */
+    } src[MAX_BINDS];
+} PadBind;
+
+static KeyBind sKeyBinds[IN_COUNT];
+static PadBind sPadBinds[IN_COUNT];
+
+/* The gamepad on each controller, or NULL. The event pump (main thread)
+   changes these while game threads read them: sLock covers both. */
+static SDL_Gamepad *sPads[MAXCONTROLLERS];
+static SDL_Mutex *sLock;
+static int sRumbleOn[MAXCONTROLLERS];
+
+static void parseKeys(KeyBind *b, const char *list) {
+    char buf[128], *tok, *save = NULL;
+
+    b->n = 0;
+    SDL_strlcpy(buf, list, sizeof(buf));
+    for (tok = SDL_strtok_r(buf, ",", &save); tok != NULL && b->n < MAX_BINDS; tok = SDL_strtok_r(NULL, ",", &save)) {
+        while (*tok == ' ') {
+            tok++;
+        }
+        SDL_Scancode sc = SDL_GetScancodeFromName(tok);
+        if (sc != SDL_SCANCODE_UNKNOWN) {
+            b->keys[b->n++] = sc;
+        } else if (*tok != '\0') {
+            Port_Log("input: unknown key \"%s\" in dd64.ini", tok);
+        }
+    }
+}
+
+static void parsePad(PadBind *b, const char *list) {
+    char buf[128], *tok, *save = NULL;
+
+    b->n = 0;
+    SDL_strlcpy(buf, list, sizeof(buf));
+    for (tok = SDL_strtok_r(buf, ",", &save); tok != NULL && b->n < MAX_BINDS; tok = SDL_strtok_r(NULL, ",", &save)) {
+        while (*tok == ' ') {
+            tok++;
+        }
+        if (*tok == '+' || *tok == '-') {
+            SDL_GamepadAxis axis = SDL_GetGamepadAxisFromString(tok + 1);
+            if (axis != SDL_GAMEPAD_AXIS_INVALID) {
+                b->src[b->n].axis = axis;
+                b->src[b->n].sign = *tok == '+' ? 1 : -1;
+                b->n++;
+                continue;
+            }
+        } else {
+            SDL_GamepadButton button = SDL_GetGamepadButtonFromString(tok);
+            SDL_GamepadAxis axis = SDL_GetGamepadAxisFromString(tok);
+            if (button != SDL_GAMEPAD_BUTTON_INVALID) {
+                b->src[b->n].axis = -1;
+                b->src[b->n].button = button;
+                b->n++;
+                continue;
+            }
+            if (axis != SDL_GAMEPAD_AXIS_INVALID) { /* a trigger, named without a sign */
+                b->src[b->n].axis = axis;
+                b->src[b->n].sign = 1;
+                b->n++;
+                continue;
+            }
+        }
+        if (*tok != '\0') {
+            Port_Log("input: unknown gamepad input \"%s\" in dd64.ini", tok);
+        }
+    }
+}
+
+void Port_InputInit(void) {
+    int i, added = 0;
+
+    sLock = SDL_CreateMutex();
+    if (!SDL_InitSubSystem(SDL_INIT_GAMEPAD)) {
+        Port_Log("input: gamepads unavailable: %s", SDL_GetError());
+    }
+    for (i = 0; i < IN_COUNT; i++) {
+        const char *k = Port_IniGet("keyboard", sInputs[i].key, NULL);
+        const char *p = Port_IniGet("gamepad", sInputs[i].key, NULL);
+        if (k == NULL) {
+            Port_IniSet("keyboard", sInputs[i].key, sInputs[i].keyboard);
+            k = sInputs[i].keyboard;
+            added = 1;
+        }
+        if (p == NULL) {
+            Port_IniSet("gamepad", sInputs[i].key, sInputs[i].gamepad);
+            p = sInputs[i].gamepad;
+            added = 1;
+        }
+        parseKeys(&sKeyBinds[i], k);
+        parsePad(&sPadBinds[i], p);
+    }
+    if (added) {
+        Port_ConfigSave();
+    }
+    /* Gamepads already connected arrive as SDL_EVENT_GAMEPAD_ADDED */
+}
+
+void Port_InputGamepadAdded(SDL_JoystickID id) {
+    int i;
+
+    SDL_LockMutex(sLock);
+    for (i = 0; i < MAXCONTROLLERS; i++) {
+        if (sPads[i] != NULL && SDL_GetGamepadID(sPads[i]) == id) {
+            SDL_UnlockMutex(sLock);
+            return;
+        }
+    }
+    for (i = 0; i < MAXCONTROLLERS && sPads[i] != NULL; i++) {
+    }
+    if (i < MAXCONTROLLERS) {
+        sPads[i] = SDL_OpenGamepad(id);
+        if (sPads[i] != NULL) {
+            Port_Log("input: controller %d: %s", i + 1, SDL_GetGamepadName(sPads[i]));
+        }
+    }
+    SDL_UnlockMutex(sLock);
+}
+
+void Port_InputGamepadRemoved(SDL_JoystickID id) {
+    int i;
+
+    SDL_LockMutex(sLock);
+    for (i = 0; i < MAXCONTROLLERS; i++) {
+        if (sPads[i] != NULL && SDL_GetGamepadID(sPads[i]) == id) {
+            Port_Log("input: controller %d disconnected", i + 1);
+            SDL_CloseGamepad(sPads[i]);
+            sPads[i] = NULL;
+            sRumbleOn[i] = 0;
+        }
+    }
+    SDL_UnlockMutex(sLock);
+}
+
+void Port_InputUpdate(void) {
+    /* Gamepad and keyboard state is kept current by the event pump */
+}
+
+int Port_InputConnected(int channel) {
+    int connected;
+
+    if (channel < 0 || channel >= MAXCONTROLLERS) {
+        return 0;
+    }
+    SDL_LockMutex(sLock);
+    connected = channel == 0 || sPads[channel] != NULL || channel == gPortConfig.keyboardPlayer - 1;
+    SDL_UnlockMutex(sLock);
+    return connected;
+}
+
+/* How far an input is pressed, 0-1 */
+static float keyAmount(const KeyBind *b, const bool *keys) {
+    int i;
+
+    for (i = 0; i < b->n; i++) {
+        if (keys[b->keys[i]]) {
+            return 1.0f;
+        }
+    }
+    return 0.0f;
+}
+
+static float padAmount(const PadBind *b, SDL_Gamepad *pad) {
+    float best = 0.0f;
+    int i;
+
+    for (i = 0; i < b->n; i++) {
+        float v;
+        if (b->src[i].axis < 0) {
+            v = SDL_GetGamepadButton(pad, (SDL_GamepadButton)b->src[i].button) ? 1.0f : 0.0f;
+        } else {
+            v = SDL_GetGamepadAxis(pad, (SDL_GamepadAxis)b->src[i].axis) / 32767.0f * b->src[i].sign;
+        }
+        if (v > best) {
+            best = v;
+        }
+    }
+    return best > 1.0f ? 1.0f : best;
+}
+
+/* An axis from two directions, with the dead zone, scaled to the N64 range */
+static s8 stickAxis(float pos, float neg) {
+    float v = pos - neg, dz = gPortConfig.deadzone / 100.0f, mag = v < 0 ? -v : v;
+
+    if (mag <= dz) {
+        return 0;
+    }
+    mag = (mag - dz) / (1.0f - dz);
+    if (mag > 1.0f) {
+        mag = 1.0f;
+    }
+    v = (v < 0 ? -mag : mag) * gPortConfig.stickRange;
+    return (s8)(v < 0 ? v - 0.5f : v + 0.5f);
+}
+
+/*
+ * DD64_PRESS (testing): controller 1 input by frame, "frame:inputs ...", each
+ * held from that presented frame until the next entry; inputs are the [keyboard]
+ * names joined with '+' ("1900:a 1906:none 2000:start+stick_up").
+ */
+extern unsigned gfx_presents;
+static void readPad(int channel, OSContPad *out);
+
+static int scriptedPad(u16 *buttons, float *amount) {
+    static const char *script;
+    static int checked;
+    const char *p, *best = NULL;
+    char name[32];
+    int i;
+
+    if (!checked) {
+        script = SDL_getenv("DD64_PRESS");
+        checked = 1;
+    }
+    if (script == NULL) {
+        return 0;
+    }
+    for (p = script; *p != '\0';) {
+        unsigned frame = (unsigned)SDL_strtoul(p, (char **)&p, 10);
+        if (*p != ':') {
+            break;
+        }
+        p++;
+        if (frame <= gfx_presents) {
+            best = p;
+        }
+        p += strcspn(p, " ");
+        p += strspn(p, " ");
+    }
+    *buttons = 0;
+    for (i = 0; i < IN_COUNT; i++) {
+        amount[i] = 0.0f;
+    }
+    while (best != NULL && *best != '\0' && *best != ' ') {
+        size_t n = strcspn(best, "+ ");
+        SDL_strlcpy(name, best, n + 1 < sizeof(name) ? n + 1 : sizeof(name));
+        for (i = 0; i < IN_COUNT; i++) {
+            if (SDL_strcasecmp(name, sInputs[i].key) == 0) {
+                amount[i] = 1.0f;
+                *buttons |= sInputs[i].bit;
+            }
+        }
+        best += n;
+        if (*best == '+') {
+            best++;
+        }
+    }
+    return 1;
+}
+
+void Port_InputGetPad(int channel, OSContPad *out) {
+    if (channel == 0) {
+        float amount[IN_COUNT];
+        u16 buttons;
+        if (scriptedPad(&buttons, amount)) {
+            out->button = buttons;
+            out->stick_x = stickAxis(amount[IN_STICK_RIGHT], amount[IN_STICK_LEFT]);
+            out->stick_y = stickAxis(amount[IN_STICK_UP], amount[IN_STICK_DOWN]);
+            return;
+        }
+    }
+    readPad(channel, out);
+}
+
+static void readPad(int channel, OSContPad *out) {
+    float amount[IN_COUNT];
+    const bool *keys = SDL_GetKeyboardState(NULL);
+    int useKeys = channel == gPortConfig.keyboardPlayer - 1;
+    SDL_Gamepad *pad;
+    u16 buttons = 0;
+    int i;
+
+    SDL_LockMutex(sLock);
+    pad = channel >= 0 && channel < MAXCONTROLLERS ? sPads[channel] : NULL;
+    for (i = 0; i < IN_COUNT; i++) {
+        float a = 0.0f;
+        if (useKeys && keys != NULL) {
+            a = keyAmount(&sKeyBinds[i], keys);
+        }
+        if (pad != NULL) {
+            float p = padAmount(&sPadBinds[i], pad);
+            if (p > a) {
+                a = p;
+            }
+        }
+        amount[i] = a;
+        if (sInputs[i].bit != 0 && a >= 0.5f) {
+            buttons |= sInputs[i].bit;
+        }
+    }
+    SDL_UnlockMutex(sLock);
+    out->button = buttons;
+    out->stick_x = stickAxis(amount[IN_STICK_RIGHT], amount[IN_STICK_LEFT]);
+    out->stick_y = stickAxis(amount[IN_STICK_UP], amount[IN_STICK_DOWN]);
+}
+
+void Port_InputRumble(int channel, int on) {
+    SDL_Gamepad *pad;
+    Uint16 strength;
+
+    if (channel < 0 || channel >= MAXCONTROLLERS) {
+        return;
+    }
+    SDL_LockMutex(sLock);
+    pad = sPads[channel];
+    on = on && gPortConfig.rumble;
+    if (pad != NULL && (on || sRumbleOn[channel])) {
+        sRumbleOn[channel] = on;
+        strength = (Uint16)(0xFFFF * gPortConfig.rumbleStrength / 100);
+        /* the game switches the motor on and off itself; the duration is a safety net */
+        SDL_RumbleGamepad(pad, on ? strength : 0, on ? strength : 0, on ? 500 : 0);
+    }
+    SDL_UnlockMutex(sLock);
+}

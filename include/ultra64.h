@@ -62,6 +62,18 @@ extern u8 gPortScratch[];
 #define PORT_DMA_BUF(type, name, offset) type *name = (type *)(gPortScratch + (offset))
 #endif
 
+/*
+ * Data the game unpacks itself (decompressed files) is big-endian like the
+ * ROM it came from, but written a byte at a time; PORT_MARK_BE marks it for
+ * conversion as it is read, as DMA does for data straight from the ROM.
+ */
+#ifdef TARGET_PC
+void Port_MarkBE(const void *p, unsigned int len);
+#define PORT_MARK_BE(p, len) Port_MarkBE((const void *)(p), (len))
+#else
+#define PORT_MARK_BE(p, len)
+#endif
+
 #ifdef TARGET_PC
 #define ASM_STR2(x) #x
 #define ASM_STR(x) ASM_STR2(x)

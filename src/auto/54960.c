@@ -5,7 +5,11 @@ extern s32 D_800B04A8;
 extern s32 D_800B04A4;
 extern u32 D_80125C90;
 extern char D_800BBA88[], D_800BBAA8[], D_800BBAC8[], D_800BBAD4[], D_800BBAE0[];
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Fb_CreateContext(void *);
+#endif
 void Font_BlitString(void *, s32, s32, char *);
 s32 sprintf(char *, const char *, ...);
 void Pad_Read(void);

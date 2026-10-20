@@ -10,7 +10,11 @@ typedef struct {
     s32 x10;
 } Obj1300;
 
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Car_GetPos(Vec3f *, void *);
+#endif
 f32 sqrtf(f32);
 
 static inline f32 Dist1300(void *a, void *b) {

@@ -33,8 +33,12 @@ extern Counts D_800B7F8C;
 extern PlayerSlot D_800958F0[];
 extern SndSlot D_8007EDD8[];
 extern s32 D_801320C8[];
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 void Car_GetVelocity(Vec3f *, Car *);
 void Car_GetPos(Vec3f *, Car *);
+#endif
 void List_RemoveById(void *, s16);
 Ent *World_FindObject(void *, s16);
 s16 Sound_PlayCar(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode);

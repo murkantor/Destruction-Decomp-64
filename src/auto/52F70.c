@@ -10,6 +10,7 @@ extern u32 D_800BCA54;
 void Inflate_FlushWindow(s32 arg0, s32 arg1) {
     if ((u32) D_800BCA54 >= (u32) (D_800BCA50 + arg1)) {
         memcpy(D_800BCA4C + D_800BCA50, arg0, arg1);
+        PORT_MARK_BE(D_800BCA4C + D_800BCA50, arg1);
         D_800BCA50 += arg1;
         return;
     }

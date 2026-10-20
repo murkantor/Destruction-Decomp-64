@@ -61,8 +61,12 @@ extern void Vec3f_Dot(f32 *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Cross(Vec3f *out, Vec3f *a, Vec3f *b);
 extern void Vec3f_Scale(Vec3f *out, Vec3f *v, f32 s);
 extern void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
+#ifdef TARGET_PC
+#include "port_sret.h"
+#else
 extern void Mtx3_MulVec3fTransposed(Vec3f *out, Vec3f *m, Vec3f *v);
 extern void Wheel_ComputeTireForce(Vec3f *out, Car *car, Wheel *w, f32 load, Vec3f *p, s32 *slot, s32 i);
+#endif
 
 void Car_ApplyWheelForces(Car *car, Vec3f *force, Vec3f *torque, s32 *slots)
 {
