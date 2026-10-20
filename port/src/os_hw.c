@@ -205,15 +205,52 @@ void *osViGetNextFramebuffer(void) {
     return sViNextFb;
 }
 
-/* Host main thread, once per retrace (60 Hz). */
+/*
+ * The retrace clock (60 Hz) runs on its own thread, as the hardware's does:
+ * the game's frame and audio threads keep their beat while the main thread is
+ * busy drawing or loading. The main thread presents the frame when it next
+ * comes round (Port_ViRetrace).
+ */
+#define VI_RATE_NS (1000000000ull / 60)
+
+static SDL_Thread *sViThread;
+static SDL_AtomicInt sViPresent;
+
+static int viClock(void *data) {
+    u64 next = SDL_GetTicksNS() + VI_RATE_NS;
+
+    while (!gPortQuit) {
+        u64 now = SDL_GetTicksNS();
+
+        if (now < next) {
+            SDL_DelayPrecise(next - now);
+        }
+        next += VI_RATE_NS;
+        if (SDL_GetTicksNS() > next + 4 * VI_RATE_NS) {
+            next = SDL_GetTicksNS() + VI_RATE_NS; /* the host slept; don't try to catch up */
+        }
+        sViRetraces++;
+        SDL_SetAtomicInt(&sViPresent, 1);
+        Port_RcpWake();
+        if (sViEventQueue != NULL && sViRetraces % sViRetraceCount == 0) {
+            Port_PostMesg(sViEventQueue, sViEventMsg);
+        }
+    }
+    return 0;
+}
+
+void Port_ViStart(void) {
+    sViThread = SDL_CreateThread(viClock, "vi clock", NULL);
+    if (sViThread == NULL) {
+        Port_Fatal("VI clock thread: %s", SDL_GetError());
+    }
+}
+
+/* Host main thread, each time round its loop: show the frame the retrace started scanning out. */
 void Port_ViRetrace(void) {
-    if (sViNextFb != sViCurrentFb) {
+    if (SDL_CompareAndSwapAtomicInt(&sViPresent, 1, 0) && sViNextFb != sViCurrentFb) {
         sViCurrentFb = sViNextFb;
         Port_VideoSwap(sViCurrentFb);
-    }
-    sViRetraces++;
-    if (sViEventQueue != NULL && sViRetraces % sViRetraceCount == 0) {
-        Port_PostMesg(sViEventQueue, sViEventMsg);
     }
 }
 
@@ -264,10 +301,11 @@ void osSpTaskStartGo(OSTask *task) {
 }
 
 void osSpTaskYield(void) {
+    Port_RcpYield();
 }
 
 u32 osSpTaskYielded(OSTask *task) {
-    return 0;
+    return Port_RcpYielded(task);
 }
 
 s32 __osSpSetPc(u32 pc) {

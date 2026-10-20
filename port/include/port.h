@@ -39,11 +39,15 @@ void Port_PostMesg(OSMesgQueue *mq, OSMesg msg);
 void Port_SafePoint(void);
 void Port_OsHostTick(void);
 OSTime Port_GetTime(void);
+void Port_ViStart(void);
 void Port_ViRetrace(void);
 
-/* rcp.c: graphics and audio tasks, run on the host main thread */
+/* rcp.c: graphics tasks, run on the host main thread; audio tasks, run where they are started */
 void Port_RcpInit(void);
 void Port_RcpSubmit(OSTask *task);
+void Port_RcpYield(void);
+int Port_RcpYielded(OSTask *task);
+void Port_RcpWake(void);
 void Port_RcpWait(u64 untilNs);
 void Port_RcpRunPending(void);
 

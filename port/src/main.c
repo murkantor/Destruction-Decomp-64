@@ -12,8 +12,6 @@
 #include "port.h"
 #include "port_config.h"
 
-#define VI_RATE_NS (1000000000ull / 60)
-
 void boot(void);
 
 volatile int gPortQuit;
@@ -89,8 +87,6 @@ static void openLog(void) {
 }
 
 int main(int argc, char **argv) {
-    u64 nextRetrace;
-
     openLog();
 #ifdef _WIN32
     SetUnhandledExceptionFilter(crashHandler);
@@ -112,23 +108,14 @@ int main(int argc, char **argv) {
     Port_InputInit();
 
     boot();
+    Port_ViStart();
 
-    nextRetrace = SDL_GetTicksNS() + VI_RATE_NS;
     while (!gPortQuit) {
-        u64 now;
-
         Port_PumpEvents();
         Port_RcpRunPending();
         Port_OsHostTick();
-        now = SDL_GetTicksNS();
-        if (now >= nextRetrace) {
-            Port_ViRetrace();
-            nextRetrace += VI_RATE_NS;
-            if (now > nextRetrace + 4 * VI_RATE_NS) {
-                nextRetrace = now + VI_RATE_NS; /* fell behind; don't try to catch up */
-            }
-        }
-        Port_RcpWait(SDL_min(nextRetrace, now + 1000000));
+        Port_ViRetrace();
+        Port_RcpWait(SDL_GetTicksNS() + 1000000); /* a task, a retrace, or a millisecond */
     }
 
     SDL_Quit();

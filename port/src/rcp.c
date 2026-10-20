@@ -1,8 +1,16 @@
 /*
- * The RSP and RDP: tasks the scheduler starts with osSpTaskStartGo are queued
- * here and run in order on the host main thread, which owns the GL context.
- * When a task is done the SP interrupt is raised, and for a graphics task the
- * DP interrupt after it, as the SDK scheduler expects.
+ * The RSP and RDP. Graphics tasks the scheduler starts with osSpTaskStartGo
+ * are queued here and run in order on the host main thread, which owns the GL
+ * context; when one is done the SP interrupt is raised, then the DP interrupt,
+ * as the SDK scheduler expects. Audio tasks need no GL context and must not
+ * wait for the graphics (the main thread can be busy for a long time loading
+ * textures): they run at once on the thread that starts them.
+ *
+ * The scheduler asks the graphics task to yield when an audio task is
+ * waiting (osSpTaskYield). A task still queued is taken off the queue; one
+ * being drawn goes on being drawn, but counts as yielded, and the scheduler
+ * starts it again once the audio task is done, which here means waiting for
+ * that drawing to finish (the RSP would resume from its saved state).
  */
 #include <SDL3/SDL.h>
 
@@ -14,24 +22,94 @@ static SDL_Mutex *sLock;
 static SDL_Condition *sCond;
 static OSTask *sQueue[MAX_TASKS];
 static int sHead, sCount;
+static OSTask *sDrawing;     /* the graphics task the main thread is running */
+static OSTask *sYielded;     /* a graphics task yielded to an audio task, until the scheduler starts it again */
+static enum { YIELD_QUEUED, YIELD_DRAWING, YIELD_DRAWN } sYieldState;
 
 void Port_RcpInit(void) {
     sLock = SDL_CreateMutex();
     sCond = SDL_CreateCondition();
 }
 
-void Port_RcpSubmit(OSTask *task) {
-    SDL_LockMutex(sLock);
+static void enqueue(OSTask *task) {
     if (sCount == MAX_TASKS) {
         Port_Fatal("RCP task queue full");
     }
     sQueue[(sHead + sCount) % MAX_TASKS] = task;
     sCount++;
     SDL_SignalCondition(sCond);
+}
+
+void Port_RcpSubmit(OSTask *task) {
+    int done = 0;
+
+    if (task->t.type == M_AUDTASK) {
+        Port_AudioRunTask(task);
+        Port_PostEvent(OS_EVENT_SP);
+        return;
+    }
+    SDL_LockMutex(sLock);
+    if (task == sYielded) {
+        /* Started again after its yield */
+        sYielded = NULL;
+        if (sYieldState == YIELD_DRAWN) {
+            done = 1;
+        } else if (sYieldState == YIELD_QUEUED) {
+            enqueue(task);
+        }
+        /* YIELD_DRAWING: still being drawn; its events come when that is done */
+    } else {
+        enqueue(task);
+    }
+    SDL_UnlockMutex(sLock);
+    if (done) {
+        Port_PostEvent(OS_EVENT_SP);
+        Port_PostEvent(OS_EVENT_DP);
+    }
+}
+
+/* osSpTaskYield: let the audio task through. The SP interrupt reports the yield. */
+void Port_RcpYield(void) {
+    int yielded = 0;
+
+    SDL_LockMutex(sLock);
+    if (sYielded == NULL) {
+        if (sDrawing != NULL) {
+            sYielded = sDrawing;
+            sYieldState = YIELD_DRAWING;
+            yielded = 1;
+        } else if (sCount > 0) {
+            sYielded = sQueue[sHead];
+            sHead = (sHead + 1) % MAX_TASKS;
+            sCount--;
+            sYieldState = YIELD_QUEUED;
+            yielded = 1;
+        }
+    }
+    SDL_UnlockMutex(sLock);
+    if (yielded) {
+        Port_PostEvent(OS_EVENT_SP);
+    }
+}
+
+/* osSpTaskYielded: did this task yield (rather than finish)? */
+int Port_RcpYielded(OSTask *task) {
+    int yielded;
+
+    SDL_LockMutex(sLock);
+    yielded = task == sYielded;
+    SDL_UnlockMutex(sLock);
+    return yielded;
+}
+
+/* Wake the main thread (a retrace, from the VI clock thread) */
+void Port_RcpWake(void) {
+    SDL_LockMutex(sLock);
+    SDL_SignalCondition(sCond);
     SDL_UnlockMutex(sLock);
 }
 
-/* Sleep until a task arrives or until untilNs. */
+/* Sleep until a task arrives, Port_RcpWake, or untilNs. */
 void Port_RcpWait(u64 untilNs) {
     u64 now = SDL_GetTicksNS();
 
@@ -49,6 +127,7 @@ void Port_RcpWait(u64 untilNs) {
 void Port_RcpRunPending(void) {
     for (;;) {
         OSTask *task;
+        int events = 1;
 
         SDL_LockMutex(sLock);
         if (sCount == 0) {
@@ -58,22 +137,25 @@ void Port_RcpRunPending(void) {
         task = sQueue[sHead];
         sHead = (sHead + 1) % MAX_TASKS;
         sCount--;
+        sDrawing = task;
         SDL_UnlockMutex(sLock);
 
-        switch (task->t.type) {
-            case M_GFXTASK:
-                Port_VideoRunTask(task);
-                Port_PostEvent(OS_EVENT_SP);
-                Port_PostEvent(OS_EVENT_DP);
-                break;
-            case M_AUDTASK:
-                Port_AudioRunTask(task);
-                Port_PostEvent(OS_EVENT_SP);
-                break;
-            default:
-                Port_Log("RCP: unknown task type %u", (unsigned)task->t.type);
-                Port_PostEvent(OS_EVENT_SP);
-                break;
+        if (task->t.type == M_GFXTASK) {
+            Port_VideoRunTask(task);
+        } else {
+            Port_Log("RCP: unknown task type %u", (unsigned)task->t.type);
+        }
+
+        SDL_LockMutex(sLock);
+        sDrawing = NULL;
+        if (task == sYielded && sYieldState == YIELD_DRAWING) {
+            sYieldState = YIELD_DRAWN; /* the scheduler owes it a restart; the events come then */
+            events = 0;
+        }
+        SDL_UnlockMutex(sLock);
+        if (events) {
+            Port_PostEvent(OS_EVENT_SP);
+            Port_PostEvent(OS_EVENT_DP);
         }
     }
 }

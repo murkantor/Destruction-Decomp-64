@@ -34,11 +34,12 @@
  * device starts pulling once the ring has filled to the latency.
  *
  * Testing aids: DD64_WAVOUT=path writes the samples the game queued (before
- * the volume setting) to a WAV file; DD64_AUDIO_DUMP=path records what the
- * first ADPCM voice decodes (raw s16) and, in path.sizes, the bytes of each
- * buffer queued (u32), and logs the ADPCM book, the first frames and the
- * frame-header histograms; DD64_AUDIO_LATENCY=ms overrides the dd64.ini
- * latency.
+ * the volume setting) to a WAV file; DD64_AUDIO_DUMP=path records every ADPCM
+ * command of the first voice (state, book, input bytes, output; checked
+ * against an independent decoder by tools/port/adpcm_check.py) and, in
+ * path.sizes, a record per buffer queued (bytes, ms, ring fill, last length
+ * reported), and logs the ADPCM book, the first frames and the frame-header
+ * histograms; DD64_AUDIO_LATENCY=ms overrides the dd64.ini latency.
  */
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -69,6 +70,7 @@ static struct {
     u32 size;
 } sDmas[MAX_DMAS];             /* the buffers the game queued (the AI's DMAs), oldest first */
 static u32 sDmaHead, sDmaCount;
+static u32 sLastReport;        /* what osAiGetLength last returned */
 static u32 sUnderruns;
 static u64 sFirstQueueNs;
 static int sQueueLogs;
@@ -265,10 +267,11 @@ void Port_AudioQueue(const void *buf, u32 bytes) {
             fwrite(&v, 2, 1, sWav);
         }
     }
-    sFill += bytes;
     if (sSizes != NULL) {
-        fwrite(&bytes, 4, 1, sSizes);
+        u32 rec[4] = { bytes, (u32)SDL_GetTicks(), sFill, sLastReport };
+        fwrite(rec, sizeof(rec), 1, sSizes);
     }
+    sFill += bytes;
     if (sDmaCount == MAX_DMAS) {
         sDmaHead = (sDmaHead + 1) % MAX_DMAS;
         sDmaCount--;
@@ -307,6 +310,7 @@ u32 Port_AudioQueuedBytes(void) {
         u64 end = sDmas[sDmaHead].start + sDmas[sDmaHead].size;
         n = pos > sDmas[sDmaHead].start ? (u32)(end - pos) : sDmas[sDmaHead].size;
     }
+    sLastReport = n;
     SDL_UnlockMutex(sLock);
     return n;
 }
@@ -420,9 +424,13 @@ static void loadSamples(s16 *dst, const void *src, u32 n) {
     }
 }
 
-/* The microcode's own state blocks: host order, read back only by us */
+/*
+ * The microcode's own state blocks: host order, read back only here and the
+ * same way (plain copies, never the width-aware readers: GCC inlines these
+ * copies, so the shadow map's marks on the block do not follow them).
+ */
 static void storeState(void *dst, const void *src, u32 bytes) {
-    memcpy(dst, src, bytes); /* the wrapped memcpy marks it host order */
+    memcpy(dst, src, bytes);
 }
 
 /* DMEM <-> game memory in N64 byte order, so ADPCM bytes and samples alike go through unchanged */
@@ -493,22 +501,33 @@ static void dumpStats(void) {
     Port_Log("audio: predictor histogram:%s", line);
 }
 
-static void audioDump(u32 stateAddr, const s16 *samples, u32 n) {
+/* One record per ADPCM command of the first voice: what went in and what came out, for an independent re-decode */
+static void audioDump(u32 stateAddr, u32 flags, const s16 *stateIn, u32 in, u32 count, const s16 *samples) {
+    u32 hdr[4] = { 0xADC0ADC0u, flags, count, 0 };
+    u32 i, n = count >> 1;
+
     if (sDump == NULL) {
         return;
     }
     if (sDumpVoice == 0) {
         sDumpVoice = stateAddr;
     }
-    if (stateAddr == sDumpVoice && sDumpSamples < 400000) {
-        fwrite(samples, 2, n, sDump);
-        sDumpSamples += n;
+    if (stateAddr != sDumpVoice || sDumpSamples >= 400000) {
+        return;
     }
+    fwrite(hdr, sizeof(hdr), 1, sDump);
+    fwrite(stateIn, 2, 16, sDump);
+    fwrite(sTable, 2, 128, sDump);
+    for (i = 0; i < (count / 32) * 9; i++) {
+        fputc(*dmem8(in + i), sDump);
+    }
+    fwrite(samples, 2, n, sDump);
+    sDumpSamples += n;
 }
 
 static void cmdAdpcm(u32 flags, u32 addr) {
     void *state = ramPtr(addr, 32, "ADPCM state");
-    s16 last[16];
+    s16 last[16], stateIn[16];
     u32 count = align(sCount, 32), in = sIn, out = sOut, i;
 
     if (state == NULL) {
@@ -520,10 +539,11 @@ static void cmdAdpcm(u32 flags, u32 addr) {
         if (sLoop == NULL) {
             return;
         }
-        loadSamples(last, sLoop, 16);
+        loadSamples(last, sLoop, 16); /* the bank's loop state: big-endian */
     } else {
-        loadSamples(last, state, 16);
+        memcpy(last, state, sizeof(last)); /* our own, host order: read as written (the shadow map knows nothing of it) */
     }
+    memcpy(stateIn, last, sizeof(stateIn));
     for (i = 0; i < 16; i++, out += 2) {
         *dmem16(out) = last[i];
     }
@@ -556,7 +576,7 @@ static void cmdAdpcm(u32 flags, u32 addr) {
         count -= 32;
     }
     storeState(state, last, sizeof(last));
-    audioDump(addr, dmem16(sOut + 32), align(sCount, 32) >> 1);
+    audioDump(addr, flags, stateIn, sIn, align(sCount, 32), dmem16(sOut + 32));
 }
 
 static void cmdResample(u32 flags, u32 pitch, u32 addr) {
