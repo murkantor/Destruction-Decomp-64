@@ -1647,6 +1647,10 @@ static void s2_load_txtr(const uint8_t *txtr) {
     const uint8_t *image = seg_addr(rd32(txtr + 4));
     uint16_t tmem = rd16(txtr + 8);
 
+    if (dl_dumping) {
+        sysLogPrintf(LOG_NOTE, "s2 txtr %08X image %p tmem %u %u %u", type, (const void *)image, tmem, rd16(txtr + 10),
+                     rd16(txtr + 12));
+    }
     if (type == G_OBJLT_TLUT) {
         uint16_t phead = rd16(txtr + 8), pnum = rd16(txtr + 10);
         rdp.texture_to_load.addr = image;
@@ -1660,7 +1664,7 @@ static void s2_load_txtr(const uint8_t *txtr) {
         rdp.loaded_texture[tmem & 511].line_size_bytes = 0;
     } else { /* G_OBJLT_TXTRTILE */
         uint16_t twidth = rd16(txtr + 10), theight = rd16(txtr + 12);
-        uint32_t line = (twidth + 1) * 8;            /* GS_TT_TWIDTH: line in 64-bit words, minus one */
+        uint32_t line = (twidth + 1) / 4 * 8;        /* GS_TT_TWIDTH: 64-bit words a line * 4, minus one */
         uint32_t lines = (theight + 1) / 4;          /* GS_TT_THEIGHT: lines * 4 - 1 */
         rdp.loaded_texture[tmem & 511].addr = image;
         rdp.loaded_texture[tmem & 511].size_bytes = line * lines;
@@ -1677,6 +1681,10 @@ static void s2_draw_sprite(const uint8_t *spr, float x, float y, float scale_x, 
     uint8_t fmt = rd8(spr + 20), siz = rd8(spr + 21), pal = rd8(spr + 22), flags = rd8(spr + 23);
     float w = imageW / 32.0f, h = imageH / 32.0f;
 
+    if (dl_dumping) {
+        sysLogPrintf(LOG_NOTE, "s2 sprite at %g,%g scale %g,%g: %gx%g stride %u adrs %u fmt %u siz %u pal %u flags %X",
+                     x, y, scale_x, scale_y, w, h, stride, adrs, fmt, siz, pal, flags);
+    }
     rdp.texture_tile[0].fmt = fmt;
     rdp.texture_tile[0].siz = siz;
     rdp.texture_tile[0].tmem = adrs & 511;
