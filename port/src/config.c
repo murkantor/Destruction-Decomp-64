@@ -146,7 +146,7 @@ static const Setting sSettings[] = {
     { "video", "fullscreen", &gPortConfig.fullscreen, 0, "1 = start fullscreen (Alt+Enter or F11 toggles)" },
     { "video", "fullscreen_exclusive", &gPortConfig.fullscreenExclusive, 0,
       "0 = borderless desktop fullscreen, 1 = exclusive mode" },
-    { "video", "vsync", &gPortConfig.vsync, 1, "0 = off, 1 = on, -1 = adaptive" },
+    { "video", "vsync", &gPortConfig.vsync, 1, "0 = off, 1 = on, -1 = adaptive, 2 = VRR (G-Sync/FreeSync: on, capped just under the display's rate)" },
     { "video", "max_fps", &gPortConfig.maxFps, 0,
       "Frame cap: 0 = none (with vsync, the display's rate), or 30, 40, 60, 120, 144 ... The game runs at 60 Hz either way" },
     { "video", "interpolation", &gPortConfig.interpolation, 1,

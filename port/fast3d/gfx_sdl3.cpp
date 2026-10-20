@@ -157,6 +157,9 @@ static bool gfx_sdl_set_swap_interval(int interval) {
         swap_interval = interval;
         return gfx_sdlgpu_set_swap_interval(interval);
     }
+    if (interval == 2) {
+        interval = 1; /* VRR: vsync, under a cap (port/src/video.c) */
+    }
     /* -1 is adaptive vsync; fall back to plain vsync where the driver lacks it */
     if (!SDL_GL_SetSwapInterval(interval)) {
         if (interval != -1 || !SDL_GL_SetSwapInterval(1)) {

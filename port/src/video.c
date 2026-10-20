@@ -31,9 +31,27 @@ float gfx_sdl_refresh_rate(void);
 
 #define GAME_RATE 60
 
+static int sCap; /* the frame cap in use (frameCap), 0 = none */
+
+/* The frame cap: [video] max_fps, or with VRR (vsync 2) a little under the
+   display's rate, so frames never queue for a vsync (G-Sync/FreeSync then
+   shows each as it comes): refresh - refresh^2/3600, 144 Hz -> 138 */
+static int frameCap(void) {
+    float refresh = gfx_sdl_refresh_rate();
+    int cap = gPortConfig.maxFps;
+
+    if (gPortConfig.vsync == 2 && refresh > 0.0f) {
+        int vrr = (int)(refresh - refresh * refresh / 3600.0f);
+        if (cap <= 0 || cap > vrr) {
+            cap = vrr;
+        }
+    }
+    return cap;
+}
+
 /* How often frames can be shown: the cap, and the display with vsync on */
 static float presentRate(void) {
-    float refresh = gfx_sdl_refresh_rate(), cap = (float)gPortConfig.maxFps;
+    float refresh = gfx_sdl_refresh_rate(), cap = (float)sCap;
 
     if (gPortConfig.vsync != 0 && refresh > 0.0f) {
         return cap > 0.0f && cap < refresh ? cap : refresh;
@@ -43,7 +61,16 @@ static float presentRate(void) {
 
 /* Interpolation is only worth its blend where frames are not shown at the game's rate */
 static void updateInterp(void) {
-    float rate = presentRate();
+    float rate;
+    int cap = frameCap();
+
+    if (cap != sCap) {
+        sCap = cap;
+        if (gPortConfig.vsync == 2) {
+            Port_Log("video: VRR, frames capped at %d fps", cap);
+        }
+    }
+    rate = presentRate();
     int mode = gPortConfig.interpolation != 0 && SDL_fabsf(rate - GAME_RATE) > 1.5f ? gPortConfig.interpolation : 0;
 
     if (mode != sInterp) {
@@ -138,8 +165,8 @@ void Port_VideoPresentInterp(void) {
         return;
     }
     now = SDL_GetTicksNS();
-    if (gPortConfig.maxFps > 0) {
-        u64 interval = 1000000000ULL / (u64)gPortConfig.maxFps;
+    if (sCap > 0) {
+        u64 interval = 1000000000ULL / (u64)sCap;
         if (now < sNextPresentNs) {
             return;
         }

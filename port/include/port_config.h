@@ -12,7 +12,7 @@ typedef struct {
     int windowHeight;
     int fullscreen;          /* 0 windowed, 1 fullscreen */
     int fullscreenExclusive; /* 0 borderless desktop, 1 exclusive mode */
-    int vsync;               /* 0 off, 1 on, -1 adaptive */
+    int vsync;               /* 0 off, 1 on, -1 adaptive, 2 VRR */
     int maxFps;              /* frame cap, 0 = none (the display's rate with vsync) */
     int interpolation;       /* frames in between: 0 off, 1 smooth, 2 lowest latency */
     int msaa;                /* 1, 2, 4, 8 */

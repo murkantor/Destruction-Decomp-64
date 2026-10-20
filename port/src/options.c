@@ -41,8 +41,8 @@ static const int kAspect[] = { 0, 1, 2 }; /* 4:3, widescreen, stretched (two fie
 static const char *const kAspectN[] = { "4:3", "widescreen", "stretched" };
 static int sAspect;
 
-static const int kVsync[] = { 0, 1, -1 };
-static const char *const kVsyncN[] = { "off", "on", "adaptive" };
+static const int kVsync[] = { 0, 1, -1, 2 };
+static const char *const kVsyncN[] = { "off", "on", "adaptive", "VRR" };
 static const int kFps[] = { 0, 30, 40, 60, 75, 90, 120, 144, 165, 240 };
 static const char *const kFpsN[] = { "no limit", "30", "40", "60", "75", "90", "120", "144", "165", "240" };
 static const int kInterp[] = { 0, 1, 2 };

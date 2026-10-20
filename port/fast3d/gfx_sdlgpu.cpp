@@ -1190,9 +1190,16 @@ extern "C" void gfx_sdlgpu_swap(void) {
     cmd = NULL;
 }
 
-/* gfx_sdl3.cpp: 0 no vsync, 1 vsync, -1 adaptive (SDL_gpu has none: vsync) */
+/* gfx_sdl3.cpp: 0 no vsync, 1 vsync, -1 adaptive (SDL_gpu has none: vsync),
+   2 VRR: vsync with one frame in flight, so a frame is never drawn ahead of the
+   one being shown (the least lag; the frame cap keeps it under the display's rate) */
 extern "C" bool gfx_sdlgpu_set_swap_interval(int interval) {
     SDL_GPUPresentMode mode = SDL_GPU_PRESENTMODE_VSYNC;
+    static Uint32 in_flight = 2;
+    Uint32 want = interval == 2 ? 1 : 2;
+    if (want != in_flight && SDL_SetGPUAllowedFramesInFlight(dev, want)) {
+        in_flight = want;
+    }
     if (interval == 0) {
         if (SDL_WindowSupportsGPUPresentMode(dev, wnd, SDL_GPU_PRESENTMODE_IMMEDIATE)) {
             mode = SDL_GPU_PRESENTMODE_IMMEDIATE;
