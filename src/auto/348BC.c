@@ -16,8 +16,16 @@ extern const double D_800B9540;
 s32 Poly_IntersectSegment(Poly *a, f32 *minA, Poly *b, f32 *minB, Vec3f *out)
 {
     Vec3f d;
+#ifdef TARGET_PC
+    /* Poly_ClipAgainstPlane writes a point per crossing or on-plane vertex, more
+       than 2 for some polygons: on the N64 the extra land on locals set later;
+       here they would hit the saved registers, so there is room for them */
+    Vec3f s1[16];
+    Vec3f s2[16];
+#else
     Vec3f s1[2];
     Vec3f s2[2];
+#endif
     Vec3f e;
     f32 len2, t0, t1, tmp, lo, hi, dot;
 

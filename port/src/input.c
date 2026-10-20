@@ -278,19 +278,66 @@ static s8 stickAxis(float pos, float neg) {
 extern unsigned gfx_presents;
 static void readPad(int channel, OSContPad *out);
 
+static void pressNamed(const char *name, u16 *buttons, float *amount) {
+    int i;
+
+    for (i = 0; i < IN_COUNT; i++) {
+        if (SDL_strcasecmp(name, sInputs[i].key) == 0) {
+            amount[i] = 1.0f;
+            *buttons |= sInputs[i].bit;
+        }
+    }
+}
+
+/* DD64_TAP (testing): "input:period ..." taps each input for 4 frames every period frames */
+static int tappedPad(u16 *buttons, float *amount) {
+    static const char *taps;
+    static int checked;
+    const char *p;
+    char name[32];
+
+    if (!checked) {
+        taps = SDL_getenv("DD64_TAP");
+        checked = 1;
+    }
+    if (taps == NULL) {
+        return 0;
+    }
+    for (p = taps; *p != '\0';) {
+        size_t n = strcspn(p, ": ");
+        unsigned period;
+        SDL_strlcpy(name, p, n + 1 < sizeof(name) ? n + 1 : sizeof(name));
+        p += n;
+        if (*p != ':') {
+            break;
+        }
+        period = (unsigned)SDL_strtoul(p + 1, (char **)&p, 10);
+        if (period > 4 && gfx_presents % period < 4) {
+            pressNamed(name, buttons, amount);
+        }
+        p += strspn(p, " ");
+    }
+    return 1;
+}
+
 static int scriptedPad(u16 *buttons, float *amount) {
     static const char *script;
     static int checked;
     const char *p, *best = NULL;
     char name[32];
-    int i;
+    int i, tapped;
 
     if (!checked) {
         script = SDL_getenv("DD64_PRESS");
         checked = 1;
     }
+    *buttons = 0;
+    for (i = 0; i < IN_COUNT; i++) {
+        amount[i] = 0.0f;
+    }
+    tapped = tappedPad(buttons, amount);
     if (script == NULL) {
-        return 0;
+        return tapped;
     }
     for (p = script; *p != '\0';) {
         unsigned frame = (unsigned)SDL_strtoul(p, (char **)&p, 10);
@@ -304,19 +351,10 @@ static int scriptedPad(u16 *buttons, float *amount) {
         p += strcspn(p, " ");
         p += strspn(p, " ");
     }
-    *buttons = 0;
-    for (i = 0; i < IN_COUNT; i++) {
-        amount[i] = 0.0f;
-    }
     while (best != NULL && *best != '\0' && *best != ' ') {
         size_t n = strcspn(best, "+ ");
         SDL_strlcpy(name, best, n + 1 < sizeof(name) ? n + 1 : sizeof(name));
-        for (i = 0; i < IN_COUNT; i++) {
-            if (SDL_strcasecmp(name, sInputs[i].key) == 0) {
-                amount[i] = 1.0f;
-                *buttons |= sInputs[i].bit;
-            }
-        }
+        pressNamed(name, buttons, amount);
         best += n;
         if (*best == '+') {
             best++;

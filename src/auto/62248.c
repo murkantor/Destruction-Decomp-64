@@ -136,7 +136,12 @@ Gfx *Bg_Draw(Bg *bg, Gfx *g, s32 flags) {
         }
         if (bg->attr & 8) {
             GFX2(g, 0xFC119623, 0xFF2FFFFF);
+#ifdef TARGET_PC
+            /* alpha is the low byte of the s32 the setters store at 0x4C */
+            GFX2(g, 0xFA000000, (u8)*(s32 *)((u8 *)bg + 0x4C) | 0xFFFFFF00);
+#else
             GFX2(g, 0xFA000000, bg->alpha | 0xFFFFFF00);
+#endif
         } else {
             GFX2(g, 0xFCFFFFFF, 0xFFFCF279);
         }

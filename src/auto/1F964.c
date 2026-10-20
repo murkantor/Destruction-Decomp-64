@@ -88,7 +88,12 @@ void Car_Destroy(Car *o) {
         }
     }
     if (o->xC) {
+#ifdef TARGET_PC
+        /* the low byte of the s32 at 0x34 (Car_Create reads it whole) */
+        idx = (u8)*(s32 *)((u8 *)o + 0x34);
+#else
         idx = ((u8 *)o)[0x37];
+#endif
         if (gGame->xC == 2) {
             if (o->xB6C) {
                 Obj_FreeSubBuffers(&o->xB6C);

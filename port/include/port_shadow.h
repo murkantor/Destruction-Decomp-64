@@ -6,6 +6,7 @@
 #define PORT_SHADOW_H
 
 #include <stdint.h>
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,41 @@ uint32_t Port_HostToN64(const void *p);
 static inline int Port_IsBEInline(const void *p) {
     uint32_t off = (uint32_t)(uintptr_t)p - (uint32_t)(uintptr_t)gRam;
     return off < PORT_RAM_SIZE && (gPortShadow[off] & 1); /* SH_BE */
+}
+
+/*
+ * A 16- or 32-bit value of game memory as the N64 would read it, for host code
+ * reading what the game built (display lists, vertices, matrices): big-endian
+ * data is swapped; host-order data written at this width is read as it is; data
+ * written at another width (a matrix built as 32-bit words read in halves, say)
+ * is put back in N64 byte order first (Port_ReadN64Bytes).
+ */
+static inline uint32_t Port_RdN64(const void *p, uint32_t n) {
+    uint32_t off = (uint32_t)(uintptr_t)p - (uint32_t)(uintptr_t)gRam, v = 0, i, same = 1, be = 1;
+    uint8_t b[4];
+
+    if (off >= PORT_RAM_SIZE) {
+        memcpy(&v, p, n);
+        return v;
+    }
+    for (i = 0; i < n; i++) {
+        uint8_t s = gPortShadow[off + i];
+        if ((s & 1) || ((s >> 4) != 0 && (s >> 4) != n)) {
+            same = 0;
+        }
+        if (!(s & 1)) {
+            be = 0;
+        }
+    }
+    if (same || be) {
+        memcpy(&v, p, n);
+        return !be ? v : n == 4 ? __builtin_bswap32(v) : (uint16_t)__builtin_bswap16((uint16_t)v);
+    }
+    Port_ReadN64Bytes(b, p, n);
+    for (i = 0; i < n; i++) {
+        v = v << 8 | b[i];
+    }
+    return v;
 }
 
 #ifdef __cplusplus

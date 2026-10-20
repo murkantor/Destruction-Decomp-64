@@ -35,6 +35,17 @@ typedef double f64;
 #endif
 
 /*
+ * A double written as its two 32-bit words, high word first in the source:
+ * DU_WORDS(hi, lo) initialises a struct of two u32 laid over an f64, in the
+ * order the host keeps the words (low word first on a little-endian host).
+ */
+#ifdef HOST_LE
+#define DU_WORDS(hi, lo) { lo, hi }
+#else
+#define DU_WORDS(hi, lo) { hi, lo }
+#endif
+
+/*
  * ASM_REG pins a local to a MIPS register, which some functions need to match.
  * ASM_ALIAS gives a declaration another symbol's name. On PC the pin is dropped
  * and the alias gets the platform's symbol prefix (_ on 32-bit Windows).

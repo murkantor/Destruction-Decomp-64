@@ -4,7 +4,12 @@
 extern s32 D_800D1C18;
 
 s8 Surface_GetType(s32 arg0) {
+#ifdef TARGET_PC
+    /* the low byte of the s32 entry (byte 3 of it on the N64) */
+    return (s8)M2C_FIELD(((arg0 * 4) + D_800D1C18), s32 *, 0);
+#else
     return M2C_FIELD(((arg0 * 4) + D_800D1C18), s8 *, 3);
+#endif
 }
 
 void *Mem_Alloc(M2C_UNK);                           /* extern */

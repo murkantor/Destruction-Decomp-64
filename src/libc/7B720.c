@@ -10,7 +10,11 @@ f64 exp(f64 x) {
     f64 ip;
     f64 f;
     u32 e;
+#ifdef HOST_LE
+    u32 *p = (u32 *)&u + 1; /* the high word */
+#else
     u32 *p = (u32 *)&u;
+#endif
 
     if (x >= 710.0) {
         goto overflow;

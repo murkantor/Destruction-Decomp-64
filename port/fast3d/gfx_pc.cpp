@@ -97,15 +97,11 @@ extern int g_GfxPresentX, g_GfxPresentW;
 /* ---- Reading game memory ---- */
 
 static inline uint32_t rd32(const void *p) {
-    uint32_t v;
-    memcpy(&v, p, 4);
-    return Port_IsBEInline(p) ? __builtin_bswap32(v) : v;
+    return Port_RdN64(p, 4);
 }
 
 static inline uint16_t rd16(const void *p) {
-    uint16_t v;
-    memcpy(&v, p, 2);
-    return Port_IsBEInline(p) ? (uint16_t)__builtin_bswap16(v) : v;
+    return (uint16_t)Port_RdN64(p, 2);
 }
 
 static inline int16_t rds16(const void *p) {
@@ -113,8 +109,19 @@ static inline int16_t rds16(const void *p) {
 }
 
 static inline uint8_t rd8(const void *p) {
-    return *(const uint8_t *)p;
+    uint32_t off = (uint32_t)(uintptr_t)p - (uint32_t)(uintptr_t)gRam;
+    uint8_t b;
+
+    if (off >= PORT_RAM_SIZE || (gPortShadow[off] >> 4) < 2) {
+        return *(const uint8_t *)p;
+    }
+    Port_ReadN64Bytes(&b, p, 1); /* a byte of a value written wider */
+    return b;
 }
+
+/* DD64_DLDUMP's task: matrices and the first vertices are logged too */
+static bool dl_dumping;
+static int dl_dumped_vtx;
 
 /* A 16-bit texel or palette entry. Texture data the game never touched is
  * still in the cart's byte order; data the game wrote as u16 is in host order. */
@@ -733,6 +740,12 @@ static void gfx_sp_matrix(uint8_t parameters, const uint8_t *addr) {
     float matrix[4][4];
 
     read_mtx(matrix, addr);
+    if (dl_dumping) {
+        sysLogPrintf(LOG_NOTE, "mtx %02X %p: %g %g %g %g | %g %g %g %g | %g %g %g %g | %g %g %g %g", parameters,
+                     (const void *)addr, matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3], matrix[1][0],
+                     matrix[1][1], matrix[1][2], matrix[1][3], matrix[2][0], matrix[2][1], matrix[2][2],
+                     matrix[2][3], matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
+    }
     if (parameters & G_MTX_PROJECTION) {
         if (parameters & G_MTX_LOAD) {
             memcpy(rsp.P_matrix, matrix, sizeof(matrix));
@@ -846,6 +859,11 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         d->y = y;
         d->z = z;
         d->w = w;
+        if (dl_dumping && dl_dumped_vtx < 40) {
+            dl_dumped_vtx++;
+            sysLogPrintf(LOG_NOTE, "vtx %p: ob %g %g %g -> clip %g %g %g %g rej %X", (const void *)vtx, ob[0], ob[1],
+                         ob[2], x, y, z, w, d->clip_rej);
+        }
 
         if (rsp.geometry_mode & G_FOG) {
             float winv = fabsf(w) < 0.001f ? 1000.0f : 1.0f / w;
@@ -1728,11 +1746,10 @@ static void gfx_run_dl(const uint8_t *cmd) {
         {
             /* DD64_DLDUMP=n: log every command of task number n */
             static const char *dump = getenv("DD64_DLDUMP");
-            static unsigned task_no;
-            if (dump != NULL && (unsigned)atoi(dump) == task_counter) {
+            dl_dumping = dump != NULL && (unsigned)atoi(dump) == task_counter;
+            if (dl_dumping) {
                 sysLogPrintf(LOG_NOTE, "dl %p d%d %s: %08X %08X", (const void *)cmd, depth, s2dex ? "s2" : "f3", w0, w1);
             }
-            (void)task_no;
         }
         if (s2dex) {
             bool handled = true;
