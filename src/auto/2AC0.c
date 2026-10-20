@@ -10,7 +10,7 @@ M2C_UNK ObjList_Add(s32);                         /* extern */
 extern M2C_UNK gMainHeap;
 
 s32 AiDriver_Load(s32 arg0) {
-    M2C_UNK sp18;
+    M2C_UNK sp18[2]; /* a HeapBlock: Heap_AllocAlt writes 8 bytes */
     s32 temp_v0;
     s32 temp_v0_2;
 

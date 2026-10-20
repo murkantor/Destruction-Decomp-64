@@ -51,6 +51,33 @@ void Port_RequestQuit(void) {
     gPortQuit = 1;
 }
 
+#ifdef _WIN32
+#include <windows.h>
+
+/* A crash on Windows: log the faulting address and the frame-pointer chain
+   (all code is built with frame pointers), for i686-w64-mingw32-addr2line */
+static LONG WINAPI crashHandler(EXCEPTION_POINTERS *info) {
+    CONTEXT *c = info->ContextRecord;
+    u32 *fp = (u32 *)c->Ebp;
+    int i;
+
+    Port_Log("crash: exception %08lX at %p, accessing %p", (unsigned long)info->ExceptionRecord->ExceptionCode,
+             info->ExceptionRecord->ExceptionAddress,
+             info->ExceptionRecord->NumberParameters >= 2 ? (void *)info->ExceptionRecord->ExceptionInformation[1]
+                                                          : NULL);
+    Port_Log("crash: eax %08lX ebx %08lX ecx %08lX edx %08lX esi %08lX edi %08lX ebp %08lX esp %08lX",
+             c->Eax, c->Ebx, c->Ecx, c->Edx, c->Esi, c->Edi, c->Ebp, c->Esp);
+    for (i = 0; i < 24 && fp != NULL && !IsBadReadPtr(fp, 8); i++) {
+        Port_Log("crash: frame %d return %08X", i, fp[1]);
+        if ((u32 *)fp[0] <= fp) {
+            break;
+        }
+        fp = (u32 *)fp[0];
+    }
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+#endif
+
 static void openLog(void) {
     const char *base = SDL_GetBasePath();
     char path[1024];
@@ -65,6 +92,9 @@ int main(int argc, char **argv) {
     u64 nextRetrace;
 
     openLog();
+#ifdef _WIN32
+    SetUnhandledExceptionFilter(crashHandler);
+#endif
     Port_ConfigLoad();
     SDL_SetAppMetadata("Destruction Derby 64", "0.1", "dd64.pc");
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_AUDIO)) {
