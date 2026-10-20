@@ -81,9 +81,14 @@ extern s32 gFieldD_80095D04[];
 extern s32 gFieldD_80095D34[];
 extern s32 gFieldD_80095D64[];
 extern S12 gFieldD_80095D94[];
+extern s32 D_80095850[];
+extern s32 gFieldD_80095850[];
+/* TODO: switch to the part-0 change's RACE_CARS replacement of D_800D1B08
+   (port/game/field_part0.c), which its readers (20E8C.c, 27590.c) use */
 extern Vec3f gFieldD_800D1B08[];
 #define FIELD_SLOT(t, i) (*((i) < 12 ? &t[i] : &gField##t[(i) - 12]))
 #define FIELD_SLOTS (RACE_CARS + 1)
+s32 Port_FieldAnnounceCarsLeft(s32 left);
 #else
 #define FIELD_SLOT(t, i) t[i]
 #define FIELD_SLOTS 12
@@ -154,6 +159,14 @@ void Race_Setup(void) {
         race->x8 = D_800D31CC[0];
         race->x4 = gGame[0]->x1100->xA4 - D_800D31CC[0];
         D_80125C1C[0] = race->x0 - 1;
+#ifdef TARGET_PC
+        /* Announcer_UpdateRace calls out the cars left, from a table of 11 lines, once
+           fewer remain than this: in the doubled field only once they are within the
+           N64's field (port/src/field.c). The HUD shows the real count. */
+        while (D_80125C1C[0] > 0 && !Port_FieldAnnounceCarsLeft(D_80125C1C[0])) {
+            D_80125C1C[0]--;
+        }
+#endif
         D_80097A00[0] = 0;
         switch (D_800958A8) {
         case 0:
@@ -295,6 +308,12 @@ void Race_Setup(void) {
         Debris_Init();
         if (D_800958B4 == 8) {
             func_8002BF08();
+#ifdef TARGET_PC
+            /* it resets the 12 slots the N64 has; the rest likewise */
+            for (i = 12; i < FIELD_SLOTS; i++) {
+                FIELD_SLOT(D_80095850, i) = -1;
+            }
+#endif
         }
         if (D_800958A8 == 3 && D_800958AC == 2) {
             if (D_800958A4 == 2) {

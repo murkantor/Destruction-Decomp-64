@@ -14,6 +14,13 @@ extern s32 D_800958A8;
 extern volatile s32 D_800958A8_v ASM_ALIAS("D_800958A8");
 extern s32 D_800958B4;
 extern s32 D_80095850[];
+#ifdef TARGET_PC
+/* Slots past the N64's 12 (the doubled field) are kept in port/game/field_part1.c */
+extern s32 gFieldD_80095850[];
+#define FIELD_SLOT(t, i) (*((i) < 12 ? &t[i] : &gField##t[(i) - 12]))
+#else
+#define FIELD_SLOT(t, i) t[i]
+#endif
 extern u8 D_80091B14[];
 extern void *D_8011EEF8;
 s32 Race_FindCarSlot(s32);
@@ -60,7 +67,12 @@ void Car_OnTriggerCrossed(Car *car, Event *ev, u8 flag) {
         break;
     case 1:
         if (D_800958A8 == 2) {
+#ifdef TARGET_PC
+            i = Race_FindCarSlot(car->x34);
+            if (D_800958B4 != 8 || ev->x24 != FIELD_SLOT(D_80095850, i)) {
+#else
             if (D_800958B4 != 8 || ev->x24 != D_80095850[Race_FindCarSlot(car->x34)]) {
+#endif
                 func_8001F6C4(car, flag);
             }
         }
@@ -79,10 +91,10 @@ void Car_OnTriggerCrossed(Car *car, Event *ev, u8 flag) {
         if (D_800958A8 != 2) {
             if (D_800958B4 == 8) {
                 i = Race_FindCarSlot(car->x34);
-                if (D_80095850[i] == ev->x24) {
+                if (FIELD_SLOT(D_80095850, i) == ev->x24) {
                     break;
                 }
-                D_80095850[i] = ev->x24;
+                FIELD_SLOT(D_80095850, i) = ev->x24;
             }
             func_8001F000(car, flag, ev->x24);
         }
