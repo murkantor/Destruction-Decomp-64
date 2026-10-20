@@ -41,7 +41,7 @@ static inline void Grid_GetCell(Grid *g, GVert *v, s32 *cx, s32 *cz) {
 
 void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
     s32 i;
-    register s32 j asm("$7");
+    register s32 j ASM_REG("$7");
     s32 k;
     s32 y;
     s32 sum;

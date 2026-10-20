@@ -8,7 +8,7 @@ typedef struct { s32 v[5]; } Arr5;
 extern s32 D_80097350;
 extern void *gUi;
 /* func_8004736C reads gUi as an array, which keeps its address in a register */
-extern void *gUiArr[] __asm__("gUi");
+extern void *gUiArr[] ASM_ALIAS("gUi");
 extern Settings *D_8011EEF8;
 extern s32 D_8011EEE0;
 extern u8 D_80096EB4;

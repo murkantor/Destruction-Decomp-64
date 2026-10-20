@@ -3,6 +3,6 @@
 
 M2C_UNK Particles_Update();                            /* extern */
 
-void func_800169E8(void) {
-    Particles_Update();
+void func_800169E8(void *arg0) {
+    Particles_Update(arg0);
 }

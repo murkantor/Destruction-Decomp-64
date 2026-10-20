@@ -11,7 +11,7 @@ typedef struct { u8 pad[0x10FC]; s16 x10FC; } Game;
 extern Game *gGame;
 extern void *gUi;
 extern s32 D_800958A8;
-extern volatile s32 D_800958A8_v __asm__("D_800958A8");
+extern volatile s32 D_800958A8_v ASM_ALIAS("D_800958A8");
 extern s32 D_800958B4;
 extern s32 D_80095850[];
 extern u8 D_80091B14[];

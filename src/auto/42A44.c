@@ -12,7 +12,7 @@ extern u8 D_801253F8;
 extern u8 D_80097A0C[];
 extern s32 D_800964F0[];
 extern s32 D_80096500[];
-void CarSelect_SetStatBars(void);
+void CarSelect_SetStatBars();
 void Menu_SetCarPreview(s32, s32);
 char *strcpy(char *, const char *);
 void Ui_AddElement(void *, s32, s32);
@@ -27,7 +27,7 @@ void CarSelect_SetCar(s32 cur, s32 prev, s32 slot) {
     s32 i;
 
     if (D_800958A8 != 3) {
-        CarSelect_SetStatBars();
+        CarSelect_SetStatBars(cur);
         Menu_SetCarPreview(cur, prev);
         if (cur < 12) {
             k = 0;

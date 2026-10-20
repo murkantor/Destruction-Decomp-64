@@ -29,7 +29,7 @@ void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     u8 *src;
     s32 c, q, r;
     s32 xx, pp;
-    register s32 yy asm("$2");
+    register s32 yy ASM_REG("$2");
     u8 *b0;
     b0 = o->x90;
     pp = d->x64;

@@ -32,7 +32,7 @@ extern u8 D_80097335;
 extern s32 D_800958B4;
 extern BestTime D_80130520[];
 extern s8 D_800D31CC;
-extern s8 D_800D31CC_v __asm__("D_800D31CC");
+extern s8 D_800D31CC_v ASM_ALIAS("D_800D31CC");
 extern s32 D_80095FF8[];
 
 TimeHMS Time_Split(u64 t);

@@ -26,6 +26,9 @@ void mainproc(void *arg);
 void Dma_InitPiManager(void);
 void Main_InitSystems(s32, GameInitConfig *);
 void Boot_LoadData(void);
+#ifdef TARGET_PC
+void osStopThread(OSThread *t);
+#endif
 
 void boot(void) {
     u32 size = _mainSegmentRomEnd - _mainSegmentRomStart;
@@ -59,6 +62,10 @@ void idle(void *arg) {
     osCreateThread(&sMainThread, 4, mainproc, arg, sMainStackTop, 2);
     osStartThread(&sMainThread);
     osSetThreadPri(NULL, OS_PRIORITY_IDLE);
+#ifdef TARGET_PC
+    /* The port's thread layer idles the CPU itself; spinning here would keep it busy. */
+    osStopThread(NULL);
+#endif
     for (;;) {
     }
 }

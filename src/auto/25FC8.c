@@ -15,7 +15,7 @@ s32 func_800253C8(s32 arg0) {
     s32 temp_s0;
     s32 temp_s0_2;
 
-    temp_s0 = func_80063D8C();
+    temp_s0 = func_80063D8C(arg0);
     temp_s0_2 = func_80063DAC(arg0);
     Zip_LoadFile(temp_s0, &sp10, &sp14);
     Elf_Link(sp10, &func_80025438);

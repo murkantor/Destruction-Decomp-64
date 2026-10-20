@@ -8,7 +8,7 @@ void Ai_BrakeOrReverse(void *arg0)
   void *temp_s1;
   void *temp_v1;
  do { temp_s1 = *((void **) (((s8 *) arg0) + 0x38)); } while (0);
-  if (Car_GetSpeed() < 5.0f)
+  if (Car_GetSpeed(arg0) < 5.0f)
   {
     *((s8 *) (((s8 *) temp_s1) + 0x6C)) = 0;
     if ((*((u8 *) (((s8 *) temp_s1) + 0x6D))) != 0)

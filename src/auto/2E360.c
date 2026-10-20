@@ -13,7 +13,7 @@ void *func_8002D760(s32 arg0) {
     void *temp_a0;
     void *temp_v0;
 
-    temp_v0 = Mem_AllocAligned(Res_GetSize(), 0x3F, 0);
+    temp_v0 = Mem_AllocAligned(Res_GetSize(arg0), 0x3F, 0);
     Res_Load(arg0, temp_v0);
     M2C_FIELD(temp_v0, void **, 0x30) = Mem_Alloc(0x1C);
     M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x30), void **, 0x18) = Res_GetEnd(Res_Get(M2C_FIELD(temp_v0, s32 *, 0x24)));

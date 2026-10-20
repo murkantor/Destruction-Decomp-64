@@ -11,6 +11,6 @@ s32 DebugMenu_Update(void) {
 
 M2C_UNK DebugMenu_Draw();                            /* extern */
 
-void func_80054B78(void) {
-    DebugMenu_Draw();
+void func_80054B78(void *arg0) {
+    DebugMenu_Draw(arg0);
 }

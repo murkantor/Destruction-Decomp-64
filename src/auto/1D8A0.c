@@ -16,7 +16,7 @@ void Spline_ComputeCoeffs(Spline *out, Spline *in) {
     f32 x4;
     f32 inv;
     f32 t;
-    register f32 p asm("$f30");
+    register f32 p ASM_REG("$f30");
 
     *out = *in;
     x = in->x4;

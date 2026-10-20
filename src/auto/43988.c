@@ -13,7 +13,7 @@ void Ui_SetElementPos(Ui *, s32, s32, f32, f32);
 
 
 static inline s32 fix(s32 x) {
-    register s32 r asm("$18") = x;
+    register s32 r ASM_REG("$18") = x;
     if (x != -1) {
         if (D_801253F8 || x < 12) {
         } else if (x >= 12 && D_80097A0C[x]) {
@@ -26,7 +26,7 @@ static inline s32 fix(s32 x) {
 }
 
 void Menu_SetCarPreview(s32 arg0, s32 arg1) {
-    register f32 y0 asm("$f20") = 78.0f;
+    register f32 y0 ASM_REG("$f20") = 78.0f;
     f32 y1 = y0;
     UiRes *r = NULL;
     s32 id;

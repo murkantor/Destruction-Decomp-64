@@ -57,7 +57,7 @@ s32 MapUi_Init(void *ui) {
     s32 id;
     s32 *data;
     s32 two;
-    register CarInfo *car asm("$8");
+    register CarInfo *car ASM_REG("$8");
 
     size = Res_GetSize(0x1129C);
     Res_Load(0x1129C, descs);

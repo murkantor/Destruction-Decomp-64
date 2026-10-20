@@ -4,11 +4,11 @@
 void *Mem_Alloc(M2C_UNK);                           /* extern */
 s32 Ui_FindElement();                               /* extern */
 
-void func_8005D8B8(void *arg0) {
+void func_8005D8B8(void *arg0, s32 arg1, s32 arg2) {
     s32 temp_s1;
     void *temp_v0;
 
-    temp_s1 = Ui_FindElement(arg0);
+    temp_s1 = Ui_FindElement(arg0, arg1, arg2);
     temp_v0 = Mem_Alloc(8);
     if (temp_v0 != NULL) {
         M2C_FIELD(temp_v0, s32 *, 0) = temp_s1;

@@ -8,13 +8,13 @@ s32 Res_GetSize();                                /* extern */
 s32 Res_LoadAlloc(s32 arg0) {
     s32 temp_v0;
 
-    temp_v0 = Mem_AllocAligned(Res_GetSize(), 7, 0);
+    temp_v0 = Mem_AllocAligned(Res_GetSize(arg0), 7, 0);
     Res_Load(arg0, temp_v0);
     return temp_v0;
 }
 
 M2C_UNK Mem_Free();                            /* extern */
 
-void func_800627C8(void) {
-    Mem_Free();
+void func_800627C8(void *arg0) {
+    Mem_Free(arg0);
 }

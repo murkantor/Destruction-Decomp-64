@@ -4,11 +4,11 @@
 void *Res_Find();                              /* extern */
 M2C_UNK List_Remove(void *, s32);                 /* extern */
 
-void Res_Release(void) {
+void Res_Release(s32 arg0) {
     s32 *temp_a0;
     void *temp_v0;
 
-    temp_v0 = Res_Find();
+    temp_v0 = Res_Find(arg0);
     if (temp_v0 != NULL) {
         if (M2C_FIELD(temp_v0, s32 *, 0x1C) >= 2) {
             temp_a0 = M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x14), s32 **, 4);
@@ -32,7 +32,7 @@ void Res_ReleaseInstance(s32 arg0) {
     s32 *temp_a0;
     void *temp_v0;
 
-    temp_v0 = Res_FindType();
+    temp_v0 = Res_FindType(arg0);
     if (temp_v0 != NULL) {
         if (M2C_FIELD(temp_v0, s32 *, 0x1C) >= 2) {
             temp_a0 = M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x14), s32 **, 4);

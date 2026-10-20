@@ -7,7 +7,7 @@ extern u8 D_80134280[];
 extern u8 D_BD4A0[];
 extern u8 D_BF790[];
 /* end of the first ROM block: same address as D_BF790, a separate symbol in the original */
-extern u8 gRomData1End[] __asm__("D_BF790");
+extern u8 gRomData1End[] ASM_ALIAS("D_BF790");
 extern u8 gResArchiveRom[];
 void Game_Init(void *);
 void Dma_LoadAndFlush(void *, u32, u32);

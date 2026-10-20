@@ -15,7 +15,7 @@ s32 func_80002300(s32 arg0) {
     void *temp_v0;
     void *temp_v0_2;
 
-    temp_v0 = Mem_AllocAlignedAlt(Res_GetSize(), 7, 0);
+    temp_v0 = Mem_AllocAlignedAlt(Res_GetSize(arg0), 7, 0);
     Res_Load(arg0, temp_v0);
     temp_s0 = Mem_Alloc(0x10);
     temp_v0_2 = Mem_Alloc(0x20);

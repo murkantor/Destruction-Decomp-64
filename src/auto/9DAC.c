@@ -9,7 +9,7 @@ extern void *gGame;
 
 void Sound_UpdateRace(s32 arg0) {
     if (M2C_FIELD(gGame, s16 *, 0xC) == 2) {
-        EngineSfx_UpdateAll();
+        EngineSfx_UpdateAll(arg0);
         Sound_UpdateCarSurfaces(arg0);
         Sound_ExpireScrapes(arg0);
     }

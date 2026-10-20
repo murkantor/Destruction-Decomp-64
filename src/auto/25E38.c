@@ -20,7 +20,7 @@ s32 func_80025238(s32 arg0) {
     s32 temp_a0_9;
     void *temp_v0;
 
-    temp_v0 = Mem_AllocAlignedAlt(Res_GetSize(), 0x3F, 0);
+    temp_v0 = Mem_AllocAlignedAlt(Res_GetSize(arg0), 0x3F, 0);
     Res_Load(arg0, temp_v0);
     temp_a0 = M2C_FIELD(temp_v0, s32 *, 0);
     if (temp_a0 != -1) {

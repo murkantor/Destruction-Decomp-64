@@ -28,7 +28,7 @@ typedef struct {
 } Cam;
 
 extern Game *gGame;
-extern Cam gGameCam __asm__("gGame");
+extern Cam gGameCam ASM_ALIAS("gGame");
 extern s32 D_800919F4[];
 extern Outer *D_800964F0[];
 extern Outer *D_80096500[];

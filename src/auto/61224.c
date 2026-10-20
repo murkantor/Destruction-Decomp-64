@@ -3,6 +3,6 @@
 
 M2C_UNK Mem_Free();                            /* extern */
 
-void func_80060624(void) {
-    Mem_Free();
+void func_80060624(void *arg0) {
+    Mem_Free(arg0);
 }

@@ -8,8 +8,8 @@ void func_80056090(void) {
 M2C_UNK osViSwapBuffer();                            /* extern */
 M2C_UNK osViBlack(M2C_UNK);                     /* extern */
 
-void Vi_SwapBuffer(void) {
-    osViSwapBuffer();
+void Vi_SwapBuffer(void *arg0) {
+    osViSwapBuffer(arg0);
     osViBlack(0);
 }
 

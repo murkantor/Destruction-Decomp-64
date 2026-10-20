@@ -14,7 +14,7 @@ s32 func_80024FD4(s32 arg0) {
     s32 temp_s2;
     s32 temp_v0;
 
-    temp_v0 = Mem_AllocAligned(Res_GetSize(), 0x3F, 0);
+    temp_v0 = Mem_AllocAligned(Res_GetSize(arg0), 0x3F, 0);
     Res_Load(arg0, temp_v0);
     temp_s2 = func_80063D8C(arg0);
     temp_s0 = (func_80063DAC(arg0) - temp_s2) + temp_v0;
@@ -37,7 +37,7 @@ s32 func_80025064(s32 arg0) {
     s32 temp_v0;
     void *temp_s0;
 
-    temp_v0 = Mem_AllocAligned(Res_GetSize(), 0x3F, 0);
+    temp_v0 = Mem_AllocAligned(Res_GetSize(arg0), 0x3F, 0);
     Res_Load(arg0, temp_v0);
     temp_s1 = func_80063D8C(arg0);
     temp_s0 = (func_80063DAC(arg0) - temp_s1) + temp_v0;

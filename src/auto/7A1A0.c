@@ -3,6 +3,6 @@
 
 M2C_UNK atoi();                            /* extern */
 
-void func_800795A0(void) {
-    atoi();
+s32 func_800795A0(const char *arg0) {
+    return atoi(arg0);
 }

@@ -59,8 +59,8 @@ static inline void FreeItem(Item42894 *item, s32 *tbl) {
 s32 Race_FreeItemsCheckQualify(Obj42894 *obj) {
     Item42894 **p;
     s32 *tbl;
-    register s32 limit asm("$3");
-    register s32 n asm("$2");
+    register s32 limit ASM_REG("$3");
+    register s32 n ASM_REG("$2");
 
     tbl = D_800919F4;
     p = D_80096500;
@@ -88,8 +88,8 @@ check:
         return 1;
     }
     {
-        register s32 c asm("$2");
-        register Sub42894 *sub asm("$2");
+        register s32 c ASM_REG("$2");
+        register Sub42894 *sub ASM_REG("$2");
         s32 v;
 
         sub = obj->x28;

@@ -25,7 +25,7 @@ typedef struct {
 extern Game *gGame[];
 extern f64 D_800B91A8;
 f32 Time_ToSeconds(void *);
-void Car_SetPartsForMode(Obj *);
+void Car_SetPartsForMode();
 
 void Car_CheckWrecked(Obj *obj, s32 idx) {
     Cfg *cfg;
@@ -39,6 +39,6 @@ void Car_CheckWrecked(Obj *obj, s32 idx) {
         obj->x94 = Time_ToSeconds(gGame[0]->x10A8) + D_800B91A8;
     } else if (obj->slots[idx].xA74 <= 0 && obj->slots[idx].xA78 == 0) {
         obj->slots[idx].xA78 = 1;
-        Car_SetPartsForMode(obj);
+        Car_SetPartsForMode(obj, idx);
     }
 }

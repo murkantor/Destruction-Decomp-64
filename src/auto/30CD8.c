@@ -14,7 +14,7 @@ void func_800300D8(void *arg0) {
     void *temp_v0;
     void *temp_v1;
 
-    temp_v0 = Car_GetFaceUnder();
+    temp_v0 = Car_GetFaceUnder(arg0);
     if (temp_v0 != NULL) {
         temp_f12 = M2C_FIELD(temp_v0, f32 *, 0xC);
         if (D_800B93F8 < fabs((f64) temp_f12)) {

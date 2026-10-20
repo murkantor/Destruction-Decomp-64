@@ -29,6 +29,6 @@ void func_80020F70(void *arg0) {
 
 M2C_UNK func_800247FC();                            /* extern */
 
-void func_80020F94(void) {
-    func_800247FC();
+void func_80020F94(void *arg0) {
+    func_800247FC(arg0);
 }

@@ -21,12 +21,12 @@ extern OSMesgQueue gSiMesgQueue;
 u64 osGetTime(void);
 s32 osMotorInit(OSMesgQueue *, void *, s32);
 s32 __osMotorAccess(void *, s32);
-void Pad_Clear(void);
+void Pad_Clear(s32);
 
 void Pad_Init(s32 channel, s32 arg1) {
     Rumble *r = &gControllers[channel];
 
-    Pad_Clear();
+    Pad_Clear(channel);
     r->unk0 = arg1;
     r->channel = channel;
     r->unk20 = 0;

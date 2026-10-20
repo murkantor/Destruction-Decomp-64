@@ -15,7 +15,7 @@ typedef struct { s32 v[3]; } List3;
 typedef struct { s32 v[4]; } List4;
 typedef struct { s32 v[5]; } List5;
 extern Game *gGame;
-extern Game *gGameA[] __asm__("gGame");
+extern Game *gGameA[] ASM_ALIAS("gGame");
 extern void *gUi;
 extern u32 D_800958B0;
 extern u8 D_800958A1;

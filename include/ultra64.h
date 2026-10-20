@@ -34,6 +34,21 @@ typedef double f64;
 #define BE_OFF16(n) (n)
 #endif
 
+/*
+ * ASM_REG pins a local to a MIPS register, which some functions need to match.
+ * ASM_ALIAS gives a declaration another symbol's name. On PC the pin is dropped
+ * and the alias gets the platform's symbol prefix (_ on 32-bit Windows).
+ */
+#ifdef TARGET_PC
+#define ASM_STR2(x) #x
+#define ASM_STR(x) ASM_STR2(x)
+#define ASM_REG(r)
+#define ASM_ALIAS(name) __asm__(ASM_STR(__USER_LABEL_PREFIX__) name)
+#else
+#define ASM_REG(r) asm(r)
+#define ASM_ALIAS(name) __asm__(name)
+#endif
+
 typedef s32 OSPri;
 typedef s32 OSId;
 

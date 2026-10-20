@@ -13,7 +13,7 @@ typedef struct { u8 pad[0x510]; s32 *x510; f32 x514; } SndCfg;
 typedef struct { u8 pad[0x10]; s32 x10; } MenuItem;
 extern Game *gGame;
 extern UiMgr *gUi;
-extern UiMgr *gUiA[] __asm__("gUi");
+extern UiMgr *gUiA[] ASM_ALIAS("gUi");
 extern s32 D_800BC9E4;
 extern SndCfg *D_8011EEF8;
 extern u8 D_80096EB4;

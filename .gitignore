@@ -19,3 +19,6 @@ __pycache__/
 venv/
 /tools/m2c/
 /tools/permuter/
+
+# PC port builds
+/build_*/

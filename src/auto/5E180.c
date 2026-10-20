@@ -6,7 +6,7 @@ M2C_UNK Ui_UpdateElements();                            /* extern */
 s32 Ui_Draw(s32, M2C_UNK);                    /* extern */
 
 void func_8005D580(s32 arg0, M2C_UNK arg1) {
-    Ui_UpdateElements();
+    Ui_UpdateElements(arg0);
     func_8000F980(Ui_Draw(arg0, arg1));
 }
 
@@ -30,6 +30,6 @@ M2C_UNK func_8000FACC(s32);                         /* extern */
 M2C_UNK Ctx_FreeAll();                            /* extern */
 
 void func_8005D640(s32 arg0) {
-    Ctx_FreeAll();
+    Ctx_FreeAll(arg0);
     func_8000FACC(arg0);
 }

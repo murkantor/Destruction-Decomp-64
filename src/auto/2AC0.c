@@ -25,8 +25,8 @@ s32 AiDriver_Load(s32 arg0) {
 
 M2C_UNK Mem_Free();                            /* extern */
 
-void AiDriver_Free(void) {
-    Mem_Free();
+void AiDriver_Free(void *arg0) {
+    Mem_Free(arg0);
 }
 
 M2C_UNK Res_Get(s32);                         /* extern */

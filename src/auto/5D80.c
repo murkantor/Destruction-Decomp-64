@@ -8,14 +8,14 @@ extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern void *gGame;
 
-void Ai_UpdateStateByMode(void) {
+void Ai_UpdateStateByMode(void *arg0) {
     if (M2C_FIELD(M2C_FIELD(gGame, void **, 0x1100), s32 *, 0x10) == 0) {
-        Ai_UpdateRaceState();
+        Ai_UpdateRaceState(arg0);
         return;
     }
     if ((D_800958A8 == 3) && (D_800958AC == 1)) {
-        func_80005814();
+        func_80005814(arg0);
         return;
     }
-    Ai_UpdateState();
+    Ai_UpdateState(arg0);
 }

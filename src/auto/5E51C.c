@@ -3,13 +3,13 @@
 
 typedef struct UiNode { void *elem; struct UiNode *next; } UiNode;
 typedef struct { u8 pad[0x8B54]; UiNode *list; } Ui;
-extern void *Ui_FindElement(Ui *);
+extern void *Ui_FindElement(Ui *, s32, s32);
 extern void *Mem_Alloc(u32);
-void Ui_AddElement(Ui *ui) {
+void Ui_AddElement(Ui *ui, s32 kind, s32 id) {
     UiNode *n;
     UiNode *head = ui->list;
     if (head == NULL) {
-        void *e = Ui_FindElement(ui);
+        void *e = Ui_FindElement(ui, kind, id);
         UiNode *nn = Mem_Alloc(8);
         if (nn != NULL) {
             nn->elem = e;
@@ -25,7 +25,7 @@ void Ui_AddElement(Ui *ui) {
                 n = n->next;
             } while (n->next != NULL);
         }
-        e = Ui_FindElement(ui);
+        e = Ui_FindElement(ui, kind, id);
         nn = Mem_Alloc(8);
         if (nn != NULL) {
             nn->elem = e;

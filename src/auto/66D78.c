@@ -3,6 +3,6 @@
 
 M2C_UNK Bank_Relocate();                            /* extern */
 
-void Sound_RelocateBank(void) {
-    Bank_Relocate();
+void Sound_RelocateBank(void *arg0, s32 arg1) {
+    Bank_Relocate(arg0, arg1);
 }
