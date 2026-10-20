@@ -22,6 +22,7 @@ typedef struct {
     int stretch;             /* 0 = 4:3 with side bars, 1 = fill the window */
     int widescreen;          /* 1 = 3D fills the window, 2D stays 4:3 in the middle */
     int textureFilter;       /* 0 point, 1 bilinear, 2 three-point (N64) */
+    int showFps;             /* the frame counter in the corner */
     /* [audio] */
     int volume;              /* 0-100 */
     int audioLatency;        /* output delay, ms */

@@ -62,6 +62,11 @@ void Port_VideoRunTask(OSTask *task);
 void Port_VideoSwap(void *framebuffer);
 void Port_VideoSetBlack(int black);
 void Port_VideoPresentInterp(void);
+void Port_VideoApplySettings(void);
+/* The PC options (options.c) */
+void Port_OptionsApplyPending(void);
+int Port_OptIsOpen(void);
+void Port_InputNoteMenuPad(const OSContPad *pad);
 
 /* input.c */
 void Port_InputInit(void);

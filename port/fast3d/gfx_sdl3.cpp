@@ -150,3 +150,25 @@ extern "C" float gfx_sdl_refresh_rate(void) {
     const SDL_DisplayMode *m = d != 0 ? SDL_GetCurrentDisplayMode(d) : NULL;
     return m != NULL ? m->refresh_rate : 0.0f;
 }
+
+/* The PC options: windowed (at a size) or fullscreen, borderless or exclusive */
+extern "C" void gfx_sdl_set_window(bool fullscreen, bool exclusive, int width, int height) {
+    if (wnd == NULL) {
+        return;
+    }
+    if (!fullscreen) {
+        if (fullscreen_state) {
+            apply_fullscreen(false);
+        }
+        SDL_SetWindowSize(wnd, width, height);
+        SDL_SyncWindow(wnd);
+        return;
+    }
+    if (!fullscreen_state || exclusive != fullscreen_exclusive) {
+        fullscreen_exclusive = exclusive;
+        if (fullscreen_state) {
+            apply_fullscreen(false);
+        }
+        apply_fullscreen(true);
+    }
+}

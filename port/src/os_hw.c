@@ -401,6 +401,14 @@ void osContGetReadData(OSContPad *data) {
             data[i].errnum = CONT_NO_RESPONSE_ERROR;
         }
     }
+    /* The PC options page reads player 1; while it is open the game gets no input */
+    Port_InputNoteMenuPad(&data[0]);
+    if (Port_OptIsOpen()) {
+        for (i = 0; i < MAXCONTROLLERS; i++) {
+            data[i].button = 0;
+            data[i].stick_x = data[i].stick_y = 0;
+        }
+    }
 }
 
 /* Rumble Pak: every connected controller has one, alongside its Controller Pak. */

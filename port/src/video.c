@@ -73,7 +73,24 @@ void Port_VideoInit(void) {
     gfx_init(&set);
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
-    gfx_show_fps = true; /* always shown */
+    gfx_show_fps = gPortConfig.showFps != 0;
+    updateInterp();
+}
+
+void gfx_sdl_set_window(bool fullscreen, bool exclusive, int width, int height);
+
+/* The PC options page changed [video] settings: apply them (main thread) */
+void Port_VideoApplySettings(void) {
+    gfx_msaa_level = gPortConfig.msaa;
+    gfx_n64_aa = gPortConfig.n64AA;
+    gfx_internal_height = gPortConfig.internalHeight;
+    gfx_aspect_mode = gPortConfig.stretch ? 1 : gPortConfig.widescreen ? 2 : 0;
+    gfx_show_fps = gPortConfig.showFps != 0;
+    gfx_set_vsync(gPortConfig.vsync);
+    gfx_set_texture_filter(gPortConfig.textureFilter);
+    gfx_sdl_set_window(gPortConfig.fullscreen, gPortConfig.fullscreenExclusive, gPortConfig.windowWidth,
+                       gPortConfig.windowHeight);
+    sNextPresentNs = 0;
     updateInterp();
 }
 
