@@ -474,7 +474,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8002FA2C` | `03062C` | 0x9c | `Car_UpdateWheels` | `src/auto/3062C.c` | C (generated) |
 | `8002FAC8` | `0306C8` | 0x610 | `Car_CheckRamps` | `src/auto/306C8.c` | C (generated) |
 | `800300D8` | `030CD8` | 0x10c | `func_800300D8` | `src/auto/30CD8.c` | C (generated) |
-| `800301E4` | `030DE4` | 0xf74 | `func_800301E4` | `asm/30DE4.s` | asm |
+| `800301E4` | `030DE4` | 0xf74 | `Car_SweepTrackFaces` | `asm/30DE4.s` | asm |
 | `80031158` | `031D58` | 0x1ec | `Line_ClosestPoints` | `src/auto/31D58.c` | C (generated) |
 | `80031344` | `031F44` | 0x1e0 | `Track_GetFacesInRadius` | `src/auto/31F44.c` | C (generated) |
 | `80031524` | `032124` | 0x27c | `Track_LineOfSight` | `src/auto/32124.c` | C (generated) |
@@ -801,7 +801,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80054B94` | `055794` | 0x130 | `DebugMenu_Run` | `src/auto/55794.c` | C (generated) |
 | `80054CD0` | `0558D0` | 0x100 | `func_80054CD0` | `src/auto/558D0.c` | C (generated) |
 | `80054DD0` | `0559D0` | 0x10c | `Gfx_LoadTlut` | `src/auto/559D0.c` | C (generated) |
-| `80054EDC` | `055ADC` | 0x444 | `Font_DrawString` | `asm/55ADC.s` | asm |
+| `80054EDC` | `055ADC` | 0x438 | `Font_DrawString` | `src/auto/55ADC.c` | C (generated) |
 | `80055320` | `055F20` | 0x14 | `func_80055320` | `src/auto/55F20.c` | C (generated) |
 | `80055334` | `055F34` | 0x24 | `func_80055334` | `src/auto/55F20.c` | C (generated) |
 | `80055358` | `055F58` | 0x8 | `func_80055358` | `src/auto/55F20.c` | C (generated) |
