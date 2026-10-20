@@ -961,3 +961,4 @@ Car_SweepTrackFaces = 0x800301E4; // type:func
 Model_Relocate = 0x80067368; // type:func
 Cars_FreeObjects = 0x8003ECF8; // type:func
 Grid_BuildCellsXZ = 0x8001A520; // type:func
+CarObj_Free = 0x8003E9F8; // type:func

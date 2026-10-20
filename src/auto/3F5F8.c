@@ -6,7 +6,7 @@ M2C_UNK func_8005AAC0(s32);                         /* extern */
 M2C_UNK func_80063AAC(s32);                         /* extern */
 extern M2C_UNK D_800919F4;
 
-s32 func_8003E9F8(void *arg0) {
+s32 CarObj_Free(void *arg0) {
     void *temp_s0;
 
     if (arg0 != NULL) {

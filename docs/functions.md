@@ -592,7 +592,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003E564` | `03F164` | 0xe0 | `func_8003E564` | `src/auto/3F164.c` | C (generated) |
 | `8003E644` | `03F244` | 0x358 | `func_8003E644` | `src/auto/3F244.c` | C (generated) |
 | `8003E99C` | `03F59C` | 0x5c | `func_8003E99C` | `src/auto/3F59C.c` | C (generated) |
-| `8003E9F8` | `03F5F8` | 0x84 | `func_8003E9F8` | `src/auto/3F5F8.c` | C (generated) |
+| `8003E9F8` | `03F5F8` | 0x84 | `CarObj_Free` | `src/auto/3F5F8.c` | C (generated) |
 | `8003EA7C` | `03F67C` | 0x1f4 | `Ui_ResetScreen` | `src/auto/3F67C.c` | C (generated) |
 | `8003EC70` | `03F870` | 0x50 | `func_8003EC70` | `src/auto/3F870.c` | C (generated) |
 | `8003ECC0` | `03F8C0` | 0x38 | `func_8003ECC0` | `src/auto/3F870.c` | C (generated) |

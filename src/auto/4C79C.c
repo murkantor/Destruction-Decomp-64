@@ -24,7 +24,7 @@ extern u8 D_8009734D;
 extern u8 D_800972F0;
 
 void func_8006417C(void *, s32);
-s32 func_8003E9F8(s32);
+s32 CarObj_Free(s32);
 u8 Pak_Open(s32 *);
 u8 Menu_HandleSelect(s32);
 void func_80063564(s32, s32);
@@ -40,7 +40,7 @@ s32 func_8004BB9C(Obj4BB9C *obj) {
         func_8006417C(gGame[0]->x334, D_800970F8);
     }
     func_8006417C(gGame[0]->x334, D_800964F0[0]);
-    D_800964F0[0] = func_8003E9F8(D_800964F0[0]);
+    D_800964F0[0] = CarObj_Free(D_800964F0[0]);
     if (D_80097337) {
         next = 0x2D;
     } else if (D_80097335) {

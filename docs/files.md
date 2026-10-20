@@ -550,7 +550,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `03F164` | `8003E564` | 0xe0 | `src/auto/3F164.c` | C (generated) | 1 |  |
 | `03F244` | `8003E644` | 0x358 | `src/auto/3F244.c` | C (generated) | 1 |  |
 | `03F59C` | `8003E99C` | 0x5c | `src/auto/3F59C.c` | C (generated) | 1 |  |
-| `03F5F8` | `8003E9F8` | 0x84 | `src/auto/3F5F8.c` | C (generated) | 1 |  |
+| `03F5F8` | `8003E9F8` | 0x84 | `src/auto/3F5F8.c` | C (generated) | 1 | `CarObj_Free` |
 | `03F67C` | `8003EA7C` | 0x1f4 | `src/auto/3F67C.c` | C (generated) | 1 | `Ui_ResetScreen` |
 | `03F870` | `8003EC70` | 0x88 | `src/auto/3F870.c` | C (generated) | 2 |  |
 | `03F8F8` | `8003ECF8` | 0x1f8 | `asm/3F8F8.s` | asm | 1 | `Cars_FreeObjects` |
