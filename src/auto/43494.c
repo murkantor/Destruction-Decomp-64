@@ -56,7 +56,7 @@ static inline void FreeItem(Item42894 *item, s32 *tbl) {
     Mem_Free(item);
 }
 
-s32 Race_FreeItemsCheckQualify(Obj42894 *obj) {
+s32 CarSelect_Update(Obj42894 *obj) {
     Item42894 **p;
     s32 *tbl;
     register s32 limit asm("$3");

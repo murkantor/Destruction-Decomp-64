@@ -592,7 +592,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `042D14` | `80042114` | 0x110 | `src/auto/42D14.c` | C (generated) | 1 | `CarSelect_SetStatBars` |
 | `042E24` | `80042224` | 0x2f0 | `src/auto/42E24.c` | C (generated) | 1 | `CarSelect_Back` |
 | `043114` | `80042514` | 0x380 | `src/auto/43114.c` | C (generated) | 1 | `CarSelect_Confirm` |
-| `043494` | `80042894` | 0x160 | `src/auto/43494.c` | C (generated) | 1 | `Race_FreeItemsCheckQualify` |
+| `043494` | `80042894` | 0x160 | `src/auto/43494.c` | C (generated) | 1 | `CarSelect_Update` |
 | `0435F4` | `800429F4` | 0x200 | `src/auto/435F4.c` | C (generated) | 1 | `Menu_ToggleHelpOverlay` |
 | `0437F4` | `80042BF4` | 0x194 | `src/auto/437F4.c` | C (generated) | 1 | `Menu_InitPlayerViews` |
 | `043988` | `80042D88` | 0x1a4 | `src/auto/43988.c` | C (generated) | 1 | `Menu_SetCarPreview` |

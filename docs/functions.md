@@ -634,7 +634,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80042114` | `042D14` | 0x110 | `CarSelect_SetStatBars` | `src/auto/42D14.c` | C (generated) |
 | `80042224` | `042E24` | 0x2f0 | `CarSelect_Back` | `src/auto/42E24.c` | C (generated) |
 | `80042514` | `043114` | 0x380 | `CarSelect_Confirm` | `src/auto/43114.c` | C (generated) |
-| `80042894` | `043494` | 0x160 | `Race_FreeItemsCheckQualify` | `src/auto/43494.c` | C (generated) |
+| `80042894` | `043494` | 0x160 | `CarSelect_Update` | `src/auto/43494.c` | C (generated) |
 | `800429F4` | `0435F4` | 0x200 | `Menu_ToggleHelpOverlay` | `src/auto/435F4.c` | C (generated) |
 | `80042BF4` | `0437F4` | 0x194 | `Menu_InitPlayerViews` | `src/auto/437F4.c` | C (generated) |
 | `80042D88` | `043988` | 0x1a4 | `Menu_SetCarPreview` | `src/auto/43988.c` | C (generated) |
