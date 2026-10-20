@@ -54,6 +54,24 @@ s32 Race_FindCarSlot(s32);
 void HiScore_DrawTable(void *, s32, s32);
 void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, u64);
+#ifdef TARGET_PC
+/* The doubled field (port/src/field.c): the standings rank every car of the race,
+   the slots past 12 kept in port/game/field_part1.c (their scores here); the table
+   shows the first 12. A car of the first 12 slots placed below them wins nothing
+   from the 12-place prize list (D_80096720) */
+extern s32 gFieldD_80095D04[];
+extern s32 gFieldD_80095D34[];
+static s32 sFieldScore[RACE_CARS - 12];
+#define FIELD_SLOT(t, i) (*((i) < 12 ? &t[i] : &gField##t[(i) - 12]))
+#define RESULT_SLOTS (D_80095A70 > 12 ? D_80095A70 : 12)
+#define SCORE(i) (*((i) < 12 ? &D_80126188[i].x4 : &sFieldScore[(i) - 12]))
+#define ROW_TAKEN(r) ((r) < 12 && D_801238F0[r].name[0])
+#else
+#define FIELD_SLOT(t, i) t[i]
+#define RESULT_SLOTS 12
+#define SCORE(i) D_80126188[i].x4
+#define ROW_TAKEN(r) D_801238F0[r].name[0]
+#endif
 
 static inline s32 Rank_Get(s32 i) {
     s32 j;
@@ -63,14 +81,14 @@ static inline s32 Rank_Get(s32 i) {
 
     flag = 1;
     rank = -1;
-    if (D_80126188[i].x4 >= 0) {
-        score = D_80126188[i].x4;
+    if (SCORE(i) >= 0) {
+        score = SCORE(i);
         rank = 0;
-        for (j = 0; j < 12; j++) {
-            rank += (score < D_80126188[j].x4 && j != i);
+        for (j = 0; j < RESULT_SLOTS; j++) {
+            rank += (score < SCORE(j) && j != i);
         }
         while (flag) {
-            if (D_801238F0[rank].name[0]) {
+            if (ROW_TAKEN(rank)) {
                 rank++;
             } else {
                 flag = 0;
@@ -116,17 +134,25 @@ void Results_DrawStandings(void) {
     for (i = 0; i < D_800958A4; i++) {
         Ui_AddElement(gUi[0], 2, i + 0xC1);
     }
-    for (i = 0; i < 12; i++) {
-        D_80126188[i].x4 = D_80095D04[i] + D_80095D34[i];
+    for (i = 0; i < RESULT_SLOTS; i++) {
+        SCORE(i) = FIELD_SLOT(D_80095D04, i) + FIELD_SLOT(D_80095D34, i);
     }
     for (n = 11 * 0x33; n >= 0; n -= 0x33) {
         ((u8 *)D_801238F0)[n] = 0;
     }
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < RESULT_SLOTS; i++) {
         rank = Rank_Get(i);
         if (rank < 0) {
             continue;
         }
+#ifdef TARGET_PC
+        if (rank >= 12) {
+            if (i < 12 && D_800958A8 == 0) {
+                D_80126188[i].x0 = 0;
+            }
+            continue;
+        }
+#endif
         if (D_800958A8 == 0) {
             D_80126188[i].x0 = D_80096720[rank];
         }
@@ -151,9 +177,9 @@ void Results_DrawStandings(void) {
             strcat((char *)D_801238F0[rank].name, sp.c);
             strcat((char *)D_801238F0[rank].name, D_80096510[q].xB);
         }
-        sprintf(D_801238F0[rank].a, D_800BAF68, D_80095D04[i]);
-        sprintf(D_801238F0[rank].b, D_800BAF68, D_80095D34[i]);
-        sprintf(D_801238F0[rank].c, D_800BAF68, D_80126188[i].x4);
+        sprintf(D_801238F0[rank].a, D_800BAF68, FIELD_SLOT(D_80095D04, i));
+        sprintf(D_801238F0[rank].b, D_800BAF68, FIELD_SLOT(D_80095D34, i));
+        sprintf(D_801238F0[rank].c, D_800BAF68, SCORE(i));
     }
     for (i = D_80095A70; i < 12; i++) {
         strcpy((char *)D_801238F0[i].name, empty);

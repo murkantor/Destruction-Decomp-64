@@ -46,6 +46,20 @@ extern Slot D_80130518[];
 extern char gSaveSlotText[][0x32];
 extern u64 D_80096EC8;
 extern s32 D_80096EC0;
+#ifdef TARGET_PC
+/* The doubled field (port/src/field.c): the place counts every car of the race, the
+   slots past 12 kept in port/game/field_part1.c; past 12th it is written out
+   (Port_FieldShowPlace), as the game has sprites and call-outs for 12 places */
+extern s32 gFieldD_80095D04[];
+extern s32 gFieldD_80095D34[];
+extern s32 gFieldD_80095D64[];
+#define FIELD_SLOT(t, i) (*((i) < 12 ? &t[i] : &gField##t[(i) - 12]))
+#define FINISH_SLOTS (D_80095A70[0] > 12 ? D_80095A70[0] : 12)
+void Port_FieldShowPlace(s32 place);
+#else
+#define FIELD_SLOT(t, i) t[i]
+#define FINISH_SLOTS 12
+#endif
 
 void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
@@ -94,10 +108,10 @@ void Race_WaitForOthers(void) {
     }
     for (i = 0; i < D_800D31CC; i++) {
         idx = Race_FindCarSlot(D_800958F0[i].x0->x34);
-        total = D_80095D04[idx] + D_80095D34[idx] + D_80095D64[idx];
+        total = FIELD_SLOT(D_80095D04, idx) + FIELD_SLOT(D_80095D34, idx) + FIELD_SLOT(D_80095D64, idx);
         counts[i] = 0;
-        for (j = 0; j < 12; j++) {
-            if ((total < D_80095D04[j] + D_80095D34[j] + D_80095D64[j]) & (j != idx)) {
+        for (j = 0; j < FINISH_SLOTS; j++) {
+            if ((total < FIELD_SLOT(D_80095D04, j) + FIELD_SLOT(D_80095D34, j) + FIELD_SLOT(D_80095D64, j)) & (j != idx)) {
                 counts[i]++;
             }
         }
@@ -135,16 +149,29 @@ void Race_WaitForOthers(void) {
         S3 ann = D_800BAC08;
         *(Str13 *)gSaveSlotText[0] = D_800BAB98;
         Ui_AddElement(gUi[0], 0, 0x17A);
+#ifdef TARGET_PC
+        if (counts[0] >= 12) {
+            Port_FieldShowPlace(counts[0]);
+        } else
+#endif
+        {
         d2.x14 = counts[0] * 2 + 0x11548;
         d2.x18 = counts[0] * 2 + 0x11549;
         Ui_AddSpriteElement(gUi[0], &d2);
         Ui_AddElement(gUi[0], 2, 0x210);
+        }
         D_80096EC8 = Time_Get(&gGame[0]->x1058);
         D_80096EC0 = -1;
         Announcer_ClearQueue();
         if (counts[0] == 0) {
             Announcer_QueueRandom(ann.v, 3, 500, 1, 0);
-        } else if (race->x10 == 1) {
+        }
+#ifdef TARGET_PC
+        else if (counts[0] >= 12) {
+            /* no call-out past 12th */
+        }
+#endif
+        else if (race->x10 == 1) {
             Msg_Queue(a.v[counts[0]], 500, 1, 0);
         } else {
             Msg_Queue(b.v[counts[0]], 500, 1, 0);

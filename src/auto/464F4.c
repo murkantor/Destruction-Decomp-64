@@ -33,6 +33,9 @@ void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 void Msg_Queue(s32 id, s32 arg1, u8 force, u8 once);
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
+#ifdef TARGET_PC
+void Port_FieldShowPlace(s32 place); /* past 12th, the doubled field (46894.c) */
+#endif
 
 s32 Race_UpdateFinish(void) {
     Info *info = gGame[0]->x1100;
@@ -43,10 +46,17 @@ s32 Race_UpdateFinish(void) {
             UiDesc d = D_800BAB50;
             gSaveSlotText = D_800BAB98;
             Ui_RemoveElement(gUi[0], 0x17B);
+#ifdef TARGET_PC
+            if (D_80096EC0 >= 12) {
+                Port_FieldShowPlace(D_80096EC0);
+            } else
+#endif
+            {
             d.x14 = D_80096EC0 * 2 + 0x11548;
             d.x18 = D_80096EC0 * 2 + 0x11549;
             Ui_AddSpriteElement(gUi[0], &d);
             Ui_AddElement(gUi[0], 2, 0x210);
+            }
             if (D_800958A8 != 3) {
                 List12 a = D_800BABA8;
                 List12 b = D_800BABD8;
@@ -54,7 +64,13 @@ s32 Race_UpdateFinish(void) {
                 Announcer_ClearQueue();
                 if (D_80096EC0 == 0) {
                     Announcer_QueueRandom(c.v, 3, 500, 1, 0);
-                } else if (info->x10 == 1) {
+                }
+#ifdef TARGET_PC
+                else if (D_80096EC0 >= 12) {
+                    /* no call-out past 12th */
+                }
+#endif
+                else if (info->x10 == 1) {
                     Msg_Queue(a.v[D_80096EC0], 500, 1, 0);
                 } else {
                     Msg_Queue(b.v[D_80096EC0], 500, 1, 0);

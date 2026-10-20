@@ -69,3 +69,26 @@ s32 *Port_Field0WreckPlace(s32 slot) {
 s32 Port_Field0Doubled(void) {
     return gGame->race != NULL && gGame->race->ncars > 12;
 }
+
+extern void *gUi[];
+extern char gSaveSlotText[][0x32];
+void Ui_AddElement(void *, s32, s32);
+s32 sprintf(char *, const char *, ...);
+f32 Font_CenterX(char *, s32, f32);
+void Ui_SetElementX(void *, s32, s32, f32);
+
+/* The finish's place past 12th (Race_WaitForOthers, Race_UpdateFinish): the game has
+   sprites ("1st" to "12th") and announcer call-outs for 12 places only, so the
+   place, from 0, is written out on the text line under "you finished", centred as
+   the game centres those lines (the font has capitals only) */
+void Port_FieldShowPlace(s32 place) {
+    s32 n = place + 1;
+    const char *sfx = "TH";
+
+    if (n % 100 < 11 || n % 100 > 13) {
+        sfx = n % 10 == 1 ? "ST" : n % 10 == 2 ? "ND" : n % 10 == 3 ? "RD" : "TH";
+    }
+    sprintf(gSaveSlotText[1], "%d%s", n, sfx);
+    Ui_AddElement(gUi[0], 0, 0x17B);
+    Ui_SetElementX(gUi[0], 0, 0x17B, Font_CenterX(gSaveSlotText[1], 0x111F8, 160.0f));
+}
