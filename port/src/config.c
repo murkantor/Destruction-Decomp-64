@@ -169,6 +169,9 @@ static const Setting sSettings[] = {
       "Stick value at full tilt: an N64 controller reads about 80, the maximum is 127" },
     { "input", "free_camera", &gPortConfig.freeCamera, 1,
       "1 = the right stick turns the camera around the car (and no longer presses the C buttons)" },
+    { "input", "analog_pedals", &gPortConfig.analogPedals, 1,
+      "1 = the right trigger is the gas and the left the brake, by how far they are pressed"
+      " (the triggers no longer press Z and R)" },
     { "input", "keyboard_player", &gPortConfig.keyboardPlayer, 1, "Controller the keyboard drives: 1-4, 0 = none" },
     { "input", "raphnet", &gPortConfig.raphnet, 1,
       "1 = read raphnet N64 adapters raw: real stick values, no dead zone, the Rumble Pak driven directly" },

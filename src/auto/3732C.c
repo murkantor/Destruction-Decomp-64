@@ -96,6 +96,11 @@ static inline f32 tireF(f32 v, f32 a, f32 b, f32 load) {
     return r;
 }
 
+#ifdef TARGET_PC
+f32 Port_CarDrive(void *car, s32 reversing);
+f32 Port_CarBrake(void *car);
+#endif
+
 Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s32 idx) {
     u8 *p = car->x2C;
     Vec3f N = w->x194;
@@ -220,6 +225,9 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
         f32 aq;
         f32 lim;
         drive = Car_GetDriveTorque(car);
+#ifdef TARGET_PC
+        drive *= Port_CarDrive(car, p3); /* analog pedals (port/game/pedals.c) */
+#endif
         if (p1) {
             drive *= 0.1;
         }
@@ -250,11 +258,19 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
             ws->xC4 = 0.0f;
         } else if (p1) {
             *out = 0.0f;
+#ifdef TARGET_PC
+            if (ws->xC4 > *out) {
+                ws->xC4 = ws->xC4 - car->xB88 * 1.4 * Port_CarBrake(car);
+            } else {
+                ws->xC4 = ws->xC4 + car->xB88 * 1.4 * Port_CarBrake(car);
+            }
+#else
             if (ws->xC4 > *out) {
                 ws->xC4 = ws->xC4 - car->xB88 * 1.4;
             } else {
                 ws->xC4 = ws->xC4 + car->xB88 * 1.4;
             }
+#endif
         } else {
             f32 h;
             *out = 0.0f;

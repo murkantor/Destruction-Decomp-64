@@ -90,6 +90,7 @@ static PadBind sPadBinds[IN_COUNT];
 /* The gamepad on each controller, or NULL. The event pump (main thread)
    changes these while game threads read them: sLock covers both. */
 static SDL_Gamepad *sPads[MAXCONTROLLERS];
+static float sGas[MAXCONTROLLERS] = { 1, 1, 1, 1 }, sBrake[MAXCONTROLLERS] = { 1, 1, 1, 1 }; /* the pedals, 0-1 */
 static SDL_Mutex *sLock;
 static int sRumbleOn[MAXCONTROLLERS];
 
@@ -278,6 +279,9 @@ static float padAmount(const PadBind *b, SDL_Gamepad *pad) {
         } else if (gPortConfig.freeCamera &&
                    (b->src[i].axis == SDL_GAMEPAD_AXIS_RIGHTX || b->src[i].axis == SDL_GAMEPAD_AXIS_RIGHTY)) {
             continue; /* the right stick turns the camera instead (port/game/freecam.c) */
+        } else if (gPortConfig.analogPedals && (b->src[i].axis == SDL_GAMEPAD_AXIS_LEFT_TRIGGER ||
+                                                b->src[i].axis == SDL_GAMEPAD_AXIS_RIGHT_TRIGGER)) {
+            continue; /* the triggers are the pedals instead (readPad) */
         } else {
             v = SDL_GetGamepadAxis(pad, (SDL_GamepadAxis)b->src[i].axis) / 32767.0f * b->src[i].sign;
         }
@@ -396,11 +400,29 @@ static int scriptedPad(u16 *buttons, float *amount) {
     return 1;
 }
 
+/* DD64_FAKEGAS=frame:amount (testing): controller 1's gas held there from that frame */
+static void fakeGas(int channel, u16 *buttons, float *gas) {
+    static const char *fake = (const char *)1;
+    extern unsigned gfx_presents;
+
+    if (fake == (const char *)1) {
+        fake = SDL_getenv("DD64_FAKEGAS");
+    }
+    if (fake != NULL && channel == 0 && gfx_presents >= (unsigned)SDL_atoi(fake) && SDL_strchr(fake, ':') != NULL) {
+        *gas = (float)SDL_atof(SDL_strchr(fake, ':') + 1);
+        *buttons |= CONT_A;
+    }
+}
+
 void Port_InputGetPad(int channel, OSContPad *out) {
     if (channel == 0) {
         float amount[IN_COUNT];
         u16 buttons;
         if (scriptedPad(&buttons, amount)) {
+            float gas = 1.0f;
+            fakeGas(channel, &buttons, &gas);
+            sGas[0] = gas;
+            sBrake[0] = 1.0f;
             out->button = buttons;
             out->stick_x = stickAxis(amount[IN_STICK_RIGHT], amount[IN_STICK_LEFT]);
             out->stick_y = stickAxis(amount[IN_STICK_UP], amount[IN_STICK_DOWN]);
@@ -434,6 +456,29 @@ static void readPad(int channel, OSContPad *out) {
         amount[i] = a;
         if (sInputs[i].bit != 0 && a >= 0.5f) {
             buttons |= sInputs[i].bit;
+        }
+    }
+    {
+        /* Analog pedals: the right trigger is A (gas) and the left B (brake), and how far
+           each is pressed scales the car's engine and brakes (port/game/pedals.c). A
+           button, or a trigger pressed all the way, is the N64's full press. */
+        float gas = amount[0] >= 0.5f ? 1.0f : 0.0f, brake = amount[1] >= 0.5f ? 1.0f : 0.0f;
+        if (gPortConfig.analogPedals && pad != NULL) {
+            float rt = SDL_GetGamepadAxis(pad, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) / 32767.0f;
+            float lt = SDL_GetGamepadAxis(pad, SDL_GAMEPAD_AXIS_LEFT_TRIGGER) / 32767.0f;
+            if (rt > 0.06f && gas < 1.0f) {
+                gas = rt > 0.95f ? 1.0f : rt;
+                buttons |= CONT_A;
+            }
+            if (lt > 0.06f && brake < 1.0f) {
+                brake = lt > 0.95f ? 1.0f : lt;
+                buttons |= CONT_B;
+            }
+        }
+        fakeGas(channel, &buttons, &gas);
+        if (channel >= 0 && channel < MAXCONTROLLERS) {
+            sGas[channel] = gas;
+            sBrake[channel] = brake;
         }
     }
     SDL_UnlockMutex(sLock);
@@ -623,4 +668,13 @@ int Port_InputRightStick(int player, float *x, float *y) {
         *y = vy > 1.0f ? 1.0f : vy < -1.0f ? -1.0f : vy;
     }
     return ok;
+}
+
+/* How far a controller's gas and brake are pressed, 0-1 (1 with buttons) */
+float Port_InputGas(int channel) {
+    return channel >= 0 && channel < MAXCONTROLLERS ? sGas[channel] : 1.0f;
+}
+
+float Port_InputBrake(int channel) {
+    return channel >= 0 && channel < MAXCONTROLLERS ? sBrake[channel] : 1.0f;
 }
