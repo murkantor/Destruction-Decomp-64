@@ -38,6 +38,11 @@ extern s64 D_80131F90[];
 extern s32 D_80132164[];
 extern u8 D_8007EE48[];
 extern volatile SndSlot D_801311D0[];
+#ifdef TARGET_PC
+/* the doubled field: one pair per car of RACE_CARS (port/game/field_part2.c) */
+extern volatile SndSlot gFieldEngineSfx[];
+#define D_801311D0 gFieldEngineSfx
+#endif
 
 s16 Obj_NextId(void);
 u64 Time_Get(u64 *);

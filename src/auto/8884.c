@@ -20,6 +20,11 @@ typedef struct {
 } Ent;
 extern Game *gGame;
 extern Track D_801311D0[];
+#ifdef TARGET_PC
+/* the doubled field: one pair per car of RACE_CARS (port/game/field_part2.c) */
+extern Track gFieldEngineSfx[];
+#define D_801311D0 gFieldEngineSfx
+#endif
 extern s32 D_801320C8[];
 extern f32 D_8007EEC0, D_8007EEC4, D_8007EEC8;
 extern s32 CarEffect_Init(s32, s32, Rec *);

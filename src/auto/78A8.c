@@ -12,6 +12,14 @@ extern Snd3 D_8007EDC0[];
 extern s32 Car_GetDriveDir(Slot *);
 extern void EngineSfx_Crossfade(s32, s32, s32);
 extern void Sfx_StopPair(s32, s32);
+#ifdef TARGET_PC
+/* the doubled field: the engine sounds of RACE_CARS cars (port/game/field_part2.c);
+   D_801311D4 is the table's second word */
+extern Track gFieldEngineSfx[];
+extern void Port_FieldSfxStopPair(s32, s32);
+#define D_801311D4 ((Track *)((u8 *)gFieldEngineSfx + 4))
+#define Sfx_StopPair Port_FieldSfxStopPair
+#endif
 
 void EngineSfx_UpdateAll(s32 arg0) {
     s32 i;
