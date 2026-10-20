@@ -13,7 +13,8 @@ typedef struct {
     int fullscreen;          /* 0 windowed, 1 fullscreen */
     int fullscreenExclusive; /* 0 borderless desktop, 1 exclusive mode */
     int vsync;               /* 0 off, 1 on, -1 adaptive */
-    int maxFps;              /* frame cap: 30 or 60 (0 = the field rate) */
+    int maxFps;              /* frame cap, 0 = none (the display's rate with vsync) */
+    int interpolation;       /* frames in between: 0 off, 1 smooth, 2 lowest latency */
     int msaa;                /* 1, 2, 4, 8 */
     int n64AA;               /* resolve MSAA like the N64's video interface */
     int anisotropy;          /* 1 = off, up to 16 */

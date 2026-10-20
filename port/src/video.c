@@ -2,6 +2,12 @@
  * Video: graphics tasks go to Fast3D (port/fast3d), and the VI swap presents
  * the frame. Everything here runs on the host main thread, which owns the
  * window and the GL context.
+ *
+ * When frames are shown at another rate than the game's 60 Hz (a faster
+ * display, or max_fps), and [video] interpolation is on, the VI swap does not
+ * present: the main loop does, as often as the display and the cap allow, each
+ * time drawing the game's newest frame blended from the one before
+ * (gfx_interp_present). The game itself still runs at 60 Hz.
  */
 #include <SDL3/SDL.h>
 
@@ -14,6 +20,38 @@ extern struct GfxWindowManagerAPI gfx_sdl;
 extern bool gfx_show_fps;
 
 static int sBlack;
+static int sInterp;       /* frames in between are drawn (the mode, 0 = off) */
+static u64 sNextPresentNs; /* the cap's next frame, while interpolating */
+
+extern uint32_t gfx_interp_mode;
+void gfx_interp_set_mode(uint32_t mode);
+bool gfx_interp_present(bool black);
+float gfx_sdl_refresh_rate(void);
+
+#define GAME_RATE 60
+
+/* How often frames can be shown: the cap, and the display with vsync on */
+static float presentRate(void) {
+    float refresh = gfx_sdl_refresh_rate(), cap = (float)gPortConfig.maxFps;
+
+    if (gPortConfig.vsync != 0 && refresh > 0.0f) {
+        return cap > 0.0f && cap < refresh ? cap : refresh;
+    }
+    return cap > 0.0f ? cap : 1000.0f;
+}
+
+/* Interpolation is only worth its blend where frames are not shown at the game's rate */
+static void updateInterp(void) {
+    float rate = presentRate();
+    int mode = gPortConfig.interpolation != 0 && SDL_fabsf(rate - GAME_RATE) > 1.5f ? gPortConfig.interpolation : 0;
+
+    if (mode != sInterp) {
+        sInterp = mode;
+        gfx_interp_set_mode((uint32_t)mode);
+        Port_Log("video: frames shown at up to %.0f Hz; interpolation %s", rate,
+                 mode == 0 ? "off" : mode == 2 ? "on (extrapolating, no added lag)" : "on");
+    }
+}
 
 void Port_VideoInit(void) {
     struct GfxInitSettings set;
@@ -36,6 +74,7 @@ void Port_VideoInit(void) {
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
     gfx_show_fps = true; /* always shown */
+    updateInterp();
 }
 
 /* The N64 address of the microcode a task starts with (F3DEX2 or S2DEX2) */
@@ -54,19 +93,81 @@ void Port_VideoRunTask(OSTask *task) {
 }
 
 void Port_VideoSwap(void *framebuffer) {
-    gfx_present(sBlack);
+    if (!sInterp) {
+        gfx_present(sBlack);
+    }
+}
+
+/* Main loop, each time round: while interpolating, show a frame when the cap allows */
+void Port_VideoPresentInterp(void) {
+    static unsigned checks;
+    u64 now;
+
+    if (++checks % 256 == 0) {
+        updateInterp(); /* the window may have moved to another display */
+    }
+    if (!sInterp) {
+        return;
+    }
+    now = SDL_GetTicksNS();
+    if (gPortConfig.maxFps > 0) {
+        u64 interval = 1000000000ULL / (u64)gPortConfig.maxFps;
+        if (now < sNextPresentNs) {
+            return;
+        }
+        sNextPresentNs = sNextPresentNs + interval > now ? sNextPresentNs + interval : now + interval;
+    }
+    {
+        static int logTimes = -1;
+        static u64 spent;
+        static unsigned n;
+
+        gfx_interp_present(sBlack);
+        if (logTimes < 0) {
+            logTimes = SDL_getenv("DD64_GFXLOG") != NULL;
+        }
+        if (logTimes) {
+            spent += SDL_GetTicksNS() - now;
+            if (++n == 120) {
+                Port_Log("video: an interpolated frame took %.2f ms to draw and show", spent / 120 / 1e6);
+                spent = 0;
+                n = 0;
+            }
+        }
+    }
 }
 
 /* The shortest time between frames, for Fps_Update: one field at the game's
-   rate (the N64's fastest), or longer for a lower [video] max_fps. Rates above
-   the field rate would need frames drawn between the game's updates. */
+   rate (the N64's fastest), or longer for a lower [video] max_fps without
+   interpolation (30: two fields a frame, as the N64 often ran). With
+   interpolation the game keeps its rate whatever the display does. */
 u64 Port_FrameIntervalNs(s32 rate) {
     s32 fps = gPortConfig.maxFps;
 
-    if (fps <= 0 || fps > rate) {
+    if (sInterp || fps <= 0 || fps > rate) {
         fps = rate;
     }
     return 1000000000ULL / (u64)fps;
+}
+
+/* Fps_Update, each game frame: the fields it took (DD64_GFXLOG: a histogram) */
+void Port_NoteGameFrame(s32 fields) {
+    static int logTimes = -1;
+    static unsigned hist[4], n;
+
+    if (logTimes < 0) {
+        logTimes = SDL_getenv("DD64_GFXLOG") != NULL;
+    }
+    if (!logTimes) {
+        return;
+    }
+    hist[fields < 1 ? 0 : fields > 3 ? 3 : fields]++;
+    if (++n == 120) {
+        Port_Log("video: last 120 game frames took 1 field: %u, 2: %u, 3 or more: %u (0: %u)", hist[1], hist[2],
+                 hist[3], hist[0]);
+        hist[0] = hist[1] = hist[2] = hist[3] = 0;
+        n = 0;
+    }
 }
 
 void Port_VideoSetBlack(int black) {
@@ -77,4 +178,5 @@ void Port_VideoToggleFullscreen(void) {
     gPortConfig.fullscreen = !gfx_sdl.get_fullscreen_state();
     gfx_sdl.set_fullscreen(gPortConfig.fullscreen);
     Port_ConfigSave();
+    updateInterp();
 }

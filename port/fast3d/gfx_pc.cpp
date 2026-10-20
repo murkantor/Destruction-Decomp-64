@@ -150,6 +150,11 @@ struct LoadedVertex {
     float u, v;
     struct RGBA color;
     uint8_t clip_rej;
+    /* for frame interpolation (below): the model-space position, the matrix slot
+       (-1: drawn as it is, a rectangle say), the widescreen x scale and z offset */
+    uint8_t wide;
+    int16_t slot;
+    float ox, oy, oz, zoff;
 };
 
 struct TextureCacheKey {
@@ -766,6 +771,8 @@ static void calculate_normal_dir(const int8_t dir[3], const float mv[4][4], floa
     }
 }
 
+static void interp_matrix_changed(bool projection);
+
 static void gfx_sp_matrix(uint8_t parameters, const uint8_t *addr) {
     float matrix[4][4];
 
@@ -797,6 +804,7 @@ static void gfx_sp_matrix(uint8_t parameters, const uint8_t *addr) {
         rsp.lights_changed = true;
     }
     gfx_matrix_mul(rsp.MP_matrix, rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1], rsp.P_matrix);
+    interp_matrix_changed(parameters & G_MTX_PROJECTION);
 }
 
 static void gfx_sp_pop_matrix(uint32_t count) {
@@ -805,7 +813,10 @@ static void gfx_sp_pop_matrix(uint32_t count) {
     }
     gfx_matrix_mul(rsp.MP_matrix, rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1], rsp.P_matrix);
     rsp.lights_changed = true;
+    interp_matrix_changed(false);
 }
+
+static int16_t interp_slot(const uint8_t *vtx);
 
 static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *vtx) {
     const float(*mv)[4] = rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1];
@@ -838,6 +849,12 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
             x *= wide_k; /* perspective: widen the view (see vp_wide) */
         }
         z += vp_z_offset * w; /* screen z = z/w * scale + translate */
+        d->ox = ob[0];
+        d->oy = ob[1];
+        d->oz = ob[2];
+        d->zoff = vp_z_offset;
+        d->wide = gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f;
+        d->slot = interp_slot(vtx - i * 16);
 
         short U = tc0 * rsp.texture_scaling_factor.s >> 16;
         short V = tc1 * rsp.texture_scaling_factor.t >> 16;
@@ -1172,8 +1189,11 @@ static float tile_shift(float c, uint8_t shift) {
 }
 
 /* Append one vertex in the layout the shader expects */
+static void interp_note_vertex(const struct LoadedVertex *v);
+
 static void emit_vertex(const struct LoadedVertex *v, struct ColorCombiner *comb, bool use_alpha, bool use_fog,
                         float tex_w[2], float tex_h[2], bool linear) {
+    interp_note_vertex(v);
     buf_vbo[buf_vbo_len++] = v->x;
     buf_vbo[buf_vbo_len++] = v->y;
     buf_vbo[buf_vbo_len++] = v->z;
@@ -1555,6 +1575,7 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
         v[i].z = z;
         v[i].w = 1.0f;
         v[i].color = rdp.fill_color;
+        v[i].slot = -1;
     }
     float tex_w[2] = { 1, 1 }, tex_h[2] = { 1, 1 };
     if (textured) {
@@ -2105,6 +2126,377 @@ static void gfx_run_dl(const uint8_t *cmd) {
     }
 }
 
+
+/* ---- Frame interpolation ----
+ *
+ * With the display faster or slower than the game's 60 Hz ([video] interpolation),
+ * the frames in between are drawn from the game's last two: each game frame's
+ * backend calls are recorded, with every vertex's model-space position and the
+ * matrices that placed it (a slot), and replayed with each slot's matrices
+ * blended towards their match in the frame before. A slot is matched by the
+ * vertex data it was first used with and how many times that data was used
+ * before it in the frame (the same wheel model four times a car, say). Slots
+ * with no match, and rectangles, are drawn as recorded; camera cuts and
+ * teleports snap instead of blending. Only the presentation changes: the game
+ * runs at its own rate whatever the display does.
+ */
+
+static void update_framebuffer_sizes(void);
+static void present_to_window(bool black);
+
+enum InterpOp {
+    IOP_LOAD_SHADER, IOP_UNLOAD_SHADER, IOP_TEXTURE, IOP_SAMPLER, IOP_DEPTH, IOP_VIEWPORT, IOP_SCISSOR,
+    IOP_ALPHA, IOP_DRAW, IOP_CLEAR
+};
+
+struct InterpCmd {
+    uint8_t op;
+    int32_t a[5];
+    struct ShaderProgram *prg;
+    uint32_t vbo_off, vbo_len, tris, vtx_off;
+};
+
+struct InterpVtx {
+    float ox, oy, oz, zoff;
+    int16_t slot;
+    uint8_t wide;
+};
+
+struct InterpSlot {
+    float mv[4][4], p[4][4];
+    uint64_t key;  /* vertex data address and occurrence */
+    uint32_t pkey; /* which projection load */
+};
+
+struct InterpFrame {
+    std::vector<InterpCmd> cmds;
+    std::vector<float> vbo;
+    std::vector<InterpVtx> vtx;
+    std::vector<InterpSlot> slots;
+    std::unordered_map<uint64_t, int> by_key;
+    std::unordered_map<uint32_t, int> by_pkey;
+    std::unordered_map<uintptr_t, uint16_t> uses; /* recording: vertex data seen so far */
+    uint32_t proj_loads;
+    uint64_t t_ns;
+    bool valid;
+};
+
+extern "C" {
+uint32_t gfx_interp_mode; /* 0 off, 1 interpolate, 2 extrapolate (no added lag) */
+}
+static InterpFrame interp_store[3];
+static InterpFrame *interp_prev = &interp_store[0], *interp_cur = &interp_store[1], *interp_rec = &interp_store[2];
+static bool interp_recording;
+static unsigned interp_game_frames; /* recorded so far, for DD64_GFXLOG */
+static int16_t interp_cur_slot = -1;
+static std::vector<InterpVtx> interp_pending; /* vertices of the batch not yet drawn */
+static struct GfxRenderingAPI *interp_real;     /* the backend the recorder passes calls to */
+static struct GfxRenderingAPI interp_recorder;
+
+static void interp_push(uint8_t op, int32_t a0 = 0, int32_t a1 = 0, int32_t a2 = 0, int32_t a3 = 0, int32_t a4 = 0,
+                        struct ShaderProgram *prg = NULL) {
+    if (!interp_recording) {
+        return;
+    }
+    InterpCmd c = {};
+    c.op = op;
+    c.a[0] = a0, c.a[1] = a1, c.a[2] = a2, c.a[3] = a3, c.a[4] = a4;
+    c.prg = prg;
+    interp_rec->cmds.push_back(c);
+}
+
+static void interp_matrix_changed(bool projection) {
+    interp_cur_slot = -1;
+    if (projection && interp_recording) {
+        interp_rec->proj_loads++;
+    }
+}
+
+static int16_t interp_slot(const uint8_t *vtx) {
+    if (!interp_recording) {
+        return -1;
+    }
+    if (interp_cur_slot < 0) {
+        InterpFrame *f = interp_rec;
+        if (f->slots.size() >= 32000) {
+            return -1;
+        }
+        InterpSlot s;
+        memcpy(s.mv, rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1], sizeof(s.mv));
+        memcpy(s.p, rsp.P_matrix, sizeof(s.p));
+        uint16_t n = f->uses[(uintptr_t)vtx]++;
+        s.key = (uint64_t)(uintptr_t)vtx << 16 | n;
+        s.pkey = f->proj_loads;
+        interp_cur_slot = (int16_t)f->slots.size();
+        f->by_key[s.key] = interp_cur_slot;
+        if (f->by_pkey.find(s.pkey) == f->by_pkey.end()) {
+            f->by_pkey[s.pkey] = interp_cur_slot;
+        }
+        f->slots.push_back(s);
+    }
+    return interp_cur_slot;
+}
+
+static void interp_note_vertex(const struct LoadedVertex *v) {
+    if (interp_recording) {
+        interp_pending.push_back({ v->ox, v->oy, v->oz, v->zoff, v->slot, v->wide });
+    }
+}
+
+/* The recorder: each call is noted for the replay, then passed on */
+static void rec_unload_shader(struct ShaderProgram *p) {
+    interp_push(IOP_UNLOAD_SHADER, 0, 0, 0, 0, 0, p);
+    interp_real->unload_shader(p);
+}
+static void rec_load_shader(struct ShaderProgram *p) {
+    interp_push(IOP_LOAD_SHADER, 0, 0, 0, 0, 0, p);
+    interp_real->load_shader(p);
+}
+static struct ShaderProgram *rec_create_and_load_new_shader(uint64_t id0, uint32_t id1) {
+    struct ShaderProgram *p = interp_real->create_and_load_new_shader(id0, id1);
+    interp_push(IOP_LOAD_SHADER, 0, 0, 0, 0, 0, p);
+    return p;
+}
+static void rec_select_texture(int tile, uint32_t id, bool linear) {
+    interp_push(IOP_TEXTURE, tile, (int32_t)id, linear);
+    interp_real->select_texture(tile, id, linear);
+}
+static void rec_set_sampler_parameters(int sampler, bool linear, uint32_t cms, uint32_t cmt) {
+    interp_push(IOP_SAMPLER, sampler, linear, (int32_t)cms, (int32_t)cmt);
+    interp_real->set_sampler_parameters(sampler, linear, cms, cmt);
+}
+static void rec_set_depth_mode(bool test, bool update, bool compare, bool prim, uint16_t zmode) {
+    interp_push(IOP_DEPTH, test, update, compare, prim, zmode);
+    interp_real->set_depth_mode(test, update, compare, prim, zmode);
+}
+static void rec_set_viewport(int x, int y, int w, int h) {
+    interp_push(IOP_VIEWPORT, x, y, w, h);
+    interp_real->set_viewport(x, y, w, h);
+}
+static void rec_set_scissor(int x, int y, int w, int h) {
+    interp_push(IOP_SCISSOR, x, y, w, h);
+    interp_real->set_scissor(x, y, w, h);
+}
+static void rec_set_use_alpha(bool use_alpha, bool modulate) {
+    interp_push(IOP_ALPHA, use_alpha, modulate);
+    interp_real->set_use_alpha(use_alpha, modulate);
+}
+static void rec_draw_triangles(float vbo[], size_t len, size_t tris) {
+    if (interp_recording && tris != 0 && interp_pending.size() == tris * 3) {
+        InterpFrame *f = interp_rec;
+        InterpCmd c = {};
+        c.op = IOP_DRAW;
+        c.vbo_off = (uint32_t)f->vbo.size();
+        c.vbo_len = (uint32_t)len;
+        c.tris = (uint32_t)tris;
+        c.vtx_off = (uint32_t)f->vtx.size();
+        f->vbo.insert(f->vbo.end(), vbo, vbo + len);
+        f->vtx.insert(f->vtx.end(), interp_pending.begin(), interp_pending.end());
+        f->cmds.push_back(c);
+    }
+    interp_pending.clear();
+    if (!interp_recording) {
+        interp_real->draw_triangles(vbo, len, tris);
+    } /* else only the replay draws: every frame shown is one */
+}
+static void rec_clear_framebuffer(bool color, bool depth) {
+    interp_push(IOP_CLEAR, color, depth);
+    if (!interp_recording) {
+        interp_real->clear_framebuffer(color, depth);
+    }
+}
+
+/* Video, when the mode changes: recording on or off */
+extern "C" void gfx_interp_set_mode(uint32_t mode) {
+    gfx_interp_mode = mode;
+    if (interp_real == NULL) {
+        interp_real = gfx_rapi;
+        interp_recorder = *gfx_rapi;
+        interp_recorder.unload_shader = rec_unload_shader;
+        interp_recorder.load_shader = rec_load_shader;
+        interp_recorder.create_and_load_new_shader = rec_create_and_load_new_shader;
+        interp_recorder.select_texture = rec_select_texture;
+        interp_recorder.set_sampler_parameters = rec_set_sampler_parameters;
+        interp_recorder.set_depth_mode = rec_set_depth_mode;
+        interp_recorder.set_viewport = rec_set_viewport;
+        interp_recorder.set_scissor = rec_set_scissor;
+        interp_recorder.set_use_alpha = rec_set_use_alpha;
+        interp_recorder.draw_triangles = rec_draw_triangles;
+        interp_recorder.clear_framebuffer = rec_clear_framebuffer;
+    }
+    gfx_rapi = mode != 0 ? &interp_recorder : interp_real;
+    if (mode == 0) {
+        interp_prev->valid = interp_cur->valid = false;
+    }
+}
+
+static void interp_begin_frame(void) {
+    InterpFrame *f = interp_rec;
+
+    interp_recording = gfx_interp_mode != 0;
+    interp_cur_slot = -1;
+    interp_pending.clear();
+    f->cmds.clear();
+    f->vbo.clear();
+    f->vtx.clear();
+    f->slots.clear();
+    f->by_key.clear();
+    f->by_pkey.clear();
+    f->uses.clear();
+    f->proj_loads = 0;
+    f->valid = false;
+}
+
+static void interp_end_frame(void) {
+    if (!interp_recording) {
+        return;
+    }
+    interp_recording = false;
+    interp_game_frames++;
+    InterpFrame *done = interp_rec;
+    done->valid = true;
+    done->t_ns = SDL_GetTicksNS();
+    interp_rec = interp_prev;
+    interp_prev = interp_cur;
+    interp_cur = done;
+}
+
+static void mtx_lerp(float out[4][4], const float a[4][4], const float b[4][4], float t) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            out[i][j] = a[i][j] + (b[i][j] - a[i][j]) * t;
+        }
+    }
+}
+
+/* A camera cut: the two projections (with the camera in them) far apart */
+static bool proj_cut(const float a[4][4], const float b[4][4]) {
+    float diff = 0.0f, mag = 0.0f;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            diff = std::max(diff, fabsf(a[i][j] - b[i][j]));
+            mag = std::max(mag, fabsf(b[i][j]));
+        }
+    }
+    return diff > 0.25f * mag;
+}
+
+/* A teleport (a respawn): the model moved further than any car does in a frame */
+static bool mv_jump(const float a[4][4], const float b[4][4]) {
+    float dx = a[3][0] - b[3][0], dy = a[3][1] - b[3][1], dz = a[3][2] - b[3][2];
+    return dx * dx + dy * dy + dz * dz > 50.0f * 50.0f;
+}
+
+/*
+ * Draw the newest game frame again, its matrices blended from the frame before by
+ * the time since it arrived, and show it. False if there is no recording yet.
+ */
+extern "C" bool gfx_interp_present(bool black) {
+    InterpFrame *cur = interp_cur, *prev = interp_prev;
+
+    if (!cur->valid || frame_started) {
+        return false;
+    }
+    uint64_t now = SDL_GetTicksNS();
+    float t = 1.0f;
+    if (prev->valid && cur->t_ns > prev->t_ns) {
+        float tick = (float)std::min<uint64_t>(std::max<uint64_t>(cur->t_ns - prev->t_ns, 4000000), 100000000);
+        float since = (float)(now - cur->t_ns);
+        t = gfx_interp_mode == 2 ? 1.0f + std::min(since / tick, 0.5f) : std::min(since / tick, 1.0f);
+    }
+
+    /* each slot's matrix for this moment */
+    static std::vector<float> mp;
+    static unsigned n_presents, n_slots, n_blended, n_cut;
+    static double behind_ms;
+    static const char *gfxlog = getenv("DD64_GFXLOG");
+    mp.resize(cur->slots.size() * 16);
+    for (size_t i = 0; i < cur->slots.size(); i++) {
+        const InterpSlot &s = cur->slots[i];
+        float mv[4][4], p[4][4];
+        memcpy(mv, s.mv, sizeof(mv));
+        memcpy(p, s.p, sizeof(p));
+        n_slots++;
+        if (t != 1.0f && prev->valid) {
+            auto pi = prev->by_pkey.find(s.pkey);
+            if (pi != prev->by_pkey.end() && !proj_cut(prev->slots[pi->second].p, s.p)) {
+                mtx_lerp(p, prev->slots[pi->second].p, s.p, t);
+                auto mi = prev->by_key.find(s.key);
+                if (mi != prev->by_key.end() && !mv_jump(prev->slots[mi->second].mv, s.mv)) {
+                    mtx_lerp(mv, prev->slots[mi->second].mv, s.mv, t);
+                    n_blended++;
+                }
+            } else {
+                n_cut++;
+            }
+        }
+        float m[4][4];
+        gfx_matrix_mul(m, mv, p);
+        memcpy(&mp[i * 16], m, sizeof(m));
+    }
+    /* how far the picture is behind the newest game frame (negative: ahead of it) */
+    if (prev->valid && cur->t_ns > prev->t_ns) {
+        behind_ms += (1.0f - t) * (double)(cur->t_ns - prev->t_ns) / 1e6;
+    }
+    if (gfxlog != NULL && ++n_presents % 120 == 0) {
+        static uint64_t since;
+        static unsigned frames_then;
+        double secs = since != 0 ? (now - since) / 1e9 : 0.0;
+        sysLogPrintf(LOG_NOTE, "gfx: interpolation: %.0f frames/s shown, %.0f game frames/s; %u slots, %u blended, "
+                     "%u cut; on average %.1f ms behind the newest game frame",
+                     secs > 0 ? 120 / secs : 0.0, secs > 0 ? (interp_game_frames - frames_then) / secs : 0.0, n_slots,
+                     n_blended, n_cut, behind_ms / 120.0);
+        since = now;
+        frames_then = interp_game_frames;
+        n_slots = n_blended = n_cut = 0;
+        behind_ms = 0.0;
+    }
+
+    update_framebuffer_sizes();
+    interp_real->start_frame();
+    interp_real->start_draw_to_framebuffer(game_fb, 1.0f);
+    static std::vector<float> vbo;
+    for (const InterpCmd &c : cur->cmds) {
+        switch (c.op) {
+            case IOP_LOAD_SHADER: interp_real->load_shader(c.prg); break;
+            case IOP_UNLOAD_SHADER: interp_real->unload_shader(c.prg); break;
+            case IOP_TEXTURE: interp_real->select_texture(c.a[0], (uint32_t)c.a[1], c.a[2]); break;
+            case IOP_SAMPLER: interp_real->set_sampler_parameters(c.a[0], c.a[1], (uint32_t)c.a[2], (uint32_t)c.a[3]); break;
+            case IOP_DEPTH: interp_real->set_depth_mode(c.a[0], c.a[1], c.a[2], c.a[3], (uint16_t)c.a[4]); break;
+            case IOP_VIEWPORT: interp_real->set_viewport(c.a[0], c.a[1], c.a[2], c.a[3]); break;
+            case IOP_SCISSOR: interp_real->set_scissor(c.a[0], c.a[1], c.a[2], c.a[3]); break;
+            case IOP_ALPHA: interp_real->set_use_alpha(c.a[0], c.a[1]); break;
+            case IOP_CLEAR: interp_real->clear_framebuffer(c.a[0], c.a[1]); break;
+            case IOP_DRAW: {
+                size_t verts = c.tris * 3, stride = c.vbo_len / verts;
+                vbo.assign(cur->vbo.begin() + c.vbo_off, cur->vbo.begin() + c.vbo_off + c.vbo_len);
+                for (size_t k = 0; k < verts; k++) {
+                    const InterpVtx &v = cur->vtx[c.vtx_off + k];
+                    if (v.slot < 0) {
+                        continue;
+                    }
+                    const float(*m)[4] = (const float(*)[4]) & mp[v.slot * 16];
+                    float x = v.ox * m[0][0] + v.oy * m[1][0] + v.oz * m[2][0] + m[3][0];
+                    float y = v.ox * m[0][1] + v.oy * m[1][1] + v.oz * m[2][1] + m[3][1];
+                    float z = v.ox * m[0][2] + v.oy * m[1][2] + v.oz * m[2][2] + m[3][2];
+                    float w = v.ox * m[0][3] + v.oy * m[1][3] + v.oz * m[2][3] + m[3][3];
+                    if (v.wide) {
+                        x *= wide_k;
+                    }
+                    z += v.zoff * w;
+                    float *o = &vbo[k * stride];
+                    o[0] = x, o[1] = y, o[2] = z, o[3] = w;
+                }
+                interp_real->draw_triangles(vbo.data(), c.vbo_len, c.tris);
+                break;
+            }
+        }
+    }
+    interp_real->end_frame();
+    present_to_window(black);
+    return true;
+}
+
 /* ---- Frames ---- */
 
 static void update_framebuffer_sizes(void) {
@@ -2160,7 +2552,10 @@ void gfx_start_frame(void) {
     update_framebuffer_sizes();
     gfx_rapi->start_frame();
     gfx_rapi->start_draw_to_framebuffer(game_fb, 1.0f);
+    interp_begin_frame();
     rendering_state = RenderingState();
+    gfx_rapi->set_depth_mode(false, false, false, false, 0);
+    gfx_rapi->set_use_alpha(false, false);
     rendering_state.shader_program = NULL;
     rdp.viewport_or_scissor_changed = true;
     rdp.textures_changed[0] = rdp.textures_changed[1] = true;
@@ -2177,13 +2572,20 @@ void gfx_run(const void *commands, uint32_t ucode_text) {
 
 void gfx_end_frame(void) {
     frame_started = false;
+    interp_end_frame();
 }
+
+static void present_to_window(bool black);
 
 void gfx_present(bool black) {
     gfx_flush();
     if (!frame_started) {
         update_framebuffer_sizes();
     }
+    present_to_window(black);
+}
+
+static void present_to_window(bool black) {
     /* Into the window: 4:3 in the middle, black bars beside it */
     gfx_rapi->start_draw_to_framebuffer(0, 1.0f);
     gfx_rapi->clear_framebuffer(true, true);

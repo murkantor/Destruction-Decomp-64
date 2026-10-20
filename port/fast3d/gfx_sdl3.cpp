@@ -143,3 +143,10 @@ struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_swap_buffers_end,
     gfx_sdl_set_swap_interval,
 };
+
+/* The refresh rate of the display the window is on, Hz (0 if unknown) */
+extern "C" float gfx_sdl_refresh_rate(void) {
+    SDL_DisplayID d = wnd != NULL ? SDL_GetDisplayForWindow(wnd) : 0;
+    const SDL_DisplayMode *m = d != 0 ? SDL_GetCurrentDisplayMode(d) : NULL;
+    return m != NULL ? m->refresh_rate : 0.0f;
+}

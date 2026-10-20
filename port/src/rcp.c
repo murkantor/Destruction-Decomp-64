@@ -21,6 +21,7 @@
 static SDL_Mutex *sLock;
 static SDL_Condition *sCond;
 static OSTask *sQueue[MAX_TASKS];
+static u64 sQueuedNs[MAX_TASKS]; /* when each was queued (DD64_GFXLOG timings) */
 static int sHead, sCount;
 static OSTask *sDrawing;     /* the graphics task the main thread is running */
 static OSTask *sYielded;     /* a graphics task yielded to an audio task, until the scheduler starts it again */
@@ -36,6 +37,7 @@ static void enqueue(OSTask *task) {
         Port_Fatal("RCP task queue full");
     }
     sQueue[(sHead + sCount) % MAX_TASKS] = task;
+    sQueuedNs[(sHead + sCount) % MAX_TASKS] = SDL_GetTicksNS();
     sCount++;
     SDL_SignalCondition(sCond);
 }
@@ -125,8 +127,14 @@ void Port_RcpWait(u64 untilNs) {
 }
 
 void Port_RcpRunPending(void) {
+    static int sLogTimes = -1;
+
+    if (sLogTimes < 0) {
+        sLogTimes = SDL_getenv("DD64_GFXLOG") != NULL;
+    }
     for (;;) {
         OSTask *task;
+        u64 queued;
         int events = 1;
 
         SDL_LockMutex(sLock);
@@ -135,13 +143,27 @@ void Port_RcpRunPending(void) {
             return;
         }
         task = sQueue[sHead];
+        queued = sQueuedNs[sHead];
         sHead = (sHead + 1) % MAX_TASKS;
         sCount--;
         sDrawing = task;
         SDL_UnlockMutex(sLock);
 
         if (task->t.type == M_GFXTASK) {
+            u64 start = SDL_GetTicksNS();
             Port_VideoRunTask(task);
+            if (sLogTimes) {
+                static u64 waited, ran;
+                static unsigned n;
+                waited += start - queued;
+                ran += SDL_GetTicksNS() - start;
+                if (++n == 120) {
+                    Port_Log("rcp: graphics tasks waited %.2f ms on average to start, took %.2f ms",
+                             waited / 120 / 1e6, ran / 120 / 1e6);
+                    waited = ran = 0;
+                    n = 0;
+                }
+            }
         } else {
             Port_Log("RCP: unknown task type %u", (unsigned)task->t.type);
         }

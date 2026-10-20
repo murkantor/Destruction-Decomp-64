@@ -11,6 +11,7 @@ s32 Timer_GetRate(void);
 #ifdef TARGET_PC
 void Port_WaitUntilNs(u64 ns);
 u64 Port_FrameIntervalNs(s32 rate);
+void Port_NoteGameFrame(s32 fields);
 #endif
 
 void Fps_Update(void) {
@@ -39,6 +40,7 @@ void Fps_Update(void) {
         D_800C0708 = 0.0f;
     }
 #ifdef TARGET_PC
+    Port_NoteGameFrame(v);
     /* Advance by the whole fields counted, not to now: the N64's frames are
        whole fields, but a PC frame cut off mid-field (40 fps is 1.5 fields)
        would lose or gain the remainder every frame and change the game speed */

@@ -115,6 +115,7 @@ int main(int argc, char **argv) {
         Port_PumpEvents();
         Port_RcpRunPending();
         Port_ViRetrace();
+        Port_VideoPresentInterp();
         Port_RcpWait(SDL_GetTicksNS() + 1000000); /* a task, a retrace, or a millisecond */
     }
 

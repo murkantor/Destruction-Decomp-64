@@ -161,8 +161,10 @@ static OSMesgQueue *sViEventQueue;
 static OSMesg sViEventMsg;
 static u32 sViRetraceCount = 1;
 static u32 sViRetraces;
-static void *sViCurrentFb;
-static void *sViNextFb;
+/* The framebuffer the VI scans out, and the one it takes at the next retrace:
+   switched by the VI clock thread, read by the game's threads */
+static void *volatile sViCurrentFb;
+static void *volatile sViNextFb;
 
 void osCreateViManager(OSPri pri) {
 }
@@ -236,7 +238,13 @@ static int viClock(void *data) {
             continue;
         }
         sViRetraces++;
-        SDL_SetAtomicInt(&sViPresent, 1);
+        /* The VI takes the new framebuffer at the retrace, before the game hears of
+           it: a game thread woken by the retrace then sees it on screen, however
+           busy the main thread is (which only shows it) */
+        if (sViNextFb != sViCurrentFb) {
+            sViCurrentFb = sViNextFb;
+            SDL_SetAtomicInt(&sViPresent, 1);
+        }
         Port_RcpWake();
         if (sViEventQueue != NULL && sViRetraces % sViRetraceCount == 0) {
             Port_PostMesg(sViEventQueue, sViEventMsg);
@@ -253,11 +261,10 @@ void Port_ViStart(void) {
     }
 }
 
-/* Host main thread, each time round its loop: show the frame the retrace started scanning out. */
+/* Host main thread, each time round its loop: show the frame a retrace started scanning out. */
 void Port_ViRetrace(void) {
     SDL_SetAtomicU32(&sMainBeatMs, (u32)SDL_GetTicks());
-    if (SDL_CompareAndSwapAtomicInt(&sViPresent, 1, 0) && sViNextFb != sViCurrentFb) {
-        sViCurrentFb = sViNextFb;
+    if (SDL_CompareAndSwapAtomicInt(&sViPresent, 1, 0)) {
         Port_VideoSwap(sViCurrentFb);
     }
 }

@@ -144,8 +144,11 @@ static const Setting sSettings[] = {
     { "video", "fullscreen_exclusive", &gPortConfig.fullscreenExclusive, 0,
       "0 = borderless desktop fullscreen, 1 = exclusive mode" },
     { "video", "vsync", &gPortConfig.vsync, 1, "0 = off, 1 = on, -1 = adaptive" },
-    { "video", "max_fps", &gPortConfig.maxFps, 60,
-      "Frame cap: 30 (the N64's usual rate; Steam Deck) or 60. The game swaps frames on the 60 Hz video retrace, as on the N64, so other caps round to these" },
+    { "video", "max_fps", &gPortConfig.maxFps, 0,
+      "Frame cap: 0 = none (with vsync, the display's rate), or 30, 40, 60, 120, 144 ... The game runs at 60 Hz either way" },
+    { "video", "interpolation", &gPortConfig.interpolation, 1,
+      "Frames shown faster or slower than the game's 60: 1 = drawn in between, smooth (up to a frame behind);"
+      " 2 = drawn ahead of the newest frame (no added lag); 0 = off (max_fps 30 then runs the game at 30, as the N64 often did)" },
     { "video", "msaa", &gPortConfig.msaa, 4, "Multisample anti-aliasing: 1 (off), 2, 4 or 8" },
     { "video", "n64_aa", &gPortConfig.n64AA, 0, "1 = resolve anti-aliasing the way the N64 did (softer)" },
     { "video", "anisotropy", &gPortConfig.anisotropy, 1, "Anisotropic filtering: 1 (off) to 16" },

@@ -61,6 +61,7 @@ void Port_VideoInit(void);
 void Port_VideoRunTask(OSTask *task);
 void Port_VideoSwap(void *framebuffer);
 void Port_VideoSetBlack(int black);
+void Port_VideoPresentInterp(void);
 
 /* input.c */
 void Port_InputInit(void);
