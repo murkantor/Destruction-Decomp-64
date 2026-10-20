@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 
 typedef struct {
@@ -134,6 +137,10 @@ void Car_UpdateEngineRpm(Car *);
 void Car_UpdateRpm(Car *, f32);
 void CarAI_InitTarget(Car *);
 void CarAI_SteerToTarget(Car *, f32);
+
+static inline void Vec3f_SetX(Vec3f *v, f32 x, f32 yz) {
+    Vec3f_Set(v, x, yz, yz);
+}
 
 static inline void Wheel_ClampY(Wheel *w) {
     f32 top = w->x184;
@@ -276,7 +283,7 @@ void Car_UpdatePhysics(Car *car, f32 dt) {
 
             v30 = D_800B9620;
             if (b->cur.vel.x == 0.0 && b->cur.vel.y == 0.0 && b->cur.vel.z == 0.0) {
-                Vec3f_Set(r0, 1.0f, 0.0f, 0.0f);
+                Vec3f_SetX(r0, 1.0f, 0.0f);
             } else {
                 Vec3f_Normalize(r0, &b->cur.vel);
             }

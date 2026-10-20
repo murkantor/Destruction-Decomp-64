@@ -48,3 +48,8 @@ void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     osWritebackDCacheAll();
 }
 /* agent55: score 2 (one addu). The original computes (b0 + xx) + yy*pp with b0 in v1; every form that adds b0 + xx first (168 statement orders x base forms, decl orders, s32/u32 types, &b0[..], b0 += xx) swaps v0/v1 throughout (score 10-14). */
+/* agent59: draft unchanged (1 word). Note sched1 runs before local-alloc, so
+ * statement order in the setup line does not matter (all 24 orders identical).
+ * "b0 + xx + pp * yy" gets pp=v1, yy=v0 right (5 words) but the product ties
+ * to its first operand pp (v1) instead of yy (v0); "b0 + xx + yy * pp" ties
+ * pp to d (v0). Need pp not to die at the mult, or d not to die at the pp load. */

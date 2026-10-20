@@ -32,3 +32,7 @@ void Spline_ComputeCoeffs(Spline *out, Spline *in) {
     out->x10 = 2.0f * (a * (-2.0f * x2) * y2 + a * x4 + a * y4 + 2.0f * b * x2 * y2 - b * x4) * inv;
     out->x14 = (b * (3.0f * x4) - (a * (-4.0f * x3) * y + a * (3.0f * x4) + a * y4 + b * (4.0f * x3) * y)) * inv * y3 / y2;
 }
+/* agent59: unchanged draft, 11 words: FP regs of x3 / 2a*x3 / den rotate
+ * (ours f30/f28/f26, original f28/f26/f30). Tried: 120 random orders of the
+ * setup statements, den as own local, re-associated den products,
+ * do{}while(0) on each line (all break the schedule). */

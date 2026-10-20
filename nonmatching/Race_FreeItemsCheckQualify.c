@@ -66,3 +66,9 @@ limit = (D_800958AC == 2 && D_800958A4 == 4) ? 2 : D_800958A4; if (D_80097340 ==
 /* agent45: diff is only register choice: original gives `limit` v1 (const 4 in a0, final lb in a0);
    ours gives limit a0 which leaves the bne delay slot empty (+4 bytes). Tried if/else, ternary,
    nested ifs, volatile A4, temps for x10, switch, reordering; none changed it. */
+/* agent59: unchanged. In the original the A4 load / const 4 of the second test
+ * get v0/a0, so v1 must be busy in that block at local-alloc time (limit = v1
+ * live there, i.e. limit = 2 set between the two tests?). Tried: limit = 2
+ * first with || / !(&&) / empty-then forms, if (AC == 2) { limit = 2; if (A4 == 4)
+ * goto l2; } limit = A4;, comma "(limit = 2, A4 != 4)", s32 two local. All
+ * still give limit a0 (0x164) or 0x16c. */

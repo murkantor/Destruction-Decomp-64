@@ -41,3 +41,7 @@ void Menu_InitPlayerViews(void) {
 /* agent58: unchanged. expand_call stores stack args before loading reg args, so sw a1 for args 5/6
  * means the original's stack-arg source was already a1 at cse time. Tried a Vec3f-by-value prototype,
  * inline wrappers taking (x), (a, x, m), (x, m) with const and variable args, z/m order: no gain. */
+/* agent59: unchanged. The trick that fixed Car_UpdatePhysics (an inline wrapper
+ * that passes one f32 param twice) gives move a1,zero / sw zero here, and a
+ * union bit-cast with an s32 asm-label prototype folds to constants too. The
+ * stack args need a GPR-class pseudo P = mfc1 Z that is also a1's source. */
