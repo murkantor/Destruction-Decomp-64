@@ -32,6 +32,7 @@ typedef struct {
     int deadzone;            /* stick dead zone, percent */
     int stickRange;          /* stick output at full tilt, 0-127 (N64 controllers give about 80) */
     int keyboardPlayer;      /* which controller the keyboard drives, 1-4; 0 = none */
+    int freeCamera;          /* the right stick turns the camera (not the C buttons) */
     int raphnet;             /* read raphnet N64 adapters raw */
     int raphnetPlayer;       /* the controller the adapter's first port is, 1-4 */
     /* [saves] */

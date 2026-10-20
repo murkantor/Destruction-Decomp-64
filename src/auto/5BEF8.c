@@ -30,6 +30,10 @@ extern void guMtxCatF(void *, MtxF, MtxF);
 extern void osWritebackDCache(void *, s32);
 extern void Gfx_FreeAfterFrame(void *);
 extern double fabs(double);
+#ifdef TARGET_PC
+extern u8 D_8012455C; /* the viewport being drawn (Render_Frame) */
+void Port_FreeCamEye(int p, const Vec3f *eye, const Vec3f *at, Vec3f *out);
+#endif
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
@@ -55,7 +59,15 @@ Gfx *Camera_BuildProjection(Gfx *gfx, Cam *cam) {
         if (fabs(cam->eye.z - cam->at.z) < 0.01) {
             cam->eye.z = cam->at.z + 0.01;
         }
+#ifdef TARGET_PC
+        { /* the free camera: the right stick turns the view (port/game/freecam.c) */
+            Vec3f eye;
+            Port_FreeCamEye(D_8012455C, &cam->eye, &cam->at, &eye);
+            guLookAtF(look, eye.x, eye.y, eye.z, cam->at.x, cam->at.y, cam->at.z, cam->up.x, cam->up.y, cam->up.z);
+        }
+#else
         guLookAtF(look, cam->eye.x, cam->eye.y, cam->eye.z, cam->at.x, cam->at.y, cam->at.z, cam->up.x, cam->up.y, cam->up.z);
+#endif
         guMtxCatF(look, proj, proj);
         break;
     }

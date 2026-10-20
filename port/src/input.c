@@ -275,6 +275,9 @@ static float padAmount(const PadBind *b, SDL_Gamepad *pad) {
         float v;
         if (b->src[i].axis < 0) {
             v = SDL_GetGamepadButton(pad, (SDL_GamepadButton)b->src[i].button) ? 1.0f : 0.0f;
+        } else if (gPortConfig.freeCamera &&
+                   (b->src[i].axis == SDL_GAMEPAD_AXIS_RIGHTX || b->src[i].axis == SDL_GAMEPAD_AXIS_RIGHTY)) {
+            continue; /* the right stick turns the camera instead (port/game/freecam.c) */
         } else {
             v = SDL_GetGamepadAxis(pad, (SDL_GamepadAxis)b->src[i].axis) / 32767.0f * b->src[i].sign;
         }
@@ -579,4 +582,45 @@ int Port_InputCaptureEvent(const SDL_Event *e) {
         Port_ConfigSave();
     }
     return 1;
+}
+
+/* The free camera: a player's right stick, -1 to 1 each way (right, up), with the
+   dead zone. 0 if the free camera is off or the player has no gamepad. */
+int Port_InputRightStick(int player, float *x, float *y) {
+    float dz = gPortConfig.deadzone / 100.0f, vx = 0.0f, vy = 0.0f;
+    int ok = 0;
+
+    *x = *y = 0.0f;
+    if (!gPortConfig.freeCamera || player < 0 || player >= MAXCONTROLLERS) {
+        return 0;
+    }
+    SDL_LockMutex(sLock);
+    if (sPads[player] != NULL) {
+        vx = SDL_GetGamepadAxis(sPads[player], SDL_GAMEPAD_AXIS_RIGHTX) / 32767.0f;
+        vy = -SDL_GetGamepadAxis(sPads[player], SDL_GAMEPAD_AXIS_RIGHTY) / 32767.0f;
+        ok = 1;
+    }
+    SDL_UnlockMutex(sLock);
+    {
+        /* DD64_FAKERSTICK=frame:x,y (testing): the stick held there from that frame on */
+        static const char *fake = (const char *)1;
+        extern unsigned gfx_presents;
+        if (fake == (const char *)1) {
+            fake = SDL_getenv("DD64_FAKERSTICK");
+        }
+        if (fake != NULL && player == 0 && gfx_presents >= (unsigned)SDL_atoi(fake)) {
+            const char *c = SDL_strchr(fake, ':');
+            if (c != NULL) {
+                vx = (float)SDL_atof(c + 1);
+                c = SDL_strchr(c, ',');
+                vy = c != NULL ? (float)SDL_atof(c + 1) : 0.0f;
+                ok = 1;
+            }
+        }
+    }
+    if (vx * vx + vy * vy > dz * dz) {
+        *x = vx > 1.0f ? 1.0f : vx < -1.0f ? -1.0f : vx;
+        *y = vy > 1.0f ? 1.0f : vy < -1.0f ? -1.0f : vy;
+    }
+    return ok;
 }
