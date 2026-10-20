@@ -8,6 +8,11 @@
  * separated list per N64 input, of SDL key names ("Left Shift", "X") or SDL
  * gamepad button names ("a", "leftshoulder", "dpup") and axis directions
  * ("+righty", "-leftx", "+lefttrigger").
+ *
+ * A raphnet N64 adapter ([input] raphnet = 1) is read raw (port/src/raphnet.c):
+ * its ports are controllers raphnet_player and the next, with the controller's
+ * own buttons and stick values, unmapped and without a dead zone, and its
+ * Rumble Pak driven directly. SDL leaves the adapter's joystick side alone then.
  */
 #include <SDL3/SDL.h>
 #include <string.h>
@@ -15,6 +20,7 @@
 #include "port.h"
 #include "port_config.h"
 #include "port_ini.h"
+#include "port_raphnet.h"
 
 #define CONT_A 0x8000
 #define CONT_B 0x4000
@@ -86,6 +92,22 @@ static PadBind sPadBinds[IN_COUNT];
 static SDL_Gamepad *sPads[MAXCONTROLLERS];
 static SDL_Mutex *sLock;
 static int sRumbleOn[MAXCONTROLLERS];
+
+#define RAPHNET_VID 0x289B
+
+/* The raphnet adapter port on a controller, or -1 */
+static int raphnetChan(int channel) {
+    int c = channel - (gPortConfig.raphnetPlayer - 1);
+
+    return gPortConfig.raphnet && c >= 0 && c < RAPHNET_MAX_CHAN ? c : -1;
+}
+
+/* A controller is plugged into the raphnet port for this controller */
+static int raphnetPad(int channel) {
+    int c = raphnetChan(channel);
+
+    return c >= 0 && Port_RaphnetPeek(c) == 1;
+}
 
 static void parseKeys(KeyBind *b, const char *list) {
     char buf[128], *tok, *save = NULL;
@@ -170,6 +192,9 @@ void Port_InputInit(void) {
     if (added) {
         Port_ConfigSave();
     }
+    if (gPortConfig.raphnet) {
+        Port_RaphnetStart();
+    }
     /* Gamepads already connected arrive as SDL_EVENT_GAMEPAD_ADDED */
 }
 
@@ -183,7 +208,13 @@ void Port_InputGamepadAdded(SDL_JoystickID id) {
             return;
         }
     }
-    for (i = 0; i < MAXCONTROLLERS && sPads[i] != NULL; i++) {
+    if (gPortConfig.raphnet && Port_RaphnetOnline() && SDL_GetGamepadVendorForID(id) == RAPHNET_VID) {
+        Port_Log("input: %s is read raw (raphnet)", SDL_GetGamepadNameForID(id));
+        SDL_UnlockMutex(sLock);
+        return;
+    }
+    /* the first controller with no gamepad and no raphnet controller */
+    for (i = 0; i < MAXCONTROLLERS && (sPads[i] != NULL || raphnetPad(i)); i++) {
     }
     if (i < MAXCONTROLLERS) {
         sPads[i] = SDL_OpenGamepad(id);
@@ -220,7 +251,8 @@ int Port_InputConnected(int channel) {
         return 0;
     }
     SDL_LockMutex(sLock);
-    connected = channel == 0 || sPads[channel] != NULL || channel == gPortConfig.keyboardPlayer - 1;
+    connected = channel == 0 || sPads[channel] != NULL || channel == gPortConfig.keyboardPlayer - 1 ||
+                raphnetPad(channel);
     SDL_UnlockMutex(sLock);
     return connected;
 }
@@ -407,6 +439,18 @@ static void readPad(int channel, OSContPad *out) {
     out->button = buttons;
     out->stick_x = stickAxis(amount[IN_STICK_RIGHT], amount[IN_STICK_LEFT]);
     out->stick_y = stickAxis(amount[IN_STICK_UP], amount[IN_STICK_DOWN]);
+    if (raphnetChan(channel) >= 0) {
+        /* a real N64 controller: its own values, with the keyboard's buttons added */
+        u16 rb;
+        s8 rx, ry;
+        if (Port_RaphnetPoll(raphnetChan(channel), &rb, &rx, &ry) == 1) {
+            out->button |= rb;
+            if (out->stick_x == 0 && out->stick_y == 0) {
+                out->stick_x = rx;
+                out->stick_y = ry;
+            }
+        }
+    }
 }
 
 void Port_InputRumble(int channel, int on) {
@@ -414,6 +458,10 @@ void Port_InputRumble(int channel, int on) {
     Uint16 strength;
 
     if (channel < 0 || channel >= MAXCONTROLLERS) {
+        return;
+    }
+    if (raphnetPad(channel)) {
+        Port_RaphnetRumble(raphnetChan(channel), on && gPortConfig.rumble);
         return;
     }
     SDL_LockMutex(sLock);

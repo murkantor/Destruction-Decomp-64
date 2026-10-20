@@ -164,6 +164,10 @@ static const Setting sSettings[] = {
     { "input", "stick_range", &gPortConfig.stickRange, 80,
       "Stick value at full tilt: an N64 controller reads about 80, the maximum is 127" },
     { "input", "keyboard_player", &gPortConfig.keyboardPlayer, 1, "Controller the keyboard drives: 1-4, 0 = none" },
+    { "input", "raphnet", &gPortConfig.raphnet, 1,
+      "1 = read raphnet N64 adapters raw: real stick values, no dead zone, the Rumble Pak driven directly" },
+    { "input", "raphnet_player", &gPortConfig.raphnetPlayer, 1,
+      "Controller the raphnet adapter's first port is, 1-4 (a second port is the next one)" },
     { "saves", "pak_on_all_ports", &gPortConfig.pakOnAllPorts, 0,
       "1 = every controller has a Controller Pak; 0 = only controller 1" },
 };

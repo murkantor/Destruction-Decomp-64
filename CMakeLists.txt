@@ -132,6 +132,8 @@ if(WIN32)
         # the N64 code addresses (0x80000000 up) are mapped for jump stubs (port/src/ram.c)
         -Wl,--large-address-aware
         ${GEN_SYMS})
+    # raphnet adapters: the Win32 HID API (port/src/raphnet.c)
+    target_link_libraries(dd64 PRIVATE hid setupapi)
     add_custom_command(TARGET dd64 POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL3_MINGW_ROOT}/bin/SDL3.dll $<TARGET_FILE_DIR:dd64>)
 else()
