@@ -311,8 +311,38 @@ static struct {
     unsigned tris, fills, texrects, s2, dls, tasks, cmds;
 } stats;
 
+/* DD64_GFXLOG: what ended each batch (a draw call), counted per frame */
+static const char *flush_why = "other";
+static const char *flush_whys[24];
+static unsigned flush_counts[24], flush_frames;
+#define FLUSH(why) (flush_why = (why), gfx_flush())
+
+static void flush_log_frame(void) {
+    static const char *gfxlog = getenv("DD64_GFXLOG");
+    char line[512];
+    int n = 0;
+
+    if (gfxlog == NULL || ++flush_frames < 300) {
+        return;
+    }
+    for (int i = 0; i < 24 && flush_whys[i] != NULL; i++) {
+        n += snprintf(line + n, sizeof(line) - n, " %s %.0f,", flush_whys[i], flush_counts[i] / (double)flush_frames);
+        flush_counts[i] = 0;
+    }
+    sysLogPrintf(LOG_NOTE, "gfx: draws a frame by what ended them:%s", line);
+    flush_frames = 0;
+}
+
 static void gfx_flush(void) {
     if (buf_vbo_len > 0) {
+        for (int i = 0; i < 24; i++) {
+            if (flush_whys[i] == NULL || flush_whys[i] == flush_why) {
+                flush_whys[i] = flush_why;
+                flush_counts[i]++;
+                break;
+            }
+        }
+        flush_why = "other";
         gfx_rapi->draw_triangles(buf_vbo, buf_vbo_len, buf_vbo_num_tris);
         buf_vbo_len = 0;
         buf_vbo_num_tris = 0;
@@ -630,7 +660,7 @@ static void import_texture(int i, int tile) {
     uint32_t full_line_bytes = rdp.loaded_texture[tmem].full_line_size_bytes;
 
     if (addr == NULL || line_bytes == 0 || size_bytes == 0) {
-        gfx_flush();
+        FLUSH("texture");
         rendering_state.cms[i] = rendering_state.cmt[i] = 0xFF;
         gfx_rapi->select_texture(i, 0, false);
         rendering_state.textures[i] = 0;
@@ -673,7 +703,7 @@ static void import_texture(int i, int tile) {
         it->second.width == bound_w[i] && it->second.height == bound_h[i]) {
         return; /* the texture already bound: the batch goes on */
     }
-    gfx_flush();
+    FLUSH("texture");
     /* GL filter and wrap modes belong to the texture object: whatever gets bound
        here needs them set again (a new one is incomplete, so black, without) */
     rendering_state.cms[i] = rendering_state.cmt[i] = 0xFF;
@@ -1015,12 +1045,12 @@ static void apply_viewport_and_scissor(void) {
     gfx_adjust_rect(&vp);
     gfx_adjust_rect(&sc);
     if (memcmp(&vp, &rendering_state.viewport, sizeof(vp)) != 0) {
-        gfx_flush();
+        FLUSH("viewport");
         gfx_rapi->set_viewport(vp.x, vp.y, vp.width, vp.height);
         rendering_state.viewport = vp;
     }
     if (memcmp(&sc, &rendering_state.scissor, sizeof(sc)) != 0) {
-        gfx_flush();
+        FLUSH("scissor");
         gfx_rapi->set_scissor(sc.x, sc.y, sc.width, sc.height);
         rendering_state.scissor = sc;
     }
@@ -1048,7 +1078,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
     if (depth_test != rendering_state.depth_test || depth_update != rendering_state.depth_update ||
         depth_compare != rendering_state.depth_compare || depth_source_prim != rendering_state.depth_source_prim ||
         zmode != rendering_state.zmode) {
-        gfx_flush();
+        FLUSH("depth");
         gfx_rapi->set_depth_mode(depth_test, depth_update, depth_compare, depth_source_prim, zmode);
         rendering_state.depth_test = depth_test;
         rendering_state.depth_update = depth_update;
@@ -1087,7 +1117,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
         use_alpha = true;
     }
     if (use_alpha != rendering_state.alpha_blend) {
-        gfx_flush();
+        FLUSH("blend");
         gfx_rapi->set_use_alpha(use_alpha, false);
         rendering_state.alpha_blend = use_alpha;
     }
@@ -1117,7 +1147,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
         comb->prg = prg = gfx_lookup_or_create_shader_program(comb->shader_id0, comb->shader_id1);
     }
     if (prg != rendering_state.shader_program) {
-        gfx_flush();
+        FLUSH("shader");
         gfx_rapi->unload_shader(rendering_state.shader_program);
         gfx_rapi->load_shader(prg);
         rendering_state.shader_program = prg;
@@ -1139,7 +1169,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
                       !rect_unscaled;
         uint8_t cms = rdp.texture_tile[tile].cms, cmt = rdp.texture_tile[tile].cmt;
         if (linear != rendering_state.linear[i] || cms != rendering_state.cms[i] || cmt != rendering_state.cmt[i]) {
-            gfx_flush();
+            FLUSH("sampler");
             gfx_rapi->set_sampler_parameters(i, linear, cms, cmt);
             rendering_state.linear[i] = linear;
             rendering_state.cms[i] = cms;
@@ -1342,7 +1372,7 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
         emit_vertex(v_arr[i], comb, use_alpha, use_fog, tex_w, tex_h, linear);
     }
     if (++buf_vbo_num_tris == MAX_BUFFERED) {
-        gfx_flush();
+        FLUSH("full");
     }
 }
 
@@ -1627,7 +1657,7 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     emitting_rect = false;
     buf_vbo_num_tris += 2;
     if (buf_vbo_num_tris >= MAX_BUFFERED - 2) {
-        gfx_flush();
+        FLUSH("rect full");
     }
     rsp.geometry_mode = saved_geometry_mode;
     rdp.viewport = saved_viewport;
@@ -1675,7 +1705,7 @@ static void gfx_dp_fill_rectangle(int32_t ulx, int32_t uly, int32_t lrx, int32_t
     stats.fills++;
     if (rdp.color_image_address != NULL && rdp.color_image_address == rdp.z_buf_address) {
         /* clearing the depth buffer */
-        gfx_flush();
+        FLUSH("fill");
         gfx_rapi->clear_framebuffer(false, true);
         return;
     }
@@ -2034,7 +2064,7 @@ static void gfx_run_dl(const uint8_t *cmd) {
                 if (w1 >= 0x10000000u && w1 < 0x80000000u) {
                     text = Port_HostToN64((const void *)(uintptr_t)w1) & 0x1FFFFFFF;
                 }
-                gfx_flush();
+                FLUSH("ucode");
                 s2dex = text == UCODE_S2DEX2;
                 break;
             }
@@ -2044,7 +2074,7 @@ static void gfx_run_dl(const uint8_t *cmd) {
 
             /* ---- RDP ---- */
             case (uint8_t)G_SETCIMG:
-                gfx_flush();
+                FLUSH("colour image");
                 rdp.color_image_address = seg_addr(w1);
                 break;
             case (uint8_t)G_SETZIMG:
@@ -2612,7 +2642,8 @@ void gfx_run(const void *commands, uint32_t ucode_text) {
     gfx_start_frame();
     s2dex = (ucode_text & 0x1FFFFFFF) == UCODE_S2DEX2;
     gfx_run_dl((const uint8_t *)commands);
-    gfx_flush();
+    FLUSH("end");
+    flush_log_frame();
 }
 
 void gfx_end_frame(void) {

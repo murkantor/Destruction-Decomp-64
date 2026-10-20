@@ -80,7 +80,7 @@ typedef struct {
 
 static DWORD sTlsIndex = TLS_OUT_OF_INDEXES;
 
-static HookState *newHookState(void) {
+static __attribute__((noinline)) HookState *newHookState(void) {
     HookState *t;
 
     if (sTlsIndex == TLS_OUT_OF_INDEXES) {
@@ -102,13 +102,13 @@ static HookState *newHookState(void) {
     return t;
 }
 
-static inline HookState *hookState(void) {
+static inline __attribute__((always_inline)) HookState *hookState(void) {
     HookState *t = NULL;
 
-    if (sTlsIndex < 64) {
+    if (__builtin_expect(sTlsIndex < 64, 1)) {
         __asm__("movl %%fs:0xE10(,%1,4), %0" : "=r"(t) : "r"(sTlsIndex));
     }
-    return t != NULL ? t : newHookState();
+    return __builtin_expect(t != NULL, 1) ? t : newHookState();
 }
 #define tls (*hookState())
 #else
