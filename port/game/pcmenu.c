@@ -63,6 +63,8 @@ void Port_OptChange(int page, int i, int dir);
 void Port_OptSetOpen(int open);
 int Port_OptIsOpen(void);
 void Port_OptMenuPad(u16 *buttons, s8 *x, s8 *y);
+int Port_OptCapturing(void);
+int Port_OptIsBindPage(int page);
 
 #define MODE_OPTIONS 0x20
 #define ROWS 7      /* rows shown at once */
@@ -239,9 +241,27 @@ static u16 pressed(void) {
     return out;
 }
 
+static s32 sWaitRelease; /* after a capture: until every button is let go */
+
 static void input(void) {
-    u16 p = pressed();
+    u16 p, b;
+    s8 x, y;
     s32 n = Port_OptCount(sPage);
+
+    if (Port_OptCapturing()) {
+        sWaitRelease = 1;
+        pressed();
+        return;
+    }
+    if (sWaitRelease) {
+        Port_OptMenuPad(&b, &x, &y);
+        pressed();
+        if (b == 0 && x > -30 && x < 30 && y > -30 && y < 30) {
+            sWaitRelease = 0;
+        }
+        return;
+    }
+    p = pressed();
 
     if (p & (BTN_B | BTN_START)) {
         Port_OptSetOpen(0);
@@ -309,20 +329,36 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
     x = PANEL_X0 + 10;
     for (i = 0; i < Port_OptPages(); i++) {
         g = drawLabel(g, f, x, PANEL_Y0 + 4, Port_OptPageName(i), i == sPage ? YELLOW : GREEN);
-        x += textWidth(f, Port_OptPageName(i)) + 16;
+        x += textWidth(f, Port_OptPageName(i)) + 12;
     }
     g = drawPanel(g, PANEL_X0 + 6, PANEL_Y0 + 19, PANEL_X1 - 6, PANEL_Y0 + 20, 0x2EB04380);
     n = Port_OptCount(sPage);
     for (i = sTop; i < n && i < sTop + ROWS; i++) {
-        const char *v = Port_OptValue(sPage, i);
+        char v[48];
+        s32 room = PANEL_X1 - 12 - (PANEL_X0 + 12 + 96), len;
         y = PANEL_Y0 + 24 + (i - sTop) * ROW_H;
+        /* a value too long for the row (a list of bindings) loses its end */
+        for (len = 0; len < 47 && Port_OptValue(sPage, i)[len] != 0; len++) {
+            v[len] = Port_OptValue(sPage, i)[len];
+        }
+        v[len] = 0;
+        while (len > 3 && textWidth(f, v) > room) {
+            v[--len] = 0;
+            v[len - 1] = '.';
+        }
         g = drawLabel(g, f, PANEL_X0 + 12, y, Port_OptLabel(sPage, i), i == sSel ? YELLOW : GREEN);
         g = drawLabel(g, f, PANEL_X1 - 12 - textWidth(f, v), y, v, i == sSel ? YELLOW : WHITE);
     }
     if (sTop + ROWS < n) {
-        g = drawLabel(g, f, PANEL_X1 - 16, PANEL_Y0 + 24 + ROWS * ROW_H - 4, ">", GREY); /* more below */
+        g = drawLabel(g, f, 156, PANEL_Y0 + 24 + ROWS * ROW_H, "v", GREY); /* more below */
     }
-    if (Port_OptNeedsRestart(sPage, sSel)) {
+    if (Port_OptCapturing()) {
+        static const char note[] = "esc to cancel";
+        g = drawLabel(g, f, 160 - textWidth(f, note) / 2, PANEL_Y1 - 14, note, GREY);
+    } else if (Port_OptIsBindPage(sPage)) {
+        static const char help[] = "a set   left default   b back";
+        g = drawLabel(g, f, 160 - textWidth(f, help) / 2, PANEL_Y1 - 14, help, GREY);
+    } else if (Port_OptNeedsRestart(sPage, sSel)) {
         static const char note[] = "takes effect when the game restarts";
         g = drawLabel(g, f, 160 - textWidth(f, note) / 2, PANEL_Y1 - 14, note, GREY);
     } else {

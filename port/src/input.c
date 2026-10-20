@@ -473,3 +473,110 @@ void Port_InputRumble(int channel, int on) {
     }
     SDL_UnlockMutex(sLock);
 }
+
+/* ---- Rebinding (the PC options page's keys and pad pages) ---- */
+
+static const char *const sInputLabels[IN_COUNT] = {
+    "a", "b", "z", "start", "l", "r", "d-pad up", "d-pad down", "d-pad left", "d-pad right",
+    "c up", "c down", "c left", "c right", "stick up", "stick down", "stick left", "stick right",
+};
+
+static int sCapDevice = -1; /* 0 keyboard, 1 gamepad, -1 not capturing */
+static int sCapInput;
+static u64 sCapUntilNs;
+static Sint16 sCapRest[SDL_GAMEPAD_AXIS_COUNT]; /* each axis when the capture began */
+
+int Port_InputCount(void) {
+    return IN_COUNT;
+}
+
+const char *Port_InputLabel(int i) {
+    return sInputLabels[i];
+}
+
+/* The bindings of an input as dd64.ini has them ("Left Shift,X") */
+const char *Port_InputBinding(int device, int i) {
+    return Port_IniGet(device == 0 ? "keyboard" : "gamepad", sInputs[i].key, "");
+}
+
+static void setBinding(int device, int i, const char *list) {
+    SDL_LockMutex(sLock);
+    Port_IniSet(device == 0 ? "keyboard" : "gamepad", sInputs[i].key, list);
+    if (device == 0) {
+        parseKeys(&sKeyBinds[i], list);
+    } else {
+        parsePad(&sPadBinds[i], list);
+    }
+    SDL_UnlockMutex(sLock);
+}
+
+void Port_InputResetBinding(int device, int i) {
+    setBinding(device, i, device == 0 ? sInputs[i].keyboard : sInputs[i].gamepad);
+}
+
+/* Wait for the next key (device 0) or gamepad button or axis (1) for input i */
+void Port_InputBeginCapture(int device, int i) {
+    int a;
+
+    SDL_LockMutex(sLock);
+    for (a = 0; a < SDL_GAMEPAD_AXIS_COUNT; a++) {
+        sCapRest[a] = 0;
+        for (int c = 0; c < MAXCONTROLLERS; c++) {
+            if (sPads[c] != NULL) {
+                sCapRest[a] = SDL_GetGamepadAxis(sPads[c], (SDL_GamepadAxis)a);
+                break;
+            }
+        }
+    }
+    SDL_UnlockMutex(sLock);
+    sCapInput = i;
+    sCapUntilNs = SDL_GetTicksNS() + 6000000000ULL;
+    sCapDevice = device;
+}
+
+int Port_InputCapturing(void) {
+    if (sCapDevice >= 0 && SDL_GetTicksNS() > sCapUntilNs) {
+        sCapDevice = -1; /* nothing pressed: left as it was */
+    }
+    return sCapDevice >= 0;
+}
+
+/* The event pump, for each event: 1 if a capture took it */
+int Port_InputCaptureEvent(const SDL_Event *e) {
+    char name[64];
+
+    if (sCapDevice < 0) {
+        return 0;
+    }
+    name[0] = '\0';
+    if (e->type == SDL_EVENT_KEY_DOWN) {
+        if (e->key.repeat) {
+            return 1;
+        }
+        if (e->key.scancode == SDL_SCANCODE_ESCAPE) {
+            sCapDevice = -1;
+            return 1;
+        }
+        if (sCapDevice != 0) {
+            return 1;
+        }
+        SDL_strlcpy(name, SDL_GetScancodeName(e->key.scancode), sizeof(name));
+    } else if (e->type == SDL_EVENT_GAMEPAD_BUTTON_DOWN && sCapDevice == 1) {
+        SDL_strlcpy(name, SDL_GetGamepadStringForButton((SDL_GamepadButton)e->gbutton.button), sizeof(name));
+    } else if (e->type == SDL_EVENT_GAMEPAD_AXIS_MOTION && sCapDevice == 1) {
+        int a = e->gaxis.axis, v = e->gaxis.value, moved = v - sCapRest[a];
+        if (moved > 20000 || moved < -20000) {
+            SDL_snprintf(name, sizeof(name), "%s%s", moved > 0 ? "+" : "-",
+                         SDL_GetGamepadStringForAxis((SDL_GamepadAxis)a));
+        }
+    } else {
+        return 0;
+    }
+    if (name[0] != '\0') {
+        setBinding(sCapDevice, sCapInput, name);
+        Port_Log("input: %s %s = %s", sCapDevice == 0 ? "keyboard" : "gamepad", sInputs[sCapInput].key, name);
+        sCapDevice = -1;
+        Port_ConfigSave();
+    }
+    return 1;
+}

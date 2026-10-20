@@ -67,6 +67,8 @@ void Port_VideoApplySettings(void);
 void Port_OptionsApplyPending(void);
 int Port_OptIsOpen(void);
 void Port_InputNoteMenuPad(const OSContPad *pad);
+union SDL_Event;
+int Port_InputCaptureEvent(const union SDL_Event *e);
 
 /* input.c */
 void Port_InputInit(void);

@@ -100,19 +100,31 @@ static const Option kControls[] = {
     { "controller paks", &gPortConfig.pakOnAllPorts, kPaks, kPaksN, N(kPaks), 0, 1 },
 };
 
+static SDL_AtomicInt sApplyVideo, sSave; /* for the main thread */
+static int sCaptureRow;
+
 typedef struct {
     const char *name;
     const Option *opts;
     int count;
+    int bind; /* a bindings page: 1 keyboard, 2 gamepad */
 } Page;
 
 static const Page kPages[] = {
-    { "video", kVideo, N(kVideo) },
-    { "sound", kAudio, N(kAudio) },
-    { "controls", kControls, N(kControls) },
+    { "video", kVideo, N(kVideo), 0 },
+    { "sound", kAudio, N(kAudio), 0 },
+    { "controls", kControls, N(kControls), 0 },
+    { "keys", NULL, 0, 1 },
+    { "pad", NULL, 0, 2 },
 };
 
-static SDL_AtomicInt sApplyVideo, sSave; /* for the main thread */
+int Port_InputCount(void);
+const char *Port_InputLabel(int i);
+const char *Port_InputBinding(int device, int i);
+void Port_InputResetBinding(int device, int i);
+void Port_InputBeginCapture(int device, int i);
+int Port_InputCapturing(void);
+
 static int sOpen;
 
 /* The derived rows (display, window size, screen shape) from their settings */
@@ -162,25 +174,73 @@ const char *Port_OptPageName(int page) {
 }
 
 int Port_OptCount(int page) {
-    return kPages[page].count;
+    return kPages[page].bind ? Port_InputCount() + 1 : kPages[page].count; /* + reset all */
 }
 
 const char *Port_OptLabel(int page, int i) {
+    if (kPages[page].bind) {
+        return i < Port_InputCount() ? Port_InputLabel(i) : "reset all";
+    }
     return kPages[page].opts[i].label;
 }
 
-/* The row's value as shown, with "(restart)" while a restart-only change is pending */
+/* The row's value as shown */
 const char *Port_OptValue(int page, int i) {
-    const Option *o = &kPages[page].opts[i];
-    return o->names[choice(o)];
+    if (kPages[page].bind) {
+        static char text[48];
+        int dev = kPages[page].bind - 1;
+        if (i >= Port_InputCount()) {
+            return "";
+        }
+        if (Port_InputCapturing() && i == sCaptureRow) {
+            return dev == 0 ? "press a key" : "press a button";
+        }
+        SDL_strlcpy(text, Port_InputBinding(dev, i), sizeof(text));
+        for (char *p = text; *p != '\0'; p++) {
+            if (*p == ',') {
+                *p = '/'; /* the font has no comma tail */
+            }
+        }
+        return text[0] != '\0' ? text : "-";
+    }
+    {
+        const Option *o = &kPages[page].opts[i];
+        return o->names[choice(o)];
+    }
 }
 
 int Port_OptNeedsRestart(int page, int i) {
-    return kPages[page].opts[i].restart;
+    return kPages[page].bind ? 0 : kPages[page].opts[i].restart;
 }
 
-/* Left (-1) or right (+1) on a row: the next choice, applied and saved */
+int Port_OptIsBindPage(int page) {
+    return kPages[page].bind != 0;
+}
+
+int Port_OptCapturing(void) {
+    return Port_InputCapturing();
+}
+
+/* Left (-1) or right (+1) on a row: the next choice, applied and saved. On a
+   bindings page: right (or A) waits for the new key or button, left restores the
+   default; on "reset all", either resets every input. */
 void Port_OptChange(int page, int i, int dir) {
+    if (kPages[page].bind) {
+        int dev = kPages[page].bind - 1, k;
+        if (i >= Port_InputCount()) {
+            for (k = 0; k < Port_InputCount(); k++) {
+                Port_InputResetBinding(dev, k);
+            }
+        } else if (dir < 0) {
+            Port_InputResetBinding(dev, i);
+        } else {
+            sCaptureRow = i;
+            Port_InputBeginCapture(dev, i);
+            return;
+        }
+        SDL_SetAtomicInt(&sSave, 1);
+        return;
+    }
     const Option *o = &kPages[page].opts[i];
     int c = choice(o) + dir;
 
