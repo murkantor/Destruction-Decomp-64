@@ -23,9 +23,3 @@ u64 gFieldD_80095E28[FIELD_EXTRA][5]; /* lap times, best lap, total */
 /* Per slot, track 8 (the one with a crossing): the last branch each car took
    (Car_OnTriggerCrossed; reset with func_8002BF08's 12 in Race_Setup) */
 s32 gFieldD_80095850[FIELD_EXTRA];
-
-/* Per car: where each car was at the end of the last update (Race_Setup).
-   TODO: the part-0 change makes a whole RACE_CARS replacement of D_800D1B08 (in
-   port/game/field_part0.c) for its readers (20E8C.c, 27590.c); Race_Setup must then
-   write that one and this goes */
-f32 gFieldD_800D1B08[FIELD_EXTRA][3];

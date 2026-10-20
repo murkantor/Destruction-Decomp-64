@@ -7,13 +7,20 @@ typedef struct { Node *head; s32 x4; u8 (*cmp)(Car *, Car *); } List;
 typedef struct { u8 pad[0x74 + 4 * RACE_CARS]; s32 xA4; } Race;
 typedef struct { u8 pad[0x1100]; Race *x1100; } Game;
 extern Game *gGame[];
+#ifdef TARGET_PC
+s32 Port_Field0Doubled(void);
+/* the doubled field's extra cars share their types: tell them apart */
+#define SAMECAR(a, b) (Port_Field0Doubled() ? (a) == (b) : (a)->x34 == (b)->x34)
+#else
+#define SAMECAR(a, b) ((a)->x34 == (b)->x34)
+#endif
 
 static inline void List_MoveDown(List *list, Car *car) {
     Node *p = list->head;
     s32 k;
 
     for (k = 0; k < gGame[0]->x1100->xA4; k++) {
-        if (car->x34 == p->car->x34) {
+        if (SAMECAR(car, p->car)) {
             Node *nx = p->next;
             Node *pv = p->prev;
             Node *nn = nx->next;
@@ -46,7 +53,7 @@ static inline void List_MoveUp(List *list, Car *car) {
     s32 k;
 
     for (k = 0; k < gGame[0]->x1100->xA4; k++) {
-        if (car->x34 == p->car->x34) {
+        if (SAMECAR(car, p->car)) {
             Node *pv = p->prev;
             Node *nx = p->next;
             Node *pp = pv->prev;
@@ -83,7 +90,7 @@ void Standings_Resort(List *list, Car *car) {
 
     n = list->head;
     for (i = 0; i < gGame[0]->x1100->xA4; i++) {
-        if (n->car->x34 == car->x34) {
+        if (SAMECAR(n->car, car)) {
             break;
         }
         n = n->next;

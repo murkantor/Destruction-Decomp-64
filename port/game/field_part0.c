@@ -24,8 +24,7 @@ extern s32 D_80095DF4[];    /* 13: each slot's place when it was wrecked (derbie
 
 Vec3f gFieldLastPos[RACE_CARS];
 s32 gFieldCarIds[RACE_CARS];
-/* D_80095DF4 for the extra cars' slots (12-23) */
-s32 gFieldWreckPlace[RACE_CARS];
+extern s32 gFieldD_80095DF4[]; /* D_80095DF4's slots past 11 (field_part1.c) */
 
 /* Records the type of the car made as the race's car `index` (Car_Create): in
    gFieldCarIds, and the first 12 in D_800D1C20 too, for code still reading it */
@@ -56,10 +55,11 @@ s32 Port_Field0CarSlot(void *car, s32 slot) {
     return slot;
 }
 
-/* D_80095DF4[slot], or gFieldWreckPlace for an extra car's slot */
+/* D_80095DF4[slot]; its slots past 11 are kept where Results_TallyStandings (2BA70.c,
+   FIELD_SLOT) keeps them */
 s32 *Port_Field0WreckPlace(s32 slot) {
-    if (slot > 12 || (slot == 12 && gGame->race != NULL && gGame->race->ncars > 12)) {
-        return &gFieldWreckPlace[slot < RACE_CARS ? slot : RACE_CARS - 1];
+    if (slot >= 12) {
+        return &gFieldD_80095DF4[(slot < RACE_CARS ? slot : RACE_CARS) - 12];
     }
     return &D_80095DF4[slot];
 }

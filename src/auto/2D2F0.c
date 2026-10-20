@@ -83,15 +83,17 @@ extern s32 gFieldD_80095D64[];
 extern S12 gFieldD_80095D94[];
 extern s32 D_80095850[];
 extern s32 gFieldD_80095850[];
-/* TODO: switch to the part-0 change's RACE_CARS replacement of D_800D1B08
-   (port/game/field_part0.c), which its readers (20E8C.c, 27590.c) use */
-extern Vec3f gFieldD_800D1B08[];
+/* each car's position, RACE_CARS long (port/game/field_part0.c), as its readers
+   (20E8C.c, 27590.c) use it */
+extern Vec3f gFieldLastPos[];
+#define LASTPOS(i) gFieldLastPos[i]
 #define FIELD_SLOT(t, i) (*((i) < 12 ? &t[i] : &gField##t[(i) - 12]))
 #define FIELD_SLOTS (RACE_CARS + 1)
 s32 Port_FieldAnnounceCarsLeft(s32 left);
 #else
 #define FIELD_SLOT(t, i) t[i]
 #define FIELD_SLOTS 12
+#define LASTPOS(i) D_800D1B08[i]
 #endif
 extern s32 D_800958B4;
 extern s32 D_800958A4;
@@ -298,7 +300,7 @@ void Race_Setup(void) {
         }
         D_80095894 = 0;
         for (i = 0; i < gGame[0]->x1100->xA4; i++) {
-            FIELD_SLOT(D_800D1B08, i) = gGame[0]->x1100->x74[i]->x290;
+            LASTPOS(i) = gGame[0]->x1100->x74[i]->x290;
         }
         gGame[0]->x10FC = saved;
         for (k = 0; k < D_800D31CC[0]; k++) {
