@@ -1,3 +1,2 @@
 # Drafts that tools/build_nonmatching.sh links in place of their asm.
 # vram size name [rodata_vram rodata_size], as in check_c's matches.txt
-8003672C 0x0DFC Wheel_ComputeTireForce 800B9698 0x00F0

@@ -2,7 +2,7 @@
 
 A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
 
-Status: the ROM builds and matches. 1506 of 1548 functions (97%, but only 98% of the code by size) are in C; `make progress` prints the current numbers. Files outside `src/auto/` are cleaned up, with real names and types; `src/auto/` holds C generated with m2c that still uses placeholder types.
+Status: the ROM builds and matches. 1507 of 1548 functions (97%, but only 98% of the code by size) are in C; `make progress` prints the current numbers. Files outside `src/auto/` are cleaned up, with real names and types; `src/auto/` holds C generated with m2c that still uses placeholder types.
 
 You need your own copy of the ROM. It is not included and must never be committed.
 
