@@ -50,7 +50,7 @@ extern char D_800BA9D0[], D_800BA9E4[], D_800BA9F8[], D_800BAA14[], D_800BAA20[]
 extern char D_800BAA5C[];
 void Rumble_DisallowRetry(void);
 void func_80062FF0(Model *);
-void func_80044B44(s32);
+void CourseIntro_AddTrackSprites(s32);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
@@ -62,7 +62,7 @@ void Time_Format(TimeHMS t, char *buf, s32 len);
 s32 Race_FindCarSlot(s32);
 void Msg_Queue(s32, s32, s32, s32);
 
-void Results_Setup(void) {
+void CourseIntro_Init(void) {
     TimeHMS ts;
     Str8 buf = D_800BA7C0;
     Ids msgs = D_800BA7C8;
@@ -80,7 +80,7 @@ void Results_Setup(void) {
         gPlayers[i].x0->xB4 = 6;
         func_80062FF0(gPlayers[i].x0);
     }
-    func_80044B44(track);
+    CourseIntro_AddTrackSprites(track);
     Ui_AddElement(gUi[0], 2, 0xDF);
     Ui_AddElement(gUi[0], 2, 0xDE);
     D_800D1BAC = 0;

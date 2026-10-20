@@ -23,7 +23,7 @@ extern Car D_800958F0[];
 extern char D_800BAF68[];
 void Ui_ResetScreen(s32, s32);
 s32 sprintf(char *, const char *, ...);
-f32 func_8003ECC0(char *, s32, f32);
+f32 Font_RightAlignX(char *, s32, f32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 void Ui_SetElementColor(s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
@@ -124,16 +124,16 @@ void Results_DrawTeamScores(void) {
         sprintf(D_80130138[i][1], D_800BAF68, sc[i][1]);
         sprintf(D_80130138[i][2], D_800BAF68, sc[i][2]);
         for (j = 0; j < 3; j++) {
-            w = func_8003ECC0(D_80130138[i][j], 0x111F6, xs.v[j]);
+            w = Font_RightAlignX(D_80130138[i][j], 0x111F6, xs.v[j]);
             Ui_SetElementPos(gUi[0], 0, D_800971DC[i][j], w, ys[i]);
         }
     }
     i = sc[0][2] + sc[1][2];
     j = sc[2][2] + sc[3][2];
     sprintf(D_80123C88[0], D_800BAF68, i);
-    Ui_SetElementPos(gUi[0], 0, 0x17E, func_8003ECC0(D_80123C88[0], 0x111F6, xs.v[2]), ys[4]);
+    Ui_SetElementPos(gUi[0], 0, 0x17E, Font_RightAlignX(D_80123C88[0], 0x111F6, xs.v[2]), ys[4]);
     sprintf(D_80123C88[1], D_800BAF68, j);
-    Ui_SetElementPos(gUi[0], 0, 0x17F, func_8003ECC0(D_80123C88[1], 0x111F6, xs.v[2]), ys[5]);
+    Ui_SetElementPos(gUi[0], 0, 0x17F, Font_RightAlignX(D_80123C88[1], 0x111F6, xs.v[2]), ys[5]);
     if (j < i) {
         Ui_SetElementColor(0x17E, 0x111FC);
         Msg_Queue(0x83, 0, 1, 0);

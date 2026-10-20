@@ -10,7 +10,7 @@ extern s32 D_80096750[][3];
 extern void *gUi;
 extern s32 D_800958A8;
 
-s32 func_8003F100(UnkObj *o) {
+s32 MainMenu_Prev(UnkObj *o) {
     s32 prev;
     s32 (*tbl)[3];
     Timer_Start(o, 150000000);

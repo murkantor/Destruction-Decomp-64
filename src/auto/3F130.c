@@ -3,7 +3,7 @@
 
 s32 Car_Draw(s32);                             /* extern */
 
-s32 func_8003E530(void *arg0, s32 arg1) {
+s32 CarObj_Draw(void *arg0, s32 arg1) {
     s32 var_a1;
 
     var_a1 = arg1;

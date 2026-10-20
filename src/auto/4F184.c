@@ -9,7 +9,7 @@ extern s32 D_80097320[];
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 
-s32 func_8004E584(Menu *m) {
+s32 BombResults_Continue(Menu *m) {
     s32 i;
 
     if (D_800958BC == 3) {

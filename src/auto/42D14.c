@@ -5,7 +5,7 @@ typedef struct { u8 pad[0x88]; s32 x88; } UiElem42114;
 extern void *gUi;
 UiElem42114 *Ui_FindElement(void *, s32, s32);
 
-void func_80042114(s32 arg0) {
+void CarSelect_SetStatBars(s32 arg0) {
     s32 tbl[24][4] = {
         { 14, 9, 19, 11 },
         { 14, 9, 19, 11 },

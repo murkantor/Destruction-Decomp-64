@@ -53,7 +53,7 @@ static inline Vol3 GetVol(void) {
     return r;
 }
 
-void func_80048780(void) {
+void OptionsMenu_Init(void) {
     Ids3 ids = D_800BAD40;
     Vol3 vol = GetVol();
     s32 mode;

@@ -10,7 +10,7 @@ void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 void func_8002D0E0(s32);
 
-s32 func_8004B858(Foo *a) {
+s32 RetryMenu_Select(Foo *a) {
     s32 r;
     if (a->x10 == 0) {
         if (D_80097335 == 0) {

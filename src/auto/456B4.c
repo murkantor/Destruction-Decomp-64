@@ -7,7 +7,7 @@ extern CamPreset D_80096EE4[];
 extern s32 D_800958B4;
 extern f32 D_800D1BA8;
 
-void func_80044AB4(Vec3f *a, Vec3f *b, Vec3f *c, f32 *d) {
+void CourseIntro_GetCamera(Vec3f *a, Vec3f *b, Vec3f *c, f32 *d) {
     s32 i;
 
     *d = D_800D1BA8;

@@ -16,10 +16,10 @@ void Ui_ResetScreen(s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDesc *);
 void func_8005D8B8(void *, s32, s32);
 void Ui_AddElement(void *, s32, s32);
-void TrackSelect_Update(s32, s32, s32);
+void CarSelect_SetCar(s32, s32, s32);
 char *strcpy(char *, const char *);
 
-void Menu_SetupTrackSelect(void) {
+void CarSelect_Show(void) {
     UiElemDesc a = D_800BA674;
     UiElemDesc b = D_800BA6BC;
 
@@ -34,7 +34,7 @@ void Menu_SetupTrackSelect(void) {
     }
     Ui_AddSpriteElement(gUi[0], &a);
     Ui_AddElement(gUi[0], 2, 0x3C);
-    TrackSelect_Update(D_800958C0, -1, 0);
+    CarSelect_SetCar(D_800958C0, -1, 0);
     strcpy(D_80123CEC, D_80096E4C);
     D_80096E6E = 0;
 }

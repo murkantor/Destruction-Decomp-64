@@ -9,7 +9,7 @@ extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
 void Pak_SaveGame(s32 *);
-u8 Menu_HandleSelect(s32);
+u8 Pak_HandleError(s32);
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 void Timer_Start(void *, s64);
@@ -23,7 +23,7 @@ s32 PakMenu_NoNoteSelect(Obj3C710 *obj) {
     } else {
         if (Pak_Open(&x) && x == 5) {
             Pak_SaveGame(&x);
-            if (Menu_HandleSelect(x)) {
+            if (Pak_HandleError(x)) {
                 func_80063380(2);
                 Game_SetNextMode(0x19, 1);
                 obj->x10 = 0;

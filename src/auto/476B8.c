@@ -57,7 +57,7 @@ void Ctx_FreeAll(void *);
 void Hud_GetLayoutIds(s32 *);
 void Ui_LoadResourceFile(void *, s32);
 void MapUi_Init(void *);
-void func_8004378C(void);
+void Ui_RestoreElements(void);
 void Heap_Free(void *, void *);
 f32 Time_ToSeconds(void *);
 u64 Time_Get(void *);
@@ -82,7 +82,7 @@ static inline void AddSprites(void)
         Ui_AddSpriteElement(gUi[0], &a);
 }
 
-void Race_End(void)
+void Pause_Init(void)
 {
     s32 lim[2];
     UiItem *item = NULL;
@@ -118,7 +118,7 @@ void Race_End(void)
         if (D_80125C38 == 0x1A) {
             AddSprites();
         }
-        func_8004378C();
+        Ui_RestoreElements();
         gUi[0]->x8B68 = D_800BC9E0;
         Heap_Free(gMainHeap, D_800BC9E8);
         Heap_Free(gMainHeap, D_800BC9F0);

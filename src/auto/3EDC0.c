@@ -10,13 +10,13 @@ extern u8 D_800972F0;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
-void func_80050684(s32 *);
-u8 Menu_HandleSelect(s32);
+void Pak_FindSave(s32 *);
+u8 Pak_HandleError(s32);
 void Pak_WriteSave(s32 *);
 void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
-s32 func_8003E1C0(State *st) {
+s32 PakMenu_NewPakSelect(State *st) {
     s32 a;
     s32 b;
 
@@ -25,18 +25,18 @@ s32 func_8003E1C0(State *st) {
             if (!Pak_Open(&a)) {
                 return 1;
             }
-            func_80050684(&a);
-            if (Menu_HandleSelect(a)) {
+            Pak_FindSave(&a);
+            if (Pak_HandleError(a)) {
                 Game_SetNextMode(0xB, 1);
             }
             break;
         case 1:
             if (Pak_Open(&b)) {
-                if (!Menu_HandleSelect(b)) {
+                if (!Pak_HandleError(b)) {
                     return 1;
                 }
                 Pak_WriteSave(&b);
-                if (!Menu_HandleSelect(b)) {
+                if (!Pak_HandleError(b)) {
                     return 1;
                 }
                 if (D_800972F0) {

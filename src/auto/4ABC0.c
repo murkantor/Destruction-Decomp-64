@@ -17,7 +17,7 @@ void Ui_AddSpriteElement(void *, UiDesc *);
 void Ui_AddElement(void *, s32, s32);
 void Records_Draw(s32, s32, s32, s32);
 
-s32 Menu_NextFreeSlot(s32 cur) {
+s32 NewRecords_ShowNext(s32 cur) {
     s32 side = -100;
     s32 i;
     s32 p;

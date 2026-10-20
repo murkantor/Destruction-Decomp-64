@@ -17,7 +17,7 @@ void Msg_Queue(s32, s32, s32, s32);
 u64 Time_Get(u64 *);
 void Timer_Start(void *, s64);
 
-void Results_InitTimers(void) {
+void TitleScreen_Init(void) {
     s32 i;
 
     if (D_80097354) {

@@ -57,7 +57,7 @@ static inline void Slider_Set(s32 id, f32 v, f32 w) {
     }
 }
 
-s32 func_800477D4(Menu *m) {
+s32 OptionsMenu_Left(Menu *m) {
     Ids ids = D_800BAD40;
     s32 ret = 1;
     Options *o;

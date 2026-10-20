@@ -13,7 +13,7 @@ extern u64 D_80131298;
 u64 Time_Get(u64 *);
 void Game_SetNextMode(s32, s32);
 
-s32 func_8004AF80(void) {
+s32 Records_Timeout(void) {
     s32 ret = 0;
     s32 n;
 

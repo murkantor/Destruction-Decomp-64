@@ -5,7 +5,7 @@ typedef struct { u8 pad[0x10]; s32 x10; } Menu;
 void Ui_SetElementColor(s32, s32);
 void Timer_Start(void *, s64);
 
-s32 func_8004716C(Menu *m) {
+s32 ExitConfirm_Toggle(Menu *m) {
     if (m->x10 == 0) {
         Ui_SetElementColor(0x17C, 0x111F8);
         Ui_SetElementColor(0x17D, 0x111F4);

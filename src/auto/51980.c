@@ -16,7 +16,7 @@ extern u32 D_800BCA18;
 extern u8 *D_800BCA30;
 extern const u16 gInflateMaskBits[];
 s32 Inflate_GetByte(void);
-void func_80052370(u8 *buf, u32 n);
+void Inflate_FlushWindow(u8 *buf, u32 n);
 void *memcpy(void *, const void *, u32);
 
 #define NEEDBITS(n) { while (k < (n)) { s32 c = Inflate_GetByte(); if (c == 0x100) return 1; b |= ((u32)c) << k; k += 8; } }
@@ -50,7 +50,7 @@ s32 inflate_codes(struct huft *tl, struct huft *td, s32 bl, s32 bd) {
         if (e == 16) {
             D_800BCA30[w++] = (u8)t->v.n;
             if (w == 0x8000) {
-                func_80052370(D_800BCA30, w);
+                Inflate_FlushWindow(D_800BCA30, w);
                 w = 0;
             }
         } else {
@@ -83,7 +83,7 @@ s32 inflate_codes(struct huft *tl, struct huft *td, s32 bl, s32 bd) {
                         D_800BCA30[w++] = D_800BCA30[d++];
                     } while (--e);
                 if (w == 0x8000) {
-                    func_80052370(D_800BCA30, w);
+                    Inflate_FlushWindow(D_800BCA30, w);
                     w = 0;
                 }
             } while (n);

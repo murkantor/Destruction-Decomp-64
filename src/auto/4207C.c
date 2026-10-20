@@ -24,7 +24,7 @@ void Time_Format(TimeHMS t, char *buf, s32 len);
 char *strcpy(char *, const char *);
 s32 sprintf(char *, const char *, ...);
 
-void PakMenu_FormatSlotText(s32 idx) {
+void TrackMenu_FormatRecords(s32 idx) {
     char empty[] = "";
     char buf[] = "-:--:--";
     TimeHMS t;

@@ -10,7 +10,7 @@ extern u8 D_80097D7C[];
 extern OSMesgQueue gSiMesgQueue;
 void Cont_ReadAll(void);
 void Pad_StartRead(void);
-void func_80050684(s32 *);
+void Pak_FindSave(s32 *);
 s32 Pak_SetGameInfo(s32, s32, void *, void *, OSMesgQueue *);
 s32 Pak_Init(OSMesgQueue *);
 
@@ -30,7 +30,7 @@ u8 Pak_Open(s32 *out) {
         D_80097D58 = 0;
         return *out != 1;
     }
-    func_80050684(out);
+    Pak_FindSave(out);
     Pad_StartRead();
     D_80097D58 = 0;
     return 1;

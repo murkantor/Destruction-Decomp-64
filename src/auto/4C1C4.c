@@ -13,13 +13,13 @@ extern u8 D_80097336;
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 extern u8 D_800972F0;
-s32 Menu_NextFreeSlot(s32);
+s32 NewRecords_ShowNext(s32);
 u8 Pak_Open(s32 *);
-u8 Menu_HandleSelect(s32);
+u8 Pak_HandleError(s32);
 void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
-s32 func_8004B5C4(MenuItem *item) {
+s32 NewRecords_Next(MenuItem *item) {
     u8 done = 0;
     s32 next;
     s32 slot;
@@ -29,7 +29,7 @@ s32 func_8004B5C4(MenuItem *item) {
         item->value = 0;
         done = 1;
     } else {
-        next = Menu_NextFreeSlot(item->value);
+        next = NewRecords_ShowNext(item->value);
         if (next == -1) {
             done = 1;
         } else if (D_800958B4 < 12) {
@@ -44,7 +44,7 @@ s32 func_8004B5C4(MenuItem *item) {
         if (D_80097D50 != -1) {
             D_8009734C = 0;
             D_8009734D = 1;
-            Game_SetNextMode(Pak_Open(&slot) ? (Menu_HandleSelect(slot) ? 11 : 6) : 6, 1);
+            Game_SetNextMode(Pak_Open(&slot) ? (Pak_HandleError(slot) ? 11 : 6) : 6, 1);
         } else if (D_800972F0) {
             Game_SetNextMode(0x2E, 1);
         } else {

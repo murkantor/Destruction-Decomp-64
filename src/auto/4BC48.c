@@ -47,7 +47,7 @@ extern void Ui_SetElementPos(void *, s32, s32, f32, f32);
 static inline void AddSprite(void *ui, Desc *m) { Ui_AddSpriteElement(ui, m); }
 static inline void AddEl(void *ui, s32 a, s32 b) { Ui_AddElement(ui, a, b); }
 static inline void *GetUi(void) { return gUi[0]; }
-void func_8004B048(void) {
+void Records_Init(void) {
     Desc m;
     Pos2 t;
     s32 mode;

@@ -5,7 +5,7 @@ extern s32 D_800BCA1C[];
 extern s32 D_800BCA20;
 void huft_free(s32);
 
-s32 func_80051C44(void) {
+s32 inflate_free(void) {
     if (D_800BCA1C[0] == 0) {
         return 0;
     }

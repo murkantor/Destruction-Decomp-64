@@ -8,13 +8,13 @@ typedef struct {
 extern GameState *gGame;
 extern u64 D_80131298;
 u64 Time_Get(u64 *);
-void func_8004B5C4(void *);
+void NewRecords_Next(void *);
 
 s32 func_8004B6F4(void *o) {
     s32 ret = 0;
 
     if (Time_Get(&gGame->clock) >= D_80131298) {
-        func_8004B5C4(o);
+        NewRecords_Next(o);
         ret = 1;
     }
     return ret;

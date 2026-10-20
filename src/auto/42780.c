@@ -7,9 +7,9 @@ extern u8 D_80097344[];
 extern s32 D_800958A4;
 extern s32 D_800958AC;
 void Timer_Start(void *, s64);
-void TrackSelect_Update(s32, s32, s32);
+void CarSelect_SetCar(s32, s32, s32);
 
-s32 func_80041B80(Obj *o) {
+s32 CarSelect_Prev(Obj *o) {
     s32 idx;
     s32 prev;
 
@@ -26,20 +26,20 @@ s32 func_80041B80(Obj *o) {
     } else {
         prev = o->x10 - 1;
     }
-    TrackSelect_Update(prev, o->x10, idx);
+    CarSelect_SetCar(prev, o->x10, idx);
     if (D_800958A4 >= 2 && D_800958AC == 2 && D_800958A4 == 4) {
         switch (idx) {
             case 0:
-                TrackSelect_Update(prev, o->x10, 1);
+                CarSelect_SetCar(prev, o->x10, 1);
                 break;
             case 1:
-                TrackSelect_Update(prev, o->x10, 0);
+                CarSelect_SetCar(prev, o->x10, 0);
                 break;
             case 2:
-                TrackSelect_Update(prev, o->x10, 3);
+                CarSelect_SetCar(prev, o->x10, 3);
                 break;
             case 3:
-                TrackSelect_Update(prev, o->x10, 2);
+                CarSelect_SetCar(prev, o->x10, 2);
                 break;
         }
     }

@@ -539,173 +539,173 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `03E458` | `8003D858` | 0xf8 | `src/auto/3E458.c` | C (generated) | 1 | `PakMenu_PakFullDown` |
 | `03E550` | `8003D950` | 0x1bc | `src/auto/3E550.c` | C (generated) | 1 | `Menu_SaveGameState` |
 | `03E70C` | `8003DB0C` | 0x260 | `src/auto/3E70C.c` | C (generated) | 1 | `PakMenu_PakFull` |
-| `03E96C` | `8003DD6C` | 0xf4 | `src/auto/3E96C.c` | C (generated) | 1 |  |
-| `03EA60` | `8003DE60` | 0xac | `src/auto/3EA60.c` | C (generated) | 1 |  |
-| `03EB0C` | `8003DF0C` | 0x128 | `src/auto/3EB0C.c` | C (generated) | 1 |  |
-| `03EC34` | `8003E034` | 0x18c | `src/auto/3EC34.c` | C (generated) | 2 |  |
-| `03EDC0` | `8003E1C0` | 0x164 | `src/auto/3EDC0.c` | C (generated) | 1 |  |
-| `03EF24` | `8003E324` | 0x16c | `src/auto/3EF24.c` | C (generated) | 1 |  |
+| `03E96C` | `8003DD6C` | 0xf4 | `src/auto/3E96C.c` | C (generated) | 1 | `PakMenu_DamagedContinue` |
+| `03EA60` | `8003DE60` | 0xac | `src/auto/3EA60.c` | C (generated) | 1 | `PakMenu_DamagedRepair` |
+| `03EB0C` | `8003DF0C` | 0x128 | `src/auto/3EB0C.c` | C (generated) | 1 | `PakMenu_Damaged` |
+| `03EC34` | `8003E034` | 0x18c | `src/auto/3EC34.c` | C (generated) | 2 | `PakMenu_NewPakPrev`, `PakMenu_NewPakNext` |
+| `03EDC0` | `8003E1C0` | 0x164 | `src/auto/3EDC0.c` | C (generated) | 1 | `PakMenu_NewPakSelect` |
+| `03EF24` | `8003E324` | 0x16c | `src/auto/3EF24.c` | C (generated) | 1 | `PakMenu_NewPak` |
 | `03F090` | `8003E490` | 0xa0 | `src/auto/3F090.c` | C (generated) | 1 |  |
-| `03F130` | `8003E530` | 0x34 | `src/auto/3F130.c` | C (generated) | 1 |  |
-| `03F164` | `8003E564` | 0xe0 | `src/auto/3F164.c` | C (generated) | 1 |  |
-| `03F244` | `8003E644` | 0x358 | `src/auto/3F244.c` | C (generated) | 1 |  |
-| `03F59C` | `8003E99C` | 0x5c | `src/auto/3F59C.c` | C (generated) | 1 |  |
+| `03F130` | `8003E530` | 0x34 | `src/auto/3F130.c` | C (generated) | 1 | `CarObj_Draw` |
+| `03F164` | `8003E564` | 0xe0 | `src/auto/3F164.c` | C (generated) | 1 | `CarObj_Update` |
+| `03F244` | `8003E644` | 0x358 | `src/auto/3F244.c` | C (generated) | 1 | `CarObj_Create` |
+| `03F59C` | `8003E99C` | 0x5c | `src/auto/3F59C.c` | C (generated) | 1 | `CarSelect_RemovePreview` |
 | `03F5F8` | `8003E9F8` | 0x84 | `src/auto/3F5F8.c` | C (generated) | 1 | `CarObj_Free` |
 | `03F67C` | `8003EA7C` | 0x1f4 | `src/auto/3F67C.c` | C (generated) | 1 | `Ui_ResetScreen` |
-| `03F870` | `8003EC70` | 0x88 | `src/auto/3F870.c` | C (generated) | 2 |  |
+| `03F870` | `8003EC70` | 0x88 | `src/auto/3F870.c` | C (generated) | 2 | `Font_CenterX`, `Font_RightAlignX` |
 | `03F8F8` | `8003ECF8` | 0x1f8 | `asm/3F8F8.s` | asm | 1 | `Cars_FreeObjects` |
 | `03FAF0` | `8003EEF0` | 0xf4 | `src/auto/3FAF0.c` | C (generated) | 1 |  |
 | `03FBE4` | `8003EFE4` | 0x11c | `src/auto/3FBE4.c` | C (generated) | 1 | `Menu_CycleOption2` |
-| `03FD00` | `8003F100` | 0x104 | `src/auto/3FD00.c` | C (generated) | 1 |  |
-| `03FE04` | `8003F204` | 0x12c | `src/auto/3FE04.c` | C (generated) | 1 |  |
-| `03FF30` | `8003F330` | 0x314 | `src/auto/3FF30.c` | C (generated) | 1 |  |
-| `040244` | `8003F644` | 0xf4 | `src/auto/40244.c` | C (generated) | 1 |  |
-| `040338` | `8003F738` | 0x1a4 | `src/auto/40338.c` | C (generated) | 1 | `PakMenu_ShowSaveSlots` |
-| `0404DC` | `8003F8DC` | 0x11c | `src/auto/404DC.c` | C (generated) | 1 |  |
-| `0405F8` | `8003F9F8` | 0x144 | `src/auto/405F8.c` | C (generated) | 1 |  |
-| `04073C` | `8003FB3C` | 0x3c | `src/auto/4073C.c` | C (generated) | 1 |  |
-| `040778` | `8003FB78` | 0x90 | `src/auto/40778.c` | C (generated) | 1 |  |
-| `040808` | `8003FC08` | 0x17c | `src/auto/40808.c` | C (generated) | 1 |  |
-| `040984` | `8003FD84` | 0x1f4 | `src/auto/40984.c` | C (generated) | 1 |  |
-| `040B78` | `8003FF78` | 0x21c | `src/auto/40B78.c` | C (generated) | 1 | `PakMenu_CycleOption` |
-| `040D94` | `80040194` | 0x3c | `src/auto/40D94.c` | C (generated) | 1 |  |
+| `03FD00` | `8003F100` | 0x104 | `src/auto/3FD00.c` | C (generated) | 1 | `MainMenu_Prev` |
+| `03FE04` | `8003F204` | 0x12c | `src/auto/3FE04.c` | C (generated) | 1 | `MainMenu_Next` |
+| `03FF30` | `8003F330` | 0x314 | `src/auto/3FF30.c` | C (generated) | 1 | `MainMenu_Select` |
+| `040244` | `8003F644` | 0xf4 | `src/auto/40244.c` | C (generated) | 1 | `MainMenu_CheckOptions` |
+| `040338` | `8003F738` | 0x1a4 | `src/auto/40338.c` | C (generated) | 1 | `MainMenu_Show` |
+| `0404DC` | `8003F8DC` | 0x11c | `src/auto/404DC.c` | C (generated) | 1 | `DiffMenu_Prev` |
+| `0405F8` | `8003F9F8` | 0x144 | `src/auto/405F8.c` | C (generated) | 1 | `DiffMenu_Next` |
+| `04073C` | `8003FB3C` | 0x3c | `src/auto/4073C.c` | C (generated) | 1 | `DiffMenu_Back` |
+| `040778` | `8003FB78` | 0x90 | `src/auto/40778.c` | C (generated) | 1 | `DiffMenu_Select` |
+| `040808` | `8003FC08` | 0x17c | `src/auto/40808.c` | C (generated) | 1 | `DiffMenu_Show` |
+| `040984` | `8003FD84` | 0x1f4 | `src/auto/40984.c` | C (generated) | 1 | `PlayerMenu_Prev` |
+| `040B78` | `8003FF78` | 0x21c | `src/auto/40B78.c` | C (generated) | 1 | `PlayerMenu_Next` |
+| `040D94` | `80040194` | 0x3c | `src/auto/40D94.c` | C (generated) | 1 | `PlayerMenu_Back` |
 | `040DD0` | `800401D0` | 0x190 | `src/auto/40DD0.c` | C (generated) | 1 | `Menu_SetPlayerCount` |
-| `040F60` | `80040360` | 0x140 | `src/auto/40F60.c` | C (generated) | 1 |  |
-| `0410A0` | `800404A0` | 0x174 | `src/auto/410A0.c` | C (generated) | 1 |  |
+| `040F60` | `80040360` | 0x140 | `src/auto/40F60.c` | C (generated) | 1 | `PlayerMenu_Show` |
+| `0410A0` | `800404A0` | 0x174 | `src/auto/410A0.c` | C (generated) | 1 | `GameTypeMenu_Prev` |
 | `041214` | `80040614` | 0x198 | `src/auto/41214.c` | C (generated) | 1 | `Menu_NextOption` |
-| `0413AC` | `800407AC` | 0x40 | `src/auto/413AC.c` | C (generated) | 1 |  |
-| `0413EC` | `800407EC` | 0xa8 | `src/auto/413EC.c` | C (generated) | 1 |  |
-| `041494` | `80040894` | 0x194 | `src/auto/41494.c` | C (generated) | 1 | `PakMenu_ShowSlotOptions` |
+| `0413AC` | `800407AC` | 0x40 | `src/auto/413AC.c` | C (generated) | 1 | `GameTypeMenu_Back` |
+| `0413EC` | `800407EC` | 0xa8 | `src/auto/413EC.c` | C (generated) | 1 | `GameTypeMenu_Select` |
+| `041494` | `80040894` | 0x194 | `src/auto/41494.c` | C (generated) | 1 | `GameTypeMenu_Show` |
 | `041628` | `80040A28` | 0x78 | `src/auto/41628.c` | C (generated) | 1 | `Menu_Prev` |
 | `0416A0` | `80040AA0` | 0x84 | `src/auto/416A0.c` | C (generated) | 1 | `Menu_Next` |
-| `041724` | `80040B24` | 0xe8 | `src/auto/41724.c` | C (generated) | 1 | `Menu_SelectNext` |
+| `041724` | `80040B24` | 0xe8 | `src/auto/41724.c` | C (generated) | 1 | `TrackMenu_Back` |
 | `04180C` | `80040C0C` | 0x300 | `asm/4180C.s` | asm | 1 | `Menu_ConfirmTrackSelect` |
 | `041B0C` | `80040F0C` | 0xcc | `src/auto/41B0C.c` | C (generated) | 1 | `Ui_RemapTextures` |
 | `041BD8` | `80040FD8` | 0x4a4 | `asm/41BD8.s` | asm | 1 | `PakMenu_SelectSlot` |
-| `04207C` | `8004147C` | 0x1e8 | `src/auto/4207C.c` | C (generated) | 1 | `PakMenu_FormatSlotText` |
+| `04207C` | `8004147C` | 0x1e8 | `src/auto/4207C.c` | C (generated) | 1 | `TrackMenu_FormatRecords` |
 | `042264` | `80041664` | 0x278 | `src/auto/42264.c` | C (generated) | 1 | `Menu_BuildIdList` |
-| `0424DC` | `800418DC` | 0x2a4 | `src/auto/424DC.c` | C (generated) | 1 |  |
-| `042780` | `80041B80` | 0x144 | `src/auto/42780.c` | C (generated) | 1 |  |
-| `0428C4` | `80041CC4` | 0x180 | `src/auto/428C4.c` | C (generated) | 1 |  |
-| `042A44` | `80041E44` | 0x2d0 | `src/auto/42A44.c` | C (generated) | 1 | `TrackSelect_Update` |
-| `042D14` | `80042114` | 0x110 | `src/auto/42D14.c` | C (generated) | 1 |  |
-| `042E24` | `80042224` | 0x2f0 | `src/auto/42E24.c` | C (generated) | 1 |  |
-| `043114` | `80042514` | 0x380 | `src/auto/43114.c` | C (generated) | 1 |  |
+| `0424DC` | `800418DC` | 0x2a4 | `src/auto/424DC.c` | C (generated) | 1 | `TrackMenu_Show` |
+| `042780` | `80041B80` | 0x144 | `src/auto/42780.c` | C (generated) | 1 | `CarSelect_Prev` |
+| `0428C4` | `80041CC4` | 0x180 | `src/auto/428C4.c` | C (generated) | 1 | `CarSelect_Next` |
+| `042A44` | `80041E44` | 0x2d0 | `src/auto/42A44.c` | C (generated) | 1 | `CarSelect_SetCar` |
+| `042D14` | `80042114` | 0x110 | `src/auto/42D14.c` | C (generated) | 1 | `CarSelect_SetStatBars` |
+| `042E24` | `80042224` | 0x2f0 | `src/auto/42E24.c` | C (generated) | 1 | `CarSelect_Back` |
+| `043114` | `80042514` | 0x380 | `src/auto/43114.c` | C (generated) | 1 | `CarSelect_Confirm` |
 | `043494` | `80042894` | 0x160 | `asm/43494.s` | asm | 1 | `Race_FreeItemsCheckQualify` |
 | `0435F4` | `800429F4` | 0x200 | `src/auto/435F4.c` | C (generated) | 1 | `Menu_ToggleHelpOverlay` |
 | `0437F4` | `80042BF4` | 0x338 | `asm/437F4.s` | asm | 2 | `Menu_InitPlayerViews`, `Menu_SetCarPreview` |
-| `043B2C` | `80042F2C` | 0x1bc | `src/auto/43B2C.c` | C (generated) | 1 | `Menu_SetupTrackSelect` |
-| `043CE8` | `800430E8` | 0x148 | `src/auto/43CE8.c` | C (generated) | 1 |  |
-| `043E30` | `80043230` | 0xb0 | `src/auto/43E30.c` | C (generated) | 1 |  |
-| `043EE0` | `800432E0` | 0xa4 | `src/auto/43EE0.c` | C (generated) | 1 |  |
-| `043F90` | `80043390` | 0x128 | `src/auto/43F90.c` | C (generated) | 1 | `Results_LoadBanner` |
+| `043B2C` | `80042F2C` | 0x1bc | `src/auto/43B2C.c` | C (generated) | 1 | `CarSelect_Show` |
+| `043CE8` | `800430E8` | 0x148 | `src/auto/43CE8.c` | C (generated) | 1 | `CarSelect_ShowMulti` |
+| `043E30` | `80043230` | 0xb0 | `src/auto/43E30.c` | C (generated) | 1 | `Menu_ShowWrongTvSystem` |
+| `043EE0` | `800432E0` | 0xa4 | `src/auto/43EE0.c` | C (generated) | 1 | `Menu_ShowNoController` |
+| `043F90` | `80043390` | 0x128 | `src/auto/43F90.c` | C (generated) | 1 | `Pause_Return` |
 | `0440B8` | `800434B8` | 0x2d4 | `src/auto/440B8.c` | C (generated) | 1 | `Ui_SaveElements` |
-| `04438C` | `8004378C` | 0x1e0 | `src/auto/4438C.c` | C (generated) | 1 |  |
+| `04438C` | `8004378C` | 0x1e0 | `src/auto/4438C.c` | C (generated) | 1 | `Ui_RestoreElements` |
 | `04456C` | `8004396C` | 0xf4 | `src/auto/4456C.c` | C (generated) | 1 | `Race_PickRandomTrack` |
-| `044660` | `80043A60` | 0x28 | `src/auto/44660.c` | C (generated) | 1 |  |
-| `044688` | `80043A88` | 0x94 | `src/auto/44688.c` | C (generated) | 1 |  |
-| `04471C` | `80043B1C` | 0x198 | `src/auto/4471C.c` | C (generated) | 1 | `Lights_Cycle` |
-| `0448B4` | `80043CB4` | 0x198 | `src/auto/448B4.c` | C (generated) | 1 | `Results_InitTimers` |
-| `044A4C` | `80043E4C` | 0xb20 | `src/auto/44A4C.c` | C (generated) | 1 | `Results_Setup` |
-| `04556C` | `8004496C` | 0x28 | `src/auto/4556C.c` | C (generated) | 1 |  |
-| `045594` | `80044994` | 0x120 | `src/auto/45594.c` | C (generated) | 1 |  |
-| `0456B4` | `80044AB4` | 0x90 | `src/auto/456B4.c` | C (generated) | 1 |  |
-| `045744` | `80044B44` | 0x10c | `src/auto/45744.c` | C (generated) | 1 |  |
-| `045850` | `80044C50` | 0x34 | `src/auto/45850.c` | C (generated) | 1 |  |
-| `045884` | `80044C84` | 0x180 | `src/auto/45884.c` | C (generated) | 1 |  |
-| `045A04` | `80044E04` | 0x104 | `src/auto/45A04.c` | C (generated) | 1 |  |
-| `045B08` | `80044F08` | 0x34 | `src/auto/45B08.c` | C (generated) | 1 |  |
+| `044660` | `80043A60` | 0x28 | `src/auto/44660.c` | C (generated) | 1 | `TitleScreen_AddLogo` |
+| `044688` | `80043A88` | 0x94 | `src/auto/44688.c` | C (generated) | 1 | `TitleScreen_Start` |
+| `04471C` | `80043B1C` | 0x198 | `src/auto/4471C.c` | C (generated) | 1 | `TitleScreen_Update` |
+| `0448B4` | `80043CB4` | 0x198 | `src/auto/448B4.c` | C (generated) | 1 | `TitleScreen_Init` |
+| `044A4C` | `80043E4C` | 0xb20 | `src/auto/44A4C.c` | C (generated) | 1 | `CourseIntro_Init` |
+| `04556C` | `8004496C` | 0x28 | `src/auto/4556C.c` | C (generated) | 1 | `CourseIntro_Skip` |
+| `045594` | `80044994` | 0x120 | `src/auto/45594.c` | C (generated) | 1 | `CourseIntro_Update` |
+| `0456B4` | `80044AB4` | 0x90 | `src/auto/456B4.c` | C (generated) | 1 | `CourseIntro_GetCamera` |
+| `045744` | `80044B44` | 0x10c | `src/auto/45744.c` | C (generated) | 1 | `CourseIntro_AddTrackSprites` |
+| `045850` | `80044C50` | 0x34 | `src/auto/45850.c` | C (generated) | 1 | `Countdown_Pause` |
+| `045884` | `80044C84` | 0x180 | `src/auto/45884.c` | C (generated) | 1 | `Countdown_Update` |
+| `045A04` | `80044E04` | 0x104 | `src/auto/45A04.c` | C (generated) | 1 | `Countdown_Init` |
+| `045B08` | `80044F08` | 0x34 | `src/auto/45B08.c` | C (generated) | 1 | `Race_Pause` |
 | `045B3C` | `80044F3C` | 0x8a8 | `src/auto/45B3C.c` | C (generated) | 1 | `Race_CheckFinishHud` |
-| `0463E4` | `800457E4` | 0xd4 | `src/auto/463E4.c` | C (generated) | 1 |  |
-| `0464B8` | `800458B8` | 0x3c | `src/auto/464B8.c` | C (generated) | 1 |  |
+| `0463E4` | `800457E4` | 0xd4 | `src/auto/463E4.c` | C (generated) | 1 | `Race_ShowGo` |
+| `0464B8` | `800458B8` | 0x3c | `src/auto/464B8.c` | C (generated) | 1 | `RaceFinish_Continue` |
 | `0464F4` | `800458F4` | 0x3a0 | `src/auto/464F4.c` | C (generated) | 1 | `Race_UpdateFinish` |
 | `046894` | `80045C94` | 0x894 | `src/auto/46894.c` | C (generated) | 1 | `Race_WaitForOthers` |
-| `047128` | `80046528` | 0x94 | `src/auto/47128.c` | C (generated) | 1 |  |
-| `0471BC` | `800465BC` | 0x74 | `src/auto/471BC.c` | C (generated) | 1 |  |
+| `047128` | `80046528` | 0x94 | `src/auto/47128.c` | C (generated) | 1 | `Replay_Exit` |
+| `0471BC` | `800465BC` | 0x74 | `src/auto/471BC.c` | C (generated) | 1 | `Replay_Init` |
 | `047230` | `80046630` | 0xa0 | `src/auto/47230.c` | C (generated) | 1 |  |
-| `0472D0` | `800466D0` | 0xcc | `src/auto/472D0.c` | C (generated) | 1 |  |
+| `0472D0` | `800466D0` | 0xcc | `src/auto/472D0.c` | C (generated) | 1 | `Pause_Prev` |
 | `04739C` | `8004679C` | 0xd0 | `src/auto/4739C.c` | C (generated) | 1 | `Menu_CycleOption` |
-| `04746C` | `8004686C` | 0x24c | `src/auto/4746C.c` | C (generated) | 1 |  |
-| `0476B8` | `80046AB8` | 0x500 | `src/auto/476B8.c` | C (generated) | 1 | `Race_End` |
+| `04746C` | `8004686C` | 0x24c | `src/auto/4746C.c` | C (generated) | 1 | `Pause_Select` |
+| `0476B8` | `80046AB8` | 0x500 | `src/auto/476B8.c` | C (generated) | 1 | `Pause_Init` |
 | `047BB8` | `80046FB8` | 0x1b4 | `src/auto/47BB8.c` | C (generated) | 1 | `Menu_ShowExitConfirm` |
-| `047D6C` | `8004716C` | 0x8c | `src/auto/47D6C.c` | C (generated) | 1 |  |
-| `047DF8` | `800471F8` | 0x174 | `src/auto/47DF8.c` | C (generated) | 1 |  |
-| `047F6C` | `8004736C` | 0x468 | `src/auto/47F6C.c` | C (generated) | 3 | `Menu_PrevPage`, `OptionsMenu_Next` |
-| `0483D4` | `800477D4` | 0x638 | `src/auto/483D4.c` | C (generated) | 1 |  |
-| `048A0C` | `80047E0C` | 0x650 | `src/auto/48A0C.c` | C (generated) | 1 |  |
-| `04905C` | `8004845C` | 0x24c | `src/auto/4905C.c` | C (generated) | 1 |  |
-| `0492A8` | `800486A8` | 0xd8 | `src/auto/492A8.c` | C (generated) | 1 |  |
-| `049380` | `80048780` | 0x3ac | `src/auto/49380.c` | C (generated) | 1 |  |
+| `047D6C` | `8004716C` | 0x8c | `src/auto/47D6C.c` | C (generated) | 1 | `ExitConfirm_Toggle` |
+| `047DF8` | `800471F8` | 0x174 | `src/auto/47DF8.c` | C (generated) | 1 | `ExitConfirm_Select` |
+| `047F6C` | `8004736C` | 0x468 | `src/auto/47F6C.c` | C (generated) | 3 | `OptionsMenu_Prev`, `OptionsMenu_Next` |
+| `0483D4` | `800477D4` | 0x638 | `src/auto/483D4.c` | C (generated) | 1 | `OptionsMenu_Left` |
+| `048A0C` | `80047E0C` | 0x650 | `src/auto/48A0C.c` | C (generated) | 1 | `OptionsMenu_Right` |
+| `04905C` | `8004845C` | 0x24c | `src/auto/4905C.c` | C (generated) | 1 | `OptionsMenu_Back` |
+| `0492A8` | `800486A8` | 0xd8 | `src/auto/492A8.c` | C (generated) | 1 | `OptionsMenu_Update` |
+| `049380` | `80048780` | 0x3ac | `src/auto/49380.c` | C (generated) | 1 | `OptionsMenu_Init` |
 | `049730` | `80048B30` | 0x4a8 | `asm/4972C.s` | asm | 1 | `HiScore_DrawTable` |
 | `049BD8` | `80048FD8` | 0x368 | `src/auto/49BD8.c` | C (generated) | 1 | `Menu_LayoutResultRows` |
 | `049F40` | `80049340` | 0x1e8 | `src/auto/49F40.c` | C (generated) | 1 | `Ui_AddModeLabels` |
 | `04A128` | `80049528` | 0x878 | `src/auto/4A128.c` | C (generated) | 1 | `Records_Draw` |
-| `04A9A0` | `80049DA0` | 0x220 | `src/auto/4A9A0.c` | C (generated) | 1 | `Menu_ShowVersus` |
-| `04ABC0` | `80049FC0` | 0x29c | `src/auto/4ABC0.c` | C (generated) | 1 | `Menu_NextFreeSlot` |
+| `04A9A0` | `80049DA0` | 0x220 | `src/auto/4A9A0.c` | C (generated) | 1 | `Records_ShowPage` |
+| `04ABC0` | `80049FC0` | 0x29c | `src/auto/4ABC0.c` | C (generated) | 1 | `NewRecords_ShowNext` |
 | `04AE5C` | `8004A25C` | 0xac | `src/auto/4AE5C.c` | C (generated) | 1 | `LetterWheel_Next` |
 | `04AF08` | `8004A308` | 0xac | `src/auto/4AF08.c` | C (generated) | 1 | `LetterWheel_Prev` |
 | `04AFB4` | `8004A3B4` | 0xe0 | `src/auto/4AFB4.c` | C (generated) | 1 | `NameEntry_Backspace` |
 | `04B094` | `8004A494` | 0xe0 | `src/auto/4B094.c` | C (generated) | 1 | `NameEntry_AddLetter` |
-| `04B174` | `8004A574` | 0x174 | `src/auto/4B174.c` | C (generated) | 1 |  |
-| `04B2E8` | `8004A6E8` | 0x3f4 | `src/auto/4B2E8.c` | C (generated) | 1 |  |
+| `04B174` | `8004A574` | 0x174 | `src/auto/4B174.c` | C (generated) | 1 | `NameEntry_Confirm` |
+| `04B2E8` | `8004A6E8` | 0x3f4 | `src/auto/4B2E8.c` | C (generated) | 1 | `NameEntry_Init` |
 | `04B6DC` | `8004AADC` | 0x2b0 | `src/auto/4B6DC.c` | C (generated) | 1 | `NameEntry_UpdateCursor` |
-| `04B98C` | `8004AD8C` | 0xa8 | `src/auto/4B98C.c` | C (generated) | 1 |  |
-| `04BA34` | `8004AE34` | 0xac | `src/auto/4BA34.c` | C (generated) | 1 |  |
-| `04BAE0` | `8004AEE0` | 0xa0 | `src/auto/4BAE0.c` | C (generated) | 1 |  |
-| `04BB80` | `8004AF80` | 0xc8 | `src/auto/4BB80.c` | C (generated) | 1 |  |
-| `04BC48` | `8004B048` | 0x57c | `src/auto/4BC48.c` | C (generated) | 1 |  |
-| `04C1C4` | `8004B5C4` | 0x130 | `src/auto/4C1C4.c` | C (generated) | 1 |  |
+| `04B98C` | `8004AD8C` | 0xa8 | `src/auto/4B98C.c` | C (generated) | 1 | `Records_PrevPage` |
+| `04BA34` | `8004AE34` | 0xac | `src/auto/4BA34.c` | C (generated) | 1 | `Records_NextPage` |
+| `04BAE0` | `8004AEE0` | 0xa0 | `src/auto/4BAE0.c` | C (generated) | 1 | `Records_Back` |
+| `04BB80` | `8004AF80` | 0xc8 | `src/auto/4BB80.c` | C (generated) | 1 | `Records_Timeout` |
+| `04BC48` | `8004B048` | 0x57c | `src/auto/4BC48.c` | C (generated) | 1 | `Records_Init` |
+| `04C1C4` | `8004B5C4` | 0x130 | `src/auto/4C1C4.c` | C (generated) | 1 | `NewRecords_Next` |
 | `04C2F4` | `8004B6F4` | 0x80 | `src/auto/4C2F4.c` | C (generated) | 1 |  |
-| `04C374` | `8004B774` | 0xe4 | `src/auto/4C374.c` | C (generated) | 1 |  |
-| `04C458` | `8004B858` | 0xb0 | `src/auto/4C458.c` | C (generated) | 1 |  |
-| `04C508` | `8004B908` | 0xa0 | `src/auto/4C508.c` | C (generated) | 1 |  |
+| `04C374` | `8004B774` | 0xe4 | `src/auto/4C374.c` | C (generated) | 1 | `NewRecords_Init` |
+| `04C458` | `8004B858` | 0xb0 | `src/auto/4C458.c` | C (generated) | 1 | `RetryMenu_Select` |
+| `04C508` | `8004B908` | 0xa0 | `src/auto/4C508.c` | C (generated) | 1 | `RetryMenu_Toggle` |
 | `04C5A8` | `8004B9A8` | 0x1f4 | `src/auto/4C5A8.c` | C (generated) | 1 | `Menu_SetupRetryPlaceText` |
-| `04C79C` | `8004BB9C` | 0x170 | `src/auto/4C79C.c` | C (generated) | 1 |  |
-| `04C90C` | `8004BD0C` | 0x3b8 | `src/auto/4C90C.c` | C (generated) | 1 |  |
-| `04CCC4` | `8004C0C4` | 0xc4 | `src/auto/4CCC4.c` | C (generated) | 1 |  |
+| `04C79C` | `8004BB9C` | 0x170 | `src/auto/4C79C.c` | C (generated) | 1 | `Podium_Continue` |
+| `04C90C` | `8004BD0C` | 0x3b8 | `src/auto/4C90C.c` | C (generated) | 1 | `Podium_Init` |
+| `04CCC4` | `8004C0C4` | 0xc4 | `src/auto/4CCC4.c` | C (generated) | 1 | `Results_ScrollUp` |
 | `04CD88` | `8004C188` | 0x104 | `src/auto/4CD88.c` | C (generated) | 1 | `Menu_IncrementCount` |
-| `04CE8C` | `8004C28C` | 0xb4 | `src/auto/4CE8C.c` | C (generated) | 1 |  |
+| `04CE8C` | `8004C28C` | 0xb4 | `src/auto/4CE8C.c` | C (generated) | 1 | `DerbyResults_Continue` |
 | `04CF40` | `8004C340` | 0x748 | `src/auto/4CF40.c` | C (generated) | 1 | `Results_DrawStandings` |
-| `04D688` | `8004CA88` | 0xb4 | `src/auto/4D688.c` | C (generated) | 1 |  |
+| `04D688` | `8004CA88` | 0xb4 | `src/auto/4D688.c` | C (generated) | 1 | `RaceResults_Continue` |
 | `04D73C` | `8004CB3C` | 0x748 | `src/auto/4D73C.c` | C (generated) | 1 | `Results_BuildStandings` |
-| `04DE84` | `8004D284` | 0x38 | `src/auto/4DE84.c` | C (generated) | 1 |  |
+| `04DE84` | `8004D284` | 0x38 | `src/auto/4DE84.c` | C (generated) | 1 | `CircuitTable_Back` |
 | `04DEBC` | `8004D2BC` | 0x2d4 | `src/auto/4DEBC.c` | C (generated) | 1 | `Race_ProcessResult` |
 | `04E190` | `8004D590` | 0x57c | `src/auto/4E190.c` | C (generated) | 1 | `Results_BuildTable` |
-| `04E70C` | `8004DB0C` | 0x78 | `src/auto/4E70C.c` | C (generated) | 1 |  |
+| `04E70C` | `8004DB0C` | 0x78 | `src/auto/4E70C.c` | C (generated) | 1 | `TTResults_Continue` |
 | `04E784` | `8004DB84` | 0x5c0 | `src/auto/4E784.c` | C (generated) | 1 | `Results_ShowLapTimes` |
 | `04ED44` | `8004E144` | 0x394 | `src/auto/4ED44.c` | C (generated) | 1 | `Menu_ShowRecordRows` |
-| `04F0D8` | `8004E4D8` | 0xac | `src/auto/4F0D8.c` | C (generated) | 2 |  |
-| `04F184` | `8004E584` | 0x94 | `src/auto/4F184.c` | C (generated) | 1 |  |
+| `04F0D8` | `8004E4D8` | 0xac | `src/auto/4F0D8.c` | C (generated) | 2 | `BombResults_Prev`, `BombResults_Next` |
+| `04F184` | `8004E584` | 0x94 | `src/auto/4F184.c` | C (generated) | 1 | `BombResults_Continue` |
 | `04F218` | `8004E618` | 0x59c | `src/auto/4F218.c` | C (generated) | 1 | `Results_Init` |
-| `04F7B4` | `8004EBB4` | 0x54 | `src/auto/4F7B4.c` | C (generated) | 1 |  |
+| `04F7B4` | `8004EBB4` | 0x54 | `src/auto/4F7B4.c` | C (generated) | 1 | `TeamResults_Continue` |
 | `04F808` | `8004EC08` | 0x6a0 | `src/auto/4F808.c` | C (generated) | 1 | `Results_DrawTeamScores` |
-| `04FEA8` | `8004F2A8` | 0x100 | `src/auto/4FEA8.c` | C (generated) | 1 |  |
-| `04FFA8` | `8004F3A8` | 0x13c | `src/auto/4FFA8.c` | C (generated) | 1 |  |
-| `0500E4` | `8004F4E4` | 0x1b0 | `src/auto/500E4.c` | C (generated) | 1 |  |
+| `04FEA8` | `8004F2A8` | 0x100 | `src/auto/4FEA8.c` | C (generated) | 1 | `CarUnlock_Continue` |
+| `04FFA8` | `8004F3A8` | 0x13c | `src/auto/4FFA8.c` | C (generated) | 1 | `CarUnlock_Init` |
+| `0500E4` | `8004F4E4` | 0x1b0 | `src/auto/500E4.c` | C (generated) | 1 | `Credits_Skip` |
 | `050294` | `8004F694` | 0x5ec | `src/auto/50294.c` | C (generated) | 1 | `Credits_Update` |
 | `050880` | `8004FC80` | 0xfc | `src/auto/50880.c` | C (generated) | 1 | `Credits_Init` |
 | `050980` | `8004FD80` | 0xcc | `src/auto/50980.c` | C (generated) | 1 | `Pak_Open` |
-| `050A4C` | `8004FE4C` | 0x190 | `src/auto/50A4C.c` | C (generated) | 1 |  |
+| `050A4C` | `8004FE4C` | 0x190 | `src/auto/50A4C.c` | C (generated) | 1 | `Pak_LoadSave` |
 | `050BDC` | `8004FFDC` | 0xc4 | `src/auto/50BDC.c` | C (generated) | 1 | `Pak_WriteSave` |
-| `050CA0` | `800500A0` | 0x2c | `src/auto/50CA0.c` | C (generated) | 1 |  |
+| `050CA0` | `800500A0` | 0x2c | `src/auto/50CA0.c` | C (generated) | 1 | `Pak_RepairId` |
 | `050CCC` | `800500CC` | 0x208 | `src/auto/50CCC.c` | C (generated) | 1 | `Save_CopyToGlobal` |
 | `050ED4` | `800502D4` | 0x308 | `asm/50ED4.s` | asm | 1 | `HiScore_ApplyNewEntries` |
-| `0511DC` | `800505DC` | 0xa8 | `src/auto/511DC.c` | C (generated) | 1 |  |
-| `051284` | `80050684` | 0x60 | `src/auto/51284.c` | C (generated) | 1 |  |
+| `0511DC` | `800505DC` | 0xa8 | `src/auto/511DC.c` | C (generated) | 1 | `Records_ClearNew` |
+| `051284` | `80050684` | 0x60 | `src/auto/51284.c` | C (generated) | 1 | `Pak_FindSave` |
 | `0512E4` | `800506E4` | 0x110 | `src/auto/512E4.c` | C (generated) | 1 | `Pak_SaveGame` |
 | `0513F4` | `800507F4` | 0x11c | `src/auto/513F4.c` | C (generated) | 1 | `Pak_RefreshSaveSlots` |
-| `051510` | `80050910` | 0x1bc | `src/auto/51510.c` | C (generated) | 1 | `Menu_HandleSelect` |
+| `051510` | `80050910` | 0x1bc | `src/auto/51510.c` | C (generated) | 1 | `Pak_HandleError` |
 | `0516CC` | `80050ACC` | 0x6c | `src/auto/516CC.c` | C (generated) | 1 | `Cont_AllPaksOk` |
 | `051740` | `80050B40` | 0x208 | `src/romfile.c` | C | 5 | Read-only file over the zippeddata.zip ROM area (fopen/fread/fseek style) |
-| `051948` | `80050D48` | 0x34 | `src/auto/51948.c` | C (generated) | 1 |  |
+| `051948` | `80050D48` | 0x34 | `src/auto/51948.c` | C (generated) | 1 | `Zip_LoadFile` |
 | `051980` | `80050D80` | 0x3fc | `src/auto/51980.c` | C (generated) | 1 | `inflate_codes` |
 | `051D7C` | `8005117C` | 0x354 | `src/auto/51D7C.c` | C (generated) | 2 | `Inflate_Stored`, `inflate_fixed` |
 | `0520D0` | `800514D0` | 0x5f4 | `src/auto/520D0.c` | C (generated) | 1 | `inflate_dynamic` |
 | `0526C4` | `80051AC4` | 0x180 | `src/auto/526C4.c` | C (generated) | 1 | `inflate` |
-| `052844` | `80051C44` | 0x54 | `src/auto/52844.c` | C (generated) | 1 |  |
+| `052844` | `80051C44` | 0x54 | `src/auto/52844.c` | C (generated) | 1 | `inflate_free` |
 | `052898` | `80051C98` | 0x69c | `src/auto/52898.c` | C (generated) | 1 | `huft_build` |
 | `052F34` | `80052334` | 0x3c | `src/auto/52F34.c` | C (generated) | 1 | `huft_free` |
-| `052F70` | `80052370` | 0x7c | `src/auto/52F70.c` | C (generated) | 1 |  |
+| `052F70` | `80052370` | 0x7c | `src/auto/52F70.c` | C (generated) | 1 | `Inflate_FlushWindow` |
 | `052FEC` | `800523EC` | 0xf8 | `src/auto/52FEC.c` | C (generated) | 1 | `Inflate_GetByte` |
 | `0530E4` | `800524E4` | 0x150 | `src/auto/530E4.c` | C (generated) | 1 | `Decompress_Stream` |
 | `053234` | `80052634` | 0xe4 | `src/auto/53234.c` | C (generated) | 1 | `Decompress_ToBuffer` |

@@ -6,7 +6,7 @@ extern u32 D_800BCA14;
 extern u32 D_800BCA18;
 extern u8 *D_800BCA30;
 s32 Inflate_GetByte(void);
-void func_80052370(u8 *buf, u32 n);
+void Inflate_FlushWindow(u8 *buf, u32 n);
 
 #define NEEDBITS(n) { while (k < (n)) { s32 c = Inflate_GetByte(); if (c == 0x100) return 1; b |= ((u32)c) << k; k += 8; } }
 #define DUMPBITS(n) { b >>= (n); k -= (n); }
@@ -36,7 +36,7 @@ s32 Inflate_Stored(void) {
         NEEDBITS(8)
         D_800BCA30[w++] = (u8)b;
         if (w == 0x8000) {
-            func_80052370(D_800BCA30, w);
+            Inflate_FlushWindow(D_800BCA30, w);
             w = 0;
         }
         DUMPBITS(8)

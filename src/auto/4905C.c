@@ -35,7 +35,7 @@ void Ui_AddElement(void *, s32, s32);
 void Game_SetNextMode(s32, s32);
 void Sound_SetVolume(s32, s32);
 
-s32 func_8004845C(MenuItem *it) {
+s32 OptionsMenu_Back(MenuItem *it) {
     s32 next;
     s16 mode = gGame->mode;
 

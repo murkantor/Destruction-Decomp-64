@@ -18,7 +18,7 @@ void View_SetupSplitScreen(s32, s32, s32);
 void func_8005F884(void *);
 void Ui_SetElementColor(s32, s32);
 
-void func_80044E04(void) {
+void Countdown_Init(void) {
     s32 i;
 
     Clock_Pause(gGame[0] + 0x10A8);

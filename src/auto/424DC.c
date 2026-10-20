@@ -23,7 +23,7 @@ void Ui_AddSpriteElement(void *, UiElemDef *);
 void PakMenu_SelectSlot(s32, s32);
 void Cars_FreeObjects(void);
 
-void func_800418DC(void) {
+void TrackMenu_Show(void) {
     UiElemDef e;
     Rec2 r;
     s32 i;

@@ -20,7 +20,7 @@ s32 Font_GetStringWidth(char *, s32);
 void Cheat_ResetInput(s32);
 void Cars_FreeObjects(void);
 
-void PakMenu_ShowSaveSlots(void) {
+void MainMenu_Show(void) {
     s32 i;
     Ui_ResetScreen(0x112B2, 0x112B3);
     D_80097350 = 4;

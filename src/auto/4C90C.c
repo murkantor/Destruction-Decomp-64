@@ -27,7 +27,7 @@ extern void *D_800970F8;
 extern char gSaveSlotText[];
 extern Slot D_80123922[];
 void Ui_ResetScreen(s32, s32);
-s32 func_8003E644(s32, s32);
+s32 CarObj_Create(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 char *strcpy(char *, const char *);
 void *Mem_Alloc(s32);
@@ -36,7 +36,7 @@ void *Obj_CreateFromSpawn(Spawn *);
 void ObjList_Add(void *);
 void Msg_Queue(s32, s32, s32, s32);
 
-void func_8004BD0C(void) {
+void Podium_Init(void) {
     Vec3f pos[4] = {
         { 48.0f, -15.0f, -90.0f },
         { 43.0f, -9.0f, -80.0f },
@@ -53,7 +53,7 @@ void func_8004BD0C(void) {
     Spawn *sp;
 
     Ui_ResetScreen(0x112F4, 0x112F5);
-    D_800964F0 = func_8003E644(D_800958C0, 0);
+    D_800964F0 = CarObj_Create(D_800958C0, 0);
     for (i = 0; i < 12; i++) {
         if (D_80123922[i].x0 == 0) {
             break;

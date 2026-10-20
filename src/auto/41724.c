@@ -11,7 +11,7 @@ extern void Timer_Start(void *, s64);
 extern void Game_SetNextMode(s32, s32);
 extern void Ui_RemapTextures(void);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
-void Menu_SelectNext(Obj *o) {
+void TrackMenu_Back(Obj *o) {
     s32 next;
     Timer_Start(o, 300000000);
     next = -1;

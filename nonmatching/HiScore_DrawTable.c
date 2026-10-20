@@ -18,7 +18,7 @@ extern f32 D_80097278[];
 extern void *gUi;
 
 char *strcpy(char *, const char *);
-f32 func_8003ECC0(char *, s32, f32);
+f32 Font_RightAlignX(char *, s32, f32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
 #define NUM_SHOWN (D_80096038[D_800958B4] < 7 ? D_80096038[D_800958B4] : 6)
@@ -42,7 +42,7 @@ void HiScore_DrawTable(f32 *xs, s32 ncols, s32 rank) {
         strcpy(D_80130138[row].col[1], D_801238F0[e].b);
         strcpy(D_80130138[row].col[2], D_801238F0[e].c);
         for (c = 0; c < ncols; c++) {
-            Ui_SetElementPos(gUi, 0, D_800971DC[row][c], func_8003ECC0(D_80130138[row].col[c], 0x111F6, xs[c]), D_80097278[row]);
+            Ui_SetElementPos(gUi, 0, D_800971DC[row][c], Font_RightAlignX(D_80130138[row].col[c], 0x111F6, xs[c]), D_80097278[row]);
         }
     }
     row = (D_80096038[D_800958B4] < 7 ? D_80096038[D_800958B4] - skip : 6 - skip);
@@ -56,7 +56,7 @@ void HiScore_DrawTable(f32 *xs, s32 ncols, s32 rank) {
         strcpy(D_80130138[row].col[1], D_801238F0[idx].b);
         strcpy(D_80130138[row].col[2], D_801238F0[idx].c);
         for (c = 0; c < ncols; c++) {
-            Ui_SetElementPos(gUi, 0, D_800971DC[row][c], func_8003ECC0(D_80130138[row].col[c], 0x111F6, xs[c]), D_80097278[row]);
+            Ui_SetElementPos(gUi, 0, D_800971DC[row][c], Font_RightAlignX(D_80130138[row].col[c], 0x111F6, xs[c]), D_80097278[row]);
         }
         row++;
     }

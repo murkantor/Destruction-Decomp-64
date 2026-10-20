@@ -22,7 +22,7 @@ void *HeapBlock_Ptr(HeapBlock *);
 void Ui_AddElement(Ui *, s32, s32);
 void Game_SetNextMode(s32, s32);
 
-void Results_LoadBanner(Obj *o, s32 arg1) {
+void Pause_Return(Obj *o, s32 arg1) {
     void *p;
     void *t;
     UiElem *e = NULL;

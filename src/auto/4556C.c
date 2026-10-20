@@ -3,7 +3,7 @@
 
 extern u8 D_800D1BAC;
 
-s32 func_8004496C(void) {
+s32 CourseIntro_Skip(void) {
     u8 *flag = &D_800D1BAC;
 
     if (*flag != 0) {

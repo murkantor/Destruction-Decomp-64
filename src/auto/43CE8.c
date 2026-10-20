@@ -12,9 +12,9 @@ extern void *gUi[];
 void Ui_ResetScreen(s32, s32);
 void Ui_AddSpriteElement(void *, Menu48 *);
 void func_8005D8B8(void *, s32, s32);
-void TrackSelect_Update(void *, s32, s32);
+void CarSelect_SetCar(void *, s32, s32);
 
-void func_800430E8(void) {
+void CarSelect_ShowMulti(void) {
     Menu48 m = D_800BA704;
     Pair3 t = D_800BA74C;
     s32 i;
@@ -24,6 +24,6 @@ void func_800430E8(void) {
     Ui_AddSpriteElement(gUi[0], &m);
     func_8005D8B8(gUi[0], 2, 0x3B);
     for (i = 0; i < D_800958A4.n; i++) {
-        TrackSelect_Update(D_800958A4.x1C[i], -1, i);
+        CarSelect_SetCar(D_800958A4.x1C[i], -1, i);
     }
 }

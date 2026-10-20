@@ -11,7 +11,7 @@ s32 Inflate_GetByte(void);
 s32 inflate_dynamic(void);
 s32 Inflate_Stored(void);
 s32 inflate_fixed(void);
-void func_80052370(s32, u32);
+void Inflate_FlushWindow(s32, u32);
 
 #define NEEDBITS(n)                  \
     while (k < (n)) {                \
@@ -73,6 +73,6 @@ s32 inflate(void) {
             h = D_800BCA2C;
         }
     } while (!e);
-    func_80052370(D_800BCA30, D_800BCA10);
+    Inflate_FlushWindow(D_800BCA30, D_800BCA10);
     return 0;
 }

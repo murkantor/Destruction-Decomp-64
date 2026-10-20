@@ -13,7 +13,7 @@ void func_8005D8B8(void *, s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
 f32 Time_ToSeconds(void *);
 
-void func_800457E4(void) {
+void Race_ShowGo(void) {
     Ui_RemoveElement(gUi[0], 0x105);
     Ui_RemoveElement(gUi[0], 0x108);
     Ui_AddElement(gUi[0], 2, 0x106);

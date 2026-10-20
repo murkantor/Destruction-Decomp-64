@@ -15,7 +15,7 @@ f32 Car_GetSpeed(void *);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
 Pos2 Ui_GetElementPos(void *, s32, s32);
-f32 func_8003EC70(char *, s32, s32);
+f32 Font_CenterX(char *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
 s32 Hud_DrawSpeed(s32 *arg0, s8 idx) {
@@ -36,10 +36,10 @@ s32 Hud_DrawSpeed(s32 *arg0, s8 idx) {
     ui = gUi;
     pos = Ui_GetElementPos(ui[0], 0, id);
     if (D_800958A4 < 3) {
-        pos.x = func_8003EC70(str, 0x111EC, D_8007EED4);
+        pos.x = Font_CenterX(str, 0x111EC, D_8007EED4);
         Ui_SetElementPos(ui[0], 0, id, pos.x, pos.y);
     } else {
-        pos.x = func_8003EC70(str, 0x111EC, D_8007EED8[idx]);
+        pos.x = Font_CenterX(str, 0x111EC, D_8007EED8[idx]);
         Ui_SetElementPos(ui[0], 0, id, pos.x, pos.y);
     }
     return 0;

@@ -19,9 +19,9 @@ extern s32 D_80097350;
 extern s32 D_800958AC;
 
 void Timer_Start(void *, s64);
-void TrackSelect_Update(s32, s32, s32);
+void CarSelect_SetCar(s32, s32, s32);
 
-s32 func_80041CC4(Obj41CC4 *obj) {
+s32 CarSelect_Next(Obj41CC4 *obj) {
     s32 p;
     s32 next;
 
@@ -34,20 +34,20 @@ s32 func_80041CC4(Obj41CC4 *obj) {
         return 0;
     }
     next = (obj->x10 + 1) % D_80097350;
-    TrackSelect_Update(next, obj->x10, p);
+    CarSelect_SetCar(next, obj->x10, p);
     if (D_800958A4[0] >= 2 && D_800958AC == 2 && D_800958A4[0] == 4) {
         switch (p) {
             case 0:
-                TrackSelect_Update(next, obj->x10, 1);
+                CarSelect_SetCar(next, obj->x10, 1);
                 break;
             case 1:
-                TrackSelect_Update(next, obj->x10, 0);
+                CarSelect_SetCar(next, obj->x10, 0);
                 break;
             case 2:
-                TrackSelect_Update(next, obj->x10, 3);
+                CarSelect_SetCar(next, obj->x10, 3);
                 break;
             case 3:
-                TrackSelect_Update(next, obj->x10, 2);
+                CarSelect_SetCar(next, obj->x10, 2);
                 break;
         }
     }

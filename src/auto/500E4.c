@@ -22,7 +22,7 @@ void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 void Res_Release(s32);
 
-s32 func_8004F4E4(void) {
+s32 Credits_Skip(void) {
     Str2 str;
     u64 t;
     s32 i;

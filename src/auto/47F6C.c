@@ -46,7 +46,7 @@ void func_8004736C(void *timer, s32 from, s32 to) {
 }
 
 
-s32 Menu_PrevPage(Menu *m) {
+s32 OptionsMenu_Prev(Menu *m) {
     s32 next;
     s32 cur;
     Arr5 ids;

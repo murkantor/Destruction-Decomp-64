@@ -21,7 +21,7 @@ void Timer_Start(void *, u64);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 
-s32 func_800404A0(Obj404A0 *obj) {
+s32 GameTypeMenu_Prev(Obj404A0 *obj) {
     u8 ok = 0;
     s32 cur;
 

@@ -8,7 +8,7 @@ extern s32 D_800BC9E4;
 extern s32 Sound_CountPlaying(s32);
 extern void Res_LoadSoundBank(s32);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
-s32 func_800486A8(Obj *o) {
+s32 OptionsMenu_Update(Obj *o) {
     if (o->x10 == 0 || o->x10 == 3) {
         if (D_80096EB4 != 0 || D_800BC9E4 != D_8011EEF8->x520) {
             if (Sound_CountPlaying(2) == 0) {

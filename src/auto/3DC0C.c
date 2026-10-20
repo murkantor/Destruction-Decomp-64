@@ -8,7 +8,7 @@ typedef struct {
 extern u8 D_8009734C;
 extern u8 D_8009734D;
 u8 Pak_Open(s32 *);
-u8 Menu_HandleSelect(s32);
+u8 Pak_HandleError(s32);
 void Pak_WriteSave(s32 *);
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
@@ -26,12 +26,12 @@ s32 PakMenu_OverwriteSelect(Item *item) {
                 code = 5;
                 break;
             }
-            if (!Menu_HandleSelect(err)) {
+            if (!Pak_HandleError(err)) {
                 code = 5;
                 break;
             }
             Pak_WriteSave(&err);
-            if (Menu_HandleSelect(err)) {
+            if (Pak_HandleError(err)) {
                 func_80063380(2);
                 Game_SetNextMode(0x19, 1);
                 item->x10 = 0;

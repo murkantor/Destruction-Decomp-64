@@ -19,7 +19,7 @@ void Clock_Pause(void *);
 void Clock_Reset(void *);
 void Clock_Resume(void *);
 
-s32 func_80044C84(void) {
+s32 Countdown_Update(void) {
     s32 ret = 0;
 
     if (Time_ToSeconds(gGame[0]->x10A8) >= 1.0 && D_8009735C[0] == 0) {

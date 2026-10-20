@@ -11,7 +11,7 @@ void Timer_Start(void *, u64);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 
-s32 func_8003FD84(Menu *m) {
+s32 PlayerMenu_Prev(Menu *m) {
     s32 old = m->sel;
     s32 next;
     void **ui;

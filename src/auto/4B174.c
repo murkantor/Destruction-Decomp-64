@@ -46,7 +46,7 @@ void ObjList_Remove(void *, s32);
 void Game_SetNextMode(s32, s32);
 void Gfx_FlushFrames(void);
 
-s32 func_8004A574(Obj4A574 *obj) {
+s32 NameEntry_Confirm(Obj4A574 *obj) {
     s32 i;
 
     if (obj->x28->x10 != D_80097D48) {

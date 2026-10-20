@@ -13,7 +13,7 @@ void Game_SetNextMode(s32, s32);
 void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
 void Cheat_UpdateInput(void);
 
-s32 func_8003F644(Player *p) {
+s32 MainMenu_CheckOptions(Player *p) {
     Vec3f a = D_800BA378;
     Vec3f b = D_800BA384;
     s32 idx = p->x28->x10;

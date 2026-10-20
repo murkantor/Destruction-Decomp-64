@@ -11,7 +11,7 @@ extern s32 D_80097350;
 extern s32 D_80096780[][3];
 extern void *gUi;
 
-s32 func_8003F8DC(UnkObj *o) {
+s32 DiffMenu_Prev(UnkObj *o) {
     s32 prev;
     s32 (*tbl)[3];
     if (D_80097A14 == 0 && D_801253F9 == 0) {

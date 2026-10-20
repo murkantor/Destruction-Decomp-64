@@ -23,7 +23,7 @@ char *strcpy(char *, const char *);
 void Ui_EnableElementAlpha(void *, s32, s32, s32);
 void Ui_DisableElementAlpha(void *, s32, s32);
 void Ui_SetElementAlphaValue(void *, s32, s32, s32);
-f32 func_8003EC70(char *, s32, f32);
+f32 Font_CenterX(char *, s32, f32);
 void Ui_SetElementX(void *, s32, s32, f32);
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
@@ -65,7 +65,7 @@ s32 Credits_Update(Obj *obj) {
                         strcpy(gSaveSlotText[i], sfx.c);
                     } else {
                         strcpy(gSaveSlotText[i], D_80124560.x1C);
-                        Ui_SetElementX(gUi[0], 0, i + 0x17A, func_8003EC70(gSaveSlotText[i], 0x111F8, 160.0f));
+                        Ui_SetElementX(gUi[0], 0, i + 0x17A, Font_CenterX(gSaveSlotText[i], 0x111F8, 160.0f));
                         D_80124560.x1C += 0x28;
                         D_80124560.x10++;
                     }

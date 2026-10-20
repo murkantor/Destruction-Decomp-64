@@ -64,7 +64,7 @@ void ModelInst_SetScale(void *, f32);
 void Mtx3_RotateY(Mtx3 *, f32);
 void ObjList_Add(Obj14 *);
 
-Obj14 *func_8003E644(s32 id, s32 slot) {
+Obj14 *CarObj_Create(s32 id, s32 slot) {
     ResBuf buf;
     s32 col[2];
     Obj14 *obj;

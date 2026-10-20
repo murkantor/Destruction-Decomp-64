@@ -12,22 +12,22 @@ extern u8 D_801253F8;
 extern u8 D_80097A0C[];
 extern s32 D_800964F0[];
 extern s32 D_80096500[];
-void func_80042114(void);
+void CarSelect_SetStatBars(void);
 void Menu_SetCarPreview(s32, s32);
 char *strcpy(char *, const char *);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void ObjList_Remove(void *, s32);
-s32 func_8003E644(s32, s32);
+s32 CarObj_Create(s32, s32);
 
 #define LOCKED(x) ((x) != -1 && !(D_801253F8 != 0 || (x) < 12) && ((x) < 12 || D_80097A0C[x] == 0))
 
-void TrackSelect_Update(s32 cur, s32 prev, s32 slot) {
+void CarSelect_SetCar(s32 cur, s32 prev, s32 slot) {
     s32 k;
     s32 i;
 
     if (D_800958A8 != 3) {
-        func_80042114();
+        CarSelect_SetStatBars();
         Menu_SetCarPreview(cur, prev);
         if (cur < 12) {
             k = 0;
@@ -63,5 +63,5 @@ void TrackSelect_Update(s32 cur, s32 prev, s32 slot) {
         D_80096500[slot] = D_800964F0[slot];
         D_800964F0[slot] = 0;
     }
-    D_800964F0[slot] = func_8003E644(cur, slot);
+    D_800964F0[slot] = CarObj_Create(cur, slot);
 }

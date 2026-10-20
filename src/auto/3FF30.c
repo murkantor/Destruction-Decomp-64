@@ -23,12 +23,12 @@ extern u8 D_801253F9;
 extern s32 gControllers;
 extern s32 D_80125D30;
 u8 AnyEntryFlag10(void);
-void func_800505DC(void);
+void Records_ClearNew(void);
 void Game_SetNextMode(s32, s32);
 void func_8002D0E0(s32);
 s32 rand(void);
 
-s32 func_8003F330(Obj *o) {
+s32 MainMenu_Select(Obj *o) {
     s32 next = -1;
     s32 i;
     s32 r;
@@ -38,7 +38,7 @@ s32 func_8003F330(Obj *o) {
         return 0;
     }
     D_800958A8[0] = o->x10;
-    func_800505DC();
+    Records_ClearNew();
     switch (D_800958A8[0]) {
     case 0:
         if (o->x28->x10 > 0) {

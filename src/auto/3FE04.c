@@ -11,7 +11,7 @@ void Timer_Start(void *, s64);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 
-s32 func_8003F204(Obj *o) {
+s32 MainMenu_Next(Obj *o) {
     s32 next;
     Entry *tbl;
 

@@ -12,11 +12,11 @@ extern u8 D_800972F0;
 void ObjList_Remove(void *, s32);
 s32 CarObj_Free(s32);
 u8 Pak_Open(s32 *);
-u8 Menu_HandleSelect(s32);
+u8 Pak_HandleError(s32);
 void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
-s32 func_8004F2A8(Obj4F2A8 *arg0) {
+s32 CarUnlock_Continue(Obj4F2A8 *arg0) {
     s32 sp10;
 
     ObjList_Remove(gGame + 0x334, D_800964F0[0]);
@@ -28,7 +28,7 @@ s32 func_8004F2A8(Obj4F2A8 *arg0) {
         D_8009734C = 0;
         D_8009734D = 1;
         if (Pak_Open(&sp10)) {
-            if (Menu_HandleSelect(sp10)) {
+            if (Pak_HandleError(sp10)) {
                 Game_SetNextMode(0xB, 1);
             } else {
                 Game_SetNextMode(6, 1);

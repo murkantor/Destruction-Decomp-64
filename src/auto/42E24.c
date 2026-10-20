@@ -28,7 +28,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Game_SetNextMode(s32, s32);
 
-s32 func_80042224(Obj *o) {
+s32 CarSelect_Back(Obj *o) {
     Tbl tbl = D_800BA5C8;
     s32 p = o->x28->x10;
     s32 val = o->x10;

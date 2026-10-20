@@ -9,8 +9,8 @@ extern s32 D_800958DC;
 extern Mat9 D_801242C0[];
 void func_8006300C(s32, f32, f32, f32, f32, f32, f32);
 
-void Menu_SetupTrackSelect(void);
-void func_800430E8(void);
+void CarSelect_Show(void);
+void CarSelect_ShowMulti(void);
 
 
 void Menu_InitPlayerViews(void) {
@@ -29,9 +29,9 @@ void Menu_InitPlayerViews(void) {
     }
     { f32 z = 0.0f; f32 m = -1.0f; func_8006300C(D_800958DC, z, z, z, z, z, m); }
     if (D_800958A4[0] == 1) {
-        Menu_SetupTrackSelect();
+        CarSelect_Show();
     } else {
-        func_800430E8();
+        CarSelect_ShowMulti();
     }
 }
 /* agent54: volatile D_80097350 + loop bound fixes the store order (from agent49 v17/D). Left:

@@ -37,7 +37,7 @@ TimeHMS Time_Split(u64 t);
 void Time_Format(TimeHMS t, char *buf, s32 len);
 char *strcpy(char *, const char *);
 s32 sprintf(char *, const char *, ...);
-f32 func_8003ECC0(char *, s32, f32);
+f32 Font_RightAlignX(char *, s32, f32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 void Res_Release(s32);
@@ -75,7 +75,7 @@ void Records_Draw(s32 prev, s32 mode, s32 base, s32 cup) {
         strcpy(D_80123DB4[3], e.c);
         strcpy(D_80123DB4[4], D_80097CCC[0].name);
         strcpy(D_80123DB4[5], e.c);
-        w = func_8003ECC0(D_80123DB4[1], 0x11200, x);
+        w = Font_RightAlignX(D_80123DB4[1], 0x11200, x);
         Ui_SetElementPos(gUi[0], 0, D_80097250[0], w, ys[1]);
         break;
     case 3:
@@ -88,7 +88,7 @@ void Records_Draw(s32 prev, s32 mode, s32 base, s32 cup) {
         sprintf(D_80123DB4[1], D_800BAF68, D_80097CCC[2].score);
         sprintf(D_80123DB4[2], D_800BAF68, D_80097CCC[3].score);
         for (i = 10; i < n + 10; i++) {
-            w = func_8003ECC0(D_80123DB4[i - 10], 0x11200, x);
+            w = Font_RightAlignX(D_80123DB4[i - 10], 0x11200, x);
             Ui_SetElementPos(gUi[0], 0, i + 0x17A, w, ys[i - 10]);
         }
         strcpy(D_80123DB4[3], D_80097CCC[1].name);
@@ -104,7 +104,7 @@ void Records_Draw(s32 prev, s32 mode, s32 base, s32 cup) {
         strcpy(D_80123DB4[4], D_80097A28[cup].n0);
         strcpy(D_80123DB4[3], e.c);
         strcpy(D_80123DB4[5], e.c);
-        w = func_8003ECC0(D_80123DB4[1], 0x11200, x);
+        w = Font_RightAlignX(D_80123DB4[1], 0x11200, x);
         Ui_SetElementPos(gUi[0], 0, D_80097250[0], w, ys[1]);
         break;
     case 1:
@@ -124,7 +124,7 @@ void Records_Draw(s32 prev, s32 mode, s32 base, s32 cup) {
         strcpy(D_80123DB4[4], D_80097A28[cup].n1);
         strcpy(D_80123DB4[5], D_80097A28[cup].n2);
         for (i = 10; i < n + 10; i++) {
-            w = func_8003ECC0(D_80123DB4[i - 10], 0x11200, x);
+            w = Font_RightAlignX(D_80123DB4[i - 10], 0x11200, x);
             Ui_SetElementPos(gUi[0], 0, i + 0x17A, w, ys[i - 10]);
         }
         break;

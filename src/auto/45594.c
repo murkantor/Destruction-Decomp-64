@@ -18,7 +18,7 @@ void Camera_UpdateChase(Car44994 *);
 void Game_SetNextMode(s32, s32);
 
 extern f64 D_800BAA70; extern volatile f64 D_800BAA78;
-s32 func_80044994(void) {
+s32 CourseIntro_Update(void) {
     f32 t;
     f32 r;
     s32 i;

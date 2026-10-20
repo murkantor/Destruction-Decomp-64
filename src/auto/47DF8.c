@@ -29,7 +29,7 @@ s32 Sound_CountPlaying(s32);
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 
-s32 func_800471F8(State *st) {
+s32 ExitConfirm_Select(State *st) {
     f32 vol;
     s8 i;
 

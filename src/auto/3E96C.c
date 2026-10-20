@@ -14,7 +14,7 @@ s32 sprintf(char *, const char *, ...);
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 
-s32 func_8003DD6C(Menu *m) {
+s32 PakMenu_DamagedContinue(Menu *m) {
     if (D_800964E1) {
         Ui_AddElement(gUi[0], 2, 0x130);
         Ui_AddElement(gUi[0], 0, 0x17A);

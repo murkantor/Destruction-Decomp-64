@@ -4,7 +4,7 @@
 s32 *Mem_Alloc(M2C_UNK);                            /* extern */
 M2C_UNK func_8002D0E0(s32);                         /* extern */
 M2C_UNK Save_CopyToGlobal(s32 *);                       /* extern */
-M2C_UNK func_80050684(s32 *);                       /* extern */
+M2C_UNK Pak_FindSave(s32 *);                       /* extern */
 M2C_UNK Mem_Free(s32 *);                       /* extern */
 M2C_UNK Cont_ReadAll();                            /* extern */
 M2C_UNK Pad_StartRead();                            /* extern */
@@ -23,7 +23,7 @@ extern M2C_UNK D_80097D6C;
 extern M2C_UNK D_80097D7C;
 extern M2C_UNK gSiMesgQueue;
 
-void func_8004FE4C(s32 *arg0) {
+void Pak_LoadSave(s32 *arg0) {
     s32 *temp_s1;
     s32 temp_v0;
     s32 temp_v0_2;
@@ -54,7 +54,7 @@ void func_8004FE4C(s32 *arg0) {
                 temp_v0_2 = Pak_Init(&gSiMesgQueue);
                 *arg0 = temp_v0_2;
                 if (temp_v0_2 == 0) {
-                    func_80050684(arg0);
+                    Pak_FindSave(arg0);
                 }
             }
             Pad_StartRead();

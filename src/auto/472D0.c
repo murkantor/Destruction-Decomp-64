@@ -7,7 +7,7 @@ extern s32 D_80097350;
 extern void Timer_Start(void *, s64);
 extern void Ui_SetElementColor(void *, s32);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
-s32 func_800466D0(Obj *o) {
+s32 Pause_Prev(Obj *o) {
     s32 prev;
     s32 cur;
     Arr4 tbl;

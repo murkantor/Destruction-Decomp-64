@@ -7,7 +7,7 @@ extern u8 D_80097335;
 void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
-s32 func_8004C28C(Unk4C28C *arg0) {
+s32 DerbyResults_Continue(Unk4C28C *arg0) {
     if (D_800958A8[0] == 1) {
         if (D_80097335) {
             arg0->x10 = 0;

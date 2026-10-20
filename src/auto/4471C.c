@@ -10,7 +10,7 @@ extern u8 D_80096ED0[];
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 
-s32 Lights_Cycle(void) {
+s32 TitleScreen_Update(void) {
     u64 lim = 30000000000ULL;
     u8 ret = 0;
 

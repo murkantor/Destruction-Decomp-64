@@ -17,7 +17,7 @@ typedef struct {
 extern Vec3 D_801242C0[][3];
 void Mtx3_RotateY(Vec3 *, f32);
 
-void func_8003E564(Ev *ev) {
+void CarObj_Update(Ev *ev) {
     Car *car;
 
     if (ev->x0 == 0x18) {

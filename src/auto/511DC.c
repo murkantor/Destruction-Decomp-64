@@ -7,7 +7,7 @@ extern s32 D_80097D24[];
 extern s32 D_80125C5C;
 extern s32 D_80097D48;
 
-void func_800505DC(void) {
+void Records_ClearNew(void) {
     s32 i, j;
     s32 v;
     s32 *p;

@@ -6,7 +6,7 @@ M2C_UNK Game_SetNextMode(M2C_UNK, M2C_UNK);            /* extern */
 extern u8 D_80097335;
 extern u8 D_80097337;
 
-s32 func_8004DB0C(void *arg0) {
+s32 TTResults_Continue(void *arg0) {
     M2C_UNK var_a0;
 
     if (D_80097337 != 0) {

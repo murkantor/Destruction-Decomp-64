@@ -6,7 +6,7 @@ extern s32 D_800958AC[];
 extern u32 D_800958B4;
 void Game_SetNextMode(s32, s32);
 
-s32 func_800407EC(Foo *a) {
+s32 GameTypeMenu_Select(Foo *a) {
     u32 v;
     D_800958AC[0] = a->x10;
     Game_SetNextMode(0x17, 1);

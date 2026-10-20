@@ -51,7 +51,7 @@ static inline void SetSlider(s32 id, f32 v) {
     }
 }
 
-s32 func_80047E0C(Menu *m) {
+s32 OptionsMenu_Right(Menu *m) {
     Ids3 ids = D_800BAD40;
     Ids3 rem;
     Ids3 add;

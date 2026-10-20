@@ -6,7 +6,7 @@ extern u8 D_80097335;
 extern void Game_SetNextMode(s32, s32);
 extern void func_80063380(s32);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
-s32 func_8004CA88(Obj *o) {
+s32 RaceResults_Continue(Obj *o) {
     if (D_800958A8[0] == 1) {
         if (D_80097335 != 0) {
             o->x10 = 0;

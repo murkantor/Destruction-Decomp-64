@@ -20,7 +20,7 @@ void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 
-void func_8003E324(void) {
+void PakMenu_NewPak(void) {
     s8 i;
 
     Ui_ResetScreen(0x11427, 0x11428);

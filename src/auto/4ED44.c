@@ -25,7 +25,7 @@ extern void *gUi[];
 
 char *strcpy(char *, const char *);
 s32 sprintf(char *, const char *, ...);
-f32 func_8003ECC0(char *, s32, f32);
+f32 Font_RightAlignX(char *, s32, f32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
@@ -47,7 +47,7 @@ void Menu_ShowRecordRows(s32 prev, s32 first) {
         sprintf(D_80130138[i] + 9, D_800BAF68, D_80131D88[D_800972F4[first + i]].x14);
         sprintf(D_80130138[i] + 18, D_800BAF68, D_80131D88[D_800972F4[first + i]].x18);
         for (j = 0; j < 3; j++) {
-            Ui_SetElementPos(gUi[0], 0, D_800971DC[i][j], func_8003ECC0(D_80130138[i] + j * 9, 0x111F6, xs.v[j]), ys.v[i]);
+            Ui_SetElementPos(gUi[0], 0, D_800971DC[i][j], Font_RightAlignX(D_80130138[i] + j * 9, 0x111F6, xs.v[j]), ys.v[i]);
         }
     }
     if (prev == -1) {

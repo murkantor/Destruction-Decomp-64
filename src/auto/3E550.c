@@ -9,7 +9,7 @@ extern void *gUi[];
 extern char gSaveSlotText[];
 u8 Pak_Open(s32 *);
 void Pak_SaveGame(s32 *);
-u8 Menu_HandleSelect(s32);
+u8 Pak_HandleError(s32);
 void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 void Ui_SetElementColor(s32, s32);
@@ -28,13 +28,13 @@ s32 Menu_SaveGameState(Menu *m) {
             break;
         case 1:
             if (Pak_Open(&pak)) {
-            if (Menu_HandleSelect(pak)) {
+            if (Pak_HandleError(pak)) {
                 Pak_SaveGame(&pak);
                 if (pak == 9) {
                     Game_SetNextMode(9, 1);
                     m->x10 = 0;
                 }
-                if (Menu_HandleSelect(pak) && gGame->x10FC == D_8011EEEA) {
+                if (Pak_HandleError(pak) && gGame->x10FC == D_8011EEEA) {
                     func_80063380(2);
                     Game_SetNextMode(0x19, 1);
                     m->x10 = 0;

@@ -10,7 +10,7 @@ extern void HiScore_DrawTable(void *, s32, s32);
 extern void Menu_LayoutResultRows(f32, void *, s32);
 extern void Timer_Start(void *, s64);
 typedef struct { u8 pad[0x10]; s32 x10; } Obj;
-s32 func_8004C0C4(Obj *o) {
+s32 Results_ScrollUp(Obj *o) {
     s32 ret = 0;
     s32 n = o->x10;
     if (n > 0) {

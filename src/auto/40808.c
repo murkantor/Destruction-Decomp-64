@@ -18,7 +18,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 void Cars_FreeObjects(void);
 
-void func_8003FC08(void) {
+void DiffMenu_Show(void) {
     s32 i;
 
     Ui_ResetScreen(0x112B4, 0x112B5);

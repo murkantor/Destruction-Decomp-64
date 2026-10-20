@@ -25,7 +25,7 @@ void Res_LoadSoundBank(s32);
 s32 Sound_SetVolume(s32, s32);
 f32 Time_ToSeconds(void *);
 
-s32 func_8004686C(Menu *m) {
+s32 Pause_Select(Menu *m) {
     switch (m->x10) {
         case 0: {
             f32 vol;

@@ -26,11 +26,11 @@ extern u8 D_800972F0;
 void ObjList_Remove(void *, s32);
 s32 CarObj_Free(s32);
 u8 Pak_Open(s32 *);
-u8 Menu_HandleSelect(s32);
+u8 Pak_HandleError(s32);
 void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 
-s32 func_8004BB9C(Obj4BB9C *obj) {
+s32 Podium_Continue(Obj4BB9C *obj) {
     s32 next;
     s32 tmp;
     s32 r = -1;
@@ -50,7 +50,7 @@ s32 func_8004BB9C(Obj4BB9C *obj) {
             D_8009734C = 0;
             D_8009734D = 1;
             if (Pak_Open(&tmp)) {
-                if (Menu_HandleSelect(tmp)) {
+                if (Pak_HandleError(tmp)) {
                     next = 0xB;
                 } else {
                     next = 6;

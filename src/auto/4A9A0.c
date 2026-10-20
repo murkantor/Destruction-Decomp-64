@@ -10,7 +10,7 @@ void Ui_AddElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 void Records_Draw(s32, s32, s32, s32);
 
-void Menu_ShowVersus(s32 a, s32 b) {
+void Records_ShowPage(s32 a, s32 b) {
     s32 typeA, typeB, idA, idB;
     s32 last = 13;
 

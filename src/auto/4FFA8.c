@@ -11,24 +11,24 @@ extern s8 D_800D31CC;
 extern u8 D_80097337;
 extern Timer68 D_800958F8[];
 void Ui_ResetScreen(s32, s32);
-s32 func_8003E644(u8 *, s32);
+s32 CarObj_Create(u8 *, s32);
 void Ui_AddSpriteElement(void *, Menu48 *);
 void Ui_AddElement(void *, s32, s32);
-void func_80042114(u8 *);
+void CarSelect_SetStatBars(u8 *);
 void Timer_Start(Timer68 *, u64);
 
-void func_8004F3A8(void) {
+void CarUnlock_Init(void) {
     Menu48 m = D_800BB438;
     u8 *s;
     s32 i;
 
     Ui_ResetScreen(0x112FE, 0x112FF);
     s = D_80097338[0] + 0xC;
-    D_800964F0 = func_8003E644(s, 0);
+    D_800964F0 = CarObj_Create(s, 0);
     m.x14 = s + 0x11371;
     Ui_AddSpriteElement(gUi[0], &m);
     Ui_AddElement(gUi[0], 2, 0x3C);
-    func_80042114(s);
+    CarSelect_SetStatBars(s);
     D_80097337 = 0;
     D_80097338[0] = 0;
     for (i = 0; i < D_800D31CC; i++) {

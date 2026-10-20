@@ -58,7 +58,7 @@ void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 u64 Time_Get(u64 *);
 
-void func_8004A6E8(void) {
+void NameEntry_Init(void) {
     Vec3f pos = D_800BAF8C;
     Vec3f zero = D_800BAF98;
     Spawn *sp;

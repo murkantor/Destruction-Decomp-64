@@ -9,7 +9,7 @@ void Ui_ResetScreen(s32, s32);
 s32 sprintf(char *, const char *, ...);
 void Ui_AddElement(void *, s32, s32);
 
-void func_8003DF0C(void) {
+void PakMenu_Damaged(void) {
     Ui_ResetScreen(0x112CA, 0x112CB);
     sprintf(gSaveSlotText[0], D_800BA238);
     sprintf(gSaveSlotText[1], D_800BA250);

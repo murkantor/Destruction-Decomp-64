@@ -7,7 +7,7 @@ extern u32 D_800958B4;
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 
-s32 func_80046528(void) {
+s32 Replay_Exit(void) {
     func_80063380(1);
     if (D_800958A8 == 2) {
         Game_SetNextMode(0x2A, 1);

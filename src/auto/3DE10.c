@@ -29,8 +29,8 @@ extern u8 D_8009734D;
 extern char gSaveSlotText[][0x32];
 u64 Time_Get(u64 *);
 u8 Pak_Open(s32 *);
-u8 Menu_HandleSelect(s32);
-void func_8004FE4C(s32 *);
+u8 Pak_HandleError(s32);
+void Pak_LoadSave(s32 *);
 void Pak_WriteSave(s32 *);
 void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
@@ -43,14 +43,14 @@ s32 PakMenu_AutoSaveTick(State *st) {
     }
     if ((f64)(Time_Get(&gGame->x1058) - D_800964D8) > 1000000000.0 && !D_800964E0) {
         D_800964E0 = 1;
-        if (Pak_Open(&D_80124354) && Menu_HandleSelect(D_80124354)) {
+        if (Pak_Open(&D_80124354) && Pak_HandleError(D_80124354)) {
             if (D_8009734C) {
-                func_8004FE4C(&D_80124354);
+                Pak_LoadSave(&D_80124354);
             } else {
                 Pak_WriteSave(&D_80124354);
             }
             Ui_AddElement(gUi, 0, 0x17D);
-            if (Menu_HandleSelect(D_80124354)) {
+            if (Pak_HandleError(D_80124354)) {
                 sprintf(gSaveSlotText[3], "     SUCCESSFUL");
                 D_8009734C = 0;
                 D_8009734D = 0;

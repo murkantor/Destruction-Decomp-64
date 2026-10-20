@@ -12,7 +12,7 @@ void Timer_Start(void *, s64);
 void Ui_RemoveElement(void *, s32);
 void Ui_AddElement(void *, s32, s32);
 
-s32 func_8003F9F8(Cycler *c) {
+s32 DiffMenu_Next(Cycler *c) {
     s32 n;
     s32 next;
     Pair12 *tbl;

@@ -23,7 +23,7 @@ extern void *gUi[];
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
 
-s32 func_80042514(Obj *obj)
+s32 CarSelect_Confirm(Obj *obj)
 {
     Tbl tbl = D_800BA5C8;
     s32 p = obj->x28->x10;

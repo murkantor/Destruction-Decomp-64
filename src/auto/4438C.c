@@ -21,7 +21,7 @@ UiElement *Ui_FindElement(void *, s32, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 void Ui_SetElementColor(s32, s32);
 
-void func_8004378C(void) {
+void Ui_RestoreElements(void) {
     UiDef *d;
     s32 i;
 

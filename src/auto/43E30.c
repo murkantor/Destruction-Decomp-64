@@ -10,7 +10,7 @@ void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 int sprintf(char *, const char *, ...);
 
-void func_80043230(void) {
+void Menu_ShowWrongTvSystem(void) {
     Ui_ResetScreen(0x112FC, 0x112FD);
     Ui_AddElement(gUi[0], 2, 0x22);
     Ui_AddElement(gUi[0], 2, 0x21);

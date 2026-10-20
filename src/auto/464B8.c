@@ -4,7 +4,7 @@
 extern u8 D_80096EBC;
 extern s32 D_80096EC0;
 
-s32 func_800458B8(void) {
+s32 RaceFinish_Continue(void) {
     s32 var_v0;
 
     var_v0 = 0;

@@ -29,7 +29,7 @@ extern SlotList D_80125BE0;
 void Res_Load(s32, void *);
 void Ui_RemoveElement(void *, s32);
 void func_8005D8B8(void *, s32, s32);
-void PakMenu_FormatSlotText(s32);
+void TrackMenu_FormatRecords(s32);
 s32 Font_GetStringWidth(char *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
@@ -67,7 +67,7 @@ ent = NULL; i = 0;    if (prev != -1) {
         func_8005D8B8(gUi[0], 2, ids[mode]);
         D_80096EA0 = mode;
     }
-    PakMenu_FormatSlotText(slot);
+    TrackMenu_FormatRecords(slot);
     x = 250.0 - (f32)Font_GetStringWidth(gSaveSlotText, 0x111FC) * 0.5;
     switch (mode) {
         case 0:

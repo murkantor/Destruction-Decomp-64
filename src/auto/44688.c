@@ -11,7 +11,7 @@ extern s32 D_80096EB8;
 void func_80063380(s32);
 void Game_SetNextMode(s32, s32);
 
-s32 func_80043A88(void) {
+s32 TitleScreen_Start(void) {
     s32 i;
 
     D_8011EEF8->x530 = 0;

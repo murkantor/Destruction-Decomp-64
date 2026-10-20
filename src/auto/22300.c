@@ -16,7 +16,7 @@ extern void Camera_UpdateChase2(Cam *, Car *, f32, f32, f32, f32, f32, f32, f32)
 extern void Camera_UpdateOrbit(Cam *, Car *, f32, f32 *);
 extern void func_80022A6C(Cam *, Car *, f32);
 extern void Camera_UpdateFreeFly(Cam *, f32);
-extern void func_80044AB4(Vec3f *, Vec3f *, Vec3f *, f32 *);
+extern void CourseIntro_GetCamera(Vec3f *, Vec3f *, Vec3f *, f32 *);
 extern void Vec3f_LerpOffset(Cam *, Vec3f *, Vec3f *, Vec3f *, f32);
 extern void func_80021C20(Cam *, Car *, f32);
 
@@ -78,7 +78,7 @@ void Camera_Update(Cam *cam, f32 dt) {
         Camera_UpdateFreeFly(cam, dt);
         break;
     case 6:
-        func_80044AB4(&a, &b, &c, &t);
+        CourseIntro_GetCamera(&a, &b, &c, &t);
         Vec3f_LerpOffset(cam, &a, &b, &c, t);
         break;
     case 8:

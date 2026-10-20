@@ -7,7 +7,7 @@ void Timer_Start(void *, s64);
 void *Ui_LookupTextId(char *);
 void Ui_SetElementColor(void *, s32);
 
-s32 func_8003E034(MenuItem *item) {
+s32 PakMenu_NewPakPrev(MenuItem *item) {
     Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[0][item->value]), 0x111F6);
     item->value--;
     if (item->value < 0) {
@@ -20,7 +20,7 @@ s32 func_8003E034(MenuItem *item) {
 
 extern s32 D_80097350[];
 
-s32 func_8003E0F4(MenuItem *item) {
+s32 PakMenu_NewPakNext(MenuItem *item) {
     Ui_SetElementColor(Ui_LookupTextId(gSaveSlotText[0][item->value]), 0x111F6);
     item->value++;
     if (item->value > D_80097350[0] - 1) {
