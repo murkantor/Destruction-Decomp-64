@@ -21,8 +21,14 @@ typedef struct Heap {
 /* An allocation: the pointer, and the size and alignment padding needed to free it. */
 typedef struct HeapBlock {
     /* 0x0 */ void *ptr;
+#ifdef HOST_LE
+    /* Same word value as on the N64 (size << 8 | pad), which other code reads whole */
+    u32 pad : 8;
+    u32 size : 24;
+#else
     /* 0x4 */ u32 size : 24;
     /* 0x7 */ u32 pad : 8;
+#endif
 } HeapBlock;
 
 extern Heap gMainHeap;

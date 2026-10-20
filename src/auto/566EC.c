@@ -1,7 +1,11 @@
 #include "common.h"
 #include "m2c.h"
 
+#ifdef HOST_LE
+typedef struct { u32 tag : 8; u32 size : 24; } BlockId;
+#else
 typedef struct { u32 size : 24; u32 tag : 8; } BlockId;
+#endif
 typedef struct { void *ptr; BlockId id; } Block;
 typedef struct Heap Heap;
 extern Heap gMainHeap;

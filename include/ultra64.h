@@ -19,6 +19,21 @@ typedef double f64;
 #define TRUE 1
 #define FALSE 0
 
+/*
+ * PC port: the host is little-endian, and data is converted to host order when
+ * it is loaded. Code that reads one byte or halfword of a word the rest of the
+ * game treats as a whole u32 must find it at BE_OFF8(n) / BE_OFF16(n), and
+ * bitfields sharing a word are declared in the reverse order under HOST_LE.
+ */
+#if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define HOST_LE 1
+#define BE_OFF8(n) ((n) ^ 3)
+#define BE_OFF16(n) ((n) ^ 2)
+#else
+#define BE_OFF8(n) (n)
+#define BE_OFF16(n) (n)
+#endif
+
 typedef s32 OSPri;
 typedef s32 OSId;
 

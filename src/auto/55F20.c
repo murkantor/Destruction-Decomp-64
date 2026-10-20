@@ -19,10 +19,11 @@ s32 func_80055358(void) {
     return 0;
 }
 
+/* Byte 7 is the low byte of the size word (size << 8 | pad); BE_OFF finds it on PC. */
 void HeapBlock_Clear(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0) = 0;
-    M2C_FIELD(arg0, s32 *, 4) = (s32) M2C_FIELD(arg0, u8 *, 7);
-    M2C_FIELD(arg0, u8 *, 7) = 0U;
+    M2C_FIELD(arg0, s32 *, 4) = (s32) M2C_FIELD(arg0, u8 *, BE_OFF8(7));
+    M2C_FIELD(arg0, u8 *, BE_OFF8(7)) = 0U;
 }
 
 s32 HeapBlock_Ptr(s32 *arg0) {
@@ -34,7 +35,7 @@ u32 HeapBlock_Size(void *arg0) {
 }
 
 u8 HeapBlock_Pad(void *arg0) {
-    return M2C_FIELD(arg0, u8 *, 7);
+    return M2C_FIELD(arg0, u8 *, BE_OFF8(7));
 }
 
 void Heap_Init(void *arg0, void *arg1, s32 arg2) {
