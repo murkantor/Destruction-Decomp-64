@@ -1,6 +1,6 @@
 When you fear something, study it. Learn why you should fear it.
 
-The following repo is a 100% Claude Opus 5.5 Medium "Decompile this ROM, upload found functions to GIT. Document the functions, and give them suitable names". 100% slop.
+The following repo is a 100% Claude Opus 5.5 Medium "Decompile this ROM, upload found functions to GIT. Document the functions, and give them suitable names". 100% slop. Basically 100% hands off while I was asleep and at work.
 The entire ROM was decompiled in a remote session in around 20 hours. I had it booting into an SDL3 window, fully playable with Raphnet Raw support and with some minor graphics errors in exactly 24.
 I reviewed no code, I didn't care, that wasn't the goal of this experiment.
 
