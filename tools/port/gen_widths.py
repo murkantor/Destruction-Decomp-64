@@ -10,7 +10,10 @@ boot by its declared type: this reads the types from the DWARF of the compiled
 game objects, lays each global out down to its scalar fields, and writes the
 fields' addresses and widths. Bytes that declarations disagree about (two
 files giving different fields, unions with fields of different widths,
-bitfields) are left out and stay converted lazily.
+bitfields) are left out and stay converted lazily, as are byte arrays (strings
+and m2c padding, which often covers wider values). A struct's u8 fields are
+listed too, so that they are marked host order at boot and a later wider load
+(a struct copy) does not swap them with their neighbours.
 
 Usage: gen_widths.py --elf build/dd64.elf --objdump objdump --out dd64_widths.c objects...
 (object lists may be given as @file). The output holds only addresses and widths.
@@ -113,6 +116,13 @@ class Layout:
             return self.is_struct(attr_ref(a), depth + 1)
         return tag in ('DW_TAG_structure_type', 'DW_TAG_union_type')
 
+    def is_plain_char(self, off, depth=0):
+        """A `char` (a string's element), as opposed to u8, which m2c uses for padding."""
+        tag, a, _ = self.dies.get(off, (None, {}, []))
+        if tag in ('DW_TAG_const_type', 'DW_TAG_volatile_type') and depth < 40:
+            return self.is_plain_char(attr_ref(a), depth + 1)
+        return tag == 'DW_TAG_base_type' and attr_name(a) == 'char'
+
     def count(self, kids):
         total = 1
         subs = [k for k in kids if self.dies[k][0] == 'DW_TAG_subrange_type']
@@ -170,6 +180,8 @@ class Layout:
                 count = room // es
             if count is None or not es:
                 return
+            if es == 1 and not self.is_plain_char(et):
+                return  # u8 arrays (m2c padding, often over wider values) stay as they are; strings are bytes
             one = []
             self.leaves(et, 0, one, depth + 1)
             for i in range(count):
@@ -254,7 +266,9 @@ def main():
                 for off, width in leaves:
                     put(addr + off, width)
 
-    units = sorted({v for v in bytemap.values() if v != UNKNOWN and v[1] in (2, 4, 8)})
+    # Width-1 units (a struct's u8 fields) are converted too: that marks them host order, so a
+    # later wider load (a struct copy) does not swap them as part of a word.
+    units = sorted({v for v in bytemap.values() if v != UNKNOWN and v[1] in (1, 2, 4, 8)})
     units = [u for u in units if all(bytemap.get(b) == u for b in range(u[0], u[0] + u[1]))]
     runs = []
     for addr, width in units:
