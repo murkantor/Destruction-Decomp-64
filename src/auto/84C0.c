@@ -1,4 +1,6 @@
-/* near: regs match with the while-loop form; original has an extra "j" after the id==0 test and the k-loop "counts.v[k]=1; break" block placed there (loop.c block move). 8 bytes short. */
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct {
     u8 pad0[0x1A8];
@@ -98,16 +100,14 @@ void Sound_UpdateCarSurfaces(void *pool)
             }
             Car_GetVelocity(&vel, car);
             Car_GetPos(&pos, car);
-            while (D_8007EDD8[i].id != 0) {
-                if (D_8007EDD8[i].type == type) goto update;
+            if (D_8007EDD8[i].id == 0) {
+                D_8007EDD8[i].id = Sound_PlayCar(pool, &pos, &vel, type, vol, mode); D_8007EDD8[i].type = type;
+            } else if (D_8007EDD8[i].type != type) {
                 List_RemoveById(pool, D_8007EDD8[i].id);
-                break;
+                D_8007EDD8[i].id = Sound_PlayCar(pool, &pos, &vel, type, vol, mode); D_8007EDD8[i].type = type;
+            } else {
+                e = World_FindObject(pool, D_8007EDD8[i].id); if (e != NULL) { e->x18 = pos; e->x24 = vel; e->x14 = D_801320C8[e->x10] * vol; }
             }
-            D_8007EDD8[i].id = Sound_PlayCar(pool, &pos, &vel, type, vol, mode); D_8007EDD8[i].type = type;
-            goto done;
-        update:
-            e = World_FindObject(pool, D_8007EDD8[i].id); if (e != NULL) { e->x18 = pos; e->x24 = vel; e->x14 = D_801320C8[e->x10] * vol; }
-        done:;
         }
         if (!any) {
             if (D_8007EDD8[i].id != 0) {
@@ -118,4 +118,3 @@ void Sound_UpdateCarSurfaces(void *pool)
         }
     }
 }
-/* agent55: no gain (score 20). Tried for(;;)/do-while(0)/switch/if-goto/rotated while(type != t) forms, inline getters in the while condition (to stop exit-test duplication), and if/else update/play layouts. The original's 'j CHECK' sits in the i loop outside any inner loop, so loop.c uses it as the first barrier after the k loop; ours has none until 'goto done'. */

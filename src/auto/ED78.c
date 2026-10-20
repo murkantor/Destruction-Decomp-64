@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { s32 x0; u8 pad4[0x14]; f32 x18; f32 x1C; } Marker;
 typedef struct { u8 pad0[0xD]; u8 xD; u8 padE[0x3A]; Marker *x48; } Car;
@@ -25,7 +28,7 @@ extern MapCfg D_8007F2C4[];
 extern f32 D_8007F624[];
 extern u8 D_800958A1[];
 void Ui_RemoveElement(void *, s32);
-void Car_GetPos(Vec3f *);
+Vec3f Car_GetPos(void *);
 
 s32 MapMarker_Update(Marker *m) {
     Car *car;
@@ -57,7 +60,7 @@ s32 MapMarker_Update(Marker *m) {
     cfg = &D_8007F2C4[D_800958B4[0]];
     sx = cfg->x18 / cfg->x8;
     sy = cfg->x1C / cfg->xC;
-    Car_GetPos(&v);
+    v = Car_GetPos(car);
     m->x18 = (v.x + cfg->x14) * sx + w->x80;
     if (D_800958A1[0]) {
         m->x18 = (w->x80 + w->x88) - (m->x18 - w->x80);

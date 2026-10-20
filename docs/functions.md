@@ -79,7 +79,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800072CC` | `007ECC` | 0x220 | `Sound_PlayCar` | `src/auto/7ECC.c` | C (generated) |
 | `800074EC` | `0080EC` | 0x258 | `Sound_PlayAt` | `src/auto/80EC.c` | C (generated) |
 | `80007744` | `008344` | 0x17c | `Sound_PlayVoice` | `src/auto/8344.c` | C (generated) |
-| `800078C0` | `0084C0` | 0x3c4 | `Sound_UpdateCarSurfaces` | `asm/84C0.s` | asm |
+| `800078C0` | `0084C0` | 0x3c4 | `Sound_UpdateCarSurfaces` | `src/auto/84C0.c` | C (generated) |
 | `80007C84` | `008884` | 0x2e4 | `EngineSfx_Crossfade` | `src/auto/8884.c` | C (generated) |
 | `80007F68` | `008B68` | 0x6c | `Sfx_StopPair` | `src/auto/8B68.c` | C (generated) |
 | `80007FD4` | `008BD4` | 0x30 | `func_80007FD4` | `src/auto/8BD4.c` | C (generated) |
@@ -140,7 +140,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8000DAE0` | `00E6E0` | 0x498 | `Hud_UpdateRacerTimers` | `src/auto/E6E0.c` | C (generated) |
 | `8000DF78` | `00EB78` | 0x11c | `Hud_FormatLapTime` | `src/auto/EB78.c` | C (generated) |
 | `8000E094` | `00EC94` | 0xe4 | `Time_Format` | `src/auto/EC94.c` | C (generated) |
-| `8000E178` | `00ED78` | 0x298 | `MapMarker_Update` | `asm/ED78.s` | asm |
+| `8000E178` | `00ED78` | 0x298 | `MapMarker_Update` | `src/auto/ED78.c` | C (generated) |
 | `8000E410` | `00F010` | 0xf8 | `Hud_HealthBarStep` | `src/auto/F010.c` | C (generated) |
 | `8000E508` | `00F108` | 0x180 | `Ui_RevealInit` | `src/auto/F108.c` | C (generated) |
 | `8000E688` | `00F288` | 0x58 | `Ui_RevealFree` | `src/auto/F288.c` | C (generated) |
@@ -596,7 +596,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8003EA7C` | `03F67C` | 0x1f4 | `Ui_ResetScreen` | `src/auto/3F67C.c` | C (generated) |
 | `8003EC70` | `03F870` | 0x50 | `Font_CenterX` | `src/auto/3F870.c` | C (generated) |
 | `8003ECC0` | `03F8C0` | 0x38 | `Font_RightAlignX` | `src/auto/3F870.c` | C (generated) |
-| `8003ECF8` | `03F8F8` | 0x1f8 | `Cars_FreeObjects` | `asm/3F8F8.s` | asm |
+| `8003ECF8` | `03F8F8` | 0x1f8 | `Cars_FreeObjects` | `src/auto/3F8F8.c` | C (generated) |
 | `8003EEF0` | `03FAF0` | 0xf4 | `func_8003EEF0` | `src/auto/3FAF0.c` | C (generated) |
 | `8003EFE4` | `03FBE4` | 0x11c | `Menu_CycleOption2` | `src/auto/3FBE4.c` | C (generated) |
 | `8003F100` | `03FD00` | 0x104 | `MainMenu_Prev` | `src/auto/3FD00.c` | C (generated) |
@@ -624,7 +624,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80040B24` | `041724` | 0xe8 | `TrackMenu_Back` | `src/auto/41724.c` | C (generated) |
 | `80040C0C` | `04180C` | 0x300 | `Menu_ConfirmTrackSelect` | `asm/4180C.s` | asm |
 | `80040F0C` | `041B0C` | 0xcc | `Ui_RemapTextures` | `src/auto/41B0C.c` | C (generated) |
-| `80040FD8` | `041BD8` | 0x4a4 | `TrackMenu_Highlight` | `asm/41BD8.s` | asm |
+| `80040FD8` | `041BD8` | 0x4a4 | `TrackMenu_Highlight` | `src/auto/41BD8.c` | C (generated) |
 | `8004147C` | `04207C` | 0x1e8 | `TrackMenu_FormatRecords` | `src/auto/4207C.c` | C (generated) |
 | `80041664` | `042264` | 0x278 | `Menu_BuildIdList` | `src/auto/42264.c` | C (generated) |
 | `800418DC` | `0424DC` | 0x2a4 | `TrackMenu_Show` | `src/auto/424DC.c` | C (generated) |

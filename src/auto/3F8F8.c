@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad0[0x34];
     s32 x34;
@@ -25,7 +28,7 @@ typedef struct {
 } Cam;
 
 extern Game *gGame;
-extern Cam D_8011EEE4;
+extern Cam gGameCam __asm__("gGame");
 extern s32 D_800919F4[];
 extern Outer *D_800964F0[];
 extern Outer *D_80096500[];
@@ -59,28 +62,15 @@ static inline Outer *FreeOuter(Outer *o) {
 
 void Cars_FreeObjects(void) {
     s32 i;
-    Outer *o;
-    Inner *in;
-
     for (i = 0; i < 4; i++) {
         if (D_800964F0[i] != NULL) {
-            if (D_8011EEE4.x4 == gGame->xC) {
-                ObjList_Remove(D_8011EEE4.x0 + 0x334, D_800964F0[i]);
+            if (gGameCam.x4 == gGame->xC) {
+                ObjList_Remove(gGameCam.x0 + 0x334, D_800964F0[i]);
             }
             D_800964F0[i] = FreeOuter(D_800964F0[i]);
         }
-        o = D_80096500[i];
-        if (o != NULL) {
-            in = o->xC;
-            ModelInst_Free(in->x98);
-            ModelInst_Free(in->xC0);
-            ModelInst_Free(in->xE8);
-            ModelInst_Free(in->x110);
-            ModelInst_Free(in->x138);
-            Res_Release(D_800919F4[in->x34]);
-            Mem_Free(in);
-            Mem_Free(o);
-            D_80096500[i] = NULL;
+        if (D_80096500[i] != NULL) {
+            D_80096500[i] = FreeOuter(D_80096500[i]);
         }
     }
     if (D_80124360) {

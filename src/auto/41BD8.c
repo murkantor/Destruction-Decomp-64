@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     s32 id;
     void *x4;
@@ -34,24 +37,26 @@ s32 Font_GetStringWidth(char *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
 void TrackMenu_Highlight(s32 prev, s32 slot) {
+    ResEnt *ent = NULL;
     s32 ids[3] = { 0xB4, 0x3F, 0xB5 };
-    ResEnt *ent;
     s32 i;
     s32 mode;
     f32 x;
 
-ent = NULL; i = 0;    if (prev != -1) {
-        for (; i < gUi[0]->count; i++) {
-            if (prev + 0x112D0 == gUi[0]->res[i].id) {
-                ent = &gUi[0]->res[i];
+    if (prev != -1) {
+        s32 j;
+
+        for (j = 0; j < gUi[0]->count; j++) {
+            if (prev + 0x112D0 == gUi[0]->res[j].id) {
+                ent = &gUi[0]->res[j];
                 break;
             }
         }
         Res_Load(slot + 0x112D0, ent->x4);
         ent->id = slot + 0x112D0;
-        for (i = 0; i < gUi[0]->count; i++) {
-            if (prev + 0x112DD == gUi[0]->res[i].id) {
-                ent = &gUi[0]->res[i];
+        for (j = 0; j < gUi[0]->count; j++) {
+            if (prev + 0x112DD == gUi[0]->res[j].id) {
+                ent = &gUi[0]->res[j];
                 break;
             }
         }
