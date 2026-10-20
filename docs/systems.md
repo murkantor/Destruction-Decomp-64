@@ -74,8 +74,8 @@ Each track is two MIPS ELF objects (`<track>.o`, `<track>_sdl.o`) with symbol ta
 
 | Symbol | Notes |
 |---|---|
-| `gVoices`, `gNumVoices` | 0x120-byte voices; `id` at 0x40, `isMusic` at 0x9E |
-| `Sound_FadeOut(id, frames)`, `Sound_FadeOutAll(mask, frames)` | Mask bit 0 is music, bit 1 is effects |
+| `gVoices`, `gNumVoices` | 0x120-byte voices; `id` at 0x40; `sfxId` at 0x9E (the sound effect id, 0 for a music voice) |
+| `Sound_FadeOut(id, frames)`, `Sound_FadeOutAll(mask, frames)` | Mask bit 0 is sound effects, bit 1 is music (the same bits as `Sound_SetMasterVolume`) |
 | `Sound_CountPlaying(mask)`, `Sound_CountVoices(id)` | |
 | `Sound_SetVolume`, `Sound_SetPitch`, `Sound_SetPan` | Set a field on every voice with that id |
 

@@ -16,7 +16,7 @@ typedef struct {
     u8 pad8C[0xA];
     s16 volume;
     u8 pad98[6];
-    u16 isMusic;
+    u16 sfxId;
     u8 padA0[8];
     s16 xA8;
     u8 padAA[0xC];
@@ -36,7 +36,7 @@ void Sound_FadeOutAll(s32 mask, s32 frames) {
     }
     v = gVoices;
     for (i = 0; i < gNumVoices; i++, v++) {
-        if ((v->isMusic && (mask & 1)) || (!v->isMusic && (mask & 2))) {
+        if ((v->sfxId && (mask & 1)) || (!v->sfxId && (mask & 2))) {
             v->fadeTime = frames;
             v->fadeSteps = steps;
         }

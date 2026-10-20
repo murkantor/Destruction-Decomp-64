@@ -16,7 +16,7 @@ typedef struct {
     u8 pad8C[0xA];
     s16 volume;
     u8 pad98[6];
-    u16 isMusic;
+    u16 sfxId;
     u8 padA0[8];
     s16 xA8;
     u8 padAA[0xC];

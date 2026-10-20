@@ -16,7 +16,7 @@ typedef struct {
     u8 pad8C[0xA];
     s16 volume;
     u8 pad98[6];
-    u16 isMusic;
+    u16 sfxId;
     u8 padA0[8];
     s16 xA8;
     u8 padAA[0xC];
@@ -36,7 +36,7 @@ s32 Sound_CountPlaying(s32 mask) {
     v = gVoices;
     for (; i < gNumVoices; i++, v++) {
         if (v->active) {
-            if (v->isMusic ? (mask & 1) : (mask & 2)) {
+            if (v->sfxId ? (mask & 1) : (mask & 2)) {
                 count++;
             }
         }
