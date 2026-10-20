@@ -57,6 +57,10 @@ extern f64 pow(f64, f64);
 extern f32 fabsf(f32);
 extern f64 fabs(f64);
 
+static inline s32 gtd(f64 a, f64 b) {
+    return a > b;
+}
+
 static inline f32 ramp(f32 x, f32 lo, f32 hi) {
     if (x <= lo) {
         return 0.0f;
@@ -78,13 +82,15 @@ static inline f32 ramp0(f32 x, f32 hi) {
 }
 
 static inline f32 tireF(f32 v, f32 a, f32 b, f32 load) {
+    f32 r;
     if (v > 5.0f) {
-        return -a * load;
+        r = -a * load;
+    } else if (v < -5.0f) {
+        r = a * load;
+    } else {
+        r = v * -0.2f * b * load;
     }
-    if (v < -5.0f) {
-        return a * load;
-    }
-    return v * -0.2f * b * load;
+    return r;
 }
 
 Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s32 idx) {
@@ -120,6 +126,8 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
     f32 b;
     f32 k;
     f32 d;
+    f32 al;
+    f64 dl;
 
     radius = w->x120;
     invR = 1.0f / radius;
@@ -204,6 +212,7 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
     ft *= car->xB84;
     if (p0 && !p2) {
         f32 q;
+        f32 fx;
         f32 aq;
         f32 lim;
         drive = func_800397FC(car);
@@ -221,21 +230,23 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
                 w->x1B0 = ramp0(aq, 6000.0f);
             }
             *out = *out - drive + fl * radius;
-            q = fl;
+            fx = fl;
         } else {
             *out = 0.0f;
-            ws->xC4 = -invR * (vt.x * side.x + vt.y * side.y + vt.z * side.z);
+            k = -invR * (vt.x * side.x + vt.y * side.y + vt.z * side.z);
+            ws->xC4 = k;
+            fx = q;
         }
-        res.x = q * side.x + ft * fwd.x;
-        res.y = q * side.y + ft * fwd.y;
-        res.z = q * side.z + ft * fwd.z;
+        res.x = fx * side.x + ft * fwd.x;
+        res.y = fx * side.y + ft * fwd.y;
+        res.z = fx * side.z + ft * fwd.z;
     } else {
         if (p2 || (p1 && fabs(ws->xC4) < 10.0)) {
             *out = 0.0f;
             ws->xC4 = 0.0f;
         } else if (p1) {
             *out = 0.0f;
-            if (*out < ws->xC4) {
+            if (ws->xC4 > *out) {
                 ws->xC4 = ws->xC4 - car->xB88 * 1.4;
             } else {
                 ws->xC4 = ws->xC4 + car->xB88 * 1.4;
@@ -243,12 +254,13 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
         } else {
             f32 h;
             *out = 0.0f;
-            ws->xC4 = -invR * (vt.x * side.x + vt.y * side.y + vt.z * side.z);
-            k = car->xB8C * 0.6;
-            if (ws->xC4 > k * 2.0) {
-                ws->xC4 = ws->xC4 - k;
-            } else if (ws->xC4 < -k * 2.0) {
-                ws->xC4 = ws->xC4 + k;
+            k = -invR * (vt.x * side.x + vt.y * side.y + vt.z * side.z);
+            ws->xC4 = k;
+            h = car->xB8C * 0.6;
+            if (ws->xC4 > h * 2.0) {
+                ws->xC4 = ws->xC4 - h;
+            } else if (ws->xC4 < -h * 2.0) {
+                ws->xC4 = ws->xC4 + h;
             } else if (N.y > 0.98) {
                 ws->xC4 = ws->xC4 * 0.95;
             }
@@ -257,17 +269,19 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
         res.y = fl * side.y + ft * fwd.y;
         res.z = fl * side.z + ft * fwd.z;
     }
-    if (!w->x1AC && (fabsf(lat) > 7.0 || (rear && lat > 4.0) || (front && lat < -4.0))) {
+    dl = lat;
+    al = fabsf(lat);
+    if (!w->x1AC && (al > 7.0 || (rear & gtd(dl, 4.0)) || (front & gtd(-4.0, dl)))) {
         if (!w->x1AC) {
             w->x1B4 = 2;
             w->x1AC = 1;
-            w->x1B0 = ramp0(fabsf(lat), 8.0f);
+            w->x1B0 = ramp0(al, 8.0f);
         }
     } else if (idx >= 2) {
         Wheel *o = (idx == 2) ? &car->wheels[1] : &car->wheels[0];
         if (o->x1AC && o->x1B4 == 2 && !w->x1AC) {
             w->x1AC = 1;
-            w->x1B4 = o->x1B4;
+            w->x1B4 = 2;
             w->x1B0 = o->x1B0;
         }
     }
@@ -281,10 +295,9 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
                 Vec3f t;
                 f32 sn;
                 f32 cs;
-                f32 r = car->x1F8;
-                t = car->x2B4.r[1];
+                f32 r = car->x1F8 * 1.2;
+                t = car->x2B4.r[2];
                 Math_SinCos((car->xBD8 + 0.1) * 4.084070445, &sn, &cs);
-                r = r * 1.2;
                 Vec3f_Scale(&t, &t, cs * r);
                 Vec3f_Add(&res, &res, &t);
             }
@@ -302,3 +315,12 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
     }
     return res;
 }
+/* agent54: code now identical except the frame: ours is 0x128, original 0x130 (8 unused bytes at
+ * 208(sp), above the last spill slot rear@207). All other words match (46 words differ = the
+ * frame-relative offsets). Fixes this pass: tireF inline uses one local r and a single return
+ * (gives the mov.s from f0); res in the drive branch goes through fx (fl / q) so q lands in s1;
+ * gtd() inline for the (dl > 4.0) & rear store-flags; al = fabsf(lat) and dl = lat before the if;
+ * spin value of xC4 reuses k, and the threshold uses a new h; t = r[2] (was r[1]);
+ * r = x1F8 * 1.2 before Math_SinCos; w->x1B4 = 2 in the o-copy branch; ws->xC4 > *out.
+ * Unused char/s32 arrays shift the spill slots (locals sit below them), so the 8 bytes are
+ * probably a spill slot reload allocated and then did not use, or a caller-save slot. */

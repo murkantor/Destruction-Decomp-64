@@ -229,7 +229,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80014FF4` | `015BF4` | 0x630 | `Shadow_ClipAndEmitFaces` | `src/auto/15BF4.c` | C (generated) |
 | `80015624` | `016224` | 0xc | `func_80015624` | `src/auto/16224.c` | C (generated) |
 | `80015630` | `016230` | 0xe4 | `Particle_DrawAt` | `src/auto/16230.c` | C (generated) |
-| `80015714` | `016314` | 0x1d8 | `Obj_AllocSubBuffers` | `asm/16314.s` | asm |
+| `80015714` | `016314` | 0x1d8 | `Obj_AllocSubBuffers` | `src/auto/16314.c` | C (generated) |
 | `800158EC` | `0164EC` | 0x63c | `Shadow_Build` | `src/auto/164EC.c` | C (generated) |
 | `80015F28` | `016B28` | 0x80 | `func_80015F28` | `src/auto/16B28.c` | C (generated) |
 | `80015FB0` | `016BB0` | 0xe0 | `func_80015FB0` | `src/auto/16BB0.c` | C (generated) |
@@ -436,7 +436,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80028A4C` | `02964C` | 0x664 | `Car_DeformMeshAtImpact` | `src/auto/2964C.c` | C (generated) |
 | `800290B0` | `029CB0` | 0x2c8 | `Car_ApplyDamage` | `src/auto/29CB0.c` | C (generated) |
 | `80029378` | `029F78` | 0x6a0 | `Car_OnCollision` | `src/auto/29F78.c` | C (generated) |
-| `80029A18` | `02A618` | 0xbb4 | `Car_ApplyImpactDamage` | `asm/2A618.s` | asm |
+| `80029A18` | `02A618` | 0xbb4 | `Car_ApplyImpactDamage` | `src/auto/2A618.c` | C (generated) |
 | `8002A5CC` | `02B1CC` | 0xc0 | `func_8002A5CC` | `src/auto/2B1CC.c` | C (generated) |
 | `8002A68C` | `02B28C` | 0x24c | `func_8002A68C` | `src/auto/2B28C.c` | C (generated) |
 | `8002A8D8` | `02B4D8` | 0x32c | `func_8002A8D8` | `src/auto/2B4D8.c` | C (generated) |
@@ -828,7 +828,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80055BB0` | `0567B0` | 0xc | `func_80055BB0` | `src/auto/567B0.c` | C (generated) |
 | `80055BBC` | `0567BC` | 0x88 | `func_80055BBC` | `src/auto/567B0.c` | C (generated) |
 | `80055C44` | `056844` | 0x84 | `Emitter_FreeAll` | `src/auto/56844.c` | C (generated) |
-| `80055CD0` | `0568D0` | 0x1fc | `Video_SetMode` | `asm/568C8.s` | asm |
+| `80055CD0` | `0568D0` | 0x1fc | `Video_SetMode` | `src/auto/568D0.c` | C (generated) |
 | `80055ECC` | `056ACC` | 0xa4 | `Vi_InitConfig` | `src/auto/56ACC.c` | C (generated) |
 | `80055F70` | `056B70` | 0x8c | `func_80055F70` | `src/auto/56B70.c` | C (generated) |
 | `80055FFC` | `056BFC` | 0x58 | `func_80055FFC` | `src/auto/56BFC.c` | C (generated) |

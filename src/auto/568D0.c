@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u32 w[20]; } ViMode;
 typedef struct {
     ViMode mode;
@@ -29,17 +32,12 @@ void Video_SetMode(Video *v, s32 a1, s32 tv, s32 a3, s32 lo, s32 hi, s32 aa, s32
     idx = D_800B0B08[tv] + hi * 4 + a3 * 2 + lo;
     idx += a1 * 14;
     v->mode = osViModeTable[idx];
-    if (tv == 1) {
-        v->mode.w[2] = 0x280;
-        v->mode.w[8] = 0x400;
-        v->mode.w[10] = 0x500;
-    }
-    flags = (aa == 0) ? 2 : 1;
+    if (tv == 1) { v->mode.w[2] = 0x280; v->mode.w[8] = 0x400; v->mode.w[10] = 0x500; }
+    flags = 0;
+    flags |= (aa == 0) ? 2 : 1;
     flags |= dith ? 4 : 8;
     flags |= gamma ? 0x10 : 0x20;
-    if (div) {
-        flags |= 0x40;
-    }
+    if (div) flags |= 0x40;
     v->x50 = flags;
     v->x54 = sx;
     v->x58 = sy;

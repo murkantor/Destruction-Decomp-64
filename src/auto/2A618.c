@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad[0xB4]; u8 xB4; } Model;
 typedef struct { u8 pad[0xC]; Model *xC; } CarRes;
 typedef struct { s32 xA74; u8 pad[0x10]; } Part;
@@ -12,6 +15,7 @@ typedef struct { s32 v[3]; } List3;
 typedef struct { s32 v[4]; } List4;
 typedef struct { s32 v[5]; } List5;
 extern Game *gGame;
+extern Game *gGameA[] __asm__("gGame");
 extern void *gUi;
 extern u32 D_800958B0;
 extern u8 D_800958A1;
@@ -78,9 +82,9 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
     atk->x14 = dmg;
     if (vic->x10 > 0) {
         if (vic->xBE0 == 0) {
-            t = dmg * D_800B9130;
-            vic->x10 = vic->x10 - t;
-            vic->parts[part].xA74 = vic->parts[part].xA74 - t;
+            f64 t1 = dmg * D_800B9130;
+            vic->x10 = vic->x10 - t1;
+            vic->parts[part].xA74 = vic->parts[part].xA74 - t1;
         }
         if (D_800958A1) {
             switch (part) {
@@ -116,13 +120,14 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
         if (vic->parts[part].xA74 < 0) {
             vic->parts[part].xA74 = 0;
         }
+        do {
         old = atk->x18 / 30;
         if (func_8001FB40(atk) > D_800B9150) {
-            t = dmg * D_800B9158;
-            if (t > D_800B9160) {
+            f64 t2 = dmg * D_800B9158;
+            if (t2 > D_800B9160) {
                 atk->x18 += 100;
             } else {
-                f = t;
+                f = t2;
                 if (f >= D_800B9168 && f <= D_800B9170) {
                     f = 1.0f;
                 }
@@ -138,11 +143,12 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
                 base = atk->x50;
             }
             atk->x50 = base + (new - old) * 10 * D_800B9178;
-            if ((f64)atk->x50 > (f64)now + D_800B9180) {
+            if ((f64)*(volatile u64 *)&atk->x50 > (f64)now + D_800B9180) {
                 atk->x50 = (f64)now + D_800B9188;
             }
             Msg_Queue(0xF0, 0, 1, 0);
         }
+        } while (0);
         if (gGame->x10FC == 0x1C) {
             if (vic->x30 == 0 && dmg >= 30) {
                 List3 l1 = D_800B9100;
@@ -165,16 +171,16 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
                 }
             }
         }
-        if (old != new) {
+        if (new != old) {
             Standings_Resort(race->x14, atk);
         }
         func_8002A5CC(vic, part);
         return;
     }
-    if (gGame->x10FC != 0x1C) {
+    if (gGameA[0]->x10FC != 0x1C) {
         return;
     }
-    if (!(vic->x94 < Time_ToSeconds(&gGame->x10A8))) {
+    if (!(vic->x94 < Time_ToSeconds(&gGameA[0]->x10A8))) {
         return;
     }
     if (vic->xE) {
@@ -187,14 +193,14 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
         atk->x18 += 20;
         new = atk->x18 / 30;
         if (old < new && atk->x30 == 0 && atk->x10 > 0) {
-            now = Time_Get(&gGame->x10A8);
+            now = Time_Get(&gGameA[0]->x10A8);
             if (now >= atk->x50) {
                 base = now;
             } else {
                 base = atk->x50;
             }
             atk->x50 = base + (new - old) * 10 * D_800B9190;
-            if ((f64)atk->x50 > (f64)now + D_800B9198) {
+            if ((f64)*(volatile u64 *)&atk->x50 > (f64)now + D_800B9198) {
                 atk->x50 = (f64)now + D_800B91A0;
             }
             Msg_Queue(0xF0, 0, 1, 0);
@@ -204,7 +210,8 @@ void Car_ApplyImpactDamage(Car *atk, Car *vic, s32 part, s32 dmg) {
     vic->xE = 1;
     if (vic->x30 == 1 && atk->x30 == 0) {
         List5 l4 = D_800B911C;
-        Commentary_PickRandom(l4.v, (race->x10 == 1) | 4, 0x12C, 1);
+        s32 n = 4;
+        Commentary_PickRandom(l4.v, (race->x10 == 1) | n, 0x12C, 1);
     }
     if (vic->x30 == 0) {
         if (atk->xBE0 == 0) {
