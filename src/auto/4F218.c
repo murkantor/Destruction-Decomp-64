@@ -95,12 +95,20 @@ void Results_Init(void)
         }
     }
 
-    for (i = 0; i < D_80095A70[0]; i++) {
+#ifdef TARGET_PC
+    /* the doubled field: the standings and the rank list hold the 12 slots filled
+       above, not one per car of a race of more */
+    s32 nslots = D_80095A70[0] < 12 ? D_80095A70[0] : 12;
+#define RESULTS_SLOTS nslots
+#else
+#define RESULTS_SLOTS D_80095A70[0]
+#endif
+    for (i = 0; i < RESULTS_SLOTS; i++) {
         if (D_80131D88[i].x18 > 0) {
             rank = 0;
             j = 0;
             score = D_80131D88[i].x18;
-            for (; j < D_80095A70[0]; j++) {
+            for (; j < RESULTS_SLOTS; j++) {
                 rank += (score < D_80131D88[j].x18) & (j != i);
             }
             searching = 1;
