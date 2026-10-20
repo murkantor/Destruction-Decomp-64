@@ -161,6 +161,7 @@ static void reschedule(PortThread *p) {
     } else if (n->t->priority > sRunning->priority && sPreemptSince == 0) {
         /* From the host: the running thread switches at its next OS call. */
         sPreemptSince = SDL_GetTicksNS();
+        SDL_SignalCondition(sTimerCond); /* the watchdog's deadline for the timer clock */
     }
 }
 
@@ -564,17 +565,80 @@ static OSTime fireTimers(void) {
 }
 
 /*
+ * Wait until SDL_GetTicksNS() reaches `until`, precisely but mostly asleep: one
+ * sleep to `*margin` before it, then a spin. The margin is learnt per caller from
+ * how late its sleeps wake (raised at once, lowered slowly). SDL_DelayPrecise
+ * naps in 1 ms steps and spins the last 1-2 ms (all of a wait under 1 ms), which
+ * kept the 60 Hz clocks spinning several percent of a core: battery, on a laptop
+ * or a Steam Deck.
+ */
+void Port_SleepUntilNs(u64 until, PortSleeper *sl) {
+    u64 *margin = &sl->margin;
+    u64 now = SDL_GetTicksNS();
+
+    sl->waits++;
+
+    if (*margin == 0) {
+        *margin = 1000000;
+    }
+    if (now + *margin < until) {
+        u64 wake = until - *margin, late, need;
+
+        SDL_DelayNS(wake - now);
+        now = SDL_GetTicksNS();
+        late = now > wake ? now - wake : 0;
+        /* aim at how late a sleep usually wakes, not the worst: an odd late wake
+           (Windows overshoots by up to ~0.6 ms now and then) only makes that one
+           deadline a little late, where sizing for it would spin that long every time */
+        need = late + 50000;
+        if (need > *margin) {
+            *margin += (need - *margin) / 8;
+        } else {
+            *margin -= (*margin - need) / 16;
+        }
+        if (*margin < 100000) {
+            *margin = 100000;
+        } else if (*margin > 2000000) {
+            *margin = 2000000;
+        }
+    }
+    {
+        u64 t0 = now;
+        while (now < until) {
+            SDL_CPUPauseInstruction();
+            now = SDL_GetTicksNS();
+        }
+        sl->spunNs += now - t0;
+    }
+}
+
+/*
  * The timer clock: fires each timer when it is due, on its own host thread like
  * the VI clock, so a timer (the frame pacing's wait, say) is not held up while
- * the main thread draws or waits for vsync. It looks at least every millisecond
- * for the watchdog, and sleeps the last stretch before a timer precisely.
+ * the main thread draws or waits for vsync. It sleeps until the next timer or the
+ * watchdog's deadline (osSetTimer and a preemption wake it to look again), the
+ * last stretch precisely.
  */
 static int timerClock(void *data) {
+    PortSleeper sl = { 0 };
+    const int log = SDL_getenv("DD64_GFXLOG") != NULL;
+    u64 logAt = SDL_GetTicksNS() + 10000000000ull;
+    unsigned condWaits = 0;
+
     (void)data;
     SDL_LockMutex(sLock);
     while (!gPortQuit) {
         OSTime next = fireTimers(), now = Port_GetTime();
-        u64 waitNs = 1000000;
+        u64 waitNs = 100000000; /* nothing due: look again in 100 ms anyway */
+
+        if (log && SDL_GetTicksNS() > logAt) {
+            Port_Log("timers: per second %.0f precise waits (spinning %.0f us of them), %.0f other waits",
+                     sl.waits / 10.0, sl.spunNs / 1e3 / 10.0, condWaits / 10.0);
+            sl.waits = 0;
+            sl.spunNs = 0;
+            condWaits = 0;
+            logAt += 10000000000ull;
+        }
 
         if (next != 0) {
             u64 ns = next > now ? (u64)(next - now) * 64 / 3 : 0;
@@ -582,12 +646,21 @@ static int timerClock(void *data) {
                 waitNs = ns;
             }
         }
-        if (waitNs < 1000000) {
+        if (sPreemptSince != 0) {
+            u64 since = SDL_GetTicksNS() - sPreemptSince;
+            u64 left = since < PREEMPT_GRACE_NS ? PREEMPT_GRACE_NS - since : 0;
+            if (left < waitNs) {
+                waitNs = left;
+            }
+        }
+        if (waitNs < 2000000) {
             SDL_UnlockMutex(sLock);
-            SDL_DelayPrecise(waitNs);
+            Port_SleepUntilNs(SDL_GetTicksNS() + waitNs, &sl);
             SDL_LockMutex(sLock);
         } else {
-            SDL_WaitConditionTimeout(sTimerCond, sLock, 1);
+            /* a millisecond or so early (the wait's granularity), then precisely */
+            condWaits++;
+            SDL_WaitConditionTimeout(sTimerCond, sLock, (Sint32)(waitNs / 1000000) - 1);
         }
     }
     SDL_UnlockMutex(sLock);

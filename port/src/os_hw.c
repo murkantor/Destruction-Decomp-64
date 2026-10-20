@@ -223,12 +223,24 @@ static SDL_AtomicU32 sMainBeatMs; /* when the main thread last came round, SDL_G
 
 static int viClock(void *data) {
     u64 next = SDL_GetTicksNS() + VI_RATE_NS;
+    PortSleeper sl = { 0 };
+    /* DD64_GFXLOG: how late the retraces came, and the spin they needed */
+    const int log = SDL_getenv("DD64_GFXLOG") != NULL;
+    u64 lateMax = 0, lateSum = 0;
+    unsigned n = 0;
 
     while (!gPortQuit) {
-        u64 now = SDL_GetTicksNS();
-
-        if (now < next) {
-            SDL_DelayPrecise(next - now);
+        Port_SleepUntilNs(next, &sl);
+        if (log) {
+            u64 late = SDL_GetTicksNS() - next;
+            lateSum += late;
+            lateMax = late > lateMax ? late : lateMax;
+            if (++n == 600) {
+                Port_Log("vi: retraces %.0f us late on average, %.0f at most; spinning the last %.0f us", lateSum / 1e3 / n,
+                         lateMax / 1e3, sl.margin / 1e3);
+                lateMax = lateSum = 0;
+                n = 0;
+            }
         }
         next += VI_RATE_NS;
         if (SDL_GetTicksNS() > next + 4 * VI_RATE_NS) {

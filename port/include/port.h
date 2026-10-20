@@ -47,6 +47,12 @@ void Port_RcpYield(void);
 int Port_RcpYielded(OSTask *task);
 void Port_RcpWake(void);
 void Port_RcpWait(u64 untilNs);
+/* A precise wait, mostly asleep (os_thread.c): one per waiting thread */
+typedef struct {
+    u64 margin; /* the spin before the deadline, learnt */
+    u64 waits, spunNs; /* (testing) */
+} PortSleeper;
+void Port_SleepUntilNs(u64 until, PortSleeper *sl);
 void Port_RcpRunPending(void);
 
 /* audio.c */
