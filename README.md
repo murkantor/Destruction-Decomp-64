@@ -7,6 +7,9 @@ This was an experiment on how "Powerful" and how easy it is to just throw a ROM 
 Spoilers; it's very powerful.
 
 
+I'm sharing this Repo in case anyone wants to download this and have a look at what the above agent and model can do. Don't bother porting this to PC, I'll have a download up soon.
+
+
 # DD64
 
 A matching decompilation of Destruction Derby 64 (USA). The build turns C and assembly back into a ROM that is byte for byte identical to the original.
