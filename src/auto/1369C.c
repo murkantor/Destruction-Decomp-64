@@ -34,7 +34,7 @@ typedef struct { u8 pad0[0x70]; ObjHolder *x70; } World;
 typedef struct { u8 pad0[0x1100]; World *x1100; } Game;
 
 extern Game *gGame;
-void func_8001A478(Grid *, s32, s32, s32 *, s32 *);
+void Grid_PosToCell(Grid *, s32, s32, s32 *, s32 *);
 void *memcpy(void *, const void *, u32);
 void Vec3f_Sub(Vec3f *, Vec3f *, Vec3f *);
 void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
@@ -64,8 +64,8 @@ void Light_UpdateVertexColors(Light *light, Grid *grid, Vert *verts, f32 m[4][4]
     light->pos.x += m[0][0] * (o->x10 * 20.0f);
     light->pos.y += m[0][1] * (o->x10 * 20.0f);
     light->pos.z += m[0][2] * (o->x10 * 20.0f);
-    func_8001A478(grid, light->pos.x + o->x10 * 20.0f, light->pos.z + o->x10 * 20.0f, &x1, &z1);
-    func_8001A478(grid, light->pos.x - o->x10 * 20.0f, light->pos.z - o->x10 * 20.0f, &x0, &z0);
+    Grid_PosToCell(grid, light->pos.x + o->x10 * 20.0f, light->pos.z + o->x10 * 20.0f, &x1, &z1);
+    Grid_PosToCell(grid, light->pos.x - o->x10 * 20.0f, light->pos.z - o->x10 * 20.0f, &x0, &z0);
     inv = inv * inv;
     if (x0 < 0)
         x0 = 0;

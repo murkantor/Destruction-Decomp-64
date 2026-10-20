@@ -9,7 +9,7 @@ extern Game *gGame;
 extern s32 D_80095810;
 extern Handler D_80095630[];
 
-void *func_80024390(void *acc, s32 b, s32 c) {
+void *World_DrawObjects(void *acc, s32 b, s32 c) {
     s32 i, j;
     void *obj;
     Item *it;

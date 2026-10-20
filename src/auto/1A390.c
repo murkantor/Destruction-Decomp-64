@@ -38,7 +38,7 @@ extern void func_80010950(Weather *, s32, void *, s32, s32, s32, s32, s32);
 extern int rand(void);
 extern void *Particle_Spawn(Weather *, Vec3f, Vec3f, Vec3f, f32, f32, s32, s32, s32, s32, s32, s32);
 
-void func_80019790(void) {
+void Weather_Init(void) {
     Vec3f vel = D_800B8790;
     Vec3f acc = D_800B8790;
     s32 i;

@@ -41,7 +41,7 @@ extern volatile SndSlot D_801311D0[];
 
 s16 func_80064D70(void);
 u64 Time_Get(u64 *);
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 s8 Pool_PushCopy(void *, SndReq *);
 
 void Sound_StartCarLoops(void *pool) {
@@ -64,7 +64,7 @@ void Sound_StartCarLoops(void *pool) {
             t = -1;
         }
         req.x38 = t;
-        req.x18 = func_8001FBA8(car);
+        req.x18 = Car_GetPos(car);
         req.x24 = zero;
         req.x30 = D_80132164[req.x10];
         req.x34 = 0;

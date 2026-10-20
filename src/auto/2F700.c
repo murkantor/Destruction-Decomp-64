@@ -84,7 +84,7 @@ extern u8 D_800960C0;
 extern s32 D_800958B4;
 void func_8002FA20(Car *);
 void Model_TransformVerts(Body *);
-void Car_ResolveTrackCollision(Car *);
+void Camera_CollideTrack(Car *);
 void Trigger_CheckCarsInZone(void *);
 void func_8002F66C(void *);
 void Cars_CheckCollisions(void *);
@@ -143,7 +143,7 @@ void Car_PhysicsStep(void *w, f32 dt) {
         Car *c2 = ((World *)w)->x40C[i];
         switch (c2->x0) {
         case 9:
-            Car_ResolveTrackCollision(c2);
+            Camera_CollideTrack(c2);
             break;
         case 6:
             Trigger_CheckCarsInZone(c2->x38);

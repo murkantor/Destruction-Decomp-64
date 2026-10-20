@@ -35,7 +35,7 @@ void Vec3f_Add(Vec3f *out, Vec3f *a, Vec3f *b);
 void Mtx2x3_RotateY(Vec3f *m, f32 angle);
 void func_8003A568(Vec3f *m, Vec3f *axis, f32 angle);
 
-void func_80022E1C(Camera *cam, f32 dt) {
+void Camera_UpdateFreeFly(Camera *cam, f32 dt) {
     s32 sx = D_80125C8C[cam->xB0->x10].stickX;
     u32 btn = D_80125C8C[cam->xB0->x10].buttons;
     s32 sy = D_80125C8C[cam->xB0->x10].stickY;

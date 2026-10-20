@@ -34,7 +34,7 @@ typedef struct {
 } Game;
 
 extern Game *gGame;
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f64 acos(f64);
 f32 sqrtf(f32);
@@ -78,8 +78,8 @@ s32 AI_FindTargetAhead(Car *self) {
             break;
         }
         c = node->car;
-        a = func_8001FBA8(self);
-        b = func_8001FBA8(c);
+        a = Car_GetPos(self);
+        b = Car_GetPos(c);
         dir.x = b.x - a.x;
         dir.y = 0.0f;
         dir.z = b.z - a.z;

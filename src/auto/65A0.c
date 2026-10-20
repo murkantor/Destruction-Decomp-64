@@ -21,7 +21,7 @@ typedef struct {
 typedef struct { u8 pad0[0x10]; s32 x10; u8 pad14[0x38 - 0x14]; AiCtrl *x38; } AiCar;
 typedef struct { u8 pad[0x10A8]; u64 time; u8 pad10B0[0x1100 - 0x10B0]; s32 *level; } Game;
 extern Game *gGame;
-Vec3f func_8001FBA8(void *);
+Vec3f Car_GetPos(void *);
 f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 void Ai_PickTarget(AiCar *);
 void Ai_CheckStuck(AiCar *);
@@ -40,8 +40,8 @@ void Ai_UpdateState(AiCar *car) {
         if (car->x10 < ctrl->x3C && *lvl >= 7) {
             ctrl->x10 = 1;
         }
-        a = func_8001FBA8(car);
-        b = func_8001FBA8(ctrl->x18);
+        a = Car_GetPos(car);
+        b = Car_GetPos(ctrl->x18);
         if (Vec3f_DistXZ(a, b) < ctrl->x38) {
             ctrl->x10 = 2;
         }
@@ -69,8 +69,8 @@ void Ai_UpdateState(AiCar *car) {
         break;
     case 2: {
         Vec3f c;
-        a = func_8001FBA8(car);
-        c = func_8001FBA8(ctrl->x18);
+        a = Car_GetPos(car);
+        c = Car_GetPos(ctrl->x18);
         if (Vec3f_DistXZ(a, c) < ctrl->x38) {
             ctrl->x10 = 0;
         } else if (ctrl->x14 < 10.0f) {

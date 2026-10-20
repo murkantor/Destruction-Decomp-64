@@ -31,8 +31,8 @@ extern Counts D_800B7F8C;
 extern PlayerSlot D_800958F0[];
 extern SndSlot D_8007EDD8[];
 extern s32 D_801320C8[];
-void func_8001FB88(Vec3f *, Car *);
-void func_8001FBA8(Vec3f *, Car *);
+void Car_GetVelocity(Vec3f *, Car *);
+void Car_GetPos(Vec3f *, Car *);
 void List_RemoveById(void *, s16);
 Ent *func_8005CC00(void *, s16);
 s16 Sound_PlayCar(void *pool, Vec3f *a, Vec3f *b, s32 type, f32 vol, s32 mode);
@@ -96,8 +96,8 @@ void Sound_UpdateCarSurfaces(void *pool)
                     mode = w[j]->x1B4;
                 }
             }
-            func_8001FB88(&vel, car);
-            func_8001FBA8(&pos, car);
+            Car_GetVelocity(&vel, car);
+            Car_GetPos(&pos, car);
             while (D_8007EDD8[i].id != 0) {
                 if (D_8007EDD8[i].type == type) goto update;
                 List_RemoveById(pool, D_8007EDD8[i].id);

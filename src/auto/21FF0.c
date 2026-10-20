@@ -26,7 +26,7 @@ typedef struct {
     u8 xB6;
 } Camera;
 extern f32 D_800955D8, D_800955DC, D_800955E0, D_800955E4, D_800955E8, D_800955EC, D_800955F0, D_800955F4, D_800955F8;
-Vec3f func_8001FBA8(Target *);
+Vec3f Car_GetPos(Target *);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
 
@@ -39,7 +39,7 @@ void Camera_UpdateChase(Camera *cam) {
     Vec3f pos;
     f32 back, up, side;
 
-    pos = func_8001FBA8(t);
+    pos = Car_GetPos(t);
     b = &t->basis;
     switch (cam->xB4) {
     case 0:

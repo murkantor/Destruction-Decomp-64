@@ -41,7 +41,7 @@ extern s32 D_80130248;
 extern u8 D_80083B78[];
 void func_80012548(Camera *);
 Gfx *Camera_BuildProjection(Gfx *, Camera *);
-Gfx *func_800196BC(void *, Gfx *);
+Gfx *Track_DrawDisplayList(void *, Gfx *);
 void Tex_UpdateScrollAndAnim(void);
 Gfx *func_80011FF4(Gfx *, Camera *);
 
@@ -80,7 +80,7 @@ Gfx *Render_DrawSkyAndWorld(s32 arg0, Gfx *gfx, Camera *cam) {
         g[1].w0 = 0xE2001D00;
         g[1].w1 = 0;
         if (gDrawWorld) {
-            gfx = func_800196BC(D_80125460, gfx);
+            gfx = Track_DrawDisplayList(D_80125460, gfx);
         }
         Tex_UpdateScrollAndAnim();
         GFX2(gfx, 0xD8380002, 0x40);

@@ -49,8 +49,8 @@ void Ui_AddElement(void *, s32, s32);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
 char *strcpy(char *, const char *);
-s32 func_8001B2F4(s32);
-s32 func_8001B298(s32);
+s32 Race_GetSlotCarId(s32);
+s32 Race_FindCarSlot(s32);
 void HiScore_DrawTable(void *, s32, s32);
 void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, u64);
@@ -130,7 +130,7 @@ void Results_DrawStandings(void) {
         if (D_800958A8 == 0) {
             D_80126188[i].x0 = D_80096720[rank];
         }
-        p = func_8001B2F4(i);
+        p = Race_GetSlotCarId(i);
         for (k = 0; k < D_800958A4; k++) {
             if (p == D_800958C0[k]) {
                 break;
@@ -141,7 +141,7 @@ void Results_DrawStandings(void) {
         } else {
             D_801238F0[rank].x32 = -1;
         }
-        q = func_8001B2F4(i);
+        q = Race_GetSlotCarId(i);
         if (D_800958A8 == 3 && D_801238F0[rank].x32 != -1) {
             sprintf((char *)D_801238F0[rank].name, D_800BB1F0);
             sprintf(num, D_800BAF68, D_801238F0[rank].x32 + 1);
@@ -163,7 +163,7 @@ void Results_DrawStandings(void) {
         D_801238F0[i].x32 = -1;
     }
     if (D_800958A4 == 1) {
-        j = func_8001B298(D_800958C0[0]);
+        j = Race_FindCarSlot(D_800958C0[0]);
         if (D_80126188[j].x4 > D_80097A48[D_800958B4].x0 && D_801238F0[0].x32 != -1) {
             D_80130518[D_800958B4].x0 = D_80126188[j].x4;
             D_80097335 = 1;

@@ -50,8 +50,8 @@ extern s32 D_80132164[];
 extern u8 D_8007EE48[];
 s16 func_80064D70(void);
 u64 Time_Get(u64 *);
-Vec3f func_8001FBA8(Car *);
-Vec3f func_8001FB88(Car *);
+Vec3f Car_GetPos(Car *);
+Vec3f Car_GetVelocity(Car *);
 
 s16 CarEffect_Init(s32 idx, s32 kind, Obj *obj) {
     Car *car = gGame->x1100->x74[idx];
@@ -68,8 +68,8 @@ s16 CarEffect_Init(s32 idx, s32 kind, Obj *obj) {
         v = -1;
     }
     obj->x38 = v;
-    obj->x18 = func_8001FBA8(car);
-    obj->x24 = func_8001FB88(car);
+    obj->x18 = Car_GetPos(car);
+    obj->x24 = Car_GetVelocity(car);
     obj->x30 = D_80132164[kind];
     obj->x44 = 1;
     obj->x34 = 0;

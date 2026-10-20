@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void func_8001934C(void *arg0) {
+void List_Unlink(void *arg0) {
     void **temp_v1;
 
     M2C_FIELD(M2C_FIELD(arg0, void **, 0), void ***, 4) = (void **) M2C_FIELD(arg0, void ***, 4);

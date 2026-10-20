@@ -1,14 +1,14 @@
 #include "common.h"
 #include "m2c.h"
 
-f32 func_8001FB40();
+f32 Car_GetSpeed();
 
 void func_8000663C(void *arg0)
 {
   void *temp_s1;
   void *temp_v1;
  do { temp_s1 = *((void **) (((s8 *) arg0) + 0x38)); } while (0);
-  if (func_8001FB40() < 5.0f)
+  if (Car_GetSpeed() < 5.0f)
   {
     *((s8 *) (((s8 *) temp_s1) + 0x6C)) = 0;
     if ((*((u8 *) (((s8 *) temp_s1) + 0x6D))) != 0)

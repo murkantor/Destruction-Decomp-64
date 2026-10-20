@@ -29,7 +29,7 @@ extern u8 D_800972A0[];
 extern u8 D_800972A8[];
 void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
-s32 func_8001B2F4(s32);
+s32 Race_GetSlotCarId(s32);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
 char *strcpy(char *, const char *);
@@ -87,13 +87,13 @@ void Results_BuildTable(void) {
                 busy = 0;
             }
         } while (busy);
-        n = func_8001B2F4(i);
+        n = Race_GetSlotCarId(i);
         sprintf((char *)D_801238F0[rank].x0, D_80096510[n].first);
         strcat((char *)D_801238F0[rank].x0, sfx.c);
         strcat((char *)D_801238F0[rank].x0, D_80096510[n].last);
         sprintf(D_801238F0[rank].x14, D_800BAF68, D_80126188[i].x0);
         sprintf(D_801238F0[rank].x1E, D_800BAF68, D_80095CD4[i] + D_80126188[i].x0);
-        n = func_8001B2F4(i);
+        n = Race_GetSlotCarId(i);
         for (k = 0; k < D_800958A4.count; k++) {
             if (n == D_800958A4.list[k]) {
                 break;

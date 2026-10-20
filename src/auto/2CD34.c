@@ -9,8 +9,8 @@ extern Slot68 D_800958DC[];
 extern s8 D_800D31CC[];
 void Mem_Free(void *);
 void Cars_FreeObjects(void);
-void func_80024E44(void *);
-void func_8002550C(Race *);
+void Track_FreeResources(void *);
+void Race_Free(Race *);
 
 void Game_FreeModeResources(Game *game) {
     s8 i;
@@ -30,8 +30,8 @@ void Game_FreeModeResources(Game *game) {
         Cars_FreeObjects();
         break;
     case 2:
-        func_80024E44(gGame->race->x70);
-        func_8002550C(game->race);
+        Track_FreeResources(gGame->race->x70);
+        Race_Free(game->race);
         game->race = NULL;
         for (i = 0; i < D_800D31CC[0]; i++) {
             Mem_Free(D_800958DC[i].ptr);

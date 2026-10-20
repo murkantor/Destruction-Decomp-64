@@ -26,8 +26,8 @@ extern s32 CarEffect_Init(s32, s32, Rec *);
 extern s8 Pool_PushCopy(void *, Rec *);
 extern Ent *func_8005CC00(void *, s16);
 extern f32 func_80063718(u64 *);
-extern Vec3f func_8001FBA8(Car *);
-extern Vec3f func_8001FB88(Car *);
+extern Vec3f Car_GetPos(Car *);
+extern Vec3f Car_GetVelocity(Car *);
 extern void List_RemoveById(void *, s16);
 
 void EngineSfx_Crossfade(void *list, s32 i, s32 snd) {
@@ -65,8 +65,8 @@ void EngineSfx_Crossfade(void *list, s32 i, s32 snd) {
         v = 0.0f;
     }
     e->x34 = v;
-    e->x18 = func_8001FBA8(car);
-    e->x24 = func_8001FB88(car);
+    e->x18 = Car_GetPos(car);
+    e->x24 = Car_GetVelocity(car);
     if (t->x4 == 0) {
         return;
     }
@@ -79,8 +79,8 @@ void EngineSfx_Crossfade(void *list, s32 i, s32 snd) {
         if (e->x14 < 0) {
             e->x14 = 0;
         }
-        e->x18 = func_8001FBA8(car);
-        e->x24 = func_8001FB88(car);
+        e->x18 = Car_GetPos(car);
+        e->x24 = Car_GetVelocity(car);
     } else {
         List_RemoveById(list, e->x2);
         t->x4 = 0;

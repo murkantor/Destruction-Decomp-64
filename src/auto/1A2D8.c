@@ -17,7 +17,7 @@ typedef struct {
     Table *x110;
     void *x114;
 } Obj;
-void func_8001A328(s32 *);
+void Grid_Free(s32 *);
 void func_80063B54(s32);
 void Mem_Free(void *);
 
@@ -26,7 +26,7 @@ void Obj_FreeResources(Obj *obj) {
     Table *t;
 
     if (obj->x10C != 0) {
-        func_8001A328(&obj->x10C);
+        Grid_Free(&obj->x10C);
     }
     t = obj->x110;
     if (t != NULL) {

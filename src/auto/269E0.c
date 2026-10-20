@@ -24,7 +24,7 @@ typedef struct {
 void *Mem_Alloc(s32);
 void Basis_Orthonormalize(void *);
 
-void Cam_Create(Obj *obj, Vec3 v) {
+void Prop_CreateStatic(Obj *obj, Vec3 v) {
     Cam *cam;
     s32 i;
 

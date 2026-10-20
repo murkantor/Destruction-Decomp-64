@@ -40,11 +40,11 @@ typedef struct {
 extern Game *gGame;
 extern State *D_80096074;
 void Standings_Resort(void *, Car *);
-void func_800259A8(Car *);
+void Tag_PassTo(Car *);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
 void Msg_Queue(s32, s32, s32, s32);
 
-void func_80025570(void)
+void Tag_Update(void)
 {
     Race *race;
     State *s;
@@ -70,7 +70,7 @@ void func_80025570(void)
         Standings_Resort(race->x14, s->x0);
         s->x0->xE = 1;
         s->x1C = 0;
-        func_800259A8(s->x0);
+        Tag_PassTo(s->x0);
     }
     if (gGame->x10FC != 0x1C) {
         return;

@@ -20,7 +20,7 @@ typedef struct {
 extern Grid *D_800BC9C4;
 s32 Poly_ClipToPlane(Vec3f *, Vec3f *, s32, Plane *, f32);
 
-void Shadow_ClipPolys(Mgr *m, s32 *ids, s32 n) {
+void Skid_ClipPolys(Mgr *m, s32 *ids, s32 n) {
     s32 i;
     s32 k;
     s32 cnt;

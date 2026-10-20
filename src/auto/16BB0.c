@@ -42,7 +42,7 @@ void Mem_Free(void *);
 void *Res_Get(s32);
 void Res_Load(s32, void *);
 
-s32 func_80015FB0(s32 id) {
+s32 LensFlare_Load(s32 id) {
     Obj *o = Mem_AllocAligned(sizeof(Obj) + 0x14, 0x3F, 0);
     Info *info;
     s32 i;

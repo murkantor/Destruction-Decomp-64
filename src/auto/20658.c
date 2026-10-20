@@ -7,7 +7,7 @@ typedef struct { u8 pad[0x10FC]; s16 x10FC; } Game;
 extern Game *gGame;
 void Vec3f_Dot(f32 *out, Vec3f *a, Vec3f *b);
 
-s32 func_8001FA58(Car *car) {
+s32 Car_GetDriveDir(Car *car) {
     f32 d1;
     f32 d2;
 

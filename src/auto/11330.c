@@ -4,7 +4,7 @@
 void *Mem_Alloc(M2C_UNK);                           /* extern */
 M2C_UNK func_800168C0(void *, M2C_UNK);             /* extern */
 M2C_UNK func_800170F0(void *, M2C_UNK);             /* extern */
-M2C_UNK Player_AllocBuffers(void *, M2C_UNK);             /* extern */
+M2C_UNK Particles_InitTrail(void *, M2C_UNK);             /* extern */
 s16 func_80064D70();                                /* extern */
 
 void *func_80010730(void) {
@@ -16,7 +16,7 @@ void *func_80010730(void) {
     M2C_FIELD(temp_v0, void **, 4) = temp_v0;
     func_800168C0(temp_v0 + 0xB0, 0xC8);
     func_800170F0(temp_v0 + 0x148, 0xC8);
-    Player_AllocBuffers(temp_v0 + 0xC, 0x32);
+    Particles_InitTrail(temp_v0 + 0xC, 0x32);
     return temp_v0;
 }
 

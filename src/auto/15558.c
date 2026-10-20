@@ -62,7 +62,7 @@ extern void Mtx3_RotateY(Mtx3 *, f32);
 extern void Mtx_FromRotPosScaled(void *, Vec3, Mtx3 *);
 extern Gfx *Model_Draw(void *, Gfx *);
 
-Gfx *func_80014958(Obj *o, Gfx *gfx) {
+Gfx *Obj_DrawModel(Obj *o, Gfx *gfx) {
     switch (o->type) {
         case 23:
             func_8005AB4C(o->model, 0.01f);

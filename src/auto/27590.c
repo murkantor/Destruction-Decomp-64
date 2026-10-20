@@ -52,7 +52,7 @@ extern void Mem_Free(void *p);
 extern void Basis_Orthonormalize(Vec3f *v);
 extern f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
 extern s32 Track_FindNearestSegment(Vec3f p);
-extern s32 func_8001B298(s32 id);
+extern s32 Race_FindCarSlot(s32 id);
 
 void Race_PlaceCarsOnGrid(void)
 {
@@ -181,7 +181,7 @@ void Race_PlaceCarsOnGrid(void)
             Basis_Orthonormalize(&car->basis);
             car->basis2 = dir;
             Basis_Orthonormalize(&car->basis2);
-            k = func_8001B298(car->id);
+            k = Race_FindCarSlot(car->id);
             D_800D1B08[k].x = p0.x;
             D_800D1B08[k].y = p0.y;
             D_800D1B08[k].z = p0.z;
@@ -290,7 +290,7 @@ void Race_PlaceCarsOnGrid(void)
                 Basis_Orthonormalize(&car->basis);
                 car->basis2 = dir;
                 Basis_Orthonormalize(&car->basis2);
-                k = func_8001B298(car->id);
+                k = Race_FindCarSlot(car->id);
                 D_800D1B08[k].x = p1.x;
                 D_800D1B08[k].y = p1.y;
                 if (unk > 0) {

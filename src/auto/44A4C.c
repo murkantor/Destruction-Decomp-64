@@ -59,7 +59,7 @@ char *strncat(char *, const char *, u32);
 f32 Time_ToSeconds(void *);
 TimeHMS Time_Split(u64 t);
 void Time_Format(TimeHMS t, char *buf, s32 len);
-s32 func_8001B298(s32);
+s32 Race_FindCarSlot(s32);
 void Msg_Queue(s32, s32, s32, s32);
 
 void Results_Setup(void) {
@@ -199,7 +199,7 @@ void Results_Setup(void) {
                 sprintf(gSaveSlotText[5], D_800BA8CC);
                 sprintf(gSaveSlotText[6], D_800BA8EC);
             }
-            n = func_8001B298(D_800958F0->x34);
+            n = Race_FindCarSlot(D_800958F0->x34);
             if (D_801252F4 == D_80095CB8[D_800958B0] - 1) {
                 sprintf(gSaveSlotText[7], D_800BA9B8);
             } else {

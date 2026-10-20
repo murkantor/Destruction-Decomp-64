@@ -8,9 +8,9 @@ typedef struct { u8 pad[0x98]; Vec3f x98; u8 padA4[0xC]; Res *xB0; u8 xB4; } Car
 typedef struct { u8 pad[0xC]; s16 xC; } Game;
 extern Game *gGame;
 void Vec3f_Set(Vec3f *, f32, f32, f32);
-void func_80021700(Car *, f32);
+void Camera_Update(Car *, f32);
 
-void func_800215CC(Car *car) {
+void Camera_CycleView(Car *car) {
     Vec3f saved;
     Vec3f *pos;
     s32 i;
@@ -27,7 +27,7 @@ void func_800215CC(Car *car) {
                 saved = *pos;
                 Vec3f_Set(pos, 0.0f, 0.0f, 0.0f);
                 for (i = 0; i < 60; i++) {
-                    func_80021700(car, 0.06f);
+                    Camera_Update(car, 0.06f);
                 }
                 *pos = saved;
                 car->x98 = saved;

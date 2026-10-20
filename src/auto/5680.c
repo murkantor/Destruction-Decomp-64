@@ -9,7 +9,7 @@ typedef struct { u8 pad[0x1100]; Track *x1100; } Game;
 typedef struct Obj { u8 pad[0x18]; struct Obj *x18; u8 pad1C[0x24 - 0x1C]; s32 x24; s32 x28; u8 pad2C[0x38 - 0x2C]; struct Obj *x38; } Obj;
 extern Game *gGame;
 extern s32 D_8007EAE0[][20];
-Vec3f func_8001FBA8(Obj *);
+Vec3f Car_GetPos(Obj *);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 f32 sqrtf(f32);
 
@@ -24,7 +24,7 @@ void Car_UpdateTrackSection(Obj *obj) {
 
     a = segs[idx].a;
     b = segs[idx].b;
-    pos = func_8001FBA8(obj);
+    pos = Car_GetPos(obj);
     d1 = Vec3f_DistXZ(a, pos);
     d2 = Vec3f_DistXZ(b, pos);
     d3 = Vec3f_DistXZ(a, b);
@@ -33,7 +33,7 @@ void Car_UpdateTrackSection(Obj *obj) {
     j = o->x18->x28;
     a = segs[j].a;
     b = segs[j].b;
-    pos = func_8001FBA8(o->x18);
+    pos = Car_GetPos(o->x18);
     d1 = Vec3f_DistXZ(a, pos);
     d2 = Vec3f_DistXZ(b, pos);
     d3 = Vec3f_DistXZ(a, b);

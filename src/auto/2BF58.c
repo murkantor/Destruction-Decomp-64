@@ -43,7 +43,7 @@ extern s32 D_800958B4[];
 extern s32 D_80095FF8[];
 
 f32 Vec3f_DistXZ(Vec3f a, Vec3f b);
-f32 func_8001FB40(Car *);
+f32 Car_GetSpeed(Car *);
 u64 Time_Get(u64 *);
 
 void func_8002B358(void) {
@@ -70,7 +70,7 @@ void func_8002B358(void) {
                 b.z = e[j].a.z + (e[j].b.z - e[j].a.z) * 0.5;
                 dist += Vec3f_DistXZ(a, b);
             }
-            speed = func_8001FB40(car);
+            speed = Car_GetSpeed(car);
             t = Time_Get(&gGame->x10A8) - car->x60;
             t2 = t + (dist / speed) * 1000000000.0;
             for (j = 0; j < D_80095FF8[D_800958B4[0]]; j++) {

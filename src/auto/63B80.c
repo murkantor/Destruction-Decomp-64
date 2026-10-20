@@ -1,10 +1,10 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_800215CC();                            /* extern */
+M2C_UNK Camera_CycleView();                            /* extern */
 
 void func_80062F80(void) {
-    func_800215CC();
+    Camera_CycleView();
 }
 
 M2C_UNK Obj_Create();                            /* extern */

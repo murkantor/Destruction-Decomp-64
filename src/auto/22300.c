@@ -13,14 +13,14 @@ extern void Vec3f_Set(Vec3f *, f32, f32, f32);
 extern void Camera_UpdateCheckpointCam(Cam *, Car *, f32);
 extern void Camera_SetChaseFromCar(Cam *, Car *, f32, f32, f32, f32, f32);
 extern void Camera_UpdateChase2(Cam *, Car *, f32, f32, f32, f32, f32, f32, f32);
-extern void func_8002205C(Cam *, Car *, f32, f32 *);
+extern void Camera_UpdateOrbit(Cam *, Car *, f32, f32 *);
 extern void func_80022A6C(Cam *, Car *, f32);
-extern void func_80022E1C(Cam *, f32);
+extern void Camera_UpdateFreeFly(Cam *, f32);
 extern void func_80044AB4(Vec3f *, Vec3f *, Vec3f *, f32 *);
 extern void Vec3f_LerpOffset(Cam *, Vec3f *, Vec3f *, Vec3f *, f32);
 extern void func_80021C20(Cam *, Car *, f32);
 
-void func_80021700(Cam *cam, f32 dt) {
+void Camera_Update(Cam *cam, f32 dt) {
     CamCfg *cfg = cam->xB0;
     Car *car = cfg->x20;
     Vec3f a;
@@ -68,14 +68,14 @@ void func_80021700(Cam *cam, f32 dt) {
         Camera_UpdateChase2(cam, car, k, z, p, k, q, r, dt);
         break;
     case 7:
-        func_8002205C(cam, car, dt, &D_80095614[cfg->x10]);
+        Camera_UpdateOrbit(cam, car, dt, &D_80095614[cfg->x10]);
         break;
     case 3:
         func_80022A6C(cam, car, dt);
         break;
     case 4:
     case 5:
-        func_80022E1C(cam, dt);
+        Camera_UpdateFreeFly(cam, dt);
         break;
     case 6:
         func_80044AB4(&a, &b, &c, &t);

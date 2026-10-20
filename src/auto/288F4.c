@@ -19,7 +19,7 @@ typedef struct {
 } Game;
 extern Game *gGame;
 
-s32 func_80027CF4(u8 *a, u8 *b) {
+s32 Car_CompareScore(u8 *a, u8 *b) {
     s32 sa;
     s32 sb;
 

@@ -84,8 +84,8 @@ void func_8002D0E0(s32);
 void func_80064948(void *);
 Obj *func_8001325C(Spawn *);
 void func_80064100(Obj *);
-void func_800259A8(Car *);
-s32 func_8001B298(s32);
+void Tag_PassTo(Car *);
+s32 Race_FindCarSlot(s32);
 void Standings_Resort(void *, Car *);
 void func_80014DC0(void);
 void func_8005F884(void *);
@@ -177,7 +177,7 @@ void Race_Setup(void) {
                 o1 = func_8001325C(&sp1);
                 func_80064100(o1);
                 D_80096074 = o1->x38;
-                func_800259A8(NULL);
+                Tag_PassTo(NULL);
                 if (D_800958BC == 0) {
                     for (i = 0; i < gGame[0]->x1100->xA4; i++) {
                         D_80095D04[i] = 0;
@@ -187,7 +187,7 @@ void Race_Setup(void) {
                     }
                 } else {
                     for (i = 0; i < gGame[0]->x1100->xA4; i++) {
-                        gGame[0]->x1100->x74[i]->x18 = D_80095D04[func_8001B298(gGame[0]->x1100->x74[i]->x34)];
+                        gGame[0]->x1100->x74[i]->x18 = D_80095D04[Race_FindCarSlot(gGame[0]->x1100->x74[i]->x34)];
                         Standings_Resort(race->x14, gGame[0]->x1100->x74[i]);
                     }
                 }

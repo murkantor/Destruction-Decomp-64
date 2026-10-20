@@ -31,7 +31,7 @@ extern void Track_GetFace(Face *face, s32 cell);
 extern u8 func_80034794(Face *face, f32 r, Vec3f *a, Vec3f *b, Vec3f *hit, void *x, f32 *t);
 extern u8 Math_SolveQuadratic(f32 a, f32 b, f32 c, f32 *r0, f32 *r1);
 
-void Car_ResolveTrackCollision(Car *car)
+void Camera_CollideTrack(Car *car)
 {
     Vec3f delta;
     Vec3f a;

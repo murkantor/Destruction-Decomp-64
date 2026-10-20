@@ -7,7 +7,7 @@ typedef struct { u8 pad[0x28]; s32 x28; u8 pad2[4]; s32 x30; u8 pad3[4]; Ctrl *x
 typedef struct { u8 pad[0x74]; Car *x74[12]; s32 xA4; } Level;
 typedef struct { u8 pad[0x1100]; Level *level; } Game;
 extern Game *gGame;
-void func_8001FBA8(Vec3f *out, Car *c);
+void Car_GetPos(Vec3f *out, Car *c);
 void func_8001FC08(Vec3f *out, Car *c);
 
 static inline f32 cross_y(Vec3f a, Vec3f b) {
@@ -22,8 +22,8 @@ s32 Ai_AdjustLaneFromNeighbour(Car *car) {
             Ctrl *ctrl = car->x38;
             Vec3f d, p;
             f32 sgn;
-            func_8001FBA8(&p, car);
-            func_8001FBA8(&d, gGame->level->x74[i]);
+            Car_GetPos(&p, car);
+            Car_GetPos(&d, gGame->level->x74[i]);
             d.x -= p.x;
             d.y -= p.y;
             d.z -= p.z;

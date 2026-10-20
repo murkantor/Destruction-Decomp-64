@@ -11,9 +11,9 @@ typedef struct {
     u8 x10;
 } Rel;
 
-f32 func_8001FB40(void *);
-Vec3f func_8001FBA8(void *);
-Vec3f func_8001FB88(void *);
+f32 Car_GetSpeed(void *);
+Vec3f Car_GetPos(void *);
+Vec3f Car_GetVelocity(void *);
 f64 acos(f64);
 f32 cosf(f32);
 f32 sqrtf(f32);
@@ -39,30 +39,30 @@ static inline f32 Angle(Vec3f a, Vec3f b) {
 }
 
 void func_80000AC8(void *a, void *b, Rel *out) {
-    f32 sa = func_8001FB40(a);
-    f32 sb = func_8001FB40(b);
+    f32 sa = Car_GetSpeed(a);
+    f32 sb = Car_GetSpeed(b);
     Vec3f v;
     Vec3f pa;
     Vec3f pb;
     f32 ang;
 
     out->x10 = 0;
-    pa = func_8001FBA8(a);
-    pb = func_8001FBA8(b);
+    pa = Car_GetPos(a);
+    pb = Car_GetPos(b);
     out->x0 = HDist(pa, pb);
     v.x = pa.x - pb.x;
     v.y = pa.y - pb.y;
     v.z = pa.z - pb.z;
-    ang = Angle(v, func_8001FB88(b));
+    ang = Angle(v, Car_GetVelocity(b));
     if (ang < 90.0f) {
-        v = func_8001FB88(a);
+        v = Car_GetVelocity(a);
         v.x = -v.x;
         v.y = -v.y;
         v.z = -v.z;
-        ang = Angle(v, func_8001FB88(b));
+        ang = Angle(v, Car_GetVelocity(b));
         out->x8 = (sa + sa) * cosf(ang);
     } else {
-        ang = Angle(func_8001FB88(a), func_8001FB88(b));
+        ang = Angle(Car_GetVelocity(a), Car_GetVelocity(b));
         out->x8 = sa * cosf(ang);
     }
     if (out->x8 == 0.0f || sb < 0.8 || out->x0 < 3.0) {

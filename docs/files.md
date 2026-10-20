@@ -202,18 +202,18 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `015254` | `80014654` | 0x230 | `src/auto/15254.c` | C (generated) | 1 | `Mover_FollowPath` |
 | `015484` | `80014884` | 0x8c | `src/auto/15484.c` | C (generated) | 1 |  |
 | `015510` | `80014910` | 0x48 | `src/auto/15510.c` | C (generated) | 1 | `Angle_StepWrap` |
-| `015558` | `80014958` | 0x394 | `src/auto/15558.c` | C (generated) | 1 |  |
+| `015558` | `80014958` | 0x394 | `src/auto/15558.c` | C (generated) | 1 | `Obj_DrawModel` |
 | `0158EC` | `80014CEC` | 0xd4 | `src/auto/158EC.c` | C (generated) | 1 | `Mtx_FromRotPosScaled` |
 | `0159C0` | `80014DC0` | 0x48 | `src/auto/159C0.c` | C (generated) | 1 |  |
 | `015A10` | `80014E10` | 0x1e4 | `src/auto/15A10.c` | C (generated) | 1 | `Poly_ClipSH` |
 | `015BF4` | `80014FF4` | 0x630 | `src/auto/15BF4.c` | C (generated) | 1 | `Shadow_ClipAndEmitFaces` |
-| `016224` | `80015624` | 0xc | `src/auto/16224.c` | C (generated) | 1 |  |
-| `016230` | `80015630` | 0xe4 | `src/auto/16230.c` | C (generated) | 1 | `Particle_DrawAt` |
+| `016224` | `80015624` | 0xc | `src/auto/16224.c` | C (generated) | 1 | `Shadow_ReserveGfx` |
+| `016230` | `80015630` | 0xe4 | `src/auto/16230.c` | C (generated) | 1 | `Shadow_Draw` |
 | `016314` | `80015714` | 0x1d8 | `src/auto/16314.c` | C (generated) | 1 | `Obj_AllocSubBuffers` |
 | `0164EC` | `800158EC` | 0x63c | `src/auto/164EC.c` | C (generated) | 1 | `Shadow_Build` |
-| `016B28` | `80015F28` | 0x80 | `src/auto/16B28.c` | C (generated) | 1 |  |
-| `016BB0` | `80015FB0` | 0xe0 | `src/auto/16BB0.c` | C (generated) | 1 |  |
-| `016C90` | `80016090` | 0x34 | `src/auto/16C90.c` | C (generated) | 1 |  |
+| `016B28` | `80015F28` | 0x80 | `src/auto/16B28.c` | C (generated) | 1 | `Obj_FreeSubBuffers` |
+| `016BB0` | `80015FB0` | 0xe0 | `src/auto/16BB0.c` | C (generated) | 1 | `LensFlare_Load` |
+| `016C90` | `80016090` | 0x34 | `src/auto/16C90.c` | C (generated) | 1 | `LensFlare_Free` |
 | `016CC4` | `800160C4` | 0x7fc | `src/auto/16CC4.c` | C (generated) | 1 | `Gfx_DrawLensFlare` |
 | `0174C0` | `800168C0` | 0x128 | `src/auto/174C0.c` | C (generated) | 1 |  |
 | `0175E8` | `800169E8` | 0x1c | `src/auto/175E8.c` | C (generated) | 1 |  |
@@ -230,23 +230,23 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `017ED0` | `800172D0` | 0x134 | `src/auto/17ED0.c` | C (generated) | 1 |  |
 | `018004` | `80017404` | 0x28 | `src/auto/18004.c` | C (generated) | 1 |  |
 | `01802C` | `8001742C` | 0x98 | `src/auto/1802C.c` | C (generated) | 1 |  |
-| `0180D0` | `800174D0` | 0x124 | `src/auto/180D0.c` | C (generated) | 1 | `Player_AllocBuffers` |
+| `0180D0` | `800174D0` | 0x124 | `src/auto/180D0.c` | C (generated) | 1 | `Particles_InitTrail` |
 | `0181F4` | `800175F4` | 0x1c | `src/auto/181F4.c` | C (generated) | 1 |  |
 | `018210` | `80017610` | 0x94 | `src/auto/18210.c` | C (generated) | 1 |  |
 | `0182A4` | `800176A4` | 0x264 | `src/auto/182A4.c` | C (generated) | 1 | `Particles_EmitTrail` |
 | `018508` | `80017908` | 0x28 | `src/auto/18508.c` | C (generated) | 1 |  |
 | `018530` | `80017930` | 0x98 | `src/auto/18530.c` | C (generated) | 1 |  |
 | `0185D0` | `800179D0` | 0x1d4 | `src/auto/185D0.c` | C (generated) | 1 | `Poly_ClipToPlane` |
-| `0187A4` | `80017BA4` | 0x2e8 | `src/auto/187A4.c` | C (generated) | 1 | `Shadow_ClipPolys` |
-| `018A8C` | `80017E8C` | 0xc | `src/auto/18A8C.c` | C (generated) | 1 |  |
+| `0187A4` | `80017BA4` | 0x2e8 | `src/auto/187A4.c` | C (generated) | 1 | `Skid_ClipPolys` |
+| `018A8C` | `80017E8C` | 0xc | `src/auto/18A8C.c` | C (generated) | 1 | `Skid_ReserveGfx` |
 | `018A98` | `80017E98` | 0xe4 | `src/auto/18A98.c` | C (generated) | 1 | `Obj_EmitPositionedDL` |
-| `018B7C` | `80017F7C` | 0x24 | `src/auto/18B7C.c` | C (generated) | 2 |  |
-| `018BA0` | `80017FA0` | 0x2d0 | `src/auto/18BA0.c` | C (generated) | 1 | `Shadow_InitMgr` |
-| `018E70` | `80018270` | 0x564 | `src/auto/18E70.c` | C (generated) | 1 |  |
-| `0193D4` | `800187D4` | 0x3c0 | `src/auto/193D4.c` | C (generated) | 1 |  |
-| `019794` | `80018B94` | 0x90 | `src/auto/19794.c` | C (generated) | 1 |  |
+| `018B7C` | `80017F7C` | 0x24 | `src/auto/18B7C.c` | C (generated) | 2 | `Skid_Start`, `Skid_Stop` |
+| `018BA0` | `80017FA0` | 0x2d0 | `src/auto/18BA0.c` | C (generated) | 1 | `Skid_InitMgr` |
+| `018E70` | `80018270` | 0x564 | `src/auto/18E70.c` | C (generated) | 1 | `Skid_Update` |
+| `0193D4` | `800187D4` | 0x3c0 | `src/auto/193D4.c` | C (generated) | 1 | `Skid_Draw` |
+| `019794` | `80018B94` | 0x90 | `src/auto/19794.c` | C (generated) | 1 | `Skid_Free` |
 | `019830` | `80018C30` | 0x140 | `src/auto/19830.c` | C (generated) | 2 | `Track_PosToCell`, `Points_BoundsXZ` |
-| `019970` | `80018D70` | 0x3c | `src/auto/19970.c` | C (generated) | 1 |  |
+| `019970` | `80018D70` | 0x3c | `src/auto/19970.c` | C (generated) | 1 | `Track_ClearCellBitmap` |
 | `0199AC` | `80018DAC` | 0x26c | `src/auto/199AC.c` | C (generated) | 1 | `Track_CollectCellItems` |
 | `019C18` | `80019018` | 0x8 | `src/auto/19C18.c` | C (generated) | 1 |  |
 | `019C20` | `80019020` | 0x30 | `src/auto/19C20.c` | C (generated) | 1 |  |
@@ -255,26 +255,26 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `019DC0` | `800191C0` | 0xfc | `src/auto/19DC0.c` | C (generated) | 1 | `Gfx_SetViewport2` |
 | `019EC0` | `800192C0` | 0x18 | `src/auto/19EC0.c` | C (generated) | 3 |  |
 | `019ED8` | `800192D8` | 0x74 | `src/auto/19ED8.c` | C (generated) | 1 | `List_InsertSorted` |
-| `019F4C` | `8001934C` | 0x38 | `src/auto/19F4C.c` | C (generated) | 2 |  |
-| `019F90` | `80019390` | 0x32c | `src/auto/19F90.c` | C (generated) | 1 | `Script_Relocate` |
-| `01A2BC` | `800196BC` | 0x1c | `src/auto/1A2BC.c` | C (generated) | 1 |  |
+| `019F4C` | `8001934C` | 0x38 | `src/auto/19F4C.c` | C (generated) | 2 | `List_Unlink` |
+| `019F90` | `80019390` | 0x32c | `src/auto/19F90.c` | C (generated) | 1 | `Track_RelocateDisplayList` |
+| `01A2BC` | `800196BC` | 0x1c | `src/auto/1A2BC.c` | C (generated) | 1 | `Track_DrawDisplayList` |
 | `01A2D8` | `800196D8` | 0xb4 | `src/auto/1A2D8.c` | C (generated) | 1 | `Obj_FreeResources` |
-| `01A390` | `80019790` | 0x3fc | `src/auto/1A390.c` | C (generated) | 1 |  |
-| `01A78C` | `80019B8C` | 0x5e8 | `src/auto/1A78C.c` | C (generated) | 1 |  |
-| `01AD74` | `8001A174` | 0xac | `src/auto/1AD74.c` | C (generated) | 1 |  |
+| `01A390` | `80019790` | 0x3fc | `src/auto/1A390.c` | C (generated) | 1 | `Weather_Init` |
+| `01A78C` | `80019B8C` | 0x5e8 | `src/auto/1A78C.c` | C (generated) | 1 | `Weather_Draw` |
+| `01AD74` | `8001A174` | 0xac | `src/auto/1AD74.c` | C (generated) | 1 | `Weather_Free` |
 | `01AE20` | `8001A220` | 0x1c | `src/auto/1AE20.c` | C (generated) | 2 |  |
-| `01AE40` | `8001A240` | 0xe8 | `src/auto/1AE40.c` | C (generated) | 1 |  |
-| `01AF28` | `8001A328` | 0x60 | `src/auto/1AF28.c` | C (generated) | 1 |  |
-| `01AF88` | `8001A388` | 0x24 | `src/auto/1AF88.c` | C (generated) | 1 |  |
+| `01AE40` | `8001A240` | 0xe8 | `src/auto/1AE40.c` | C (generated) | 1 | `Grid_Create` |
+| `01AF28` | `8001A328` | 0x60 | `src/auto/1AF28.c` | C (generated) | 1 | `Grid_Free` |
+| `01AF88` | `8001A388` | 0x24 | `src/auto/1AF88.c` | C (generated) | 1 | `Grid_AddItem` |
 | `01AFAC` | `8001A3AC` | 0xcc | `src/auto/1AFAC.c` | C (generated) | 1 | `Mesh_ComputeBoundsXZ` |
-| `01B078` | `8001A478` | 0xa8 | `src/auto/1B078.c` | C (generated) | 1 |  |
+| `01B078` | `8001A478` | 0xa8 | `src/auto/1B078.c` | C (generated) | 1 | `Grid_PosToCell` |
 | `01B120` | `8001A520` | 0x490 | `asm/1B120.s` | asm | 1 | `Grid_BuildCellsXZ` |
 | `01B5B0` | `8001A9B0` | 0x15c | `src/auto/1B5B0.c` | C (generated) | 1 | `Gfx_SetupRenderMode` |
 | `01B710` | `8001AB10` | 0x1d8 | `src/auto/1B710.c` | C (generated) | 1 | `Track_FindPolyUnder` |
 | `01B8E8` | `8001ACE8` | 0x388 | `src/auto/1B8E8.c` | C (generated) | 1 | `Track_SampleFaceColor` |
 | `01BC70` | `8001B070` | 0x228 | `src/auto/1BC70.c` | C (generated) | 1 | `Car_SetPrimColorFromTrack` |
-| `01BE98` | `8001B298` | 0x5c | `src/auto/1BE98.c` | C (generated) | 1 |  |
-| `01BEF4` | `8001B2F4` | 0x14 | `src/auto/1BEF4.c` | C (generated) | 1 |  |
+| `01BE98` | `8001B298` | 0x5c | `src/auto/1BE98.c` | C (generated) | 1 | `Race_FindCarSlot` |
+| `01BEF4` | `8001B2F4` | 0x14 | `src/auto/1BEF4.c` | C (generated) | 1 | `Race_GetSlotCarId` |
 | `01BF08` | `8001B308` | 0x71c | `src/auto/1BF08.c` | C (generated) | 1 | `Announcer_UpdateRace` |
 | `01C624` | `8001BA24` | 0xb64 | `src/auto/1C624.c` | C (generated) | 1 | `Car_UpdateWreck` |
 | `01D188` | `8001C588` | 0x84 | `src/auto/1D188.c` | C (generated) | 1 | `Car_Load` |
@@ -291,11 +291,11 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0202C4` | `8001F6C4` | 0x34 | `src/auto/202C4.c` | C (generated) | 1 |  |
 | `0202F8` | `8001F6F8` | 0x350 | `src/auto/202F8.c` | C (generated) | 1 | `Racer_UpdateLapTiming` |
 | `020648` | `8001FA48` | 0x10 | `src/auto/20648.c` | C (generated) | 1 |  |
-| `020658` | `8001FA58` | 0xd8 | `src/auto/20658.c` | C (generated) | 1 |  |
-| `020730` | `8001FB30` | 0x58 | `src/auto/20730.c` | C (generated) | 4 |  |
-| `020788` | `8001FB88` | 0x20 | `src/auto/20788.c` | C (generated) | 1 |  |
-| `0207A8` | `8001FBA8` | 0x20 | `src/auto/207A8.c` | C (generated) | 1 |  |
-| `0207C8` | `8001FBC8` | 0x40 | `src/auto/207C8.c` | C (generated) | 1 |  |
+| `020658` | `8001FA58` | 0xd8 | `src/auto/20658.c` | C (generated) | 1 | `Car_GetDriveDir` |
+| `020730` | `8001FB30` | 0x58 | `src/auto/20730.c` | C (generated) | 4 | `Car_GetSpeed` |
+| `020788` | `8001FB88` | 0x20 | `src/auto/20788.c` | C (generated) | 1 | `Car_GetVelocity` |
+| `0207A8` | `8001FBA8` | 0x20 | `src/auto/207A8.c` | C (generated) | 1 | `Car_GetPos` |
+| `0207C8` | `8001FBC8` | 0x40 | `src/auto/207C8.c` | C (generated) | 1 | `Car_SetPos` |
 | `020808` | `8001FC08` | 0x20 | `src/auto/20808.c` | C (generated) | 1 |  |
 | `020828` | `8001FC28` | 0x2c | `src/auto/20828.c` | C (generated) | 1 |  |
 | `020854` | `8001FC54` | 0x20 | `src/auto/20854.c` | C (generated) | 1 |  |
@@ -314,24 +314,24 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `021F34` | `80021334` | 0x1c | `src/auto/21F34.c` | C (generated) | 1 |  |
 | `021F50` | `80021350` | 0xa0 | `src/auto/21F50.c` | C (generated) | 1 |  |
 | `021FF0` | `800213F0` | 0x1dc | `src/auto/21FF0.c` | C (generated) | 1 | `Camera_UpdateChase` |
-| `0221CC` | `800215CC` | 0x134 | `src/auto/221CC.c` | C (generated) | 1 |  |
-| `022300` | `80021700` | 0x27c | `src/auto/22300.c` | C (generated) | 1 |  |
+| `0221CC` | `800215CC` | 0x134 | `src/auto/221CC.c` | C (generated) | 1 | `Camera_CycleView` |
+| `022300` | `80021700` | 0x27c | `src/auto/22300.c` | C (generated) | 1 | `Camera_Update` |
 | `02257C` | `8002197C` | 0xe8 | `src/auto/2257C.c` | C (generated) | 1 | `Vec3f_LerpOffset` |
 | `022664` | `80021A64` | 0x1bc | `src/auto/22664.c` | C (generated) | 1 | `Camera_SetChaseFromCar` |
 | `022820` | `80021C20` | 0x43c | `src/auto/22820.c` | C (generated) | 1 |  |
-| `022C5C` | `8002205C` | 0xe8 | `src/auto/22C5C.c` | C (generated) | 1 |  |
+| `022C5C` | `8002205C` | 0xe8 | `src/auto/22C5C.c` | C (generated) | 1 | `Camera_UpdateOrbit` |
 | `022D44` | `80022144` | 0x928 | `src/auto/22D44.c` | C (generated) | 1 | `Camera_UpdateChase2` |
 | `02366C` | `80022A6C` | 0x3b0 | `src/auto/2366C.c` | C (generated) | 1 |  |
-| `023A1C` | `80022E1C` | 0x410 | `src/auto/23A1C.c` | C (generated) | 1 |  |
+| `023A1C` | `80022E1C` | 0x410 | `src/auto/23A1C.c` | C (generated) | 1 | `Camera_UpdateFreeFly` |
 | `023E2C` | `8002322C` | 0xb0 | `src/auto/23E2C.c` | C (generated) | 1 | `Camera_UpdateBasis` |
 | `023EDC` | `800232DC` | 0x64 | `src/auto/23EDC.c` | C (generated) | 1 |  |
-| `023F40` | `80023340` | 0x604 | `src/auto/23F40.c` | C (generated) | 1 | `Car_ResolveTrackCollision` |
+| `023F40` | `80023340` | 0x604 | `src/auto/23F40.c` | C (generated) | 1 | `Camera_CollideTrack` |
 | `024544` | `80023944` | 0x39c | `src/auto/24544.c` | C (generated) | 1 | `Camera_UpdateCheckpointCam` |
 | `0248E0` | `80023CE0` | 0x7c | `src/auto/248E0.c` | C (generated) | 1 |  |
 | `024960` | `80023D60` | 0x7c | `src/auto/24960.c` | C (generated) | 1 | `Handler_CallX4ById` |
 | `0249DC` | `80023DDC` | 0x7c | `src/auto/249DC.c` | C (generated) | 1 | `Handler_CallX8ById` |
 | `024A58` | `80023E58` | 0xa4 | `src/auto/24A58.c` | C (generated) | 1 | `Handler_Dispatch` |
-| `024AFC` | `80023EFC` | 0x44 | `src/auto/24AFC.c` | C (generated) | 1 |  |
+| `024AFC` | `80023EFC` | 0x44 | `src/auto/24AFC.c` | C (generated) | 1 | `Car_AddToLists` |
 | `024B40` | `80023F40` | 0x20 | `src/auto/24B40.c` | C (generated) | 1 |  |
 | `024B60` | `80023F60` | 0x3c | `src/auto/24B60.c` | C (generated) | 1 |  |
 | `024B9C` | `80023F9C` | 0x30 | `src/auto/24B9C.c` | C (generated) | 1 |  |
@@ -343,7 +343,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `024EE8` | `800242E8` | 0x1c | `src/auto/24EE8.c` | C (generated) | 1 |  |
 | `024F04` | `80024304` | 0x70 | `src/auto/24F04.c` | C (generated) | 1 |  |
 | `024F74` | `80024374` | 0x1c | `src/auto/24F74.c` | C (generated) | 1 |  |
-| `024F90` | `80024390` | 0xe8 | `src/auto/24F90.c` | C (generated) | 1 |  |
+| `024F90` | `80024390` | 0xe8 | `src/auto/24F90.c` | C (generated) | 1 | `World_DrawObjects` |
 | `025080` | `80024480` | 0x210 | `src/auto/25080.c` | C (generated) | 1 | `Input_ReadWheel` |
 | `025290` | `80024690` | 0xd0 | `src/auto/25290.c` | C (generated) | 1 |  |
 | `025360` | `80024760` | 0x9c | `src/auto/25360.c` | C (generated) | 1 |  |
@@ -353,26 +353,26 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `025788` | `80024B88` | 0x10 | `src/auto/25788.c` | C (generated) | 1 |  |
 | `0257A0` | `80024BA0` | 0x128 | `src/auto/257A0.c` | C (generated) | 1 |  |
 | `0258C8` | `80024CC8` | 0x17c | `src/auto/258C8.c` | C (generated) | 1 | `Track_LoadResources` |
-| `025A44` | `80024E44` | 0x190 | `src/auto/25A44.c` | C (generated) | 1 |  |
+| `025A44` | `80024E44` | 0x190 | `src/auto/25A44.c` | C (generated) | 1 | `Track_FreeResources` |
 | `025BD4` | `80024FD4` | 0x140 | `src/auto/25BD4.c` | C (generated) | 2 |  |
 | `025D14` | `80025114` | 0x124 | `src/auto/25D14.c` | C (generated) | 1 | `Race_LoadTrackResources` |
 | `025E38` | `80025238` | 0x118 | `src/auto/25E38.c` | C (generated) | 1 |  |
 | `025F50` | `80025350` | 0x78 | `src/auto/25F50.c` | C (generated) | 1 |  |
 | `025FC8` | `800253C8` | 0x70 | `src/auto/25FC8.c` | C (generated) | 1 |  |
 | `026038` | `80025438` | 0xc | `src/auto/26038.c` | C (generated) | 1 |  |
-| `026050` | `80025450` | 0xbc | `src/auto/26050.c` | C (generated) | 1 |  |
-| `02610C` | `8002550C` | 0x64 | `src/auto/2610C.c` | C (generated) | 1 |  |
-| `026170` | `80025570` | 0x39c | `src/auto/26170.c` | C (generated) | 1 |  |
+| `026050` | `80025450` | 0xbc | `src/auto/26050.c` | C (generated) | 1 | `Race_Create` |
+| `02610C` | `8002550C` | 0x64 | `src/auto/2610C.c` | C (generated) | 1 | `Race_Free` |
+| `026170` | `80025570` | 0x39c | `src/auto/26170.c` | C (generated) | 1 | `Tag_Update` |
 | `02650C` | `8002590C` | 0x78 | `src/auto/2650C.c` | C (generated) | 1 | `Timer_Create` |
-| `026584` | `80025984` | 0x24 | `src/auto/26584.c` | C (generated) | 1 |  |
-| `0265A8` | `800259A8` | 0x438 | `src/auto/265A8.c` | C (generated) | 1 |  |
-| `0269E0` | `80025DE0` | 0xd4 | `src/auto/269E0.c` | C (generated) | 1 | `Cam_Create` |
+| `026584` | `80025984` | 0x24 | `src/auto/26584.c` | C (generated) | 1 | `Tag_Free` |
+| `0265A8` | `800259A8` | 0x438 | `src/auto/265A8.c` | C (generated) | 1 | `Tag_PassTo` |
+| `0269E0` | `80025DE0` | 0xd4 | `src/auto/269E0.c` | C (generated) | 1 | `Prop_CreateStatic` |
 | `026AB4` | `80025EB4` | 0x1c | `src/auto/26AB4.c` | C (generated) | 1 |  |
-| `026AD0` | `80025ED0` | 0xe0 | `src/auto/26AD0.c` | C (generated) | 1 | `Camera_Create` |
+| `026AD0` | `80025ED0` | 0xe0 | `src/auto/26AD0.c` | C (generated) | 1 | `Prop_Create` |
 | `026BB0` | `80025FB0` | 0x1c | `src/auto/26BB0.c` | C (generated) | 1 |  |
 | `026BCC` | `80025FCC` | 0x68 | `src/auto/26BCC.c` | C (generated) | 1 |  |
 | `026C34` | `80026034` | 0x1c | `src/auto/26C34.c` | C (generated) | 1 |  |
-| `026C50` | `80026050` | 0x80 | `src/auto/26C50.c` | C (generated) | 1 | `Shake_Create` |
+| `026C50` | `80026050` | 0x80 | `src/auto/26C50.c` | C (generated) | 1 | `Mover_Create` |
 | `026CD0` | `800260D0` | 0x1c | `src/auto/26CD0.c` | C (generated) | 1 |  |
 | `026CEC` | `800260EC` | 0x84 | `src/auto/26CEC.c` | C (generated) | 1 |  |
 | `026D70` | `80026170` | 0x1c | `src/auto/26D70.c` | C (generated) | 1 |  |
@@ -389,9 +389,9 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0283C0` | `800277C0` | 0x158 | `src/auto/283C0.c` | C (generated) | 1 | `List_BuildSorted` |
 | `028518` | `80027918` | 0x148 | `src/auto/28518.c` | C (generated) | 2 | `ItemList_MoveUp`, `ItemList_MoveDown` |
 | `028660` | `80027A60` | 0x294 | `src/auto/28660.c` | C (generated) | 1 | `Standings_Resort` |
-| `0288F4` | `80027CF4` | 0x58 | `src/auto/288F4.c` | C (generated) | 1 |  |
+| `0288F4` | `80027CF4` | 0x58 | `src/auto/288F4.c` | C (generated) | 1 | `Car_CompareScore` |
 | `02894C` | `80027D4C` | 0x180 | `src/auto/2894C.c` | C (generated) | 1 | `Car_CompareRacePosition` |
-| `028ACC` | `80027ECC` | 0x3c | `src/auto/28ACC.c` | C (generated) | 1 |  |
+| `028ACC` | `80027ECC` | 0x3c | `src/auto/28ACC.c` | C (generated) | 1 | `List_FreeAll` |
 | `028B08` | `80027F08` | 0x74 | `src/auto/28B08.c` | C (generated) | 1 | `ItemList_IndexOf` |
 | `028B7C` | `80027F7C` | 0xec | `src/auto/28B7C.c` | C (generated) | 1 | `Race_GetPlayerPosition` |
 | `028C70` | `80028070` | 0x63c | `src/auto/28C70.c` | C (generated) | 1 | `Car_OnCollision2` |

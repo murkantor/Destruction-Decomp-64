@@ -20,7 +20,7 @@ typedef struct { u8 pad[0x10]; Gfx *x10; } Disp;
 typedef struct { u8 pad[0x190]; Disp *x190; } Obj;
 
 extern Game *gGame;
-void func_8001FBA8(Vec3f *, void *);
+void Car_GetPos(Vec3f *, void *);
 void Track_PosToCell(s32 *cx, s32 *cz, f32 x, f32 z);
 void Track_CollectCellItems(s32 *out, s32 *count, s32 max, s32 x0, s32 z0, s32 x1, s32 z1);
 void Track_FindPolyUnder(s32 *idx, Vec3f *pos, s32 *list, s32 n);
@@ -35,7 +35,7 @@ void Car_SetPrimColorFromTrack(Obj *o) {
     s32 idx;
     Gfx *g;
 
-    func_8001FBA8(&pos, o);
+    Car_GetPos(&pos, o);
     Track_PosToCell(&cx, &cz, pos.x * gGame->track->x70->xC->scale, pos.z * gGame->track->x70->xC->scale);
     if (cx >= 0 && cz >= 0 && cx < gGame->track->x70->xC->w && cz < gGame->track->x70->xC->h) {
         Track_CollectCellItems(list, &n, 32, cx, cz, cx, cz);

@@ -27,7 +27,7 @@ extern const double D_800B8D80;
 extern const double D_800B8D88;
 u64 Time_Get(u64 *);
 void Msg_Queue(s32, s32, s32, s32);
-Vec3f func_8001FBA8(void *);
+Vec3f Car_GetPos(void *);
 void Ui_RemoveElement(void *, s32);
 
 void func_800262B8(Obj *obj)
@@ -53,7 +53,7 @@ void func_800262B8(Obj *obj)
         }
     } else {
         if (D_80096078->x4 == 1) {
-            D_80096078->x10 = func_8001FBA8(D_80096078->x8);
+            D_80096078->x10 = Car_GetPos(D_80096078->x8);
             D_80096078->x10.y += D_800B8D80;
             if (!D_80096078->x49) {
                 D_80096078->x49 = 1;

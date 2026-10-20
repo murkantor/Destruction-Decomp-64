@@ -20,7 +20,7 @@ extern s32 D_80095D94[][3];
 
 void func_8002B66C(void);
 void Results_TallyStandings(void);
-s32 func_8001B298(s32);
+s32 Race_FindCarSlot(s32);
 int rand(void);
 
 void Race_AwardPot(void) {
@@ -37,7 +37,7 @@ void Race_AwardPot(void) {
             r = rand() % race->x4;
             for (; i < gGame[0]->x1100->xA4; i++) {
                 if (gGame[0]->x1100->cars[i]->x10 > 0) {
-                    p = func_8001B298(gGame[0]->x1100->cars[i]->x34);
+                    p = Race_FindCarSlot(gGame[0]->x1100->cars[i]->x34);
                     gGame[0]->x1100->cars[i]->x18 += race->x4 * 33;
                     race->x4--;
                     if (r == 0) {
@@ -51,7 +51,7 @@ void Race_AwardPot(void) {
         if (race->x8 > 0) {
             for (i = 0; i < gGame[0]->x1100->xA4; i++) {
                 if (gGame[0]->x1100->cars[i]->x10 > 0) {
-                    p = func_8001B298(gGame[0]->x1100->cars[i]->x34);
+                    p = Race_FindCarSlot(gGame[0]->x1100->cars[i]->x34);
                     gGame[0]->x1100->cars[i]->x18 += 50;
                     D_80095D94[p][D_800958BC] = 50;
                 }

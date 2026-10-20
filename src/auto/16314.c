@@ -15,7 +15,7 @@ extern u8 gMainHeap[];
 void *Mem_Alloc(u32 size);
 void Heap_Alloc(void *heap, HeapBlock *out, u32 size, u32 alignMask, u32 alignOffset);
 void *HeapBlock_Ptr(HeapBlock *);
-void func_80018D70(void);
+void Track_ClearCellBitmap(void);
 
 #define INITSUB(s) \
     Heap_Alloc(gMainHeap, &(s)->b8, (u32)((u32)(D_800BC9A8 * 8) * 2.1), 7, 0); \
@@ -35,5 +35,5 @@ void Obj_AllocSubBuffers(Obj **arg0) {
     INITSUB(s)
     s = &(*arg0)->x10C;
     INITSUB(s)
-    func_80018D70();
+    Track_ClearCellBitmap();
 }

@@ -22,11 +22,11 @@ typedef struct {
     Ai *x38;
 } Car;
 extern Game *gGame;
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 f32 func_800005C8(Vec3f, Vec3f);
-f32 func_8001FB40(Car *);
+f32 Car_GetSpeed(Car *);
 
 void Ai_Steer(Car *car) {
     Ai *ai = car->x38;
@@ -42,7 +42,7 @@ void Ai_Steer(Car *car) {
     s32 lim;
     Input *in;
 
-    pos = func_8001FBA8(car);
+    pos = Car_GetPos(car);
     fwd = func_8001FC08(car);
     accel = 1;
     brake = 0;
@@ -70,7 +70,7 @@ void Ai_Steer(Car *car) {
     }
     steer = ang;
     if (race->x10 == 0) {
-        spd = func_8001FB40(car);
+        spd = Car_GetSpeed(car);
         lim = race->x34[car->x28].x0;
         if (lim < spd) {
             brake = 1;

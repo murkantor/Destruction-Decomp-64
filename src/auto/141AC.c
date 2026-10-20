@@ -13,7 +13,7 @@ extern s32 D_8011F048[];
 void func_80025FB0(void *);
 void func_80025EB4(void *);
 void func_800260D0(void *);
-void func_80025984(void *);
+void Tag_Free(void *);
 void func_8002629C(void *);
 void func_80026968(void *);
 void func_80026170(void *);
@@ -32,7 +32,7 @@ void Obj_Free(Obj *o) {
         case 19: i = 2; func_80025EB4(o->x38); break;
         case 27: i = 3; func_800260D0(o->x38); break;
         case 28: i = 4; func_800260D0(o->x38); break;
-        case 14: i = 5; func_80025984(o->x38); break;
+        case 14: i = 5; Tag_Free(o->x38); break;
         case 15: i = 6; func_8002629C(o->x38); break;
         case 16: i = 7; func_80026968(o->x38); break;
         case 17: i = 8; func_8002629C(o->x38); break;

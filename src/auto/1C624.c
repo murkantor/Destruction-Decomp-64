@@ -68,8 +68,8 @@ extern u64 Time_Get(u64 *);
 extern void Pad_Rumble(s32 channel, s32 frames, f32 strength);
 extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 unique);
 extern void Ui_RemoveElement(void *, s32);
-extern Vec3f func_8001FBA8(Car *);
-extern Vec3f func_8001FB88(Car *);
+extern Vec3f Car_GetPos(Car *);
+extern Vec3f Car_GetVelocity(Car *);
 extern void Sound_PlayAt(void *, Vec3f, Vec3f, s32);
 extern void func_800066D0(Car *);
 extern s32 rand(void);
@@ -78,7 +78,7 @@ extern void Fx_SpawnParticlesMode(void *, Vec3f, Vec3f, f32, f32, s32, s32, s32)
 extern void Car_SetPrimColorFromTrack(Car *);
 extern void Car_UpdateTrackSegment(Car *);
 extern void func_80020FB0(Car *);
-extern f32 func_8001FB40(Car *);
+extern f32 Car_GetSpeed(Car *);
 extern void Standings_Resort(void *, Car *);
 
 void Car_UpdateWreck(Car *car) {
@@ -160,8 +160,8 @@ void Car_UpdateWreck(Car *car) {
                     car->wheels[i].x184 = 0.36f;
                 }
             }
-            Sound_PlayAt(D_8011EEF8[0], func_8001FBA8(car), func_8001FB88(car), 10);
-            Sound_PlayAt(D_8011EEF8[0], func_8001FBA8(car), func_8001FB88(car), 2);
+            Sound_PlayAt(D_8011EEF8[0], Car_GetPos(car), Car_GetVelocity(car), 10);
+            Sound_PlayAt(D_8011EEF8[0], Car_GetPos(car), Car_GetVelocity(car), 2);
             if (D_800958AC != 1 && race->x0 >= 2 && race->x10 == 1) {
                 func_800066D0(car);
             }
@@ -193,7 +193,7 @@ void Car_UpdateWreck(Car *car) {
           if (finished) {
             f32 spd;
             car->x2C->x0 = 0;
-            spd = func_8001FB40(car);
+            spd = Car_GetSpeed(car);
             Time_Get(&gGame[0]->x10A8);
             if (spd <= 3.0f) {
                 if (car->x30 == 0) {
@@ -244,7 +244,7 @@ void Car_UpdateWreck(Car *car) {
         car->x2C->x3 = 0;
         car->x2C->x4 = 0;
         car->x2C->x6 = 0;
-        if (func_8001FB40(car) <= 1.0) {
+        if (Car_GetSpeed(car) <= 1.0) {
             s32 n = 0;
             for (i = 0; i < 4; i++) {
                 Wheel *w = &car->wheels[i];
@@ -299,7 +299,7 @@ void Car_UpdateWreck(Car *car) {
         break;
     }
     {
-        f32 spd = func_8001FB40(car);
+        f32 spd = Car_GetSpeed(car);
         if (D_80125CC0[car->x3C->x10].x0 == 0 && rumble != 0.0 && gGame[0]->x10FC == 0x1C && spd > 0.5 && car->xD == 0) {
             Pad_Rumble(car->x3C->x10, 1, rumble);
         }

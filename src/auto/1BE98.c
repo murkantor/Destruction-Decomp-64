@@ -5,7 +5,7 @@ extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern s32 D_800D1C20[12];
 
-s32 func_8001B298(s32 v) {
+s32 Race_FindCarSlot(s32 v) {
     s32 i;
 
     if (D_800958A8 == 3 && D_800958AC == 2) {

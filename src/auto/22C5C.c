@@ -23,7 +23,7 @@ extern f32 D_80095624;
 void Math_SinCos(f32, f32 *, f32 *);
 void Camera_UpdateBasis(Cam *);
 
-void func_8002205C(Cam *cam, Car *car, f32 speed, f32 *angle) {
+void Camera_UpdateOrbit(Cam *cam, Car *car, f32 speed, f32 *angle) {
     f32 s;
     f32 c;
 

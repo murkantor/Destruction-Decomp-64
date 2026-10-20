@@ -76,7 +76,7 @@ extern Chan D_8007EDF8[];
 s16 func_80064D70(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(Pool *, SndReq *);
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 void func_8000821C(SndReq *, s32);
 void func_80008298(SndReq *, s32);
 void List_RemoveById(Pool *, s16);
@@ -103,7 +103,7 @@ void func_80006E8C(Pool *pool, Ctx *c) {
     req.x0 = 0x3F4;
     req.x4 = 0;
     req.x2 = func_80064D70();
-    req.x18 = func_8001FBA8(car);
+    req.x18 = Car_GetPos(car);
     req.x24 = zero;
     req.x44 = 1;
     req.x34 = 0;
@@ -144,7 +144,7 @@ void func_80006E8C(Pool *pool, Ctx *c) {
                         break;
                     }
                 }
-                pool->xC[i]->x18 = func_8001FBA8(car);
+                pool->xC[i]->x18 = Car_GetPos(car);
                 return;
             }
         }

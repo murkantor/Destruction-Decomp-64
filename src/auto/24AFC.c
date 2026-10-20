@@ -12,7 +12,7 @@ typedef struct {
 } Game;
 extern Game *gGame;
 
-void func_80023EFC(u8 *obj, s32 car) {
+void Car_AddToLists(u8 *obj, s32 car) {
     Race *race = gGame->race;
     s16 i;
 

@@ -28,7 +28,7 @@ extern Rec *D_80096080;
 extern Rec *D_80096084;
 extern void *gUi;
 extern void Car_ApplyDamage(Car *, s32, f32, s32);
-extern void func_800259A8(Car *);
+extern void Tag_PassTo(Car *);
 extern u8 Obj_HasValue(Rec *, Car *);
 extern void func_800266C8(Slot *);
 extern void Ui_RemoveElement(void *, s32);
@@ -59,13 +59,13 @@ void Car_OnCollision(Car *a, s32 pa, Car *b, s32 pb, f32 force) {
         if (D_800958AC == 1) {
             if (D_80096074[0] == a) {
                 if (D_80096074[1] != b || (f64)gGame->x10A8 > 3000000000.0) {
-                    func_800259A8(b);
+                    Tag_PassTo(b);
                 }
                 return;
             }
             if (D_80096074[0] == b) {
                 if (D_80096074[1] != a || (f64)gGame->x10A8 > 3000000000.0) {
-                    func_800259A8(a);
+                    Tag_PassTo(a);
                 }
             }
             return;

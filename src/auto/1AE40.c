@@ -16,7 +16,7 @@ typedef struct {
 void *Mem_Alloc(u32);
 void *HeapBlock_Ptr(HeapBlock *);
 
-void func_8001A240(Grid **out, s32 n, s32 w, s32 h) {
+void Grid_Create(Grid **out, s32 n, s32 w, s32 h) {
     Grid *g = Mem_Alloc(sizeof(Grid));
 
     *out = g;

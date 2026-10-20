@@ -57,7 +57,7 @@ extern void guPosition(Mtx *, f32, f32, f32, f32, f32, f32, f32);
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-Gfx *func_80019B8C(Cam *cam, Gfx *gfx) {
+Gfx *Weather_Draw(Cam *cam, Gfx *gfx) {
     Vec3f d;
     Vec3f dir;
     f32 m[4][4];

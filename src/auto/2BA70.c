@@ -39,7 +39,7 @@ extern s32 D_80095D64[];
 extern s32 D_80095DF4[];
 extern s32 D_80095FF8[];
 extern u64 D_80095E28[][5];
-extern s32 func_8001B298(s32);
+extern s32 Race_FindCarSlot(s32);
 extern void Standings_Resort(Node **, Car *);
 
 void Results_TallyStandings(void) {
@@ -79,7 +79,7 @@ void Results_TallyStandings(void) {
     }
     node = race->x14;
     for (i = 0; i < gGame[0]->x1100->xA4; i++) {
-        id = func_8001B298(node->car->x34);
+        id = Race_FindCarSlot(node->car->x34);
         if (D_80095D04[id] == -1) {
             D_80095D04[id] = 0;
         }

@@ -5,6 +5,6 @@ typedef struct {
     f32 x, y, z;
 } V3;
 
-V3 func_8001FB88(u8 *obj) {
+V3 Car_GetVelocity(u8 *obj) {
     return *(V3 *)(obj + 0x224);
 }

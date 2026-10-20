@@ -25,7 +25,7 @@ typedef struct {
 extern Game *gGame;
 extern u32 D_800958B4[];
 u64 Time_Get(u64 *);
-f32 func_8001FB40(Ent *);
+f32 Car_GetSpeed(Ent *);
 
 void Ai_CheckStuck(Ent *e) {
     u64 now = Time_Get(&gGame->x10A8);
@@ -47,7 +47,7 @@ void Ai_CheckStuck(Ent *e) {
     if (D_800958B4[0] >= 4) {
         thresh = 20.0f;
     }
-    if (func_8001FB40(e) < thresh) {
+    if (Car_GetSpeed(e) < thresh) {
         t->x78++;
     } else {
         t->x78 = 0;

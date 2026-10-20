@@ -10,7 +10,7 @@ typedef struct { u8 pad[0x38]; Cam *x38; } Owner;
 void *Mem_Alloc(u32 size);
 void Basis_Orthonormalize(f32 (*)[3]);
 
-void Camera_Create(Owner *o, Vec3f pos) {
+void Prop_Create(Owner *o, Vec3f pos) {
     Cam *cam = Mem_Alloc(0x50);
     s32 i;
 

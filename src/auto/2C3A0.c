@@ -16,7 +16,7 @@ extern s32 D_800958B4;
 extern s32 D_80095850[];
 extern u8 D_80091B14[];
 extern void *D_8011EEF8;
-s32 func_8001B298(s32);
+s32 Race_FindCarSlot(s32);
 void func_8001F6C4(Car *, u8);
 void func_8001F000(Car *, u8, s32);
 void func_80007FD4(void *, Car *);
@@ -60,7 +60,7 @@ void func_8002B7A0(Car *car, Event *ev, u8 flag) {
         break;
     case 1:
         if (D_800958A8 == 2) {
-            if (D_800958B4 != 8 || ev->x24 != D_80095850[func_8001B298(car->x34)]) {
+            if (D_800958B4 != 8 || ev->x24 != D_80095850[Race_FindCarSlot(car->x34)]) {
                 func_8001F6C4(car, flag);
             }
         }
@@ -78,7 +78,7 @@ void func_8002B7A0(Car *car, Event *ev, u8 flag) {
     case 3:
         if (D_800958A8 != 2) {
             if (D_800958B4 == 8) {
-                i = func_8001B298(car->x34);
+                i = Race_FindCarSlot(car->x34);
                 if (D_80095850[i] == ev->x24) {
                     break;
                 }

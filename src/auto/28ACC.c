@@ -3,7 +3,7 @@
 
 M2C_UNK Mem_Free(void *);                      /* extern */
 
-void func_80027ECC(void **arg0) {
+void List_FreeAll(void **arg0) {
     void *temp_s0;
     void *var_a0;
 

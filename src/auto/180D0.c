@@ -21,7 +21,7 @@ void Heap_Alloc(void *, HeapBlock *, s32, s32, s32);
 void *HeapBlock_Ptr(HeapBlock *);
 void func_80010950(Obj174D0 *, s32, void *, s32, s32, s32, s32, s32);
 
-void Player_AllocBuffers(Obj174D0 *obj, s32 n) {
+void Particles_InitTrail(Obj174D0 *obj, s32 n) {
     s32 i;
 
     obj->x8C = 0;

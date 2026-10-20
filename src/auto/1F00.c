@@ -10,7 +10,7 @@ typedef struct {
     s32 x10;
 } Obj1300;
 
-void func_8001FBA8(Vec3f *, void *);
+void Car_GetPos(Vec3f *, void *);
 f32 sqrtf(f32);
 
 static inline f32 Dist1300(void *a, void *b) {
@@ -18,8 +18,8 @@ static inline f32 Dist1300(void *a, void *b) {
     f32 dx;
     f32 dz;
 
-    func_8001FBA8(&v[0], a);
-    func_8001FBA8(&v[1], b);
+    Car_GetPos(&v[0], a);
+    Car_GetPos(&v[1], b);
     dx = v[0].x - v[1].x;
     dz = v[0].z - v[1].z;
     if (dx == 0.0 && dz == 0.0) {

@@ -42,8 +42,8 @@ extern s32 D_800958B4;
 extern s32 D_800919F4[];
 extern s32 D_80091A54[];
 extern u8 D_80124360;
-void func_80015F28(s32 *);
-void func_80018B94(s32 *);
+void Obj_FreeSubBuffers(s32 *);
+void Skid_Free(s32 *);
 void func_80013174(s32 *);
 void func_8005AAC0(void *);
 void func_80063AAC(s32);
@@ -91,13 +91,13 @@ void Car_Destroy(Car *o) {
         idx = ((u8 *)o)[0x37];
         if (gGame->xC == 2) {
             if (o->xB6C) {
-                func_80015F28(&o->xB6C);
+                Obj_FreeSubBuffers(&o->xB6C);
             }
             if (o->xB70) {
-                func_80018B94(&o->xB70);
-                func_80018B94(&o->xB74);
-                func_80018B94(&o->xB78);
-                func_80018B94(&o->xB7C);
+                Skid_Free(&o->xB70);
+                Skid_Free(&o->xB74);
+                Skid_Free(&o->xB78);
+                Skid_Free(&o->xB7C);
             }
             if (o->xB80) {
                 func_80013174(&o->xB80);

@@ -5,7 +5,7 @@ M2C_UNK Heap_Free(M2C_UNK *, s32);                  /* extern */
 M2C_UNK Mem_Free(s32);                              /* extern */
 extern M2C_UNK gMainHeap;
 
-void func_80015F28(s32 *arg0) {
+void Obj_FreeSubBuffers(s32 *arg0) {
     s32 temp_s1;
     s32 temp_s1_2;
 

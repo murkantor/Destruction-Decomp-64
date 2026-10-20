@@ -26,7 +26,7 @@ Gfx *func_80019050(Gfx *);
 
 #define GFX2(g,a,b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
-void func_800187D4(Ctx187D4 *c) {
+void Skid_Draw(Ctx187D4 *c) {
     DLBuf *b;
     Gfx *g;
     s32 i;

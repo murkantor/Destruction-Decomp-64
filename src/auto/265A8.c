@@ -65,7 +65,7 @@ void func_800638C8(void *);
 void func_80063890(void *);
 void func_800638C0(void *);
 
-void func_800259A8(Car *car) {
+void Tag_PassTo(Car *car) {
     s32 n = 10;
     u64 times[6] = { 22000000000ULL, 20000000000ULL, 18000000000ULL, 16000000000ULL, 14000000000ULL, 12000000000ULL };
     TagState *tag = D_80096074;

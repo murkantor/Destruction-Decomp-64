@@ -39,9 +39,9 @@ void Vec3f_Dot(f32 *, Vec3f *, Vec3f *);
 void Points_BoundsXZ(f32 *, f32 *, f32 *, f32 *, Vec3f *, s32);
 void Track_PosToCell(s32 *, s32 *, f32, f32);
 void Track_CollectCellItems(s32 *, s32 *, s32, s32, s32, s32, s32);
-void Shadow_ClipPolys(Skid *, s32 *, s32);
+void Skid_ClipPolys(Skid *, s32 *, s32);
 
-void func_80018270(Skid *s, Body *b, Mtx *m) {
+void Skid_Update(Skid *s, Body *b, Mtx *m) {
     Vec3f q[4];
     s32 items[40];
     Vec3f v[3];
@@ -140,7 +140,7 @@ void func_80018270(Skid *s, Body *b, Mtx *m) {
     } else {
         count = 0;
     }
-    Shadow_ClipPolys(s, items, count);
+    Skid_ClipPolys(s, items, count);
     s->prev = s->cur;
     s->x244 = q[3];
     s->x250 = q[2];

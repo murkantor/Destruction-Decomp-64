@@ -33,8 +33,8 @@ extern Slot *D_80096080;
 extern Slot *D_80096084;
 extern s32 D_800958A4;
 u8 Obj_HasValue(void *, Car *);
-Vec3f func_8001FBA8(void *);
-Vec3f func_8001FB88(void *);
+Vec3f Car_GetPos(void *);
+Vec3f Car_GetVelocity(void *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 f32 func_800005C8(Vec3f, Vec3f);
@@ -51,8 +51,8 @@ static inline void Ai_ApplyRel(Car *car, Rel r) {
     if (r.xC >= 3.0) {
         r.xC = 2.0f;
     }
-    pos = func_8001FBA8(ai->x18);
-    fwd = func_8001FB88(ai->x18);
+    pos = Car_GetPos(ai->x18);
+    fwd = Car_GetVelocity(ai->x18);
     ai->x5C.x = pos.x + fwd.x * r.xC;
     ai->x5C.y = pos.y + fwd.y * r.xC;
     ai->x5C.z = pos.z + fwd.z * r.xC;
@@ -60,7 +60,7 @@ static inline void Ai_ApplyRel(Car *car, Rel r) {
         ai->x6C = 1;
     }
     fwd = func_8001FC08(car);
-    pos = func_8001FBA8(car);
+    pos = Car_GetPos(car);
     d.x = ai->x5C.x - pos.x;
     d.y = ai->x5C.y - pos.y;
     d.z = ai->x5C.z - pos.z;
@@ -98,10 +98,10 @@ void Ai_SelectTeamTarget(Car *car) {
         } else if (p->x8 == car) {
             o->x5C = *(Vec3f *)&r->x8;
         } else {
-            d1 = Vec3f_DistXZ(func_8001FBA8(p->x8), func_8001FBA8(s->x3C));
-            d2 = Vec3f_DistXZ(func_8001FBA8(p->x8), func_8001FBA8(s->x40));
+            d1 = Vec3f_DistXZ(Car_GetPos(p->x8), Car_GetPos(s->x3C));
+            d2 = Vec3f_DistXZ(Car_GetPos(p->x8), Car_GetPos(s->x40));
             if (D_800958A4 == 2) {
-                d3 = Vec3f_DistXZ(func_8001FBA8(p->x8), func_8001FBA8(s->x44));
+                d3 = Vec3f_DistXZ(Car_GetPos(p->x8), Car_GetPos(s->x44));
             }
             if (d1 < d2) {
                 d1 = d2;
@@ -121,10 +121,10 @@ void Ai_SelectTeamTarget(Car *car) {
         break;
     case 13:
         if (q->x4 == 0) {
-            d1 = Vec3f_DistXZ(q->x10, func_8001FBA8(s->x3C));
-            d2 = Vec3f_DistXZ(q->x10, func_8001FBA8(s->x40));
+            d1 = Vec3f_DistXZ(q->x10, Car_GetPos(s->x3C));
+            d2 = Vec3f_DistXZ(q->x10, Car_GetPos(s->x40));
             if (D_800958A4 == 2) {
-                d3 = Vec3f_DistXZ(q->x10, func_8001FBA8(s->x44));
+                d3 = Vec3f_DistXZ(q->x10, Car_GetPos(s->x44));
             }
             if (d1 < d2) {
                 d1 = d2;

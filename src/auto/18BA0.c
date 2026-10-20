@@ -30,9 +30,9 @@ extern u8 *D_800BC9C0;
 void *Mem_Alloc(s32);
 void Heap_Alloc(void *, HeapBlock *, u32, s32, s32);
 void *HeapBlock_Ptr(HeapBlock *);
-void func_80018D70(void);
+void Track_ClearCellBitmap(void);
 
-void Shadow_InitMgr(Mgr **pp) {
+void Skid_InitMgr(Mgr **pp) {
     Pool *pool;
     s32 i;
 
@@ -60,5 +60,5 @@ void Shadow_InitMgr(Mgr **pp) {
         (*pp)->x224[i].x0 = 0;
         (*pp)->x224[i].x28 = 0;
     }
-    func_80018D70();
+    Track_ClearCellBitmap();
 }

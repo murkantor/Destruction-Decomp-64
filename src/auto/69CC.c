@@ -24,8 +24,8 @@ extern void Ai_PickTarget2(Car *, Target *);
 extern void AI_PickAttackTarget(Car *);
 extern void func_8000663C(Car *);
 extern void func_80000AC8(Car *, Car *, Target *);
-extern Vec3f func_8001FBA8(Car *);
-extern Vec3f func_8001FB88(Car *);
+extern Vec3f Car_GetPos(Car *);
+extern Vec3f Car_GetVelocity(Car *);
 extern Vec3f func_8001FC08(Car *);
 extern f32 func_800005C8(Vec3f, Vec3f);
 extern void Car_UpdateTrackSection(Car *);
@@ -44,8 +44,8 @@ static inline void aim(Car *car, Target t) {
     if (t.xC >= 3.0) {
         t.xC = 2.0f;
     }
-    p = func_8001FBA8(ai->x18);
-    q = func_8001FB88(ai->x18);
+    p = Car_GetPos(ai->x18);
+    q = Car_GetVelocity(ai->x18);
     ai->x5C.x = p.x + q.x * t.xC;
     ai->x5C.y = p.y + q.y * t.xC;
     ai->x5C.z = p.z + q.z * t.xC;
@@ -53,7 +53,7 @@ static inline void aim(Car *car, Target t) {
         ai->x6C = 1;
     }
     q = func_8001FC08(car);
-    p = func_8001FBA8(car);
+    p = Car_GetPos(car);
     d.x = ai->x5C.x - p.x;
     d.y = ai->x5C.y - p.y;
     d.z = ai->x5C.z - p.z;

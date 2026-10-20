@@ -137,7 +137,7 @@ f64 log(f64);
 void Spline_ComputeCoeffs(void *, void *);
 void func_80012A20(void *);
 void Obj_AllocSubBuffers(void *);
-void Shadow_InitMgr(void *);
+void Skid_InitMgr(void *);
 void RigidBody_Init(void *, void *);
 void Car_BuildLightDisplayLists(Car *, CarStats *);
 void func_80063F88(void);
@@ -247,10 +247,10 @@ Car *Car_Create(CarStats *s) {
             }
             if (D_800D31CC < 3) {
                 Obj_AllocSubBuffers(&car->xB6C);
-                Shadow_InitMgr(&car->xB70);
-                Shadow_InitMgr(&car->xB74);
-                Shadow_InitMgr(&car->xB78);
-                Shadow_InitMgr(&car->xB7C);
+                Skid_InitMgr(&car->xB70);
+                Skid_InitMgr(&car->xB74);
+                Skid_InitMgr(&car->xB78);
+                Skid_InitMgr(&car->xB7C);
             }
             if (D_8012540C[n].x0) {
                 car->xBE0 = 1;

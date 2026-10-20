@@ -34,7 +34,7 @@ typedef struct {
 } Game;
 
 extern Game *gGame;
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_DistXZ(Vec3f, Vec3f);
 f32 func_800005C8(Vec3f, Vec3f);
@@ -58,7 +58,7 @@ void AI_PickAttackTarget(Car *self) {
     s32 i;
     s32 found;
 
-    pos = func_8001FBA8(self);
+    pos = Car_GetPos(self);
     best = 100000.0f;
     target = NULL;
     found = 0;
@@ -69,7 +69,7 @@ void AI_PickAttackTarget(Car *self) {
         if (c->xD != 0 || c == self) {
             continue;
         }
-        p2 = func_8001FBA8(c);
+        p2 = Car_GetPos(c);
         d = Vec3f_DistXZ(pos, p2);
         if (c->x30 == 1 && ct->x18 == self) {
             found = 1;
@@ -83,7 +83,7 @@ void AI_PickAttackTarget(Car *self) {
         }
     }
     if (target != NULL) {
-        tp = func_8001FBA8(target);
+        tp = Car_GetPos(target);
         dir.x = tp.x - pos.x;
         dir.y = tp.y - pos.y;
         dir.z = tp.z - pos.z;

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-M2C_UNK func_80019790(u8, void *, s32);             /* extern */
+M2C_UNK Weather_Init(u8, void *, s32);             /* extern */
 s32 Res_Get(s32);                             /* extern */
 s32 Res_GetEnd(s32);                             /* extern */
 extern s8 D_80083AE8;
@@ -31,7 +31,7 @@ void func_800123C0(void) {
         D_80125B68 = temp_v0;
         D_80126138 = temp_v0 + 4;
         if (D_800958A8 != 3) {
-            func_80019790(D_800958A1, temp_a1, D_800958A8);
+            Weather_Init(D_800958A1, temp_a1, D_800958A8);
         }
         D_801244D0 = Res_GetEnd(Res_Get(*((__typeof__(D_80083AEC) *)((s8 *)&D_80083AEC + (D_80130248 * 4)))));
         D_801242B8 = 0;

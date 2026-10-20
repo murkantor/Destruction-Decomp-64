@@ -9,7 +9,7 @@ typedef struct { s32 x0; s32 x4; s32 x8; } Snd3;
 extern Game *gGame;
 extern Track D_801311D4[];
 extern Snd3 D_8007EDC0[];
-extern s32 func_8001FA58(Slot *);
+extern s32 Car_GetDriveDir(Slot *);
 extern void EngineSfx_Crossfade(s32, s32, s32);
 extern void Sfx_StopPair(s32, s32);
 
@@ -27,7 +27,7 @@ void EngineSfx_UpdateAll(s32 arg0) {
             D_801311D4[i].x4 = 2;
         }
         if (D_801311D4[i].x4 != 2) {
-            v = func_8001FA58(s);
+            v = Car_GetDriveDir(s);
             if (v != D_801311D4[i].x4 && D_801311D4[i].x0 == 0) {
                 D_801311D4[i].x8 = 1;
                 D_801311D4[i].x4 = v;

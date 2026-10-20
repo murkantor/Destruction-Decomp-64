@@ -11,7 +11,7 @@ s32 func_8001FB38(void *arg0) {
 
 M2C_UNK Vec3f_Length(f32 *, s32);                  /* extern */
 
-f32 func_8001FB40(s32 arg0) {
+f32 Car_GetSpeed(s32 arg0) {
     f32 sp10;
 
     Vec3f_Length(&sp10, arg0 + 0x224);

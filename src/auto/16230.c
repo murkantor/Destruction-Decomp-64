@@ -18,7 +18,7 @@ void guPosition(void *, f32, f32, f32, f32, f32, f32, f32);
 void osWritebackDCache(void *, s32);
 void func_80057334(void *);
 
-void Particle_DrawAt(Obj15630 *obj) {
+void Shadow_Draw(Obj15630 *obj) {
     void *m = Pool_Alloc(gParticlePool);
 
     guPosition(m, 0.0f, 0.0f, 0.0f, 0.0078125f, obj->x214, obj->x218, obj->x21C);

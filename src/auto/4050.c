@@ -7,7 +7,7 @@ typedef struct { u8 pad[0x30]; Seg *x30; } Track;
 typedef struct { u8 pad[0x1100]; Track *x1100; } Game;
 typedef struct { u8 pad[0x28]; s32 x28; u8 pad2C[0x58 - 0x2C]; s32 x58; } Car;
 extern Game *gGame;
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 void func_8001FC08(Vec3f *, Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 s32 Racer_WrapNode(Car *, s32);
@@ -23,7 +23,7 @@ s32 func_80003450(Car *car)
 
     idx = car->x28;
     segs = gGame->x1100->x30;
-    pos = func_8001FBA8(car);
+    pos = Car_GetPos(car);
     func_8001FC08(&fwd, car);
     s = (Seg *)(idx * sizeof(Seg) + (u32)segs);
     a1.x = s->a.x - pos.x;

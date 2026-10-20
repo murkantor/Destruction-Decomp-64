@@ -55,14 +55,14 @@ typedef struct {
 extern Game *gGame[];
 extern u8 D_800958A1[];
 extern s32 D_800958B4[];
-void func_8001A240(s32 *, s32, s32, s32);
-void func_8001A388(s32, s32);
+void Grid_Create(s32 *, s32, s32, s32);
+void Grid_AddItem(s32, s32);
 void Grid_BuildCellsXZ(s32, u8 *);
 s32 Res_Get(s32);
 void func_80013A54(s32 *, s32 *, s8, s8, s16);
 void Sfx_AddEntry(Cmd *, s16, s8, s8);
 
-void Script_Relocate(Obj *arg0, Script *arg1, s32 arg2) {
+void Track_RelocateDisplayList(Obj *arg0, Script *arg1, s32 arg2) {
     SfxDef *sfx;
     Group *groups;
     u8 flag;
@@ -89,9 +89,9 @@ void Script_Relocate(Obj *arg0, Script *arg1, s32 arg2) {
     found = 0;
     foundIdx = 0;
     if (D_800958B4[0] == 2 || D_800958B4[0] == 11) {
-        func_8001A240(&arg0->x10C, 0x6590, 100, 100);
+        Grid_Create(&arg0->x10C, 0x6590, 100, 100);
         for (i = 0; i < arg0->x110->x10; i++) {
-            func_8001A388(arg0->x10C, i);
+            Grid_AddItem(arg0->x10C, i);
         }
         Grid_BuildCellsXZ(arg0->x10C, arg0->x110->xC);
     }

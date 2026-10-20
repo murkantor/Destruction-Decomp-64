@@ -19,7 +19,7 @@ extern u8 D_80097337[];
 extern s32 D_80097338;
 extern S4 D_800BB228;
 extern s32 D_800958B4;
-s32 func_8001B298(s32);
+s32 Race_FindCarSlot(s32);
 void func_8002D0E0(u32);
 void func_80063564(s32, s32);
 void func_80063380(s32);
@@ -38,7 +38,7 @@ s32 Race_ProcessResult(void) {
             D_80095CD4[k] += D_80126188[k].x0;
         }
     }
-    idx = func_8001B298(D_800958C0);
+    idx = Race_FindCarSlot(D_800958C0);
     if (D_80095CD4[idx] < D_80095CA8[D_800958B0[0]][D_801252F4].x8) {
         goto fail;
     }

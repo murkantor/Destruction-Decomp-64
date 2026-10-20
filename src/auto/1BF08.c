@@ -40,7 +40,7 @@ extern s8 ItemList_IndexOf(void *, Car *);
 extern void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, s32 force, s32 unique);
 extern void Announcer_Request(s32 id, s32 arg1, s32 check);
 extern void Commentary_PickRandom(s32 *, s32, s32, s32);
-extern f32 func_8001FB40(Car *);
+extern f32 Car_GetSpeed(Car *);
 
 typedef struct { s32 v[11]; } L11;
 typedef struct { s32 v[5]; } L5;
@@ -114,7 +114,7 @@ void Announcer_UpdateRace(void) {
     if (race->x10 != 0) {
         return;
     }
-    if (!D_8012459A[0] && func_8001FB40(car) >= 150.0f) {
+    if (!D_8012459A[0] && Car_GetSpeed(car) >= 150.0f) {
         r = rand() % 100;
         D_8012459A[0] = 1;
         if (r < 26) {

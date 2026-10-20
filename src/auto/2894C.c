@@ -30,7 +30,7 @@ typedef struct {
 extern Game *gGame;
 extern s32 D_800958B4;
 extern s32 D_80095FF8[];
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 f32 Math_PointLineDist2D(Vec3f, Vec3f, Vec3f);
 
 s32 Car_CompareRacePosition(Car *a, Car *b) {
@@ -57,6 +57,6 @@ s32 Car_CompareRacePosition(Car *a, Car *b) {
         return 0;
     }
     segs = gGame->x1100->x30;
-    da = Math_PointLineDist2D(segs[sa].a, segs[sa].b, func_8001FBA8(a));
-    return da < Math_PointLineDist2D(segs[sb].a, segs[sb].b, func_8001FBA8(b));
+    da = Math_PointLineDist2D(segs[sa].a, segs[sa].b, Car_GetPos(a));
+    return da < Math_PointLineDist2D(segs[sb].a, segs[sb].b, Car_GetPos(b));
 }

@@ -40,9 +40,9 @@ Res *Res_GetEnd(s32);
 void func_8005A970(Anim *, s32, s32, s32);
 void func_8005AA68(void *, Anim *);
 void func_8005AB4C(void *, f32);
-void Camera_Create(Obj *, Vec3f);
-void Cam_Create(Obj *, Vec3f);
-void Shake_Create(Obj *, Vec3f, Vec3f);
+void Prop_Create(Obj *, Vec3f);
+void Prop_CreateStatic(Obj *, Vec3f);
+void Mover_Create(Obj *, Vec3f, Vec3f);
 void Timer_Create(Obj *);
 void Obj_CreateWithBasis(Obj *, s32);
 void func_80026808(Obj *, s32);
@@ -60,19 +60,19 @@ Obj *func_8001325C(Spawn *sp) {
         break;
     case 6:
         kind = 1;
-        Camera_Create(obj, sp->x8);
+        Prop_Create(obj, sp->x8);
         break;
     case 19:
         kind = 2;
-        Cam_Create(obj, sp->x8);
+        Prop_CreateStatic(obj, sp->x8);
         break;
     case 27:
         kind = 3;
-        Shake_Create(obj, sp->x8, sp->x14);
+        Mover_Create(obj, sp->x8, sp->x14);
         break;
     case 28:
         kind = 4;
-        Shake_Create(obj, sp->x8, sp->x14);
+        Mover_Create(obj, sp->x8, sp->x14);
         break;
     case 14:
         Timer_Create(obj);
@@ -96,7 +96,7 @@ Obj *func_8001325C(Spawn *sp) {
         break;
     case 29:
         kind = 10;
-        Shake_Create(obj, sp->x8, sp->x14);
+        Mover_Create(obj, sp->x8, sp->x14);
         break;
     case 30:
         kind = 11;

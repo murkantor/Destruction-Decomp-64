@@ -41,8 +41,8 @@ extern s32 D_8007E950[];
 extern s32 D_8007EAE0[][20];
 s32 rand(void);
 s32 func_80003450(Car *);
-Vec3f func_8001FB88(Car *);
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetVelocity(Car *);
+Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 f32 func_800005C8(Vec3f, Vec3f);
@@ -101,8 +101,8 @@ void Ai_UpdateLaneOffset(Car *car) {
     if (!car->x40) {
         for (i = 0; i < trk->x40; i++) {
             if (car->x28 == trk->x3C[i].x0) {
-                fwd = func_8001FB88(car);
-                pos = func_8001FBA8(car);
+                fwd = Car_GetVelocity(car);
+                pos = Car_GetPos(car);
                 t.x = segs[o->x28].a.x + (segs[o->x28].b.x - segs[o->x28].a.x) * 0.5;
                 t.y = segs[o->x28].a.y + (segs[o->x28].b.y - segs[o->x28].a.y) * 0.5;
                 t.z = segs[o->x28].a.z + (segs[o->x28].b.z - segs[o->x28].a.z) * 0.5;
@@ -132,7 +132,7 @@ void Ai_UpdateLaneOffset(Car *car) {
     o->x5C.z = segs[o->x28].a.z + (segs[o->x28].b.z - segs[o->x28].a.z) * s;
     fwd = func_8001FC08(car);
     fwd.y = 0.0f;
-    pos = func_8001FBA8(car);
+    pos = Car_GetPos(car);
     t.x = o->x5C.x - pos.x;
     t.y = 0.0f;
     t.z = o->x5C.z - pos.z;

@@ -19,7 +19,7 @@ void func_8002DCBC(void);
 void List_Remove(Node **, Node *);
 void Mem_Free(void *);
 
-void func_80024E44(Obj *arg0) {
+void Track_FreeResources(Obj *arg0) {
     s32 i;
     Sub *s;
 

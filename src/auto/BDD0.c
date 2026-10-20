@@ -48,7 +48,7 @@ Gfx *Model_Draw(void *, Gfx *);
 Gfx *Car_DrawShadowDL(Car *, Gfx *);
 void Frame_ToMatrix(f32 m[4][4], Car *, s32);
 void Mtx_FromRotPos(f32 out[4][4], f32 m[4][4], Car *, s32, s32);
-void func_80018270(void *, f32 m[4][4], f32 out[4][4]);
+void Skid_Update(void *, f32 m[4][4], f32 out[4][4]);
 void func_8000AD40(Car *, f32 a[4][4], f32 b[4][4]);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void Vec3f_Add(Vec3f *, Vec3f *, Vec3f *);
@@ -58,11 +58,11 @@ void func_8000A9D8(Car *, Vec3f, f32 m[4][4]);
 Gfx *func_8000A894(Car *, Gfx *);
 Gfx *Debris_UpdateDraw(Car *, Gfx *);
 Gfx *Gfx_SetViewport2(Gfx *, s32);
-Gfx *func_80015624(void *, Gfx *);
+Gfx *Shadow_ReserveGfx(void *, Gfx *);
 void Shadow_Build(void *, f32 m[4][4]);
-void Particle_DrawAt(void *);
-Gfx *func_80017E8C(void *, Gfx *);
-void func_800187D4(void *);
+void Shadow_Draw(void *);
+Gfx *Skid_ReserveGfx(void *, Gfx *);
+void Skid_Draw(void *);
 void Obj_EmitPositionedDL(void *);
 
 static inline void UpdateWheels(Car *car, f32 m[4][4])
@@ -70,13 +70,13 @@ static inline void UpdateWheels(Car *car, f32 m[4][4])
     f32 tmp[4][4];
     if (car->xB70[0]) {
         Mtx_FromRotPos(tmp, m, car, 0, 1);
-        func_80018270(car->xB70[0], m, tmp);
+        Skid_Update(car->xB70[0], m, tmp);
         Mtx_FromRotPos(tmp, m, car, 1, 1);
-        func_80018270(car->xB70[1], m, tmp);
+        Skid_Update(car->xB70[1], m, tmp);
         Mtx_FromRotPos(tmp, m, car, 2, 1);
-        func_80018270(car->xB70[2], m, tmp);
+        Skid_Update(car->xB70[2], m, tmp);
         Mtx_FromRotPos(tmp, m, car, 3, 1);
-        func_80018270(car->xB70[3], m, tmp);
+        Skid_Update(car->xB70[3], m, tmp);
     }
 }
 
@@ -96,11 +96,11 @@ static inline Gfx *DrawParticle(Car *car, Gfx *gfx, f32 m[4][4])
 {
     Gfx *g = gfx;
     if (car->xB6C) {
-        g = func_80015624(car->xB6C, gfx);
+        g = Shadow_ReserveGfx(car->xB6C, gfx);
         if (!D_8012455C) {
             Shadow_Build(car->xB6C, m);
         }
-        Particle_DrawAt(car->xB6C);
+        Shadow_Draw(car->xB6C);
     }
     return g;
 }
@@ -154,15 +154,15 @@ Gfx *func_8000B1D0(Car *car, Gfx *gfx, s32 unused, Cam *cam)
             gfx = Gfx_SetViewport2(Debris_UpdateDraw(car, gfx), -2);
             gfx = DrawParticle(car, gfx, m18);
             if (!car->xD && car->xB70[0]) {
-                g = func_80017E8C(car->xB70[0], gfx);
-                g = func_80017E8C(car->xB70[1], g);
-                g = func_80017E8C(car->xB70[2], g);
-                g = func_80017E8C(car->xB70[3], g);
+                g = Skid_ReserveGfx(car->xB70[0], gfx);
+                g = Skid_ReserveGfx(car->xB70[1], g);
+                g = Skid_ReserveGfx(car->xB70[2], g);
+                g = Skid_ReserveGfx(car->xB70[3], g);
                 if (!D_8012455C) {
-                    func_800187D4(car->xB70[0]);
-                    func_800187D4(car->xB70[1]);
-                    func_800187D4(car->xB70[2]);
-                    func_800187D4(car->xB70[3]);
+                    Skid_Draw(car->xB70[0]);
+                    Skid_Draw(car->xB70[1]);
+                    Skid_Draw(car->xB70[2]);
+                    Skid_Draw(car->xB70[3]);
                 }
                 gfx = g;
                 Obj_EmitPositionedDL(car->xB70[0]);

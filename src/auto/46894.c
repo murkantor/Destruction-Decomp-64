@@ -53,7 +53,7 @@ void Ui_AddSpriteElement(void *, UiDesc *);
 void func_8005D8B8(void *, s32, s32);
 void Msg_Queue(s32, s32, s32, s32);
 void Pad_Rumble(s32, s32, s32);
-s32 func_8001B298(s32);
+s32 Race_FindCarSlot(s32);
 u64 Time_Get(u64 *);
 void func_800087C8(void);
 void Announcer_QueueRandom(s32 *list, s32 n, s32 arg, u8 force, u8 unique);
@@ -93,7 +93,7 @@ void Race_WaitForOthers(void) {
         Pad_Rumble(i, 0, 0);
     }
     for (i = 0; i < D_800D31CC; i++) {
-        idx = func_8001B298(D_800958F0[i].x0->x34);
+        idx = Race_FindCarSlot(D_800958F0[i].x0->x34);
         total = D_80095D04[idx] + D_80095D34[idx] + D_80095D64[idx];
         counts[i] = 0;
         for (j = 0; j < 12; j++) {

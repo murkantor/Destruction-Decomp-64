@@ -8,7 +8,7 @@ typedef struct {
     s32 count;
 } List16;
 
-void func_8001A388(List16 *list, s16 value) {
+void Grid_AddItem(List16 *list, s16 value) {
     list->items[list->count] = value;
     list->count++;
 }

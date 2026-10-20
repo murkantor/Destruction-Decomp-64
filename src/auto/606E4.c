@@ -60,7 +60,7 @@ Gfx *Camera_BuildProjection(Gfx *, void *);
 Gfx *Render_DrawSkyAndWorld(Renderer *, Gfx *, void *);
 Gfx *func_8006449C(Gfx *, void *, Car *);
 u8 func_800232DC(Car *);
-Gfx *func_80019B8C(void *, Gfx *);
+Gfx *Weather_Draw(void *, Gfx *);
 Gfx *Gfx_DrawLensFlare(Gfx *, void *, ViewCam *, s32);
 Gfx *func_8005D580(void *, Gfx *);
 void func_80012540(void);
@@ -106,7 +106,7 @@ void func_8005FAE4(Renderer *r) {
         gfx = Render_DrawSkyAndWorld(r, gfx, cam);
         gfx = func_8006449C(gfx, cam, car);
         if (D_800958A8 != 3 && func_800232DC(car) == 0) {
-            gfx = func_80019B8C(cam, gfx);
+            gfx = Weather_Draw(cam, gfx);
         }
         gfx = Gfx_DrawLensFlare(gfx, cam, &r->x198[D_8012455C], D_8012455C);
     }

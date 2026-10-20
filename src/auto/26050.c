@@ -3,7 +3,7 @@
 
 typedef struct { u8 pad[0x1100]; void *x1100; } Game;
 extern void *Mem_Alloc(u32);
-extern void func_80027CF4(void);
+extern void Car_CompareScore(void);
 extern void Car_CompareRacePosition(void);
 typedef struct {
     s32 x0, x4, x8, xC, x10, x14, x18;
@@ -16,7 +16,7 @@ typedef struct {
     u8 pad[0x44];
     s32 xA4, xA8, xAC;
 } Sub;
-void func_80025450(Game *g) {
+void Race_Create(Game *g) {
     Sub *s;
     s32 c;
     s = Mem_Alloc(0xB0);
@@ -26,7 +26,7 @@ void func_80025450(Game *g) {
     s->x2C = 0;
     s->x14 = 0;
     s->x20 = 0;
-    s->x1C = func_80027CF4;
+    s->x1C = Car_CompareScore;
     s->x28 = Car_CompareRacePosition;
     s->x18 = c;
     s->x30 = 0;

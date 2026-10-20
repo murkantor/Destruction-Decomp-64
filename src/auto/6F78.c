@@ -34,11 +34,11 @@ extern f64 D_800B7EF8;
 extern f64 D_800B7F00;
 extern f64 D_800B7F08;
 
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f32 Vec3f_AngleBetween(Vec3f, Vec3f);
 f32 func_800005C8(Vec3f, Vec3f);
-f32 func_8001FB40(Car *);
+f32 Car_GetSpeed(Car *);
 f32 fabsf(f32);
 
 void Ai_UpdateSteer(Car *car) {
@@ -53,7 +53,7 @@ void Ai_UpdateSteer(Car *car) {
         f32 diff;
         f32 side;
 
-        pos = func_8001FBA8(car);
+        pos = Car_GetPos(car);
         fwd = func_8001FC08(car);
         if (t->x6D) {
             fwd.x = -fwd.x;
@@ -78,7 +78,7 @@ void Ai_UpdateSteer(Car *car) {
         }
     }
     race = gGame->x1100;
-    f = func_8001FB40(car);
+    f = Car_GetSpeed(car);
     if (race->x10 == 0) {
         if ((f32)race->x34[t->x28].x0 < f) {
             car->x2C->x1 = 1;

@@ -28,7 +28,7 @@ extern Game *gGame[];
 extern f64 D_800B9CE0;
 extern f64 D_800B9D60;
 void Car_UpdatePhysics(WObj *, f32);
-void func_80021700(WObj *, f32);
+void Camera_Update(WObj *, f32);
 void Vec3f_Scale(Vec3f *, Vec3f *, f32);
 void func_8003A4D8(void *, Vec3f *);
 
@@ -51,7 +51,7 @@ void World_UpdateEffects(World *w, f32 dt) {
             Car_UpdatePhysics(o, dt);
             break;
         case 9:
-            func_80021700(o, dt);
+            Camera_Update(o, dt);
             break;
         case 6: {
             Particle *p = o->x38;

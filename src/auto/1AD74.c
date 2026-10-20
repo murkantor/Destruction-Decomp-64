@@ -9,7 +9,7 @@ extern u8 gMainHeap[];
 void Heap_Free(void *, void *);
 void func_800109E0(Model *);
 
-void func_8001A174(void) {
+void Weather_Free(void) {
     s8 i;
     Model *m;
 

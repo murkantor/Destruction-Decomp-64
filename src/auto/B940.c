@@ -28,8 +28,8 @@ extern u8 *D_801245A4;
 void Vec3f_Set(Vec3f *, f32, f32, f32);
 void Mtx_FromRotPos(Mtx *, void *, Car *, s32, s32);
 void Particles_EmitAlongSegment(void *, Vec3f *, Vec3f *, Vec3f, f32, f32, s32, s32, s32);
-void func_80017F7C(void *);
-void func_80017F98(void *);
+void Skid_Start(void *);
+void Skid_Stop(void *);
 
 void func_8000AD40(Car *car, void *a, void *b)
 {
@@ -108,16 +108,16 @@ void func_8000AD40(Car *car, void *a, void *b)
         if (car->xB70[0]) {
             for (i = 0; i < 4; i++) {
                 if (car->wheels[i].x1AC) {
-                    func_80017F7C(car->xB70[i]);
+                    Skid_Start(car->xB70[i]);
                 } else {
-                    func_80017F98(car->xB70[i]);
+                    Skid_Stop(car->xB70[i]);
                 }
             }
         }
     } else if (car->xB70[0]) {
-        func_80017F98(car->xB70[0]);
-        func_80017F98(car->xB70[1]);
-        func_80017F98(car->xB70[2]);
-        func_80017F98(car->xB70[3]);
+        Skid_Stop(car->xB70[0]);
+        Skid_Stop(car->xB70[1]);
+        Skid_Stop(car->xB70[2]);
+        Skid_Stop(car->xB70[3]);
     }
 }

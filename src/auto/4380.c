@@ -24,7 +24,7 @@ typedef struct {
 typedef struct { u8 pad0[0x38]; Obj *x38; } Car;
 
 extern Game *gGame;
-Vec3f func_8001FBA8(void *);
+Vec3f Car_GetPos(void *);
 Vec3f func_8001FC08(Car *);
 Vec3f Path_AvoidEdges(Seg *, Elem8 *);
 Vec3f Seg_AvoidCircleXZ(Seg *, Circle *);
@@ -46,7 +46,7 @@ void Ai_ConstrainTarget(Car *car) {
     o = car->x38;
     trk = gGame->x1100;
     orig = o->x5C;
-    seg.a = func_8001FBA8(o->x18);
+    seg.a = Car_GetPos(o->x18);
     seg.b = o->x5C;
     changed = 0;
     for (i = 0; i < trk->x2C->x14; i++) {
@@ -63,7 +63,7 @@ void Ai_ConstrainTarget(Car *car) {
     if (orig.x != o->x5C.x || orig.y != o->x5C.y || orig.z != o->x5C.z) {
         changed = 1;
     }
-    seg.a = func_8001FBA8(car);
+    seg.a = Car_GetPos(car);
     seg.b = o->x5C;
     for (i = 0; i < trk->x2C->x14; i++) {
         o->x5C = Path_AvoidEdges(&seg, &trk->x2C->x18[i]);
@@ -80,12 +80,12 @@ void Ai_ConstrainTarget(Car *car) {
         changed = 1;
     }
     if (!Track_IsGridCellSolid(&o->x5C)) {
-        o->x5C = func_8001FBA8(o->x18);
+        o->x5C = Car_GetPos(o->x18);
         changed = 1;
     }
     if (changed) {
         a = func_8001FC08(car);
-        b = func_8001FBA8(car);
+        b = Car_GetPos(car);
         d.x = o->x5C.x - b.x;
         d.y = o->x5C.y - b.y;
         d.z = o->x5C.z - b.z;

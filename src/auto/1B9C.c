@@ -34,7 +34,7 @@ Car *Obj_PickNearer(Car *, Car *, Car *);
 Car *Car_PickRandomOther(Car *);
 Car *Car_PickRandomActive(void);
 Car *func_80001668(void);
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 Vec3f func_8001FC08(Car *);
 f64 acos(f64);
 f64 fabs(f64);
@@ -103,8 +103,8 @@ void Ai_PickTarget(Car *car) {
     }
     ai->x18 = target;
     ai->x1C = ai->x50;
-    tp = func_8001FBA8(target);
-    cp = func_8001FBA8(car);
+    tp = Car_GetPos(target);
+    cp = Car_GetPos(car);
     d.x = tp.x - cp.x;
     d.y = tp.x - cp.y;
     d.z = tp.x - cp.z;

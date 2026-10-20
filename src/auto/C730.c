@@ -11,7 +11,7 @@ extern void *gUi[];
 extern s32 D_800958A4;
 extern s32 D_8007EED4;
 extern s32 D_8007EED8[];
-f32 func_8001FB40(void *);
+f32 Car_GetSpeed(void *);
 s32 sprintf(char *, const char *, ...);
 char *strcat(char *, const char *);
 Pos2 Ui_GetElementPos(void *, s32, s32);
@@ -28,7 +28,7 @@ s32 Hud_DrawSpeed(s32 *arg0, s8 idx) {
     s32 font;
     void **ui;
 
-    val = func_8001FB40(D_800958F0[idx].x0);
+    val = Car_GetSpeed(D_800958F0[idx].x0);
     str = D_8007F77C[idx];
     sprintf(str, "%d", (s32)(val * 2.232));
     strcat(str, (char *)sfx);

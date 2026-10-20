@@ -37,7 +37,7 @@ extern char D_80123C88[];
 void Ui_ResetScreen(s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDesc *);
 void Ui_AddElement(void *, s32, s32);
-s32 func_8001B2F4(s32);
+s32 Race_GetSlotCarId(s32);
 int sprintf(char *, const char *, ...);
 void Menu_ShowRecordRows(s32, s32);
 void Timer_Start(void *, u64);
@@ -81,7 +81,7 @@ void Results_Init(void)
         D_80131D88[i].x10 = total - rest;
         D_80131D88[i].x14 = rest;
         D_80131D88[i].x18 = total;
-        r = func_8001B2F4(i);
+        r = Race_GetSlotCarId(i);
         for (j = 0; j < D_800958A4.count; j++) {
             if (r == D_800958A4.ids[j])
                 break;

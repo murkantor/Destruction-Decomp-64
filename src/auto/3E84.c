@@ -36,7 +36,7 @@ extern Game *gGame;
 extern s32 D_8007EAE0[][20];
 s32 Racer_WrapNode(Car *, s32);
 Vec3f func_8001FC08(Car *);
-Vec3f func_8001FBA8(Car *);
+Vec3f Car_GetPos(Car *);
 f32 func_800005C8(Vec3f, Vec3f);
 
 void Ai_UpdateTargetPoint(Car *car) {
@@ -69,7 +69,7 @@ void Ai_UpdateTargetPoint(Car *car) {
     ai->x5C.y = segs[idx].a.y + (segs[idx].b.y - segs[idx].a.y) * f;
     ai->x5C.z = segs[idx].a.z + (segs[idx].b.z - segs[idx].a.z) * f;
     fwd = func_8001FC08(car);
-    pos = func_8001FBA8(car);
+    pos = Car_GetPos(car);
     d.x = ai->x5C.x - pos.x;
     d.y = ai->x5C.y - pos.y;
     d.z = ai->x5C.z - pos.z;
