@@ -87,6 +87,10 @@ Entry *Track_LoadProps(s32 res) {
     D_800960B4 = size / sizeof(Entry);
     D_800960B0 = Mem_Alloc(D_800960B4 * sizeof(Obj));
     Res_Load(res, data);
+    /* an id and 12 floats a record: GCC computes the centre below from the
+       values it copied into o->rot and o->pos, still in registers, so they must be
+       in host order before the copy */
+    PORT_CONVERT(data, size / 4, 4);
     minx = grid->x14 + 1.0f;
     minz = grid->x18 + 1.0f;
     maxx = (grid->w * grid->x1C + grid->x14) - 1.0f;

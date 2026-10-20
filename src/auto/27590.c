@@ -118,6 +118,9 @@ void Race_PlaceCarsOnGrid(void)
         data = Res_Get(track->info->res->x6C);
         for (nc = 0; nc < gGame[0]->track->ncars; nc++) {
             car = gGame[0]->track->cars[nc];
+            /* copied twice below: GCC checks the source once, so the second copy
+               (car->pos2) would carry the raw big-endian bytes */
+            PORT_CONVERT(&data[nc], sizeof(GridSlot) / 4, 4);
             if (D_800958A4[1] == 3 && D_800958A4[2] == 2) {
                 if (D_800958A4[0] == 2) {
                     if (nc < 3) {

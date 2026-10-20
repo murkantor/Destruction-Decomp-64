@@ -160,6 +160,16 @@ static inline u32 spread(u32 n) {
 }
 
 static u32 sWatch = 1; /* DD64_WATCH, below */
+
+/* DD64_BECOPIES=1: report struct copies of big-endian data (bulkPair) */
+static int beCopies(void) {
+    static int on = -1;
+
+    if (on < 0) {
+        on = SDL_getenv("DD64_BECOPIES") != NULL;
+    }
+    return on;
+}
 static void watchStore(u32 addr, u32 n, void *site);
 
 /* A typed load of n bytes touching big-endian data. */
@@ -372,6 +382,12 @@ static void bulkPair(void) {
             /* big-endian data copied off the RAM image (onto a stack): the marks are lost */
             report("copy of big-endian data into a local or argument", tPendingSrc, tPendingLen,
                    tPendingSrcSite);
+        } else if (tPendingSrcSite != NULL && beCopies()) {
+            /* DD64_BECOPIES=1: every struct copy of unconverted data, for review: the
+               marks follow the copy, but GCC may also use the values it copied
+               through registers (Track_LoadProps' prop positions), which no hook
+               sees */
+            report("struct copy of big-endian data", tPendingSrc, tPendingLen, tPendingSrcSite);
         }
         copyMarks((void *)tPendingDst, (const void *)tPendingSrc, tPendingLen);
         tPendingLen = tPendingDstLen = 0;
