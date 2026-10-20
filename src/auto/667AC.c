@@ -12,7 +12,7 @@ typedef struct {
 extern s32 gNumVoices;
 extern Voice *gVoices;
 extern s32 *D_800CCAA8;
-s32 func_800678AC(Voice *, s32, s32, s32, s32);
+s32 Sound_StartVoice(Voice *, s32, s32, s32, s32);
 
 s32 Sound_PlayFindVoice(s32 id) {
     s32 i;
@@ -26,7 +26,7 @@ s32 Sound_PlayFindVoice(s32 id) {
     best = pri + 1;
     for (i = 0; i < gNumVoices; i++, v++) {
         if (v->x0 == 0) {
-            return func_800678AC(v, id, 0x80, 0x80, pri);
+            return Sound_StartVoice(v, id, 0x80, 0x80, pri);
         }
         if (v->x9E != 0 && v->x44 < best) {
             best = v->x44;
@@ -34,7 +34,7 @@ s32 Sound_PlayFindVoice(s32 id) {
         }
     }
     if (best < pri) {
-        return func_800678AC(found, id, 0x80, 0x80, pri);
+        return Sound_StartVoice(found, id, 0x80, 0x80, pri);
     }
     return 0;
 }

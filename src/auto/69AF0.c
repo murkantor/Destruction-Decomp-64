@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-void Mtx4_Mul(f32 a[4][4], f32 b[4][4], f32 out[4][4]) {
+void guMtxCatF(f32 a[4][4], f32 b[4][4], f32 out[4][4]) {
     f32 tmp[4][4];
     s32 i;
     s32 j;

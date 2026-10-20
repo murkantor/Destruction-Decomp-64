@@ -19,7 +19,7 @@ typedef struct {
     u16 x26;
 } Obj;
 
-void func_8006DF90(Obj *o) {
+void guS2DInitBg(Obj *o) {
     u32 base;
     u16 sh;
     u32 t;

@@ -35,7 +35,7 @@ typedef struct {
 } ALLoadFilter;
 
 extern s32 alAdpcmPull();
-extern s32 func_80071F04();
+extern s32 alRaw16Pull();
 void alCopy(void *src, void *dest, s32 len);
 
 void alLoadParam(void *filter, s32 paramID, void *param)
@@ -63,7 +63,7 @@ void alLoadParam(void *filter, s32 paramID, void *param)
                     }
                     break;
                 case 1:
-                    a->handler = func_80071F04;
+                    a->handler = alRaw16Pull;
                     if (a->table->waveInfo.rawWave.loop) {
                         a->loop.start = a->table->waveInfo.rawWave.loop->start;
                         a->loop.end = a->table->waveInfo.rawWave.loop->end;

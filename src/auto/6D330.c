@@ -7,7 +7,7 @@ typedef struct {
 } OSPifRam;
 extern OSPifRam __osContPifRam;
 
-void func_8006C730(void) {
+void __osPackResetData(void) {
     u8 *ptr;
     s32 i;
 

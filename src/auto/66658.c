@@ -27,7 +27,7 @@ typedef struct {
 
 extern Voice *gVoices;
 extern s32 D_800CCAB8;
-void func_80067874(void *p, void *base, s32 n);
+void Mem_RelocatePtrs(void *p, void *base, s32 n);
 s32 Voice_FindFree(SeqHdr *h, s32 i);
 void Seq_ResetVoice(Voice *v);
 
@@ -39,10 +39,10 @@ s32 Seq_StartVoices(SeqHdr *h) {
     s32 val;
 
     if ((u32)h->x4 < 0x400) {
-        func_80067874(&h->x4, h, 5);
-        func_80067874(h->x4, h, n);
-        func_80067874(h->x8, h, n);
-        func_80067874(h->xC, h, n);
+        Mem_RelocatePtrs(&h->x4, h, 5);
+        Mem_RelocatePtrs(h->x4, h, n);
+        Mem_RelocatePtrs(h->x8, h, n);
+        Mem_RelocatePtrs(h->xC, h, n);
     }
     id = D_800CCAB8++;
     for (i = 0; i < n; i++) {

@@ -10,7 +10,7 @@ extern Lazy D_800CEAD0;
 extern s32 D_800CEB0C;
 void __amDMA(void);
 
-void *func_800682A0(Lazy **out) {
+void *__amDmaNew(Lazy **out) {
     if (D_800CEAD0.init == 0) {
         D_800CEAD0.a = 0;
         D_800CEAD0.init = 1;

@@ -15,7 +15,7 @@ typedef struct {
 extern s32 gNumVoices;
 extern Voice *gVoices;
 
-s32 Sound_SetVolumeById(s32 id, s32 vol) {
+s32 Sound_SetTempoById(s32 id, s32 vol) {
     char unused[1];
     s32 i;
     s32 n;

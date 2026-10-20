@@ -5,7 +5,7 @@ s32 __osDisableInt();                                /* extern */
 M2C_UNK __osRestoreInt(s32);                         /* extern */
 extern void *__osViNext;
 
-void func_8006C430(f32 arg0) {
+void osViSetYScale(f32 arg0) {
     s32 temp_v0;
 
     temp_v0 = __osDisableInt();

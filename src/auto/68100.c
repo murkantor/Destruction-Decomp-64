@@ -3,7 +3,7 @@
 
 extern s32 D_800CCABC;
 
-s32 func_80067500(s32 arg0) {
+s32 Audio_RandRange(s32 arg0) {
     s32 temp_a1;
     s32 temp_v0;
     s32 temp_v1;

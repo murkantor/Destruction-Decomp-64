@@ -10,7 +10,7 @@ extern s32 gNumControllers;
 void osCreateMesgQueue(OSMesgQueue *, OSMesg *, s32);
 void osSetEventMesg(s32, OSMesgQueue *, OSMesg);
 s32 osContInit(OSMesgQueue *, u8 *, OSContStatus *);
-void func_8006C630(OSMesgQueue *, OSContStatus *);
+void osContReset(OSMesgQueue *, OSContStatus *);
 void Pad_Init(s32, s32);
 
 void Pad_InitAll(void) {
@@ -20,7 +20,7 @@ void Pad_InitAll(void) {
     osCreateMesgQueue(&gSiMesgQueue, D_80125F40, 4);
     osSetEventMesg(5, &gSiMesgQueue, (OSMesg)0xDEAD);
     osContInit(&gSiMesgQueue, &gContPattern, gContStatus);
-    func_8006C630(&gSiMesgQueue, gContStatus);
+    osContReset(&gSiMesgQueue, gContStatus);
     gNumControllers = 0;
     for (i = 0; i < 4; i++) {
         rumble = 0;

@@ -54,7 +54,7 @@ typedef struct {
     s32 start;
     s32 count;
 } Palette;
-void func_8006DF90(uObjBg *);
+void guS2DInitBg(uObjBg *);
 
 void Bg_Init(Background *b, BgImage *img, Palette *pal) {
     uObjTxtrTLUT *t;
@@ -84,7 +84,7 @@ void Bg_Init(Background *b, BgImage *img, Palette *pal) {
         b->bg.scaleH = 0x400;
         b->bg.imageYorig = 0;
     } else {
-        func_8006DF90(&b->bg);
+        guS2DInitBg(&b->bg);
     }
     if (pal != NULL) {
         t->type = 0x30;

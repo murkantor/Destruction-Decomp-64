@@ -74,7 +74,7 @@ typedef struct {
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-Acmd *func_80071F04(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
+Acmd *alRaw16Pull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p) {
     Acmd *ptr = p;
     ALLoadFilter *f = (ALLoadFilter *)filter;
     s32 nbytes;

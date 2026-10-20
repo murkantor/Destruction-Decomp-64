@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-f32 func_80073384(f32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+f32 _getVol(f32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     f32 var_f2;
     f32 var_f4;
     s32 var_a1;

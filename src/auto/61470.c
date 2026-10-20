@@ -16,7 +16,7 @@ typedef struct {
     Mtx2 *x18;
 } Obj60870;
 
-s16 func_80068530(u16);
+s16 coss(u16);
 s16 sins(u16);
 
 void Sprite_SetRotation(Obj60870 *obj, u16 angle) {
@@ -24,7 +24,7 @@ void Sprite_SetRotation(Obj60870 *obj, u16 angle) {
     s32 s;
     Mtx2 *m;
 
-    c = func_80068530(angle) * 2;
+    c = coss(angle) * 2;
     s = sins(angle) * 2;
     if (c == 0xFFFE) {
         c = 0x10000;

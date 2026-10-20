@@ -9,7 +9,7 @@ extern Ctx *D_800CCAC0;
 extern Ctx *D_800CCAC4;
 s32 Sound_PlayFindVoice(s32);
 
-s32 func_800661D8(Ctx *ctx, s32 arg1) {
+s32 Sound_PlayWithBank(Ctx *ctx, s32 arg1) {
     s32 ret;
 
     if (ctx != NULL && ctx->unk10 < 0) {

@@ -9,7 +9,7 @@ extern Ctx *D_800CCAC0;
 extern Ctx *D_800CCAC4;
 s32 Sound_AllocVoice(s32, s32, s32, s32, s32);
 
-s32 func_8006621C(Ctx *ctx, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+s32 Sound_AllocWithBank(Ctx *ctx, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     s32 ret;
 
     if (ctx != NULL && ctx->unk10 < 0) {

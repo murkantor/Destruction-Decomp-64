@@ -61,21 +61,21 @@ void *osCartRomInit(void);
 s32 osAiSetFrequency(u32);
 void *alHeapDBAlloc(u8 *, s32, void *, s32, s32);
 void alLink(ALLink *, ALLink *);
-void func_8006B060(void *, ALSynConfig *);
-void func_800682A0(void);
-void Audio_SchedThread(void *);
+void alInit(void *, ALSynConfig *);
+void __amDmaNew(void);
+void __amMain(void *);
 void osCreateMesgQueue(OSMesgQueue *, OSMesg *, s32);
 
 #define alHeapAlloc(hp, num, size) alHeapDBAlloc(0, 0, hp, num, size)
 
-void func_80067950(void *arg0, ALSynConfig *c, OSPri pri, amConfig *amc, s32 numBufs, s32 bufSize, s32 fps) {
+void amCreateAudioMgr(void *arg0, ALSynConfig *c, OSPri pri, amConfig *amc, s32 numBufs, s32 bufSize, s32 fps) {
     f32 fsize;
     u32 i;
 
     D_800CEB1C = osCartRomInit();
     D_800CEB20 = osCartRomInit();
     D_800CEAD0.initialized = 0;
-    c->dmaproc = func_800682A0;
+    c->dmaproc = __amDmaNew;
     D_800CEB08 = arg0;
     D_800CEB18 = bufSize;
     c->outputRate = osAiSetFrequency(amc->outputRate);
@@ -92,7 +92,7 @@ void func_80067950(void *arg0, ALSynConfig *c, OSPri pri, amConfig *amc, s32 num
     }
     D_800CEADC = D_800CEAE0 - 16;
     D_800CEAE4 = D_800CEAE0 + 0x60;
-    func_8006B060(D_8011F080.g, c);
+    alInit(D_8011F080.g, c);
     D_800CEB0C[0].node.prev = NULL;
     D_800CEB0C[0].node.next = NULL;
     for (i = 0; i < numBufs - 1; i++) {
@@ -114,7 +114,7 @@ void func_80067950(void *arg0, ALSynConfig *c, OSPri pri, amConfig *amc, s32 num
     osCreateMesgQueue(&D_8011F080.audioFrameMsgQ, D_8011F080.audioFrameMsgBuf, 8);
     osCreateMesgQueue(&D_800CEAF0, D_800CEB14, numBufs * 2);
     if (D_800B4E4C == 0) {
-        osCreateThread(&D_8011F080.thread, 3, Audio_SchedThread, NULL, &D_800CEAD0, pri);
+        osCreateThread(&D_8011F080.thread, 3, __amMain, NULL, &D_800CEAD0, pri);
     }
     osStartThread(&D_8011F080.thread);
     D_800B4E4C = 1;

@@ -4,6 +4,6 @@
 M2C_UNK osSendMesg(M2C_UNK *, M2C_UNK, M2C_UNK); /* extern */
 extern M2C_UNK __osPiAccessQueue;
 
-void func_80075210(void) {
+void __osPiRelAccess(void) {
     osSendMesg(&__osPiAccessQueue, 0, 0);
 }

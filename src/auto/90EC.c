@@ -16,7 +16,7 @@ extern void Heap_Free(void *, HeapBlock *);
 extern void Sound_FadeOutAll(s32, s32);
 extern s32 Sound_CountPlaying(s32);
 extern void Rom_Copy(s32, void *, s32);
-extern s32 func_80066194(void *, void *);
+extern s32 Seq_StartWithBank(void *, void *);
 extern s32 Sound_SetVolume(s32, s32);
 extern s32 SoundEmitter_Init(s32, void *);
 extern void func_80064100(s32);
@@ -43,7 +43,7 @@ s32 Res_LoadSoundBank(ResHdr *p) {
             while (Sound_CountPlaying(2) != 0) {
             }
             Rom_Copy(p->x4, D_80116DF8, p->x8 - p->x4);
-            D_8011EEE0[0] = func_80066194(D_80116DF8 - 25000, D_80116DF8);
+            D_8011EEE0[0] = Seq_StartWithBank(D_80116DF8 - 25000, D_80116DF8);
             vol = D_8011EEF8->x514 * 128.0;
             Sound_SetVolume(D_8011EEE0[0], vol);
             D_8011EEF8->x528 = Sound_CountPlaying(2);

@@ -5,7 +5,7 @@ extern void *D_800CCAC0;
 extern void *D_800CCAC4;
 s32 Seq_StartVoices(s32);
 
-s32 func_80066194(u8 *obj, s32 arg) {
+s32 Seq_StartWithBank(u8 *obj, s32 arg) {
     s32 r;
 
     if (obj != NULL && *(s32 *)(obj + 0x10) < 0) {

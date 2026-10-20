@@ -1037,7 +1037,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0662BC` | `800656BC` | 0x3c | `src/auto/662BC.c` | C (generated) | 1 |  |
 | `0662F8` | `800656F8` | 0x10 | `src/auto/662F8.c` | C (generated) | 1 |  |
 | `066308` | `80065708` | 0x324 | `src/auto/66308.c` | C (generated) | 1 |  |
-| `06662C` | `80065A2C` | 0x2c | `src/auto/6662C.c` | C (generated) | 1 |  |
+| `06662C` | `80065A2C` | 0x2c | `src/auto/6662C.c` | C (generated) | 1 | `Sound_SetMasterVolume` |
 | `066658` | `80065A58` | 0x154 | `src/auto/66658.c` | C (generated) | 1 | `Seq_StartVoices` |
 | `0667AC` | `80065BAC` | 0xac | `src/auto/667AC.c` | C (generated) | 1 | `Sound_PlayFindVoice` |
 | `066858` | `80065C58` | 0x108 | `src/auto/66858.c` | C (generated) | 1 | `Sound_AllocVoice` |
@@ -1046,62 +1046,62 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `066A5C` | `80065E5C` | 0x70 | `src/auto/66A5C.c` | C (generated) | 1 | `Sound_FadeOut` |
 | `066ACC` | `80065ECC` | 0x58 | `src/auto/66ACC.c` | C (generated) | 1 | `Sound_CountVoices` |
 | `066B24` | `80065F24` | 0x60 | `src/auto/66B24.c` | C (generated) | 1 | `Sound_SetVolume` |
-| `066B84` | `80065F84` | 0x70 | `src/auto/66B84.c` | C (generated) | 1 | `Sound_SetFieldA8` |
+| `066B84` | `80065F84` | 0x70 | `src/auto/66B84.c` | C (generated) | 1 | `Sound_SetPan` |
 | `066BF4` | `80065FF4` | 0x70 | `src/auto/66BF4.c` | C (generated) | 1 | `Sound_SetPitch` |
-| `066C64` | `80066064` | 0x8c | `src/auto/66C64.c` | C (generated) | 1 | `Sound_SetVolumeById` |
-| `066CF0` | `800660F0` | 0x88 | `src/auto/66CF0.c` | C (generated) | 1 | `Sound_SetPanById` |
-| `066D78` | `80066178` | 0x1c | `src/auto/66D78.c` | C (generated) | 1 |  |
-| `066D94` | `80066194` | 0x44 | `src/auto/66D94.c` | C (generated) | 1 |  |
-| `066DD8` | `800661D8` | 0x44 | `src/auto/66DD8.c` | C (generated) | 1 |  |
-| `066E1C` | `8006621C` | 0x58 | `src/auto/66E1C.c` | C (generated) | 1 |  |
-| `066E74` | `80066274` | 0x5c | `src/auto/66E74.c` | C (generated) | 1 |  |
+| `066C64` | `80066064` | 0x8c | `src/auto/66C64.c` | C (generated) | 1 | `Sound_SetTempoById` |
+| `066CF0` | `800660F0` | 0x88 | `src/auto/66CF0.c` | C (generated) | 1 | `Sound_SetFxMixById` |
+| `066D78` | `80066178` | 0x1c | `src/auto/66D78.c` | C (generated) | 1 | `Sound_RelocateBank` |
+| `066D94` | `80066194` | 0x44 | `src/auto/66D94.c` | C (generated) | 1 | `Seq_StartWithBank` |
+| `066DD8` | `800661D8` | 0x44 | `src/auto/66DD8.c` | C (generated) | 1 | `Sound_PlayWithBank` |
+| `066E1C` | `8006621C` | 0x58 | `src/auto/66E1C.c` | C (generated) | 1 | `Sound_AllocWithBank` |
+| `066E74` | `80066274` | 0x5c | `src/auto/66E74.c` | C (generated) | 1 | `Sound_GetBank` |
 | `066ED0` | `800662D0` | 0x260 | `src/auto/66ED0.c` | C (generated) | 1 | `Audio_UpdateVoices` |
 | `067130` | `80066530` | 0x394 | `src/auto/67130.c` | C (generated) | 1 |  |
 | `0674C4` | `800668C4` | 0x8c | `src/auto/674C4.c` | C (generated) | 1 |  |
 | `067550` | `80066950` | 0x164 | `src/auto/67550.c` | C (generated) | 1 | `Seq_UpdateVolPan` |
 | `0676B4` | `80066AB4` | 0x140 | `src/auto/676B4.c` | C (generated) | 1 | `AudioVoice_UpdatePitch` |
-| `0677F4` | `80066BF4` | 0x68 | `src/auto/677F4.c` | C (generated) | 1 |  |
+| `0677F4` | `80066BF4` | 0x68 | `src/auto/677F4.c` | C (generated) | 1 | `Env_Start` |
 | `06785C` | `80066C5C` | 0x1f4 | `src/auto/6785C.c` | C (generated) | 1 | `Env_Update` |
-| `067A50` | `80066E50` | 0x1c | `src/auto/67A50.c` | C (generated) | 1 |  |
-| `067A6C` | `80066E6C` | 0xb8 | `src/auto/67A6C.c` | C (generated) | 1 | `Snd_UpdateVolumeRamp` |
+| `067A50` | `80066E50` | 0x1c | `src/auto/67A50.c` | C (generated) | 1 | `Snd_StartAutoPan` |
+| `067A6C` | `80066E6C` | 0xb8 | `src/auto/67A6C.c` | C (generated) | 1 | `Snd_UpdateAutoPan` |
 | `067B24` | `80066F24` | 0xd8 | `src/auto/67B24.c` | C (generated) | 2 |  |
 | `067BFC` | `80066FFC` | 0xc4 | `src/auto/67BFC.c` | C (generated) | 1 | `Seq_AdvanceDelta` |
 | `067CC0` | `800670C0` | 0x114 | `src/auto/67CC0.c` | C (generated) | 1 | `Envelope_Step` |
 | `067DD4` | `800671D4` | 0x194 | `src/auto/67DD4.c` | C (generated) | 1 | `Math_Exp2f` |
-| `067F68` | `80067368` | 0x198 | `src/auto/67F68.c` | C (generated) | 1 | `Model_Relocate` |
-| `068100` | `80067500` | 0x94 | `src/auto/68100.c` | C (generated) | 1 |  |
+| `067F68` | `80067368` | 0x198 | `src/auto/67F68.c` | C (generated) | 1 | `Bank_Relocate` |
+| `068100` | `80067500` | 0x94 | `src/auto/68100.c` | C (generated) | 1 | `Audio_RandRange` |
 | `068194` | `80067594` | 0x134 | `src/auto/68194.c` | C (generated) | 1 | `Seq_ResetVoice` |
 | `0682C8` | `800676C8` | 0x180 | `src/auto/682C8.c` | C (generated) | 1 | `Voice_FindFree` |
 | `068448` | `80067848` | 0x2c | `src/auto/68448.c` | C (generated) | 1 | `Mem_Fill` |
-| `068474` | `80067874` | 0x38 | `src/auto/68474.c` | C (generated) | 1 |  |
-| `0684AC` | `800678AC` | 0x9c | `src/auto/684AC.c` | C (generated) | 1 |  |
-| `068550` | `80067950` | 0x414 | `src/auto/68550.c` | C (generated) | 1 |  |
+| `068474` | `80067874` | 0x38 | `src/auto/68474.c` | C (generated) | 1 | `Mem_RelocatePtrs` |
+| `0684AC` | `800678AC` | 0x9c | `src/auto/684AC.c` | C (generated) | 1 | `Sound_StartVoice` |
+| `068550` | `80067950` | 0x414 | `src/auto/68550.c` | C (generated) | 1 | `amCreateAudioMgr` |
 | `068964` | `80067D64` | 0x204 | `src/auto/68964.c` | C (generated) | 1 | `__amDMA` |
-| `068B68` | `80067F68` | 0x140 | `src/auto/68B68.c` | C (generated) | 1 | `Audio_SchedThread` |
+| `068B68` | `80067F68` | 0x140 | `src/auto/68B68.c` | C (generated) | 1 | `__amMain` |
 | `068CA8` | `800680A8` | 0x1b8 | `src/auto/68CA8.c` | C (generated) | 1 | `__amHandleFrameMsg` |
-| `068E60` | `80068260` | 0x40 | `src/auto/68E60.c` | C (generated) | 1 |  |
-| `068EA0` | `800682A0` | 0x40 | `src/auto/68EA0.c` | C (generated) | 1 |  |
-| `068EE0` | `800682E0` | 0x100 | `src/auto/68EE0.c` | C (generated) | 1 | `Audio_RecycleVoices` |
+| `068E60` | `80068260` | 0x40 | `src/auto/68E60.c` | C (generated) | 1 | `__amHandleDoneMsg` |
+| `068EA0` | `800682A0` | 0x40 | `src/auto/68EA0.c` | C (generated) | 1 | `__amDmaNew` |
+| `068EE0` | `800682E0` | 0x100 | `src/auto/68EE0.c` | C (generated) | 1 | `__clearAudioDMA` |
 | `068FE0` | `800683E0` | 0x150 | `src/auto/68FE0.c` | C (generated) | 1 | `cosf` |
-| `069130` | `80068530` | 0x28 | `src/auto/69130.c` | C (generated) | 1 |  |
+| `069130` | `80068530` | 0x28 | `src/auto/69130.c` | C (generated) | 1 | `coss` |
 | `069160` | `80068560` | 0x380 | `src/auto/69160.c` | C (generated) | 1 | `guLookAtF` |
 | `0694E0` | `800688E0` | 0x384 | `src/auto/694E0.c` | C (generated) | 1 | `guLookAt` |
 | `069870` | `80068C70` | 0x98 | `src/auto/69870.c` | C (generated) | 1 | `guMtxF2L` |
 | `069908` | `80068D08` | 0xa8 | `src/auto/69908.c` | C (generated) | 1 | `guMtxL2F` |
 | `0699B0` | `80068DB0` | 0x50 | `src/auto/699B0.c` | C (generated) | 1 | `guMtxIdentF` |
 | `069A00` | `80068E00` | 0xf0 | `src/auto/69A00.c` | C (generated) | 1 | `guMtxIdent` |
-| `069AF0` | `80068EF0` | 0xdc | `src/auto/69AF0.c` | C (generated) | 1 | `Mtx4_Mul` |
-| `069BCC` | `80068FCC` | 0xac | `src/auto/69BCC.c` | C (generated) | 1 |  |
+| `069AF0` | `80068EF0` | 0xdc | `src/auto/69AF0.c` | C (generated) | 1 | `guMtxCatF` |
+| `069BCC` | `80068FCC` | 0xac | `src/auto/69BCC.c` | C (generated) | 1 | `guMtxXFMF` |
 | `069C80` | `80069080` | 0xa8 | `src/libultra/guNormalize.c` | C | 1 | `guNormalize` |
 | `069D30` | `80069130` | 0x1b0 | `src/auto/69D30.c` | C (generated) | 1 | `guPerspectiveF` |
 | `069EE0` | `800692E0` | 0x1c8 | `src/auto/69EE0.c` | C (generated) | 1 | `guPerspective` |
 | `06A0B0` | `800694B0` | 0x2d4 | `src/auto/6A0B0.c` | C (generated) | 2 | `guRotateF`, `guRotate` |
 | `06A390` | `80069790` | 0x314 | `src/auto/6A390.c` | C (generated) | 2 | `guRotateRPYF`, `guRotateRPY` |
-| `06A6B0` | `80069AB0` | 0x60 | `src/auto/6A6B0.c` | C (generated) | 1 |  |
+| `06A6B0` | `80069AB0` | 0x60 | `src/auto/6A6B0.c` | C (generated) | 1 | `guScaleF` |
 | `06A710` | `80069B10` | 0x7c | `src/auto/6A710.c` | C (generated) | 1 | `guScale` |
 | `06A790` | `80069B90` | 0x1a0 | `src/auto/6A790.c` | C (generated) | 1 | `sinf` |
 | `06A930` | `80069D30` | 0x54 | `src/auto/6A930.c` | C (generated) | 1 | `sins` |
-| `06A990` | `80069D90` | 0x54 | `src/auto/6A990.c` | C (generated) | 1 |  |
+| `06A990` | `80069D90` | 0x54 | `src/auto/6A990.c` | C (generated) | 1 | `guTranslateF` |
 | `06A9E4` | `80069DE4` | 0x70 | `src/auto/6A9E4.c` | C (generated) | 1 | `guTranslate` |
 | `06AA60` | `80069E60` | 0x3b8 | `src/auto/6AA60.c` | C (generated) | 2 | `guPositionF`, `guPosition` |
 | `06AE20` | `8006A220` | 0x240 | `asm/6AE18.s` | asm | 4 | `osInvalDCache`, `osInvalICache`, `osWritebackDCache`, `osWritebackDCacheAll` |
@@ -1121,10 +1121,10 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `06BAE0` | `8006AEE0` | 0x108 | `src/auto/6BAE0.c` | C (generated) | 1 | `__osInsertTimer` |
 | `06BBF0` | `8006AFF0` | 0x54 | `src/auto/6BBF0.c` | C (generated) | 1 | `osVirtualToPhysical` |
 | `06BC50` | `8006B050` | 0x8 | `src/libultra/__assert.c` | C | 1 | `__assert` |
-| `06BC60` | `8006B060` | 0x5c | `src/auto/6BC60.c` | C (generated) | 2 |  |
+| `06BC60` | `8006B060` | 0x5c | `src/auto/6BC60.c` | C (generated) | 2 | `alInit`, `alClose` |
 | `06BCBC` | `8006B0BC` | 0x20 | `src/libultra/alLink.c` | C | 1 | `alLink` |
 | `06BCDC` | `8006B0DC` | 0x30 | `src/libultra/alUnlink.c` | C | 1 | `alUnlink` |
-| `06BD10` | `8006B110` | 0x34 | `src/auto/6BD10.c` | C (generated) | 1 |  |
+| `06BD10` | `8006B110` | 0x34 | `src/auto/6BD10.c` | C (generated) | 1 | `alHeapInit` |
 | `06BD50` | `8006B150` | 0x48 | `src/libultra/alHeapDBAlloc.c` | C | 1 | `alHeapDBAlloc` |
 | `06BDA0` | `8006B1A0` | 0x2cc | `src/auto/6BDA0.c` | C (generated) | 1 | `alSynNew` |
 | `06C06C` | `8006B46C` | 0x1b0 | `src/auto/6C06C.c` | C (generated) | 1 | `alAudioFrame` |
@@ -1134,7 +1134,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `06C2B4` | `8006B6B4` | 0x40 | `src/libultra/_freePVoice.c` | C | 1 | `_freePVoice` |
 | `06C2F4` | `8006B6F4` | 0x94 | `src/auto/6C2F4.c` | C (generated) | 2 | `_timeToSamplesNoRound`, `_timeToSamples` |
 | `06C388` | `8006B788` | 0xb0 | `src/auto/6C388.c` | C (generated) | 2 | `__nextSampleTime`, `alSynDelete` |
-| `06C440` | `8006B840` | 0x50 | `src/auto/6C440.c` | C (generated) | 1 |  |
+| `06C440` | `8006B840` | 0x50 | `src/auto/6C440.c` | C (generated) | 1 | `alSynAddPlayer` |
 | `06C490` | `8006B890` | 0x128 | `src/auto/6C490.c` | C (generated) | 1 | `alSynAllocVoice` |
 | `06C5B8` | `8006B9B8` | 0xb8 | `src/auto/6C5B8.c` | C (generated) | 1 | `_allocatePVoice` |
 | `06C670` | `8006BA70` | 0x7c | `src/auto/6C670.c` | C (generated) | 1 | `alSynStopVoice` |
@@ -1155,12 +1155,12 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `06CDA0` | `8006C1A0` | 0x4c | `src/auto/6CDA0.c` | C (generated) | 1 | `osViSetMode` |
 | `06CDF0` | `8006C1F0` | 0x164 | `src/auto/6CDF0.c` | C (generated) | 1 | `osViSetSpecialFeatures` |
 | `06CF60` | `8006C360` | 0xc8 | `src/auto/6CF60.c` | C (generated) | 1 | `osViSetXScale` |
-| `06D030` | `8006C430` | 0x44 | `src/auto/6D030.c` | C (generated) | 1 |  |
+| `06D030` | `8006C430` | 0x44 | `src/auto/6D030.c` | C (generated) | 1 | `osViSetYScale` |
 | `06D080` | `8006C480` | 0x44 | `src/libultra/osViSwapBuffer.c` | C | 1 | `osViSwapBuffer` |
 | `06D0D0` | `8006C4D0` | 0x5c | `src/auto/6D0D0.c` | C (generated) | 1 | `osViBlack` |
 | `06D130` | `8006C530` | 0xfc | `src/auto/6D130.c` | C (generated) | 2 | `__osSiRawReadIo`, `__osSiRawWriteIo` |
-| `06D230` | `8006C630` | 0x100 | `src/auto/6D230.c` | C (generated) | 1 |  |
-| `06D330` | `8006C730` | 0x38 | `src/auto/6D330.c` | C (generated) | 1 |  |
+| `06D230` | `8006C630` | 0x100 | `src/auto/6D230.c` | C (generated) | 1 | `osContReset` |
+| `06D330` | `8006C730` | 0x38 | `src/auto/6D330.c` | C (generated) | 1 | `__osPackResetData` |
 | `06D370` | `8006C770` | 0x19c | `src/auto/6D370.c` | C (generated) | 1 | `osContInit` |
 | `06D50C` | `8006C90C` | 0xb4 | `src/auto/6D50C.c` | C (generated) | 1 | `__osContGetInitData` |
 | `06D5C0` | `8006C9C0` | 0xbc | `src/auto/6D5C0.c` | C (generated) | 1 | `__osPackRequestData` |
@@ -1183,7 +1183,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `06DF2C` | `8006D32C` | 0x100 | `src/auto/6DF2C.c` | C (generated) | 1 | `__scHandleRetrace` |
 | `06E02C` | `8006D42C` | 0x110 | `src/auto/6E02C.c` | C (generated) | 1 | `__scHandleRSP` |
 | `06E13C` | `8006D53C` | 0xe0 | `src/auto/6E13C.c` | C (generated) | 1 | `__scHandleRDP` |
-| `06E21C` | `8006D61C` | 0x54 | `src/auto/6E21C.c` | C (generated) | 1 |  |
+| `06E21C` | `8006D61C` | 0x54 | `src/auto/6E21C.c` | C (generated) | 1 | `__scTaskReady` |
 | `06E270` | `8006D670` | 0xb0 | `src/auto/6E270.c` | C (generated) | 1 | `__scTaskComplete` |
 | `06E320` | `8006D720` | 0xac | `src/auto/6E320.c` | C (generated) | 1 | `__scAppendList` |
 | `06E3CC` | `8006D7CC` | 0x134 | `src/auto/6E3CC.c` | C (generated) | 1 | `__scExec` |
@@ -1194,7 +1194,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `06E9B0` | `8006DDB0` | 0x88 | `src/auto/6E9B0.c` | C (generated) | 1 | `osContStartReadData` |
 | `06EA38` | `8006DE38` | 0x9c | `src/auto/6EA38.c` | C (generated) | 1 | `osContGetReadData` |
 | `06EAD4` | `8006DED4` | 0xb8 | `src/auto/6EAD4.c` | C (generated) | 1 | `__osPackReadData` |
-| `06EB90` | `8006DF90` | 0x13c | `src/auto/6EB90.c` | C (generated) | 1 |  |
+| `06EB90` | `8006DF90` | 0x13c | `src/auto/6EB90.c` | C (generated) | 1 | `guS2DInitBg` |
 | `06ECD0` | `8006E0D0` | 0x144 | `asm/6ECCC.s` | asm | 1 | `__osMotorAccess` |
 | `06EE14` | `8006E214` | 0x248 | `src/auto/6EE14.c` | C (generated) | 1 | `osMotorInit` |
 | `06F060` | `8006E460` | 0x30c | `src/auto/6F060.c` | C (generated) | 1 | `osPfsAllocateFile` |
@@ -1229,7 +1229,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `07261C` | `80071A1C` | 0x5c | `src/auto/7261C.c` | C (generated) | 1 | `alMainBusNew` |
 | `072678` | `80071A78` | 0x44 | `src/auto/72678.c` | C (generated) | 1 | `alSaveNew` |
 | `0726C0` | `80071AC0` | 0x444 | `src/auto/726C0.c` | C (generated) | 1 | `alAdpcmPull` |
-| `072B04` | `80071F04` | 0x39c | `src/auto/72B04.c` | C (generated) | 1 |  |
+| `072B04` | `80071F04` | 0x39c | `src/auto/72B04.c` | C (generated) | 1 | `alRaw16Pull` |
 | `072EA0` | `800722A0` | 0x1ac | `src/auto/72EA0.c` | C (generated) | 1 | `alLoadParam` |
 | `07304C` | `8007244C` | 0x178 | `src/auto/7304C.c` | C (generated) | 1 | `_decodeChunk` |
 | `0731D0` | `800725D0` | 0xdc | `src/auto/731D0.c` | C (generated) | 1 | `alAuxBusPull` |
@@ -1237,10 +1237,10 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `0732E0` | `800726E0` | 0x54c | `src/auto/732E0.c` | C (generated) | 1 | `alEnvmixerPull` |
 | `07382C` | `80072C2C` | 0xd4 | `src/auto/7382C.c` | C (generated) | 1 | `alEnvmixerParam` |
 | `073900` | `80072D00` | 0x300 | `src/auto/73900.c` | C (generated) | 1 | `_pullSubFrame` |
-| `073C00` | `80073000` | 0xe0 | `src/auto/73C00.c` | C (generated) | 1 | `frexp_audio` |
-| `073CE0` | `800730E0` | 0x24 | `src/auto/73CE0.c` | C (generated) | 1 |  |
+| `073C00` | `80073000` | 0xe0 | `src/auto/73C00.c` | C (generated) | 1 | `_frexpf` |
+| `073CE0` | `800730E0` | 0x24 | `src/auto/73CE0.c` | C (generated) | 1 | `_ldexpf` |
 | `073D04` | `80073104` | 0x280 | `src/auto/73D04.c` | C (generated) | 1 | `_getRate` |
-| `073F84` | `80073384` | 0x84 | `src/auto/73F84.c` | C (generated) | 1 |  |
+| `073F84` | `80073384` | 0x84 | `src/auto/73F84.c` | C (generated) | 1 | `_getVol` |
 | `074010` | `80073410` | 0x1c | `src/libultra/alFilterNew.c` | C | 1 | `alFilterNew` |
 | `074030` | `80073430` | 0x140 | `src/auto/74030.c` | C (generated) | 1 | `alMainBusPull` |
 | `074170` | `80073570` | 0x30 | `src/libultra/alMainBusParam.c` | C | 1 | `alMainBusParam` |
@@ -1275,7 +1275,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `075990` | `80074D90` | 0x3b8 | `src/auto/75990.c` | C (generated) | 1 | `__osDevMgrMain` |
 | `075D50` | `80075150` | 0x54 | `src/auto/75D50.c` | C (generated) | 1 | `__osPiCreateAccessQueue` |
 | `075DA4` | `800751A4` | 0x6c | `src/auto/75DA4.c` | C (generated) | 1 | `__osPiGetAccess` |
-| `075E10` | `80075210` | 0x28 | `src/auto/75E10.c` | C (generated) | 1 |  |
+| `075E10` | `80075210` | 0x28 | `src/auto/75E10.c` | C (generated) | 1 | `__osPiRelAccess` |
 | `075E40` | `80075240` | 0x320 | `asm/75E38.s` | asm | 1 | `bcopy` |
 | `076160` | `80075560` | 0x570 | `src/auto/76160.c` | C (generated) | 1 | `_Printf` |
 | `0766D0` | `80075AD0` | 0x4bc | `src/auto/766D0.c` | C (generated) | 1 | `_Putfld` |
@@ -1311,7 +1311,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `078C90` | `80078090` | 0x244 | `src/auto/78C90.c` | C (generated) | 1 | `_Litob` |
 | `078EE0` | `800782E0` | 0x440 | `src/auto/78EE0.c` | C (generated) | 1 | `_Ldtob` |
 | `079320` | `80078720` | 0x98 | `src/auto/79320.c` | C (generated) | 1 | `_Ldunscale` |
-| `0793B8` | `800787B8` | 0x5a0 | `src/auto/793B8.c` | C (generated) | 1 |  |
+| `0793B8` | `800787B8` | 0x5a0 | `src/auto/793B8.c` | C (generated) | 1 | `_Genld` |
 | `079960` | `80078D60` | 0xb8 | `src/auto/79960.c` | C (generated) | 1 | `osDriveRomInit` |
 | `079A20` | `80078E20` | 0x84 | `src/auto/79A20.c` | C (generated) | 1 | `ldiv` |
 | `079AA4` | `80078EA4` | 0x134 | `src/auto/79AA4.c` | C (generated) | 1 | `lldiv` |
@@ -1324,13 +1324,13 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `07A1BC` | `800795BC` | 0xa4 | `src/libc/7A1BC.c` | C | 1 | `atoi` |
 | `07A260` | `80079660` | 0xf0 | `src/libc/7A260.c` | C | 1 | `_log_frac` |
 | `07A350` | `80079750` | 0xe8 | `src/libc/7A350.c` | C | 1 | `log` |
-| `07A438` | `80079838` | 0x28 | `src/auto/7A438.c` | C (generated) | 1 |  |
+| `07A438` | `80079838` | 0x28 | `src/auto/7A438.c` | C (generated) | 1 | `log10` |
 | `07A460` | `80079860` | 0x13c | `src/libc/7A460.c` | C | 1 | `memcmp` |
 | `07A5A0` | `800799A0` | 0xa0 | `src/libc/7A5A0.c` | C | 1 | `memset` |
 | `07A640` | `80079A40` | 0x24 | `src/auto/7A640.c` | C (generated) | 1 |  |
 | `07A670` | `80079A70` | 0x150 | `src/libc/7A670.c` | C | 1 | `pow` |
 | `07A7C0` | `80079BC0` | 0x34 | `src/libc/7A7C0.c` | C | 1 | `rand` |
-| `07A7F4` | `80079BF4` | 0xc | `src/auto/7A7F4.c` | C (generated) | 1 |  |
+| `07A7F4` | `80079BF4` | 0xc | `src/auto/7A7F4.c` | C (generated) | 1 | `srand` |
 | `07A800` | `80079C00` | 0x21c | `src/libc/7A800.c` | C | 1 | `sqrt` |
 | `07AA20` | `80079E20` | 0xb0 | `src/libc/7AA20.c` | C | 1 | `strcat` |
 | `07AAD0` | `80079ED0` | 0x104 | `src/libc/7AAD0.c` | C | 1 | `strcmp` |

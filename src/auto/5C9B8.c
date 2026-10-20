@@ -69,18 +69,18 @@ extern void Sound_FadeOut(s32, s32);
 extern void World_RemoveObject(World *, Snd *, s32, s32);
 extern s32 Sound_CountPlaying(s32);
 extern s32 Sound_AllocVoice(s32, s32, s32, s32, s32);
-extern s32 func_8006621C(void *, s32, s32, s32, s32, s32);
+extern s32 Sound_AllocWithBank(void *, s32, s32, s32, s32, s32);
 extern void func_80009200(World *);
 extern f32 func_8005D208(Vec3f *, Vec3f *);
 extern s32 Vec3f_HeadingAngleXZ(Vec3f *, Vec3f *, Vec3f *);
 extern f32 func_8005D114(Vec3f *, Vec3f *, Vec3f *, Vec3f *);
 extern void func_8005D4AC(Snd *, s32 *);
 extern void Sound_SetPitch(s32, f32);
-extern s32 Sound_SetVolumeById(s32, s32);
+extern s32 Sound_SetTempoById(s32, s32);
 extern s32 Sound_CountVoices(s32);
 extern s32 Sound_SetVolume(s32, s32);
-extern s32 Sound_SetFieldA8(s32, s32);
-extern s32 Sound_SetPanById(s32, s32);
+extern s32 Sound_SetPan(s32, s32);
+extern s32 Sound_SetFxMixById(s32, s32);
 extern f32 sqrtf(f32);
 extern f64 fabs(f64);
 
@@ -168,7 +168,7 @@ void World_UpdateSounds(World *w) {
             a = s->x14 * w->x518;
             CLAMP256(a);
             cnt++;
-            s->x3C = func_8006621C(D_8010AAA8, s->x10, a, a2, 0, 0);
+            s->x3C = Sound_AllocWithBank(D_8010AAA8, s->x10, a, a2, 0, 0);
         }
     }
     if (gGame->xC != 2) {
@@ -214,20 +214,20 @@ void World_UpdateSounds(World *w) {
                 Sound_SetPitch(s->x3C, pitch);
                 cnt++;
                 if (s->x48 != -1) {
-                    Sound_SetVolumeById(s->x3C, s->x48);
+                    Sound_SetTempoById(s->x3C, s->x48);
                 }
                 if (ps->x0 != 0) {
-                    Sound_SetPanById(s->x3C, ps->x0);
+                    Sound_SetFxMixById(s->x3C, ps->x0);
                 }
             } else if (Sound_CountVoices(s->x3C)) {
                 Sound_SetVolume(s->x3C, v);
-                Sound_SetFieldA8(s->x3C, pan);
+                Sound_SetPan(s->x3C, pan);
                 Sound_SetPitch(s->x3C, pitch);
                 if (s->x48 != -1) {
-                    Sound_SetVolumeById(s->x3C, s->x48);
+                    Sound_SetTempoById(s->x3C, s->x48);
                 }
                 if (ps->x0 != ps->x4) {
-                    Sound_SetPanById(s->x3C, ps->x0);
+                    Sound_SetFxMixById(s->x3C, ps->x0);
                 }
             }
         }

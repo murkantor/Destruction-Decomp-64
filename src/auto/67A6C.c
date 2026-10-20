@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 typedef struct { u8 pad0[0x8]; u32 x8; u8 pad1[0x80]; u32 x8C; u8 pad2[0x25]; u8 xB5; u8 pad3[0x16]; u8 xCC; u8 pad4[4]; u8 xD1; u8 xD2; } Snd;
-void Snd_UpdateVolumeRamp(Snd *s) {
+void Snd_UpdateAutoPan(Snd *s) {
     u8 step = s->xCC;
     u32 v;
     do {

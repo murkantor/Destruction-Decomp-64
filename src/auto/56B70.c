@@ -3,7 +3,7 @@
 
 M2C_UNK osViSetSpecialFeatures(s32);                         /* extern */
 M2C_UNK osViSetXScale(f32);                         /* extern */
-M2C_UNK func_8006C430(f32);                         /* extern */
+M2C_UNK osViSetYScale(f32);                         /* extern */
 M2C_UNK osViBlack(M2C_UNK);                         /* extern */
 M2C_UNK osViSetMode(void *);                        /* extern */
 M2C_UNK osWritebackDCache();                 /* extern */
@@ -20,7 +20,7 @@ void func_80055F70(void *arg0) {
             osViSetMode(arg0);
             osViSetSpecialFeatures(M2C_FIELD(arg0, s32 *, 0x50));
             osViSetXScale(M2C_FIELD(arg0, f32 *, 0x54));
-            func_8006C430(M2C_FIELD(arg0, f32 *, 0x58));
+            osViSetYScale(M2C_FIELD(arg0, f32 *, 0x58));
         }
         D_800B0B14 = arg0;
     }

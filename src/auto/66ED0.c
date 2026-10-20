@@ -49,7 +49,7 @@ void Envelope_Step(Voice *);
 s32 func_80064D90(Voice *, s32);
 void alSynStopVoice(void *, ALVoice *);
 void Env_Update(Voice *);
-void Snd_UpdateVolumeRamp(Voice *);
+void Snd_UpdateAutoPan(Voice *);
 f32 func_80066F7C(Voice *);
 f32 func_80066F24(Voice *);
 void AudioVoice_UpdatePitch(Voice *, s32, f32);
@@ -97,7 +97,7 @@ s32 Audio_UpdateVoices(void) {
                 Env_Update(v);
             }
             if (v->xCC && v->x8C < v->x8) {
-                Snd_UpdateVolumeRamp(v);
+                Snd_UpdateAutoPan(v);
             }
             pitch = v->x2C;
             if (v->xCD) {

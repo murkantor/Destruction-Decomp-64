@@ -3,7 +3,7 @@
 
 s32 osSetIntMask(s32);                             /* extern */
 
-void func_8006B840(void *arg0, void *arg1) {
+void alSynAddPlayer(void *arg0, void *arg1) {
     s32 temp_v0;
 
     temp_v0 = osSetIntMask(1);

@@ -4,7 +4,7 @@
 typedef struct { f32 m[4][4]; } Mtx4;
 typedef struct { f32 x0, x4, x8; u8 padC[0x18]; f32 rot[3][3]; u8 pad[0x1BC - 0x48]; } Node;
 typedef struct { u8 pad[0x390]; Node a[1]; } Model;
-extern void Mtx4_Mul(Mtx4 *, s32, s32);
+extern void guMtxCatF(Mtx4 *, s32, s32);
 void Mtx_FromRotPos(s32 a0, s32 a1, s32 m, s32 idx, s32 sel) {
     Node *n;
     Mtx4 mtx;
@@ -24,5 +24,5 @@ void Mtx_FromRotPos(s32 a0, s32 a1, s32 m, s32 idx, s32 sel) {
     mtx.m[3][1] = n->x4;
     mtx.m[3][2] = n->x8;
     mtx.m[3][3] = 1.0f;
-    Mtx4_Mul(&mtx, a1, a0);
+    guMtxCatF(&mtx, a1, a0);
 }

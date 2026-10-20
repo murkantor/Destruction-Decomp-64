@@ -12,7 +12,7 @@ s32 osRecvMesg(OSMesgQueue *, OSMesg *, s32);
 void alUnlink(ALLink *);
 void alLink(ALLink *, ALLink *);
 
-void Audio_RecycleVoices(void) {
+void __clearAudioDMA(void) {
     u32 i;
     OSMesg msg;
     Item682E0 *item;

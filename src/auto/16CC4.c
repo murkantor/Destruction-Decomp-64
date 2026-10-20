@@ -39,7 +39,7 @@ extern f64 D_800B8700;
 extern f64 D_800B8708;
 extern f64 D_800B8710;
 void guMtxL2F(f32 mf[4][4], s32 m);
-void func_80068FCC(f32 mf[4][4], f32, f32, f32, f32 *, f32 *, f32 *);
+void guMtxXFMF(f32 mf[4][4], f32, f32, f32, f32 *, f32 *, f32 *);
 u8 Track_LineOfSight(void *, Vec3f *);
 Gfx *Bg_Draw(Spr *, Gfx *, s32);
 
@@ -79,7 +79,7 @@ Gfx *Gfx_DrawLensFlare(Gfx *gfx, Cam *cam, Vp **vpp, s32 idx)
     p.x = sun->pos.x;
     p.y = sun->pos.y;
     p.z = sun->pos.z;
-    func_80068FCC(mf, p.x, p.y, p.z, &out.x, &out.y, &out.z);
+    guMtxXFMF(mf, p.x, p.y, p.z, &out.x, &out.y, &out.z);
     w = p.x * mf[0][3] + p.y * mf[1][3] + p.z * mf[2][3] + mf[3][3];
     ahw = fabsf(hw);
     if (w < 1.0f)

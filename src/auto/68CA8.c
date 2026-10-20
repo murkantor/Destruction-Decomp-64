@@ -50,7 +50,7 @@ extern u8 D_8007ADD0[];
 extern u8 D_8007AEA0[];
 extern u8 rspbootTextEnd[] asm("D_8007AEA0");
 extern u8 D_800B72A0[];
-void Audio_RecycleVoices(void);
+void __clearAudioDMA(void);
 u32 osVirtualToPhysical(void *);
 s32 osAiSetNextBuffer(void *, u32);
 u32 osAiGetLength(void);
@@ -65,7 +65,7 @@ u32 __amHandleFrameMsg(AudioInfo *info, AudioInfo *lastInfo) {
     int samplesLeft = 0;
     OSScTask *t;
 
-    Audio_RecycleVoices();
+    __clearAudioDMA();
 
     audioPtr = (s16 *)osVirtualToPhysical(info->data);
 

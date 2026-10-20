@@ -17,10 +17,10 @@ extern u8 D_8011F2B8[];
 void osScAddClient(void *, OSScClient *, OSMesgQueue *);
 s32 osRecvMesg(OSMesgQueue *, OSMesg *, s32);
 s32 __amHandleFrameMsg(void *, s32);
-void func_80068260(s32);
-void func_8006B08C(void *);
+void __amHandleDoneMsg(s32);
+void alClose(void *);
 
-void Audio_SchedThread(void) {
+void __amMain(void) {
     OSScClient client;
     Msg *msg;
     s32 done = 0;
@@ -32,7 +32,7 @@ void Audio_SchedThread(void) {
             case 1:
                 if (__amHandleFrameMsg(D_8011F088.x0[D_800B4E40 % 3], D_800B4E50)) {
                     osRecvMesg(&D_8011F088.q2, (OSMesg *)&msg, 1);
-                    func_80068260(msg->x4);
+                    __amHandleDoneMsg(msg->x4);
                     D_800B4E50 = msg->x4;
                 }
                 break;
@@ -43,5 +43,5 @@ void Audio_SchedThread(void) {
                 break;
         }
     } while (!done);
-    func_8006B08C(D_8011F2B8);
+    alClose(D_8011F2B8);
 }

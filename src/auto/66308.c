@@ -71,12 +71,12 @@ extern u8 D_8011F2B8[];
 extern void Audio_UpdateVoices(void);
 
 void Mem_Fill(void *p, s32 v, s32 n);
-void func_8006B110(void *heap, s32 base, s32 len);
+void alHeapInit(void *heap, s32 base, s32 len);
 void *alHeapDBAlloc(u8 *, s32, void *, s32, s32);
-void Model_Relocate(s32, s32);
-void func_80067950(s32, SynCfg *, s32, s32 *, s32, s32, s32);
-void func_80065A2C(s32, s16);
-void func_8006B840(void *, void *);
+void Bank_Relocate(s32, s32);
+void amCreateAudioMgr(s32, SynCfg *, s32, s32 *, s32, s32, s32);
+void Sound_SetMasterVolume(s32, s16);
+void alSynAddPlayer(void *, void *);
 void Seq_ResetVoice(Voice *);
 void alSynAllocVoice(void *, SynVoice *, VoiceCfg *);
 
@@ -99,12 +99,12 @@ s32 func_80065708(AudioConfig *c) {
     }
     D_800CCAB0 = 1000000 / D_800CCAAC;
     Mem_Fill((void *)c->x10, 0, c->x14);
-    func_8006B110(&D_800CCA88, c->x10, c->x14);
+    alHeapInit(&D_800CCA88, c->x10, c->x14);
     D_800CCA9C = alHeapDBAlloc(0, 0, &D_800CCA88, 1, gNumVoices * sizeof(SynVoice));
     gVoices = alHeapDBAlloc(0, 0, &D_800CCA88, 1, gNumVoices * sizeof(Voice));
     Mem_Fill(D_800CCA9C, 0, gNumVoices * sizeof(SynVoice));
     Mem_Fill(gVoices, 0, gNumVoices * sizeof(Voice));
-    Model_Relocate(c->x18, c->x1C);
+    Bank_Relocate(c->x18, c->x1C);
     t = c->x18;
     sc.x0 = gNumVoices;
     sc.x4 = gNumVoices;
@@ -117,15 +117,15 @@ s32 func_80065708(AudioConfig *c) {
     fx[0] = c->x2C;
     fx[1] = c->x34;
     fx[2] = c->x30;
-    func_80067950(c->x8, &sc, c->xC, fx, c->x38, c->x3C, D_800CCAAC);
-    func_80065A2C(3, 0x7FFF);
+    amCreateAudioMgr(c->x8, &sc, c->xC, fx, c->x38, c->x3C, D_800CCAAC);
+    Sound_SetMasterVolume(3, 0x7FFF);
     D_800CCAB8 = 1;
     D_800CCABC = 0x12345678;
     p = &sMainStackTop;
     *p = 0;
     D_800CCA78 = Audio_UpdateVoices;
     D_800CCA74 = p;
-    func_8006B840(D_8011F2B8, p);
+    alSynAddPlayer(D_8011F2B8, p);
     for (i = 0; i < gNumVoices; i++) {
         gVoices[i].xC1 = 0;
         Seq_ResetVoice(&gVoices[i]);

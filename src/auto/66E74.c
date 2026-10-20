@@ -4,7 +4,7 @@
 extern s32 gNumVoices;
 extern u8 *gVoices;
 
-s32 func_80066274(s32 key) {
+s32 Sound_GetBank(s32 key) {
     u8 *p;
     s32 i;
 

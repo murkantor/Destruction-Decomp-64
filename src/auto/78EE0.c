@@ -31,7 +31,7 @@ extern const double D_800BC728;
 extern char D_800BC718[];
 extern char D_800BC71C[];
 s16 _Ldunscale(s16 *pex, _Pft *px);
-void func_800787B8(_Pft *px, u8 code, u8 *p, s16 nsig, s16 xexp);
+void _Genld(_Pft *px, u8 code, u8 *p, s16 nsig, s16 xexp);
 ldiv_t ldiv(long num, long denom);
 void *memcpy(void *, const void *, unsigned int);
 
@@ -139,5 +139,5 @@ void _Ldtob(_Pft *px, u8 code)
             }
         }
     }
-    func_800787B8(px, code, p, nsig, xexp);
+    _Genld(px, code, p, nsig, xexp);
 }

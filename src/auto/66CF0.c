@@ -12,7 +12,7 @@ typedef struct {
 extern s32 gNumVoices;
 extern Voice *gVoices;
 
-s32 Sound_SetPanById(s32 id, s32 pan) {
+s32 Sound_SetFxMixById(s32 id, s32 pan) {
     char unused[1];
     s32 i;
     s32 n;

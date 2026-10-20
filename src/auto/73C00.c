@@ -1,7 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-f64 frexp_audio(f64 x, s32 *exp) {
+f64 _frexpf(f64 x, s32 *exp) {
     f64 y;
 
     *exp = 0;

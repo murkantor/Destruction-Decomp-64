@@ -19,7 +19,7 @@ extern s32 D_800CCAB8;
 extern u8 **D_800CCAA4;
 void Seq_ResetVoice(Voice *);
 
-s32 func_800678AC(Voice *v, s32 a, s16 b, s16 c, s32 e) {
+s32 Sound_StartVoice(Voice *v, s32 a, s16 b, s16 c, s32 e) {
     Seq_ResetVoice(v);
     v->x9E = a;
     v->x96 = b;

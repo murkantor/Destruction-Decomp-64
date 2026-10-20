@@ -4,7 +4,7 @@
 s32 osViGetCurrentFramebuffer();                                /* extern */
 s32 osViGetNextFramebuffer();                                /* extern */
 
-s32 func_8006D61C(s32 arg0) {
+s32 __scTaskReady(s32 arg0) {
     s32 temp_s0;
 
     if (arg0 != 0) {

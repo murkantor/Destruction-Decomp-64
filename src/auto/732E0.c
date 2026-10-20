@@ -38,7 +38,7 @@ extern void __assert(const char *, const char *, s32);
 extern char D_800BC370[];
 extern char D_800BC374[];
 extern Acmd *_pullSubFrame(void *filter, s16 *inp, s16 *outp, s32 outCount, s32 sampleOffset, Acmd *p);
-extern f32 func_80073384(f32 ivol, s32 samples, s16 ratem, u16 ratel);
+extern f32 _getVol(f32 ivol, s32 samples, s16 ratem, u16 ratel);
 extern void _freePVoice(void *drvr, void *pvoice);
 extern void __freeParam(ALParam *param);
 
@@ -117,8 +117,8 @@ Acmd *alEnvmixerPull(void *filter, s16 *outp, s32 outCount, s32 sampleOffset, Ac
                 e->cvolL = e->ltgt;
                 e->cvolR = e->rtgt;
             } else {
-                e->cvolL = func_80073384(e->cvolL, e->delta, e->lratm, e->lratl);
-                e->cvolR = func_80073384(e->cvolR, e->delta, e->rratm, e->rratl);
+                e->cvolL = _getVol(e->cvolL, e->delta, e->lratm, e->lratl);
+                e->cvolR = _getVol(e->cvolR, e->delta, e->rratm, e->rratl);
             }
 
             if (e->cvolL == 0) e->cvolL = 1;

@@ -27,17 +27,17 @@ static inline f32 S8(u8 x) {
         return x - 0x100;
     return x;
 }
-void func_80067874(void *, void *, s32);
+void Mem_RelocatePtrs(void *, void *, s32);
 void osWritebackDCacheAll(void);
 
-void Model_Relocate(Hdr *arg0, s32 base) {
+void Bank_Relocate(Hdr *arg0, s32 base) {
     Hdr *h = arg0;
     s32 i;
 
     if (!(h->x10 & 0x80000000)) {
         h->x10 |= 0x80000000;
-        func_80067874(&h->x24, h, 3);
-        func_80067874(h->x2C, h, h->x20);
+        Mem_RelocatePtrs(&h->x24, h, 3);
+        Mem_RelocatePtrs(h->x2C, h, h->x20);
         for (i = 0; i < h->x20; i++) {
             f32 *pf = (f32 *)(h->x28 + i * 4);
             Node *n;

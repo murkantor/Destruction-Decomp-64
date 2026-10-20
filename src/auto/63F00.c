@@ -7,7 +7,7 @@ M2C_UNK func_800635B0(void *, M2C_UNK);             /* extern */
 u64 Time_Get(M2C_UNK *);                       /* extern */
 M2C_UNK Res_ComputeSizes();                            /* extern */
 s16 func_80064D70();                                /* extern */
-M2C_UNK func_80079BF4(u32);                         /* extern */
+M2C_UNK srand(u32);                         /* extern */
 extern M2C_UNK gGameTime;
 
 s32 func_80063300(void *arg0) {
@@ -19,7 +19,7 @@ s32 func_80063300(void *arg0) {
     Timer_InitRate();
     func_800635B0(arg0 + 0x10, 0);
     Res_ComputeSizes();
-    func_80079BF4((u32) Time_Get(&gGameTime));
+    srand((u32) Time_Get(&gGameTime));
     func_8002D188();
     return 0;
 }

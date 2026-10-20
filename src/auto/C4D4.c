@@ -2,7 +2,7 @@
 #include "m2c.h"
 
 typedef struct { u8 pad[0xA4]; f32 pos[3]; u8 padB0[0x18]; f32 rot[3][3]; u8 padEC[0x30]; f32 scale; } Body;
-void Mtx4_Mul(f32 (*)[4], s32, void *);
+void guMtxCatF(f32 (*)[4], s32, void *);
 
 void func_8000B8D4(void *dst, s32 a1, Body *b) {
     f32 m[4][4];
@@ -18,5 +18,5 @@ void func_8000B8D4(void *dst, s32 a1, Body *b) {
     m[3][1] = b->pos[1];
     m[3][2] = b->pos[2];
     m[3][3] = 1.0f;
-    Mtx4_Mul(m, a1, dst);
+    guMtxCatF(m, a1, dst);
 }

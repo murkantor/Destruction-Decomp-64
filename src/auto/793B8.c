@@ -28,7 +28,7 @@ void *memcpy(void *, const void *, unsigned int);
 #define FLAGS_HASH 8
 #define FLAGS_ZERO 16
 
-void func_800787B8(_Pft *px, u8 code, u8 *p, s16 nsig, s16 xexp)
+void _Genld(_Pft *px, u8 code, u8 *p, s16 nsig, s16 xexp)
 {
     const u8 point = '.';
 

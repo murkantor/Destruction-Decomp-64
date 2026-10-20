@@ -14,7 +14,7 @@ typedef struct {
     u8 pad18[0x28];
     s32 x40;
 } Sprite;
-void func_8006DF90(Sprite *);
+void guS2DInitBg(Sprite *);
 
 void Sprite_SetSize(Sprite *s, s32 w, s32 h, s32 tw, s32 th) {
     u8 changed = 0;
@@ -32,6 +32,6 @@ void Sprite_SetSize(Sprite *s, s32 w, s32 h, s32 tw, s32 th) {
         t->xE = th * 4;
     }
     if (changed && t->x17 != 3 && !(s->x40 & 1)) {
-        func_8006DF90(s);
+        guS2DInitBg(s);
     }
 }

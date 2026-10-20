@@ -66,8 +66,8 @@ extern u8 D_8011F2B8[];
 extern s32 D_800CCAB0;
 
 void Seq_ReadEnvelope(Voice *, u8 *);
-void func_80066BF4(Voice *);
-void func_80066E50(Voice *);
+void Env_Start(Voice *);
+void Snd_StartAutoPan(Voice *);
 void func_800668C4(Voice *, s32);
 void alSynSetVol(void *, ALVoice *, s16, s32);
 void alSynSetFXMix(void *, ALVoice *, u8);
@@ -127,10 +127,10 @@ void func_80066530(Voice *v, s32 idx) {
                 note = v->x7C[note].b3;
             }
             if (v->xCE == 0) {
-                func_80066BF4(v);
+                Env_Start(v);
             }
             if (v->xCC) {
-                func_80066E50(v);
+                Snd_StartAutoPan(v);
             }
             k = v->xA6;
             if (v->xCF == 0) {

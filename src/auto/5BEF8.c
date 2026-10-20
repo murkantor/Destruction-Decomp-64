@@ -26,7 +26,7 @@ extern void guPerspectiveF(MtxF, u16 *, f32, f32, f32, f32, f32);
 extern void guLookAtF(MtxF, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 extern void guMtxIdentF(MtxF);
 extern void guMtxF2L(MtxF, void *);
-extern void Mtx4_Mul(void *, MtxF, MtxF);
+extern void guMtxCatF(void *, MtxF, MtxF);
 extern void osWritebackDCache(void *, s32);
 extern void func_80057334(void *);
 extern double fabs(double);
@@ -41,7 +41,7 @@ Gfx *Camera_BuildProjection(Gfx *gfx, Cam *cam) {
     guPerspectiveF(proj, &norm, cam->fovy, cam->aspect, cam->zNear, cam->zFar, cam->scale);
     switch (cam->x1C) {
     case 1:
-        Mtx4_Mul(cam->x20, proj, proj);
+        guMtxCatF(cam->x20, proj, proj);
         break;
     case 2: {
         MtxF look;
@@ -56,7 +56,7 @@ Gfx *Camera_BuildProjection(Gfx *gfx, Cam *cam) {
             cam->eye.z = cam->at.z + 0.01;
         }
         guLookAtF(look, cam->eye.x, cam->eye.y, cam->eye.z, cam->at.x, cam->at.y, cam->at.z, cam->up.x, cam->up.y, cam->up.z);
-        Mtx4_Mul(look, proj, proj);
+        guMtxCatF(look, proj, proj);
         break;
     }
     }

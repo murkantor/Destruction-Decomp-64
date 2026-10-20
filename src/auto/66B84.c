@@ -26,7 +26,7 @@ typedef struct {
 extern s32 gNumVoices;
 extern Voice *gVoices;
 
-s32 Sound_SetFieldA8(s32 id, s16 x) {
+s32 Sound_SetPan(s32 id, s16 x) {
     s32 i;
     s32 count;
     Voice *v;

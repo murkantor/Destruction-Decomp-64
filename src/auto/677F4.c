@@ -21,7 +21,7 @@ typedef struct {
     u8 xBD;
 } Voice;
 
-void func_80066BF4(Voice *v) {
+void Env_Start(Voice *v) {
     if (v->x92 != 0x7FFF) {
         if (v->xAA != 0) {
             v->x50 = v->x3C + (v->xAA << 8);
