@@ -24,7 +24,7 @@ struct Car {
 
 typedef struct {
     u8 pad0[0x74];
-    Car *x74[(0xA4 - 0x74) / 4];
+    Car *x74[RACE_CARS];
     s32 xA4;
 } Race;
 

@@ -17,7 +17,7 @@ typedef struct {
     Link *x14;
     u8 pad18[8];
     Link *x20;
-    u8 pad24[0x80];
+    u8 pad24[0x80 + 4 * (RACE_CARS - 12)]; /* the car list (0x74), then its count */
     s32 xA4;
 } Cfg;
 typedef struct {
