@@ -48,7 +48,6 @@ uint32_t gfx_anisotropy = 1;
 uint32_t gfx_internal_height = 0;
 uint32_t gfx_aspect_mode = 0;
 
-extern "C" void gfx_opengl_screenshot(const char *path);
 extern int g_GfxPresentX, g_GfxPresentW;
 
 /* ---- Constants ---- */
@@ -282,7 +281,6 @@ unsigned gfx_presents;
 /* The FPS counter in the top-left corner (set by port/src/video.c) */
 extern "C" bool gfx_show_fps;
 bool gfx_show_fps;
-extern "C" void gfx_opengl_draw_counter(int value);
 static struct GfxRenderingAPI *gfx_rapi;
 
 static uint32_t window_width, window_height;
@@ -2693,7 +2691,7 @@ static void present_to_window(bool black) {
             since = now;
         }
         if (gfx_show_fps) {
-            gfx_opengl_draw_counter((int)shown);
+            gfx_rapi->draw_counter((int)shown);
         }
     }
     {
@@ -2708,7 +2706,7 @@ static void present_to_window(bool black) {
             if (strstr(buf, want) != NULL) {
                 char path[64];
                 snprintf(path, sizeof(path), "shot_%u.bmp", presents);
-                gfx_opengl_screenshot(path);
+                gfx_rapi->screenshot(path);
             }
         }
         static const char *gfxlog = getenv("DD64_GFXLOG");

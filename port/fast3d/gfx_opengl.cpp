@@ -1972,4 +1972,6 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_resolve_n64_aa,
     gfx_opengl_upload_vertices,
     gfx_opengl_draw_uploaded,
+    gfx_opengl_draw_counter,
+    gfx_opengl_screenshot,
 };

@@ -9,7 +9,8 @@ struct ShaderProgram;
 
 enum FilteringMode { FILTER_NONE, FILTER_LINEAR, FILTER_THREE_POINT };
 
-/* What the display-list interpreter (gfx_pc.cpp) asks of a renderer: gfx_opengl.cpp */
+/* What the display-list interpreter (gfx_pc.cpp) asks of a renderer: gfx_opengl.cpp,
+   or gfx_sdlgpu.cpp ([video] renderer = sdlgpu) */
 struct GfxRenderingAPI {
     void (*unload_shader)(struct ShaderProgram* old_prg);
     void (*load_shader)(struct ShaderProgram* new_prg);
@@ -43,6 +44,10 @@ struct GfxRenderingAPI {
        from it: first_vertex counts in the current program's stride */
     void (*upload_vertices)(const float *data, size_t num_floats);
     void (*draw_uploaded)(size_t first_vertex, size_t num_tris);
+    /* The FPS counter in the window's top-left corner, and a BMP of the window
+       (DD64_SHOT), both before the swap */
+    void (*draw_counter)(int value);
+    void (*screenshot)(const char *path);
 };
 
 #endif
