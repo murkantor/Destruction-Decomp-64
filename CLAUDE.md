@@ -95,7 +95,8 @@ Run the checkers from the repo root after `make`; they must report nothing new.
 - Put the ROM in `Data/` next to the executable. Testing aids (environment variables):
   `DD64_SHOT=n,m` screenshots, `DD64_EXIT_AFTER=n`, `DD64_TAP=a:60` taps A every 60 frames,
   `DD64_PRESS=frame:input ...`, `DD64_BOOT="track=5,type=1"` starts a race directly
-  (port/game/devboot.c), `DD64_DLDUMP=n` logs a display list with its matrices, vertices
+  (port/game/devboot.c; `menu=23` opens track select or any other menu mode instead),
+  `DD64_BECOPIES=1` reports struct copies of unconverted data, `DD64_DLDUMP=n` logs a display list with its matrices, vertices
   and S2DEX objects, `DD64_TEXDUMP=1` saves the textures uploaded (with DLDUMP: that frame's),
   `DD64_GFXLOG=1` logs draw counts every 60 frames, `DD64_WATCH=addr` logs stores to an
   address, `DD64_WAVOUT=file.wav` records the sound, `DD64_RAPHDBG=1` logs raphnet adapter

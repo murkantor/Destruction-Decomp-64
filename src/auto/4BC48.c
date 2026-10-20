@@ -1,16 +1,7 @@
 #include "common.h"
 #include "m2c.h"
 
-typedef struct {
-    s32 x0;
-    s32 x4;
-    u8 pad8[0xC];
-    s32 x14;
-    s32 x18;
-    f32 x1C;
-    f32 x20;
-    u8 pad24[0x24];
-} Desc;
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; u8 x10; u8 pad11[3]; s32 x14; s32 x18; f32 x1C; f32 x20; f32 x24_[5]; u8 x38; u8 pad39[3]; u8 x3C; u8 pad3D[3]; s32 x40; s32 x44; } Desc; /* the real layout (as UiElemDesc in 3E0D4.c, names as this file uses them): the PC port converts the static descriptors at boot by their declared widths */
 typedef struct { s32 a; s32 b; f32 x; f32 y; } Pos;
 typedef struct { Pos p[2]; } Pos2;
 typedef struct { u8 pad[0xC]; s16 xC; u8 padE[0x1058 - 0xE]; u64 x1058; } Game;

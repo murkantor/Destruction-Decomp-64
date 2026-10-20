@@ -1771,6 +1771,11 @@ static void s2_bg(const uint8_t *bg, bool scaled) {
         if (scaleW == 0) scaleW = 1;
         if (scaleH == 0) scaleH = 1;
     }
+    if (dl_dumping) {
+        sysLogPrintf(LOG_NOTE, "s2 bg %s: image %u,%u %ux%u frame %d,%d %ux%u fmt %u siz %u pal %u flip %u scale %g,%g ptr %p",
+                     scaled ? "1cyc" : "copy", imageX / 32, imageY / 32, imageW / 4, imageH / 4, frameX / 4, frameY / 4,
+                     frameW / 4, frameH / 4, fmt, siz, pal, flip, scaleW, scaleH, (const void *)image);
+    }
     uint32_t w = imageW / 4, h = imageH / 4;
     uint32_t bpp_bytes2 = siz == G_IM_SIZ_4b ? 1 : siz == G_IM_SIZ_8b ? 2 : siz == G_IM_SIZ_16b ? 4 : 8;
     uint32_t line = w * bpp_bytes2 / 2;

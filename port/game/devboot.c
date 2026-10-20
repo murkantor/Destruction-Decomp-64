@@ -61,7 +61,7 @@ static s32 optionIn(const char *spec, const char *key, s32 def, s32 lo, s32 hi) 
 /* Called by Boot_LoadData once the game is initialised and its data loaded */
 void Port_DevBoot(void) {
     const char *spec = getenv("DD64_BOOT");
-    s32 i, car, players;
+    s32 i, car, players, menu;
 
     if (spec == NULL) {
         return;
@@ -80,6 +80,13 @@ void Port_DevBoot(void) {
     func_8002D0E0(D_800958B0);
     D_800958A0 = 1;
     Players_Reset();
+    menu = option(spec, "menu", 0);
+    if (menu > 0) {
+        /* a menu screen instead of the race: menu=23 (0x17) is track select */
+        Game_SetNextMode(menu, 1);
+        Port_Log("devboot: menu mode %d", menu);
+        return;
+    }
     func_80063380(2);          /* major mode: race */
     Game_SetNextMode(0x1A, 1); /* course intro, then countdown and race */
     Port_Log("devboot: track %d type %d cup %d car %d players %d", D_800958B4, D_800958A8, D_800958B0, car,

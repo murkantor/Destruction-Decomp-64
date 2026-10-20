@@ -3,7 +3,7 @@
 
 typedef struct { s8 h; s8 m; s8 s; s32 frac; } TimeHMS;
 typedef struct { char s[8]; } Str8;
-typedef struct { u8 pad0[4]; s32 x14; u8 pad8[0xC]; s32 x24; s32 x28; f32 x2C; f32 x30; u8 pad24[0x24]; } UiDesc;
+typedef struct { s32 x0; s32 x14; s32 x8; s32 xC; u8 x10; u8 pad11[3]; s32 x24; s32 x28; f32 x2C; f32 x30; f32 x24_[5]; u8 x38; u8 pad39[3]; u8 x3C; u8 pad3D[3]; s32 x40; s32 x44; } UiDesc; /* the real layout (as UiElemDesc in 3E0D4.c, names as this file uses them): the PC port converts the static descriptors at boot by their declared widths */
 typedef struct { s32 a; s32 b; f32 c; f32 d; } UiPos;
 typedef struct { UiPos p[2]; } UiPos2;
 typedef struct { s32 x0; s32 x4; u64 x8; u64 x10; } Slot;
