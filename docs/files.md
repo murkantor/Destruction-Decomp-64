@@ -478,7 +478,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `036FC4` | `800363C4` | 0x368 | `src/auto/36FC4.c` | C (generated) | 1 | `CarAI_SteerToTarget` |
 | `03732C` | `8003672C` | 0xdfc | `asm/3732C.s` | asm | 1 | `Wheel_ComputeTireForce` |
 | `038128` | `80037528` | 0x828 | `src/auto/38128.c` | C (generated) | 1 | `Car_ApplyWheelForces` |
-| `038950` | `80037D50` | 0x1900 | `asm/38950.s` | asm | 2 | `Car_ApplySuspensionForces` |
+| `038950` | `80037D50` | 0x1900 | `asm/38950.s` | asm | 2 | `Car_ApplySuspensionForces`, `Car_UpdatePhysics` |
 | `03A250` | `80039650` | 0x1ac | `src/auto/3A250.c` | C (generated) | 1 | `Car_SelectGear` |
 | `03A3FC` | `800397FC` | 0x74 | `src/auto/3A3FC.c` | C (generated) | 1 |  |
 | `03A470` | `80039870` | 0xe8 | `src/auto/3A470.c` | C (generated) | 1 | `Car_UpdateRpm` |

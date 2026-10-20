@@ -997,3 +997,4 @@ __osPiRelAccess = 0x80075210; // type:func
 _Genld = 0x800787B8; // type:func
 log10 = 0x80079838; // type:func
 srand = 0x80079BF4; // type:func
+Car_UpdatePhysics = 0x8003815C; // type:func
