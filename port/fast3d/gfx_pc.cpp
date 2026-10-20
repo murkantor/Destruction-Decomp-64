@@ -304,6 +304,10 @@ static uint32_t fb_width, fb_height;   /* the game framebuffer (internal resolut
  * and more of the scene shows at the sides; everything else (the HUD, menus, screens
  * drawn in 2D) keeps its 4:3 area in the middle. */
 static float wide_k = 1.0f;            /* 4:3 width / framebuffer width */
+/* The viewport's z translate over its z scale: the RSP adds it to every vertex's
+ * screen z, which the game uses as a depth bias (vtrans z -8 around particles and
+ * skid marks, so they sit on the road instead of fighting it) */
+static float vp_z_offset;
 static bool vp_wide;                   /* the current draw uses the whole width */
 static int game_fb;                    /* the game draws here, presented to framebuffer 0 */
 static int game_fb_resolved;           /* single-sample copy when MSAA is on */
@@ -397,7 +401,18 @@ static void gfx_generate_cc(struct ColorCombiner *comb, const ColorCombinerKey &
                     case G_CCMUX_TEXEL1: val = SHADER_TEXEL1; used_textures[1] = true; break;
                     case G_CCMUX_TEXEL0_ALPHA: val = SHADER_TEXEL0A; used_textures[0] = true; break;
                     case G_CCMUX_TEXEL1_ALPHA: val = SHADER_TEXEL1A; used_textures[1] = true; break;
-                    case G_CCMUX_NOISE: val = SHADER_NOISE; break;
+                    case G_CCMUX_NOISE: /* == G_CCMUX_COMBINED_ALPHA in C, G_CCMUX_K4 in B */
+                        if (j != 0) {
+                            static bool reported;
+                            if (!reported) {
+                                reported = true;
+                                sysLogPrintf(LOG_WARNING, "gfx: combiner input 7 in slot %c (%016llX) is not supported",
+                                             "ABCD"[j], (unsigned long long)key.combine_mode);
+                            }
+                            break;
+                        }
+                        val = SHADER_NOISE;
+                        break;
                     case G_CCMUX_PRIMITIVE:
                     case G_CCMUX_PRIMITIVE_ALPHA:
                     case G_CCMUX_PRIM_LOD_FRAC:
@@ -441,6 +456,7 @@ static void gfx_generate_cc(struct ColorCombiner *comb, const ColorCombinerKey &
                             val = SHADER_1;
                             break;
                         }
+                        c[i][1][j] = G_CCMUX_PRIM_LOD_FRAC;
                         [[fallthrough]];
                     case G_ACMUX_PRIMITIVE:
                     case G_ACMUX_SHADE:
@@ -608,6 +624,9 @@ static uint32_t texture_checksum(const uint8_t *addr, uint32_t size) {
     return h;
 }
 
+/* The size of the texture bound in each slot, in texels (0: none) */
+static uint32_t bound_w[2], bound_h[2];
+
 static void import_texture(int i, int tile) {
     uint8_t fmt = rdp.texture_tile[tile].fmt;
     uint8_t siz = rdp.texture_tile[tile].siz;
@@ -624,6 +643,7 @@ static void import_texture(int i, int tile) {
     if (addr == NULL || line_bytes == 0 || size_bytes == 0) {
         gfx_rapi->select_texture(i, 0, false);
         rendering_state.textures[i] = 0;
+        bound_w[i] = bound_h[i] = 0;
         return;
     }
     if (full_line_bytes == 0) {
@@ -649,13 +669,20 @@ static void import_texture(int i, int tile) {
         fmt = G_IM_FMT_CI;
     }
 
-    TextureCacheKey key = { addr, fmt == G_IM_FMT_CI ? rdp.palette_sum ^ tlut : 0, size_bytes, line_bytes, fmt,
-                            siz };
+    /* CI4 texels index one 16-colour bank of the palette, chosen per tile (the font
+       draws each glyph in its own colour this way) */
+    uint32_t pal_key = 0;
+    if (fmt == G_IM_FMT_CI) {
+        pal_key = (rdp.palette_sum ^ tlut) + (siz == G_IM_SIZ_4b ? rdp.texture_tile[tile].palette * 0x9E3779B9u : 0);
+    }
+    TextureCacheKey key = { addr, pal_key, size_bytes, line_bytes, fmt, siz };
     uint32_t sum = texture_checksum(addr, size_bytes);
     auto it = texture_cache.find(key);
     if (it != texture_cache.end() && it->second.checksum == sum) {
         gfx_rapi->select_texture(i, it->second.texture_id, false);
         rendering_state.textures[i] = it->second.texture_id;
+        bound_w[i] = it->second.width;
+        bound_h[i] = it->second.height;
         return;
     }
 
@@ -709,6 +736,8 @@ static void import_texture(int i, int tile) {
     }
     texture_cache[key] = { id, w, h, sum };
     rendering_state.textures[i] = id;
+    bound_w[i] = w;
+    bound_h[i] = h;
 }
 
 void gfx_texture_cache_clear(void) {
@@ -828,6 +857,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         if (gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f) {
             x *= wide_k; /* perspective: widen the view (see vp_wide) */
         }
+        z += vp_z_offset * w; /* screen z = z/w * scale + translate */
 
         short U = tc0 * rsp.texture_scaling_factor.s >> 16;
         short V = tc1 * rsp.texture_scaling_factor.t >> 16;
@@ -953,6 +983,8 @@ static void gfx_calc_and_set_viewport(const uint8_t *vp) {
     rdp.viewport.width = (uint32_t)fabsf(width);
     rdp.viewport.height = (uint32_t)fabsf(height);
     rdp.viewport_or_scissor_changed = true;
+    int16_t zscale = rds16(vp + 4), ztrans = rds16(vp + 12);
+    vp_z_offset = zscale != 0 ? (float)ztrans / zscale : 0.0f;
 }
 
 static void gfx_dp_set_scissor(uint32_t mode, uint32_t ulx, uint32_t uly, uint32_t lrx, uint32_t lry) {
@@ -1133,6 +1165,15 @@ static void texture_size(int i, float *w, float *h) {
     }
     if (th <= 0.0f) {
         th = 1.0f;
+    }
+    /* A clamped (or unmasked) axis does not wrap at the tile size: its texels are
+       the ones uploaded, which can be more than the tile shows (the font loads
+       10 texels a row for a 9-texel tile). Only wrapping axes repeat every tile. */
+    if ((rdp.texture_tile[tile].cms & G_TX_CLAMP) && bound_w[i] != 0) {
+        tw = (float)bound_w[i];
+    }
+    if ((rdp.texture_tile[tile].cmt & G_TX_CLAMP) && bound_h[i] != 0) {
+        th = (float)bound_h[i];
     }
     *w = tw;
     *h = th;

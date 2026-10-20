@@ -13,6 +13,8 @@ extern "C" {
 /* Open the adapter (if one is plugged in) and start the poller. Main thread,
    before the game's threads read controllers. */
 void Port_RaphnetStart(void);
+/* Stop the poller and hand the adapter back to its own polling: before SDL_Quit */
+void Port_RaphnetStop(void);
 /* An adapter answers raw commands (or is being reconnected) */
 int Port_RaphnetOnline(void);
 /* A port's controller: 1 with its buttons (CONT_* layout) and stick (N64

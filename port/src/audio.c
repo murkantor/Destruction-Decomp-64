@@ -196,15 +196,17 @@ void Port_AudioSetFrequency(u32 freq) {
     const char *lat = SDL_getenv("DD64_AUDIO_LATENCY");
     u32 ms = lat != NULL ? (u32)SDL_strtoul(lat, NULL, 10) : (u32)SDL_clamp(gPortConfig.audioLatency, 20, 1000);
 
+    SDL_AudioStream *old, *stream;
+
+    /* The device thread holds SDL's device lock while pullFromRing waits for sLock,
+       so the stream is closed and opened outside sLock */
     SDL_LockMutex(sLock);
     if (sStream != NULL && sRate == freq) {
         SDL_UnlockMutex(sLock);
         return;
     }
-    if (sStream != NULL) {
-        SDL_DestroyAudioStream(sStream);
-        sStream = NULL;
-    }
+    old = sStream;
+    sStream = NULL;
     sRate = freq;
     sHead = sFill = 0;
     sPrimed = 0;
@@ -219,23 +221,32 @@ void Port_AudioSetFrequency(u32 freq) {
         fseek(sWav, 0, SEEK_END);
     }
     sLatencyBytes = (ms * freq / 1000) * 4;
+    SDL_UnlockMutex(sLock);
+
+    if (old != NULL) {
+        SDL_DestroyAudioStream(old);
+    }
     spec.format = SDL_AUDIO_S16;
     spec.channels = 2;
     spec.freq = (int)freq;
-    sStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, pullFromRing, NULL);
-    if (sStream == NULL) {
+    stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, pullFromRing, NULL);
+    if (stream == NULL) {
         Port_Log("audio: no output device (%s); running silent", SDL_GetError());
-    } else {
+        return;
+    }
+    {
         SDL_AudioSpec dev;
         int frames = 0;
 
-        SDL_GetAudioDeviceFormat(SDL_GetAudioStreamDevice(sStream), &dev, &frames);
-        SDL_ResumeAudioStreamDevice(sStream);
+        SDL_GetAudioDeviceFormat(SDL_GetAudioStreamDevice(stream), &dev, &frames);
         Port_Log("audio: %u Hz, latency %u samples (%u ms); device %d Hz, %d channels, %d-frame chunks",
                  (unsigned)freq, (unsigned)sLatencyBytes / 4, (unsigned)(sLatencyBytes / 4 * 1000 / freq), dev.freq,
                  dev.channels, frames);
     }
+    SDL_LockMutex(sLock);
+    sStream = stream;
     SDL_UnlockMutex(sLock);
+    SDL_ResumeAudioStreamDevice(stream);
 }
 
 /* The game hands a buffer of s16 stereo samples (N64 byte order in RAM) to the AI. */

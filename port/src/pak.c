@@ -14,7 +14,14 @@
  * Port_ReadN64Bytes), so a note saved here is the note the cartridge would save.
  */
 #include <SDL3/SDL.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "port.h"
 #include "port_config.h"
@@ -145,34 +152,59 @@ static void format(u8 *m) {
     memcpy(m + INODE_BACKUP_PAGE * PAGE_SIZE, m + INODE_PAGE * PAGE_SIZE, PAGE_SIZE);
 }
 
-static void save(int channel) {
+/*
+ * Write the image to disk, if it changed: to a temporary file, forced to the disk,
+ * then renamed over the old one, so a full disk or a power cut leaves either the
+ * old pak or the new one, never part of one. Returns 0, or -1 if it could not be
+ * saved (the image stays dirty and is tried again on the next write and at exit).
+ */
+static int save(int channel) {
     Pak *pak = &sPaks[channel];
     char path[1024], tmp[1040];
-    SDL_IOStream *io;
+    FILE *f;
+    int ok;
 
     if (!pak->dirty) {
-        return;
+        return 0;
     }
     SDL_snprintf(path, sizeof(path), "%sData/Saves", Port_BaseDir());
     SDL_CreateDirectory(path);
     pakPath(path, sizeof(path), channel);
     SDL_snprintf(tmp, sizeof(tmp), "%s.tmp", path);
-    io = SDL_IOFromFile(tmp, "wb");
-    if (io == NULL) {
-        Port_Log("pak: cannot write %s: %s", tmp, SDL_GetError());
-        return;
+    f = fopen(tmp, "wb");
+    if (f == NULL) {
+        Port_Log("pak: cannot write %s", tmp);
+        return -1;
     }
-    if (SDL_WriteIO(io, pak->mem, PAK_SIZE) != PAK_SIZE) {
-        Port_Log("pak: writing %s failed: %s", tmp, SDL_GetError());
-        SDL_CloseIO(io);
-        return;
+    ok = fwrite(pak->mem, 1, PAK_SIZE, f) == PAK_SIZE && fflush(f) == 0;
+#ifdef _WIN32
+    ok = ok && _commit(_fileno(f)) == 0;
+#else
+    ok = ok && fsync(fileno(f)) == 0;
+#endif
+    ok = fclose(f) == 0 && ok;
+    if (!ok) {
+        Port_Log("pak: writing %s failed; %s is unchanged", tmp, path);
+        SDL_RemovePath(tmp);
+        return -1;
     }
-    SDL_CloseIO(io);
     if (!SDL_RenamePath(tmp, path)) {
         Port_Log("pak: cannot replace %s: %s", path, SDL_GetError());
-        return;
+        return -1;
     }
     pak->dirty = 0;
+    return 0;
+}
+
+/* At exit: anything a failed save left unwritten */
+static void saveAll(void) {
+    int i;
+
+    for (i = 0; i < MAXCONTROLLERS; i++) {
+        if (sPaks[i].loaded) {
+            save(i);
+        }
+    }
 }
 
 /* The image for a channel, read from disk (or formatted) on first use */
@@ -188,6 +220,13 @@ static Pak *getPak(int channel) {
     pak = &sPaks[channel];
     if (pak->loaded) {
         return pak;
+    }
+    {
+        static int registered;
+        if (!registered) {
+            registered = 1;
+            atexit(saveAll);
+        }
     }
     pakPath(path, sizeof(path), channel);
     data = SDL_LoadFile(path, &size);
@@ -399,8 +438,7 @@ s32 osPfsChecker(OSPfs *pfs) {
     if (changed || !inodeValid(inodes(pak))) {
         inodesChanged(pak);
     }
-    save(pfs->channel);
-    return 0;
+    return save(pfs->channel) == 0 ? 0 : PFS_ERR_CONTRFAIL;
 }
 
 s32 osPfsFreeBlocks(OSPfs *pfs, s32 *bytes) {
@@ -497,8 +535,7 @@ s32 osPfsAllocateFile(OSPfs *pfs, u16 company, u32 game, u8 *name, u8 *ext, int 
     memcpy(d + 16, n, 16);
     *file = slot;
     hostWrote(file, 4);
-    save(pfs->channel);
-    return 0;
+    return save(pfs->channel) == 0 ? 0 : PFS_ERR_CONTRFAIL;
 }
 
 s32 osPfsDeleteFile(OSPfs *pfs, u16 company, u32 game, u8 *name, u8 *ext) {
@@ -520,8 +557,7 @@ s32 osPfsDeleteFile(OSPfs *pfs, u16 company, u32 game, u8 *name, u8 *ext) {
     releasePages(pak, get16(d + 6));
     memset(d, 0, 32);
     inodesChanged(pak);
-    save(pfs->channel);
-    return 0;
+    return save(pfs->channel) == 0 ? 0 : PFS_ERR_CONTRFAIL;
 }
 
 s32 osPfsReadWriteFile(OSPfs *pfs, s32 file, u8 flag, int offset, int size, u8 *data) {
@@ -568,7 +604,9 @@ s32 osPfsReadWriteFile(OSPfs *pfs, s32 file, u8 flag, int offset, int size, u8 *
     }
     if (flag != PFS_READ) {
         pak->dirty = 1;
-        save(pfs->channel);
+        if (save(pfs->channel) != 0) {
+            return PFS_ERR_CONTRFAIL;
+        }
     }
     return 0;
 }

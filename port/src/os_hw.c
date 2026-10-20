@@ -71,20 +71,16 @@ static void piCopy(s32 direction, u32 devAddr, void *dramAddr, u32 size) {
     if (direction != OS_READ) {
         return;
     }
-    if (off + size > gPortRomSize) {
+    if (off > gPortRomSize || size > gPortRomSize - off) {
         Port_Fatal("PI DMA outside the ROM: 0x%08X + 0x%X", devAddr, size);
     }
-    if (((u32)dramAddr & 7) != 0 || (off & 1) != 0) {
-        Port_Log("pi: unaligned DMA ROM %X -> %p, %u bytes, from %p", off, dramAddr, (unsigned)size,
-                 __builtin_return_address(1));
-    }
-    memcpy(dramAddr, gPortRom + off, size);
-    /* Converted to host order where the game first reads it (shadow.c) */
-    if ((u32)dramAddr - (u32)gRam >= PORT_RAM_SIZE) {
+    if ((u32)dramAddr - (u32)gRam >= PORT_RAM_SIZE || size > PORT_RAM_SIZE - ((u32)dramAddr - (u32)gRam)) {
         /* Outside the RAM image (a stack buffer): nothing would convert it */
         Port_Fatal("DMA into memory outside the RAM image: %p (%u bytes from ROM 0x%X), from %p", dramAddr,
                    (unsigned)size, off, __builtin_return_address(1));
     }
+    memcpy(dramAddr, gPortRom + off, size);
+    /* Converted to host order where the game first reads it (shadow.c) */
     Port_MarkBE(dramAddr, size);
 }
 

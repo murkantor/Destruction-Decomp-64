@@ -508,6 +508,12 @@ static int SDLCALL raphnetPollLoop(void *unused) {
 }
 
 static void raphnetStop(void) {
+    static int stopped;
+
+    if (!s_Started || stopped) {
+        return;
+    }
+    stopped = 1;
     if (s_Thread != NULL) {
         SDL_SetAtomicInt(&s_Stop, 1);
         SDL_WaitThread(s_Thread, NULL); /* bounded by one exchange; the thread resumes the adapter */
@@ -550,6 +556,10 @@ void Port_RaphnetStart(void) {
         return;
     }
     s_Sync = 0;
+}
+
+void Port_RaphnetStop(void) {
+    raphnetStop();
 }
 
 int Port_RaphnetOnline(void) {

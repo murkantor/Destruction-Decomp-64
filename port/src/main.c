@@ -11,6 +11,7 @@
 
 #include "port.h"
 #include "port_config.h"
+#include "port_raphnet.h"
 
 void boot(void);
 
@@ -118,6 +119,7 @@ int main(int argc, char **argv) {
         Port_RcpWait(SDL_GetTicksNS() + 1000000); /* a task, a retrace, or a millisecond */
     }
 
+    Port_RaphnetStop();
     SDL_Quit();
     return 0;
 }
