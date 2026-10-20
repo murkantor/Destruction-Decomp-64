@@ -47,8 +47,9 @@ add_custom_command(
     OUTPUT ${GEN_SYMS} ${GEN_FIX}
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/port/gen_data.py
             --elf ${CMAKE_SOURCE_DIR}/build/dd64.elf --asm ${CMAKE_SOURCE_DIR}/asm/data
-            --out ${GEN_DIR} ${GEN_UNDERSCORE}
+            --rom ${CMAKE_SOURCE_DIR}/baserom.z64 --out ${GEN_DIR} ${GEN_UNDERSCORE}
     DEPENDS ${CMAKE_SOURCE_DIR}/tools/port/gen_data.py ${CMAKE_SOURCE_DIR}/build/dd64.elf ${DATA_ASM}
+            ${CMAKE_SOURCE_DIR}/baserom.z64
     COMMENT "Generating the RAM symbol table")
 
 # ---- Game code ----
@@ -68,7 +69,10 @@ set(COMMON_FLAGS
     -msse2 -mfpmath=sse
     -fno-strict-aliasing -fwrapv -fno-omit-frame-pointer)
 
-add_library(game OBJECT ${GAME_SRC} ${GEN_FIX})
+# Game code the port adds (pieces of the ROM that are not in the decompilation),
+# built like the rest of the game
+file(GLOB PORT_GAME_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/port/game/*.c)
+add_library(game OBJECT ${GAME_SRC} ${PORT_GAME_SRC} ${GEN_FIX})
 target_include_directories(game PRIVATE include . port/include)
 target_compile_definitions(game PRIVATE TARGET_PC NON_MATCHING
     # Game globals named like host libc ones (tools/port/gen_data.py HOST_RENAMES)
@@ -85,7 +89,11 @@ target_compile_options(game PRIVATE ${COMMON_FLAGS}
     # Each m2c file declares its own prototypes and tentative definitions
     -fcommon -fpermissive -w
     # GCC 2.7.2 semantics: a plain inline function still gets an external copy
-    -fgnu89-inline)
+    -fgnu89-inline
+    # Every memory access calls a hook in port/src/shadow.c, which converts
+    # big-endian ROM data to host order where it is first read
+    -fsanitize=kernel-address "SHELL:--param asan-stack=0" "SHELL:--param asan-globals=0"
+    "SHELL:--param asan-instrumentation-with-call-threshold=0")
 
 # ---- Port ----
 file(GLOB PORT_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/port/src/*.c ${CMAKE_SOURCE_DIR}/port/src/*.cpp
@@ -95,6 +103,8 @@ target_include_directories(dd64 PRIVATE include port/include port/fast3d)
 target_compile_definitions(dd64 PRIVATE TARGET_PC)
 target_compile_options(dd64 PRIVATE ${COMMON_FLAGS} -Wall -Wno-unused-parameter -Wno-unused-function)
 target_link_libraries(dd64 PRIVATE SDL3)
+# Block copies keep the big-endian marks with the bytes (port/src/shadow.c)
+target_link_options(dd64 PRIVATE -Wl,--wrap=memcpy,--wrap=memmove,--wrap=memset)
 set_target_properties(dd64 PROPERTIES OUTPUT_NAME DestructionDerby64 LINK_DEPENDS ${GEN_SYMS})
 
 if(WIN32)

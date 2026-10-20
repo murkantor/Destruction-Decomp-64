@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "port.h"
+#include "port_shadow.h"
 
 /* Low-memory globals IPL3 and osInitialize set on the N64 */
 s32 osTvType = OS_TV_NTSC;
@@ -74,6 +75,8 @@ static void piCopy(s32 direction, u32 devAddr, void *dramAddr, u32 size) {
         Port_Fatal("PI DMA outside the ROM: 0x%08X + 0x%X", devAddr, size);
     }
     memcpy(dramAddr, gPortRom + off, size);
+    /* Converted to host order where the game first reads it (shadow.c) */
+    Port_MarkBE(dramAddr, size);
 }
 
 void osCreatePiManager(OSPri pri, OSMesgQueue *cmdQ, OSMesg *cmdBuf, s32 cmdMsgCnt) {

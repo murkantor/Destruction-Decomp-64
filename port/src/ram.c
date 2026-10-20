@@ -13,6 +13,7 @@
 
 #include "port.h"
 #include "port_ram.h"
+#include "port_shadow.h"
 
 #define RAM_VRAM 0x8007ADD0
 #define RAM_END 0x80400000
@@ -59,6 +60,40 @@ static u32 be32(const u8 *p) {
     return (u32)p[0] << 24 | (u32)p[1] << 16 | (u32)p[2] << 8 | p[3];
 }
 
+/* Rewrite the big-endian N64 pointer at p as a host pointer. */
+static void fixPointer(const PortRamFix *f, u8 *p) {
+    u32 v;
+
+    if (f->kind == FIX_FUNC) {
+        v = (u32)f->func;
+    } else {
+        u32 addr = be32(p);
+        void *host = Port_N64ToHost(addr);
+        if (host == NULL && addr != 0) {
+            Port_Fatal("data pointer 0x%08X at 0x%08X is outside RAM", addr, RAM_VRAM + f->off);
+        }
+        v = (u32)host;
+    }
+    memcpy(p, &v, 4);
+}
+
+/*
+ * Boot_LoadData copies two blocks from ROM to fixed addresses. Their N64
+ * pointers become host pointers here; everything else in them is converted
+ * where it is first read, like other loaded data.
+ */
+void Port_ApplyBlockFixes(void *dst, u32 size) {
+    u32 start = (u32)((u8 *)dst - gRam), i;
+
+    for (i = 0; i < gPortBlockFixCount; i++) {
+        const PortRamFix *f = &gPortBlockFixes[i];
+        if (f->off >= start && f->off < start + size) {
+            fixPointer(f, gRam + f->off);
+            Port_MarkNative(gRam + f->off, 4);
+        }
+    }
+}
+
 void Port_RamInit(void) {
     u32 i;
 
@@ -88,19 +123,9 @@ void Port_RamInit(void) {
                 memcpy(p, &d, 8);
                 break;
             }
-            case FIX_PTR: {
-                u32 addr = be32(p);
-                void *host = Port_N64ToHost(addr);
-                if (host == NULL && addr != 0) {
-                    Port_Fatal("data pointer 0x%08X at 0x%08X is outside RAM", addr, RAM_VRAM + f->off);
-                }
-                v = (u32)host;
-                memcpy(p, &v, 4);
-                break;
-            }
+            case FIX_PTR:
             case FIX_FUNC:
-                v = (u32)f->func;
-                memcpy(p, &v, 4);
+                fixPointer(f, p);
                 break;
         }
     }

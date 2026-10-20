@@ -59,7 +59,14 @@ s32 Main_InitSystems(s32 pri, Cfg *cfg) {
     Vi_InitManager(1);
     func_80055320();
     DM_Init(&D_80131BA0);
+#ifdef TARGET_PC
+    {
+        extern u8 gRamEnd[]; /* where 0x80400000 is in the port's RAM image */
+        HeapInitW(&gMainHeap, cfg->x0, (s32)gRamEnd - cfg->x0);
+    }
+#else
     HeapInitW(&gMainHeap, cfg->x0, 0x80400000 - cfg->x0);
+#endif
     if (cfg->x4 > 0) {
         void *ptr;
         Heap_Alloc(&gMainHeap, &blk, cfg->x4 << 6, 0xF, 0);

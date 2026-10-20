@@ -13,6 +13,13 @@ void Game_Init(void *);
 void Dma_LoadAndFlush(void *, u32, u32);
 void Audio_LoadBanks(void);
 void Game_MainLoop(void *);
+#ifdef TARGET_PC
+/* The blocks hold N64 pointers; the port rewrites them as host pointers */
+void Port_ApplyBlockFixes(void *, u32);
+#define PORT_BLOCK_LOADED(dst, size) Port_ApplyBlockFixes(dst, size)
+#else
+#define PORT_BLOCK_LOADED(dst, size)
+#endif
 
 void Boot_LoadData(void) {
     u32 start;
@@ -20,8 +27,10 @@ void Boot_LoadData(void) {
     Game_Init(D_800D31C0);
     start = (u32)D_BD4A0;
     Dma_LoadAndFlush(D_80131F90, start, (u32)gRomData1End - start);
+    PORT_BLOCK_LOADED(D_80131F90, (u32)gRomData1End - start);
     Audio_LoadBanks();
     start = (u32)D_BF790;
     Dma_LoadAndFlush(D_80134280, start, (u32)gResArchiveRom - start);
+    PORT_BLOCK_LOADED(D_80134280, (u32)gResArchiveRom - start);
     Game_MainLoop(D_800D31C0);
 }

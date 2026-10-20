@@ -23,6 +23,8 @@ typedef struct {
     const void *func;
 } PortFuncAddr;
 
+extern const PortRamFix gPortBlockFixes[];
+extern const u32 gPortBlockFixCount;
 extern const PortRamFix gPortRamFixes[];
 extern const u32 gPortRamFixCount;
 extern const PortFuncAddr gPortFuncAddrs[];
