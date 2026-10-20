@@ -64,6 +64,8 @@ Run `make extract` again after changing `dd64.yaml` or `symbol_addrs.txt`. `make
 | `tools/permute_setup.py`, `tools/permute_collect.py` | Run decomp-permuter on near misses and collect the matches |
 | `tools/rename.py` | Apply names from `symbol_addrs.txt` to the C |
 | `tools/gen_docs.py` | Write the function and file lists in `docs/` |
+| `tools/build_nonmatching.sh` | Build a test ROM with the drafts listed in `nonmatching/test_build.txt` linked in place of their asm (`build/dd64_nonmatching.z64`) |
+| `tools/n64crc.py` | Recompute or check the boot checksum of a ROM (CIC-6102) |
 | `tools/diff_func.py` | Show a hand-written function's code next to the original |
 | `tools/check_c.py` | Check hand-written functions against the ROM before `apply_auto.py` adds them |
 | `diff_settings.py` | Config for [asm-differ](https://github.com/simonlindholm/asm-differ) |

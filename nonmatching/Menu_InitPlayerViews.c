@@ -9,7 +9,7 @@ extern s32 D_800958DC;
 extern Mat9 D_801242C0[];
 void func_8006300C(s32, f32, f32, f32, f32, f32, f32);
 
-void Menu_SetupTrackSelect(void);
+void CarSelect_Show(void);
 void CarSelect_ShowMulti(void);
 
 
@@ -29,7 +29,7 @@ void Menu_InitPlayerViews(void) {
     }
     { s32 *p = &D_800958DC; f32 z = 0.0f; f32 m = -1.0f; func_8006300C(*p, z, z, z, z, z, m); }
     if (D_800958A4[0] == 1) {
-        Menu_SetupTrackSelect();
+        CarSelect_Show();
     } else {
         CarSelect_ShowMulti();
     }
