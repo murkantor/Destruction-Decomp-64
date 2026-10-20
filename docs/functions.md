@@ -307,7 +307,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8001C60C` | `01D20C` | 0x230 | `Res_LoadModel` | `src/auto/1D20C.c` | C (generated) |
 | `8001C83C` | `01D43C` | 0x108 | `Model_Free` | `src/auto/1D43C.c` | C (generated) |
 | `8001C944` | `01D544` | 0x35c | `Model_FixupDisplayList` | `src/auto/1D544.c` | C (generated) |
-| `8001CCA0` | `01D8A0` | 0x290 | `Spline_ComputeCoeffs` | `asm/1D8A0.s` | asm |
+| `8001CCA0` | `01D8A0` | 0x290 | `Spline_ComputeCoeffs` | `src/auto/1D8A0.c` | C (generated) |
 | `8001CF30` | `01DB30` | 0x128 | `Init_TriNormals` | `src/auto/1DB30.c` | C (generated) |
 | `8001D058` | `01DC58` | 0x6b0 | `RigidBody_Init` | `src/auto/1DC58.c` | C (generated) |
 | `8001D708` | `01E308` | 0xaec | `Car_Create` | `src/auto/1E308.c` | C (generated) |
@@ -634,7 +634,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80042114` | `042D14` | 0x110 | `CarSelect_SetStatBars` | `src/auto/42D14.c` | C (generated) |
 | `80042224` | `042E24` | 0x2f0 | `CarSelect_Back` | `src/auto/42E24.c` | C (generated) |
 | `80042514` | `043114` | 0x380 | `CarSelect_Confirm` | `src/auto/43114.c` | C (generated) |
-| `80042894` | `043494` | 0x160 | `Race_FreeItemsCheckQualify` | `asm/43494.s` | asm |
+| `80042894` | `043494` | 0x160 | `Race_FreeItemsCheckQualify` | `src/auto/43494.c` | C (generated) |
 | `800429F4` | `0435F4` | 0x200 | `Menu_ToggleHelpOverlay` | `src/auto/435F4.c` | C (generated) |
 | `80042BF4` | `0437F4` | 0x194 | `Menu_InitPlayerViews` | `asm/437F4.s` | asm |
 | `80042D88` | `043988` | 0x1a4 | `Menu_SetCarPreview` | `asm/437F4.s` | asm |

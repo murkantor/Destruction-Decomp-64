@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { u8 pad0[4]; s32 x4; u8 pad8[4]; f32 xC; f32 x10; f32 x14; f32 x18; u8 pad1C[0x3C]; } Spline;
 
 void Spline_ComputeCoeffs(Spline *out, Spline *in) {
@@ -13,6 +16,7 @@ void Spline_ComputeCoeffs(Spline *out, Spline *in) {
     f32 x4;
     f32 inv;
     f32 t;
+    register f32 p asm("$f30");
 
     *out = *in;
     x = in->x4;
@@ -26,13 +30,13 @@ void Spline_ComputeCoeffs(Spline *out, Spline *in) {
     y4 = y3 * y;
     x4 = x3 * x;
     t = -3.0f * x2;
-    inv = 1.0f / (x2 * y3 * (y2 - 2.0f * x * y + x2));
+    p = x2 * y3; inv = 1.0f / (p * (y2 - 2.0f * x * y + x2));
     out->x18 = a;
     out->xC = (2.0f * b * x3 - (a * t * y + 2.0f * a * x3 + a * y3 + b * (3.0f * x2) * y)) * inv;
     out->x10 = 2.0f * (a * (-2.0f * x2) * y2 + a * x4 + a * y4 + 2.0f * b * x2 * y2 - b * x4) * inv;
     out->x14 = (b * (3.0f * x4) - (a * (-4.0f * x3) * y + a * (3.0f * x4) + a * y4 + b * (4.0f * x3) * y)) * inv * y3 / y2;
 }
-/* agent59: unchanged draft, 11 words: FP regs of x3 / 2a*x3 / den rotate
- * (ours f30/f28/f26, original f28/f26/f30). Tried: 120 random orders of the
- * setup statements, den as own local, re-associated den products,
- * do{}while(0) on each line (all break the schedule). */
+/* agent62: p (x2 * y3) bound to $f30. In the original the den chain
+ * (x2*y3 then *sum) sits in f30 after x3 (f28) and 2a*x3 (f26); local-alloc
+ * otherwise gives den the higher priority and the three rotate. Binding the
+ * whole den to $f30 instead makes the x/sum chain take the f30 suggestion. */
