@@ -41,7 +41,9 @@ void Port_Fatal(const char *fmt, ...) {
     SDL_vsnprintf(buf, sizeof(buf), fmt, ap);
     va_end(ap);
     Port_Log("fatal: %s", buf);
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Destruction Derby 64", buf, NULL);
+    if (SDL_getenv("DD64_EXIT_AFTER") == NULL) { /* scripted test runs: no dialog to wait on */
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Destruction Derby 64", buf, NULL);
+    }
     exit(1);
 }
 
@@ -73,7 +75,6 @@ int main(int argc, char **argv) {
                    "Put your cart image (.z64, .n64 or .v64) in the Data folder next to the game.");
     }
     Port_RamInit();
-    Port_CodeStubsInit();
     Port_OsInit();
     Port_RcpInit();
     Port_VideoInit();

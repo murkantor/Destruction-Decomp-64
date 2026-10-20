@@ -74,8 +74,17 @@ static void piCopy(s32 direction, u32 devAddr, void *dramAddr, u32 size) {
     if (off + size > gPortRomSize) {
         Port_Fatal("PI DMA outside the ROM: 0x%08X + 0x%X", devAddr, size);
     }
+    if (((u32)dramAddr & 7) != 0 || (off & 1) != 0) {
+        Port_Log("pi: unaligned DMA ROM %X -> %p, %u bytes, from %p", off, dramAddr, (unsigned)size,
+                 __builtin_return_address(1));
+    }
     memcpy(dramAddr, gPortRom + off, size);
     /* Converted to host order where the game first reads it (shadow.c) */
+    if ((u32)dramAddr - (u32)gRam >= PORT_RAM_SIZE) {
+        /* Outside the RAM image (a stack buffer): nothing would convert it */
+        Port_Fatal("DMA into memory outside the RAM image: %p (%u bytes from ROM 0x%X), from %p", dramAddr,
+                   (unsigned)size, off, __builtin_return_address(1));
+    }
     Port_MarkBE(dramAddr, size);
 }
 
@@ -280,11 +289,11 @@ s32 osContInit(OSMesgQueue *mq, u8 *bitpattern, OSContStatus *data) {
             bits |= 1 << i;
             data[i].type = CONT_TYPE_NORMAL;
             data[i].status = Port_PakPresent(i) ? CONT_CARD_ON : 0;
-            data[i].errno = 0;
+            data[i].errnum = 0;
         } else {
             data[i].type = 0;
             data[i].status = 0;
-            data[i].errno = CONT_NO_RESPONSE_ERROR;
+            data[i].errnum = CONT_NO_RESPONSE_ERROR;
         }
     }
     *bitpattern = bits;
@@ -320,10 +329,10 @@ void osContGetReadData(OSContPad *data) {
     for (i = 0; i < MAXCONTROLLERS; i++) {
         if (Port_InputConnected(i)) {
             Port_InputGetPad(i, &data[i]);
-            data[i].errno = 0;
+            data[i].errnum = 0;
         } else {
             memset(&data[i], 0, sizeof(data[i]));
-            data[i].errno = CONT_NO_RESPONSE_ERROR;
+            data[i].errnum = CONT_NO_RESPONSE_ERROR;
         }
     }
 }

@@ -65,7 +65,12 @@ void Mtx3_RotateY(Mtx3 *, f32);
 void ObjList_Add(Obj14 *);
 
 Obj14 *CarObj_Create(s32 id, s32 slot) {
+#ifdef TARGET_PC
+    PORT_DMA_BUF(ResBuf, bufp, 0x2480); /* 0x2B0 bytes; buf below is *bufp */
+#define buf (*bufp)
+#else
     ResBuf buf;
+#endif
     s32 col[2];
     Obj14 *obj;
     Car *car;

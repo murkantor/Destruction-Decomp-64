@@ -49,6 +49,19 @@ typedef double f64;
 #define PHYS_ADDR(p) ((u32)(p) - 0x80000000)
 #endif
 
+/*
+ * A buffer the game loads ROM data into must be in the port's RAM image, where
+ * loaded data is tracked and converted to host order as it is read; a stack
+ * buffer is not, and fields read straight from a local are never converted.
+ * On PC such functions use a fixed slice of a scratch area at the top of RAM
+ * instead (port/src/ram.c): PORT_DMA_BUF(type, name, offset) declares
+ * `type *name` there; offsets are per call site, so each slice has one user.
+ */
+#ifdef TARGET_PC
+extern u8 gPortScratch[];
+#define PORT_DMA_BUF(type, name, offset) type *name = (type *)(gPortScratch + (offset))
+#endif
+
 #ifdef TARGET_PC
 #define ASM_STR2(x) #x
 #define ASM_STR(x) ASM_STR2(x)

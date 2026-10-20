@@ -44,7 +44,11 @@ void *HeapBlock_Ptr(HeapBlock *);
 void Heap_Free(void *, HeapBlock *);
 
 s32 MapUi_Init(void *ui) {
+#ifdef TARGET_PC
+    PORT_DMA_BUF(UiDesc48, descs, 0x2000); /* 15 of them */
+#else
     UiDesc48 descs[15];
+#endif
     HeapBlock blk;
     u32 count;
     u32 size;

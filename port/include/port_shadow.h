@@ -12,7 +12,9 @@ extern "C" {
 #endif
 
 #define PORT_RAM_VRAM 0x8007ADD0u
-#define PORT_RAM_SIZE (0x80400000u - PORT_RAM_VRAM)
+/* N64 RAM up to 0x80400000, then 64 KB of scratch for PORT_DMA_BUF */
+#define PORT_SCRATCH_SIZE 0x10000u
+#define PORT_RAM_SIZE (0x80400000u + PORT_SCRATCH_SIZE - PORT_RAM_VRAM)
 
 extern unsigned char gRam[];
 extern unsigned char gPortShadow[];
@@ -27,7 +29,7 @@ uint32_t Port_HostToN64(const void *p);
 
 static inline int Port_IsBEInline(const void *p) {
     uint32_t off = (uint32_t)(uintptr_t)p - (uint32_t)(uintptr_t)gRam;
-    return off < PORT_RAM_SIZE && gPortShadow[off];
+    return off < PORT_RAM_SIZE && (gPortShadow[off] & 1); /* SH_BE */
 }
 
 #ifdef __cplusplus

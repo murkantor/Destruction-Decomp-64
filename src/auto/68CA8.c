@@ -48,7 +48,7 @@ extern u32 D_800CEADC;
 extern void *D_800CEB08;
 extern u8 D_8007ADD0[];
 extern u8 D_8007AEA0[];
-extern u8 rspbootTextEnd[] asm("D_8007AEA0");
+extern u8 rspbootTextEnd[] ASM_ALIAS("D_8007AEA0");
 extern u8 D_800B72A0[];
 void __clearAudioDMA(void);
 u32 osVirtualToPhysical(void *);

@@ -34,7 +34,11 @@ s32 Font_GetStringWidth(u8 *str, s32 fontId) {
     s8 i;
     s8 j;
     s32 width = 0;
+#ifdef TARGET_PC
+    PORT_DMA_BUF(u8, buf, 0x2440); /* 0x28 bytes */
+#else
     u8 buf[0x28];
+#endif
     FontData *fd;
     s32 k;
     u8 *p;

@@ -19,7 +19,13 @@ RomFile *RomFile_Open(const char *name, const char *mode) {
 /* Like fread. DMA needs an 8-byte aligned buffer and an even ROM address and
  * length, so anything else goes through a buffer on the stack. */
 s32 RomFile_Read(u8 *buf, u32 size, s32 count, RomFile *f) {
+#ifdef TARGET_PC
+    PORT_DMA_BUF(u8, tmp, 0x0000); /* 0x2000 bytes */
+#define TMP_SIZE 0x2000
+#else
     u8 tmp[0x2000];
+#define TMP_SIZE sizeof(tmp)
+#endif
     s32 left = (f->end - f->pos) / size;
     s32 bytes;
 
@@ -33,7 +39,7 @@ s32 RomFile_Read(u8 *buf, u32 size, s32 count, RomFile *f) {
     } else {
         while (bytes != 0) {
             s32 odd = f->pos & 1;
-            s32 chunk = sizeof(tmp) - odd;
+            s32 chunk = TMP_SIZE - odd;
 
             if (bytes < chunk) {
                 chunk = bytes;
@@ -51,6 +57,7 @@ s32 RomFile_Read(u8 *buf, u32 size, s32 count, RomFile *f) {
     }
     return count;
 }
+#undef TMP_SIZE
 
 s32 RomFile_Seek(RomFile *f, s32 offset, s32 whence) {
     switch (whence) {

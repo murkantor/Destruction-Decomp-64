@@ -20,7 +20,11 @@ static inline Arc *Arc_Open(Arc *arc) {
 }
 
 s32 Arc_SeekToEntryData(Arc *arc, ArcEntry *e) {
+#ifdef TARGET_PC
+    PORT_DMA_BUF(u8, hdr, 0x2740); /* 30 bytes */
+#else
     u8 hdr[30];
+#endif
     u16 n;
     u16 m;
 

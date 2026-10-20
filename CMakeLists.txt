@@ -42,15 +42,12 @@ set(GEN_FIX ${GEN_DIR}/dd64_fix.c)
 if(WIN32)
     set(GEN_UNDERSCORE --underscore)
 endif()
-file(GLOB DATA_ASM CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/asm/data/*.s)
 add_custom_command(
     OUTPUT ${GEN_SYMS} ${GEN_FIX}
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/port/gen_data.py
-            --elf ${CMAKE_SOURCE_DIR}/build/dd64.elf --asm ${CMAKE_SOURCE_DIR}/asm/data
-            --rom ${CMAKE_SOURCE_DIR}/baserom.z64 --out ${GEN_DIR} ${GEN_UNDERSCORE}
-    DEPENDS ${CMAKE_SOURCE_DIR}/tools/port/gen_data.py ${CMAKE_SOURCE_DIR}/build/dd64.elf ${DATA_ASM}
-            ${CMAKE_SOURCE_DIR}/baserom.z64
-    COMMENT "Generating the RAM symbol table")
+            --elf ${CMAKE_SOURCE_DIR}/build/dd64.elf --out ${GEN_DIR} ${GEN_UNDERSCORE}
+    DEPENDS ${CMAKE_SOURCE_DIR}/tools/port/gen_data.py ${CMAKE_SOURCE_DIR}/build/dd64.elf
+    COMMENT "Generating the symbol and function tables")
 
 # ---- Game code ----
 include(port/sdk_excluded.cmake)

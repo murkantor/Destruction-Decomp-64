@@ -33,7 +33,11 @@ void Res_Load(s32, void *);
 void Ui_AddResource(Ui *, void *);
 
 void Ui_SetElementColor(s32 id, s32 res) {
+#ifdef TARGET_PC
+    PORT_DMA_BUF(u8, buf, 0x2400); /* 0x28 bytes */
+#else
     u8 buf[0x28];
+#endif
     Node *n;
     Elem *found = NULL;
     s8 i;

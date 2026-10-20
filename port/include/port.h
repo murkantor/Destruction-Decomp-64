@@ -25,12 +25,12 @@ extern u32 gPortRomSize;
 int Port_RomLoad(void);
 u32 Port_RomRead32(u32 offset);
 
-/* ram.c: the N64 RAM image from rsp_text to the end of the heap */
+/* ram.c: the N64 RAM image, mapped at its own addresses (0x80000000 up) */
 void Port_RamInit(void);
 void *Port_N64ToHost(uint32_t addr);
 uint32_t Port_HostToN64(const void *p);
 void *Port_FuncFromN64(u32 addr);
-void Port_CodeStubsInit(void);
+void Port_BlockLoaded(void *dst, u32 size);
 
 /* os_thread.c: threads, message queues, events and timers */
 void Port_OsInit(void);

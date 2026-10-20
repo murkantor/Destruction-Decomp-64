@@ -43,7 +43,12 @@ void Ui_AddSprite(SpriteMgr *m, SpriteDesc *d) {
     SpriteEnt *e;
     TexSlot *t;
     s32 i;
+#ifdef TARGET_PC
+    PORT_DMA_BUF(ResInfo, resp, 0x2780); /* res below is *resp */
+#define res (*resp)
+#else
     ResInfo res;
+#endif
 
     m->nSpr = n + 1;
     e = &m->spr[n];

@@ -14,9 +14,9 @@ void Dma_LoadAndFlush(void *, u32, u32);
 void Audio_LoadBanks(void);
 void Game_MainLoop(void *);
 #ifdef TARGET_PC
-/* The blocks hold N64 pointers; the port rewrites them as host pointers */
-void Port_ApplyBlockFixes(void *, u32);
-#define PORT_BLOCK_LOADED(dst, size) Port_ApplyBlockFixes(dst, size)
+/* The second block starts with three functions; the port points them at C versions */
+void Port_BlockLoaded(void *, u32);
+#define PORT_BLOCK_LOADED(dst, size) Port_BlockLoaded(dst, size)
 #else
 #define PORT_BLOCK_LOADED(dst, size)
 #endif

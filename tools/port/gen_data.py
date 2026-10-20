@@ -1,43 +1,35 @@
 #!/usr/bin/env python3
-"""Generate the PC port's view of the N64 RAM image.
+"""Generate the PC port's symbol table and function tables from the matching build.
 
-The port keeps the N64 layout of everything from the RSP microcode text up to
-the end of the 4 MB heap in one host buffer, gRam (port/src/ram.c). This script
-writes, from the matching build (build/dd64.elf) and splat's typed data
-(asm/data/*.s):
+The port maps the N64 RAM image at its own addresses (port/src/ram.c), so data
+and bss symbols keep their N64 values. From build/dd64.elf this writes:
 
-  dd64_syms.ld   linker assignments: every data/bss symbol becomes gRam plus
-                 its offset; ROM-address symbols keep their value.
-  dd64_fix.c     the table port/src/ram.c applies after copying the data from
-                 the user's ROM: which words to byte-swap and which to rewrite
-                 as host pointers; and the pointers in the two blocks
-                 Boot_LoadData copies from ROM, found by reading the ROM.
+  dd64_syms.ld   linker assignments: every data/bss symbol at its N64 address,
+                 ROM-offset symbols at their value, and the port's gRam,
+                 gRamEnd and gPortScratch.
+  dd64_fix.c     every game function with its N64 address, for the jump stubs
+                 at the N64 code addresses; and the three functions at the start
+                 of the block Boot_LoadData loads to 0x80134280.
 
-Neither file contains ROM data, only addresses, sizes and types.
+Neither file contains ROM data, only addresses and names.
 """
 import argparse
-import re
 import struct
-import sys
 from pathlib import Path
 
 RAM_VRAM = 0x8007ADD0   # rsp_text, the first thing after the code
 RAM_ROM = 0x7B9D0
 DATA_ROM_END = 0xBD4A0  # end of rodata; bss follows
 RAM_END = 0x80400000
-HEAP_START = 0x80137170
+CODE_START, CODE_END = 0x80000400, RAM_VRAM
 
-# Boot_LoadData copies these ROM ranges to fixed RAM addresses: (rom start, rom end, vram)
-BOOT_BLOCKS = [(0xBD4A0, 0xBF790, 0x80131F90), (0xBF790, 0xC2680, 0x80134280)]
-
-# The second block starts with three small functions, written in C for the port
-# in port/game/overlay.c; pointers to them become pointers to those.
+# The block Boot_LoadData loads to 0x80134280 starts with three small functions,
+# written in C for the port in port/game/overlay.c.
 OVERLAY_FUNCS = {0x80134280: 'Ovl_ReturnArg', 0x80134288: 'Ovl_AppendDl', 0x801342C0: 'Ovl_ResLoadAlloc'}
 
-# Game globals named like the host C library's; the port build renames them
-# with -D (CMakeLists.txt), so a shared library never binds to the game's copy.
+# Game globals and functions named like the host C library's; the port build
+# renames them with -D (CMakeLists.txt) so shared libraries never bind to them.
 HOST_RENAMES = {'errno': 'dd64_errno', '_ctype': 'dd64_ctype'}
-CODE_START, CODE_END = 0x80000400, RAM_VRAM
 
 
 def read_symbols(elf_path):
@@ -45,9 +37,7 @@ def read_symbols(elf_path):
     assert data[:4] == b'\x7fELF' and data[4] == 1 and data[5] == 2
     e_shoff, = struct.unpack_from('>I', data, 0x20)
     e_shentsize, e_shnum = struct.unpack_from('>HH', data, 0x2E)
-    sections = []
-    for i in range(e_shnum):
-        sections.append(struct.unpack_from('>IIIIIIIIII', data, e_shoff + i * e_shentsize))
+    sections = [struct.unpack_from('>IIIIIIIIII', data, e_shoff + i * e_shentsize) for i in range(e_shnum)]
     syms = []
     for sh in sections:
         if sh[1] != 2:  # SHT_SYMTAB
@@ -56,164 +46,59 @@ def read_symbols(elf_path):
         for off in range(sh[4], sh[4] + sh[5], 16):
             name_off, value, size, info, other, shndx = struct.unpack_from('>IIIBBH', data, off)
             end = data.index(b'\0', strtab[4] + name_off)
-            name = data[strtab[4] + name_off:end].decode()
-            syms.append((name, value, size, info & 0xF, info >> 4, shndx))
+            syms.append((data[strtab[4] + name_off:end].decode(), value, info & 0xF, info >> 4))
     return syms
-
-
-DIRECTIVE = re.compile(r'\s+/\* ([0-9A-F]+) ([0-9A-F]+)(?: [0-9A-F]+)? \*/ (\.\w+)\s*(.*)')
-
-
-def parse_data(asm_dir):
-    """Yield (vram, directive, operand) for every item in the data and rodata files."""
-    for f in sorted(Path(asm_dir).glob('*.s')):
-        if not (f.name.endswith('.data.s') or f.name.endswith('.rodata.s')):
-            continue
-        for line in f.read_text().splitlines():
-            m = DIRECTIVE.match(line)
-            if m:
-                yield int(m.group(2), 16), m.group(3), m.group(4).strip(), f.name
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--elf', default='build/dd64.elf')
-    ap.add_argument('--asm', default='asm/data')
-    ap.add_argument('--rom', default='baserom.z64', help='read for the pointer offsets in the boot blocks')
     ap.add_argument('--out', required=True)
     ap.add_argument('--underscore', action='store_true', help='PE i386: C symbols carry a leading _')
     args = ap.parse_args()
     us = '_' if args.underscore else ''
 
-    syms = read_symbols(args.elf)
     by_name = {}
-    funcs = {}
     all_funcs = {}
-    for name, value, size, typ, bind, shndx in syms:
-        if not name or name.startswith('.') or name.startswith('$') or typ in (3, 4):  # section, file
+    for name, value, typ, bind in read_symbols(args.elf):
+        if not name or name[0] in '.$' or '.' in name or typ in (3, 4):  # sections, files, markers
             continue
         if typ == 2 and CODE_START <= value < CODE_END:
-            funcs.setdefault(value, name)
-            if bind == 1 and '.' not in name:  # global
+            if bind == 1:  # global
                 all_funcs.setdefault(value, HOST_RENAMES.get(name, name))
+            continue
         by_name.setdefault(name, value)
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    # Linker assignments.
     lines = ['/* Generated by tools/port/gen_data.py. */',
-             f'{us}gRam = {us}gRamStorage + 0x{RAM_VRAM & 0xFFF:X};',
-             f'{us}gRamEnd = {us}gRam + 0x{RAM_END - RAM_VRAM:X}; /* 0x{RAM_END:08X} */']
+             f'{us}gRam = 0x{RAM_VRAM:X};',
+             f'{us}gRamEnd = 0x{RAM_END:X};',
+             '/* PORT_DMA_BUF scratch: 64 KB after the end of N64 RAM (port/src/ram.c) */',
+             f'{us}gPortScratch = 0x{RAM_END:X};']
     for name, value in sorted(by_name.items(), key=lambda kv: kv[1]):
-        if '.' in name:  # splat's .NON_MATCHING markers
-            continue
         name = HOST_RENAMES.get(name, name)
-        if RAM_VRAM <= value < RAM_END:
-            lines.append(f'{us}{name} = {us}gRam + 0x{value - RAM_VRAM:X};')
-        elif value < 0x01000000:  # ROM offsets
+        if RAM_VRAM <= value < RAM_END or value < 0x01000000:  # RAM, or ROM offsets
             lines.append(f'{us}{name} = 0x{value:X};')
     (out / 'dd64_syms.ld').write_text('\n'.join(lines) + '\n')
 
-    # Swap and pointer table.
-    fixes = []
-    func_refs = set()
-    warnings = []
-    size_of = {'.word': 4, '.float': 4, '.short': 2, '.double': 8}
-    for vram, kind, operand, fname in parse_data(args.asm):
-        off = vram - RAM_VRAM
-        if kind in ('.byte', '.asciz', '.ascii'):
-            continue
-        if kind == '.word' and not re.match(r'-?(0x[0-9A-Fa-f]+|\d+)$', operand):
-            target = operand.split('+')[0].strip()
-            if target.startswith('.L'):
-                continue  # jump table of an assembly function the port drops
-            value = by_name.get(target)
-            if value in OVERLAY_FUNCS and '+' not in operand:
-                fixes.append((off, 'FIX_FUNC', OVERLAY_FUNCS[value]))
-                continue
-            if value is None:
-                warnings.append(f'{fname} {vram:08X}: unknown symbol {operand}')
-                fixes.append((off, 'FIX_SWAP32', None))
-            elif CODE_START <= value < CODE_END and '+' not in operand:
-                fixes.append((off, 'FIX_FUNC', target))
-                func_refs.add(target)
-            elif RAM_VRAM <= value < RAM_END:
-                fixes.append((off, 'FIX_PTR', None))
-            else:
-                fixes.append((off, 'FIX_SWAP32', None))
-            continue
-        if kind == '.word':
-            # splat only labels addresses it saw referenced. A word inside the
-            # data, bss or the two ROM blocks loaded after bss is a pointer
-            # (no plausible int or float has those bits); code-range values
-            # are fixed-point tables and flags, so they stay numbers.
-            v = int(operand, 0) & 0xFFFFFFFF
-            if v in OVERLAY_FUNCS:
-                fixes.append((off, 'FIX_FUNC', OVERLAY_FUNCS[v]))
-                func_refs.add(OVERLAY_FUNCS[v])
-                continue
-            if RAM_VRAM <= v < HEAP_START:
-                warnings.append(f'{fname} {vram:08X}: .word 0x{v:08X} taken as an unlabelled pointer')
-                fixes.append((off, 'FIX_PTR', None))
-                continue
-        if kind not in size_of:
-            warnings.append(f'{fname} {vram:08X}: unhandled {kind}')
-            continue
-        fixes.append((off, {2: 'FIX_SWAP16', 4: 'FIX_SWAP32', 8: 'FIX_SWAP64'}[size_of[kind]], None))
-
-    c = ['/* Generated by tools/port/gen_data.py. */',
-         '#include "port_ram.h"', '']
-    # Weak, so functions the port replaces or drops are NULL rather than link errors
-    for f in sorted(func_refs | set(OVERLAY_FUNCS.values()) | set(all_funcs.values())):
+    c = ['/* Generated by tools/port/gen_data.py. */', '#include "port_ram.h"', '',
+         '/* Weak, so functions the port replaces or drops are NULL rather than link errors */']
+    for f in sorted(set(OVERLAY_FUNCS.values()) | set(all_funcs.values())):
         c.append(f'extern char {f}[] __attribute__((weak));')
-    # Only pointers are converted at start-up; everything else stays big-endian
-    # until the game reads it (port/src/shadow.c), so the swap entries are dropped.
-    fixes = [f for f in fixes if f[1] in ('FIX_PTR', 'FIX_FUNC')]
-    c += ['', 'const PortRamFix gPortRamFixes[] = {']
-    for off, kind, target in fixes:
-        c.append(f'    {{ 0x{off:X}, {kind}, {target if target else "0"} }},')
-    c += ['};', f'const uint32_t gPortRamFixCount = {len(fixes)};',
-          f'const uint32_t gPortRamVram = 0x{RAM_VRAM:X};',
-          f'const uint32_t gPortRamRomStart = 0x{RAM_ROM:X};',
-          f'const uint32_t gPortRamRomEnd = 0x{DATA_ROM_END:X};',
-          f'const uint32_t gPortRamEnd = 0x{RAM_END:X};', '',
-          '/* N64 address of every function, for pointers the game builds at run time from data. */',
-          'const PortFuncAddr gPortFuncAddrs[] = {']
-    for addr, name in sorted(list((a, n) for a, n in funcs.items() if n in func_refs) + list(OVERLAY_FUNCS.items())):
-        c.append(f'    {{ 0x{addr:08X}, {name} }},')
-    c += ['};', 'const uint32_t gPortFuncAddrCount = sizeof(gPortFuncAddrs) / sizeof(gPortFuncAddrs[0]);', '']
-
-    # Every global function, for the jump stubs at the N64 code addresses
-    # (port/src/ram.c). Weak: functions the port replaces or drops are NULL.
-    c += ['/* Every function the game has, at its N64 address (NULL where the port has none). */',
-          'const PortFuncAddr gPortAllFuncs[] = {']
+    c += ['', 'const PortFuncAddr gPortAllFuncs[] = {']
     for addr, name in sorted(all_funcs.items()):
         c.append(f'    {{ 0x{addr:08X}, {name} }},')
-    c += ['};', 'const uint32_t gPortAllFuncCount = sizeof(gPortAllFuncs) / sizeof(gPortAllFuncs[0]);', '']
-
-    # Pointers in the two blocks Boot_LoadData copies from ROM to fixed addresses
-    rom = Path(args.rom).read_bytes()
-    c += ['/* Pointers in the blocks Boot_LoadData loads; applied after each load. */',
-          'const PortRamFix gPortBlockFixes[] = {']
-    nblock = 0
-    for rom_start, rom_end, vram in BOOT_BLOCKS:
-        for o in range(rom_start, rom_end, 4):
-            v = struct.unpack_from('>I', rom, o)[0]
-            off = vram + (o - rom_start) - RAM_VRAM
-            if v in OVERLAY_FUNCS:
-                c.append(f'    {{ 0x{off:X}, FIX_FUNC, {OVERLAY_FUNCS[v]} }},')
-                func_refs.add(OVERLAY_FUNCS[v])
-                nblock += 1
-            elif RAM_VRAM <= v < HEAP_START:
-                c.append(f'    {{ 0x{off:X}, FIX_PTR, 0 }},')
-                nblock += 1
-    c += ['};', f'const uint32_t gPortBlockFixCount = {nblock};', '']
+    c += ['};', 'const uint32_t gPortAllFuncCount = sizeof(gPortAllFuncs) / sizeof(gPortAllFuncs[0]);', '',
+          'const PortFuncAddr gPortOverlayFuncs[] = {']
+    for addr, name in sorted(OVERLAY_FUNCS.items()):
+        c.append(f'    {{ 0x{addr:08X}, {name} }},')
+    c += ['};', 'const uint32_t gPortOverlayFuncCount = sizeof(gPortOverlayFuncs) / sizeof(gPortOverlayFuncs[0]);',
+          '', f'const uint32_t gPortRamVram = 0x{RAM_VRAM:X};',
+          f'const uint32_t gPortRamRomStart = 0x{RAM_ROM:X};',
+          f'const uint32_t gPortRamRomEnd = 0x{DATA_ROM_END:X};', '']
     (out / 'dd64_fix.c').write_text('\n'.join(c))
-
-    for w in warnings:
-        print('warning:', w, file=sys.stderr)
-    print(f'{len(fixes)} fixes, {len(func_refs)} function pointers, {len(warnings)} warnings', file=sys.stderr)
 
 
 if __name__ == '__main__':

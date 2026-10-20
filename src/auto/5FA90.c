@@ -58,7 +58,11 @@ UiElem *Ui_FindElement(void *, s32, s32);
 void Font_DisableAlpha(void *);
 
 void Ui_AddTextElement(Mgr *m, Def *d) {
+#ifdef TARGET_PC
+    PORT_DMA_BUF(s32, buf, 0x27C0); /* 10 of them */
+#else
     s32 buf[10];
+#endif
     Entry *e;
     s32 i;
 

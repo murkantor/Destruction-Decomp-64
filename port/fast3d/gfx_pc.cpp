@@ -37,6 +37,8 @@
 #include "gfx_screen_config.h"
 #include "port_shadow.h"
 
+#include <SDL3/SDL.h>
+
 /* ---- Settings ---- */
 
 uint32_t gfx_msaa_level = 1;
@@ -587,6 +589,10 @@ static void import_texture(int i, int tile) {
     uint32_t line_bytes = rdp.texture_tile[tile].line_size_bytes;
     uint32_t full_line_bytes = rdp.loaded_texture[tmem].full_line_size_bytes;
 
+    /* GL filter and wrap modes belong to the texture object: whatever gets bound
+       here needs them set again (a new one is incomplete, so black, without) */
+    rendering_state.cms[i] = rendering_state.cmt[i] = 0xFF;
+
     if (addr == NULL || line_bytes == 0 || size_bytes == 0) {
         gfx_rapi->select_texture(i, 0, false);
         rendering_state.textures[i] = 0;
@@ -594,6 +600,12 @@ static void import_texture(int i, int tile) {
     }
     if (full_line_bytes == 0) {
         full_line_bytes = line_bytes;
+    }
+    /* A tile line is padded to 8 bytes: a LoadTile row (33 texels, say) can be
+       shorter, and the texture is the rows loaded, not the padding */
+    uint32_t loaded_line = rdp.loaded_texture[tmem].line_size_bytes;
+    if (siz != G_IM_SIZ_32b && loaded_line != 0 && loaded_line < line_bytes) {
+        line_bytes = loaded_line;
     }
     if (siz == G_IM_SIZ_32b) {
         full_line_bytes = rdp.loaded_texture[tmem].full_line_size_bytes / 2;
@@ -643,6 +655,20 @@ static void import_texture(int i, int tile) {
         memset(tex_upload_buffer, 0, 4);
     }
     gfx_rapi->upload_texture(tex_upload_buffer, w, h);
+    {
+        /* DD64_TEXDUMP=1: save each upload as tex_<n>_<w>x<h>.bmp */
+        static const char *dump = getenv("DD64_TEXDUMP");
+        static int n;
+        if (dump != NULL && n < 200) {
+            char path[64];
+            snprintf(path, sizeof(path), "tex_%03d_%ux%u_f%us%u.bmp", n++, w, h, fmt, siz);
+            SDL_Surface *s = SDL_CreateSurfaceFrom(w, h, SDL_PIXELFORMAT_ABGR8888, tex_upload_buffer, w * 4);
+            if (s != NULL) {
+                SDL_SaveBMP(s, path);
+                SDL_DestroySurface(s);
+            }
+        }
+    }
     texture_cache[key] = { id, w, h, sum };
     rendering_state.textures[i] = id;
 }
@@ -900,6 +926,11 @@ static void apply_viewport_and_scissor(void) {
 }
 
 /* Depth, blending and the combiner for the next draw. Returns the combiner. */
+/* A texture rectangle drawn at one texel a pixel: the RDP samples it exactly on
+   texels, so bilinear filtering changes nothing at 320x240, but upscaled it would
+   blend in the neighbouring texels (the next glyph of a font, say). */
+static bool rect_unscaled;
+
 static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, bool *use_fog_out,
                                           bool *texture_edge_out) {
     uint32_t cycle_type = rdp.other_mode_h & (3U << G_MDSFT_CYCLETYPE);
@@ -933,6 +964,13 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
     if (cycle_type == G_CYC_COPY) {
         use_alpha = (rdp.other_mode_l & (3 << G_MDSFT_ALPHACOMPARE)) == G_AC_THRESHOLD;
         alpha_threshold = use_alpha;
+        use_fog = false;
+        texture_edge = false;
+    } else if (cycle_type == G_CYC_FILL) {
+        /* fill mode writes the fill colour straight to memory: no blending */
+        use_alpha = false;
+        alpha_threshold = false;
+        use_noise = false;
         use_fog = false;
         texture_edge = false;
     }
@@ -990,7 +1028,8 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
             import_texture(i, tile);
             rdp.textures_changed[i] = false;
         }
-        bool linear = (rdp.other_mode_h & (3U << G_MDSFT_TEXTFILT)) != G_TF_POINT && cycle_type != G_CYC_COPY;
+        bool linear = (rdp.other_mode_h & (3U << G_MDSFT_TEXTFILT)) != G_TF_POINT && cycle_type != G_CYC_COPY &&
+                      !rect_unscaled;
         uint8_t cms = rdp.texture_tile[tile].cms, cmt = rdp.texture_tile[tile].cmt;
         if (linear != rendering_state.linear[i] || cms != rendering_state.cms[i] || cmt != rendering_state.cmt[i]) {
             gfx_flush();
@@ -1468,7 +1507,9 @@ static void gfx_dp_texture_rectangle(int32_t ulx, int32_t uly, int32_t lrx, int3
     s1 -= rdp.texture_tile[tile].uls / 4.0f;
     t0 -= rdp.texture_tile[tile].ult / 4.0f;
     t1 -= rdp.texture_tile[tile].ult / 4.0f;
+    rect_unscaled = (dsdx == 1024 || dsdx == -1024) && (dtdy == 1024 || dtdy == -1024);
     gfx_draw_rectangle(x0, y0, x1, y1, s0, t0, s1, t1, flip, true);
+    rect_unscaled = false;
     if (saved_tile != tile) {
         rsp.texture_tile = saved_tile;
         rdp.textures_changed[0] = rdp.textures_changed[1] = true;
@@ -1603,6 +1644,19 @@ static void s2_bg(const uint8_t *bg, bool scaled) {
         scaleH = rd16(bg + 30) / 1024.0f;
         if (scaleW == 0) scaleW = 1;
         if (scaleH == 0) scaleH = 1;
+    }
+    if (getenv("DD64_BGLOG") != NULL) {
+        uint32_t total = imageW / 4 * imageH / 4 * (siz == G_IM_SIZ_16b ? 2 : 1), nz = 0, be = 0, lastnz = 0;
+        for (uint32_t i = 0; i < total; i++) {
+            if (image[i]) {
+                nz++;
+                lastnz = i;
+            }
+            be += Port_IsBEInline(image + i);
+        }
+        sysLogPrintf(LOG_NOTE, "bg %s: image %u,%u %ux%u frame %d,%d %ux%u fmt %u siz %u ptr %p: %u bytes, %u nonzero (last %u), %u marked",
+                     scaled ? "1cyc" : "copy", imageX, imageY, imageW, imageH, frameX, frameY, frameW, frameH, fmt,
+                     siz, (const void *)image, total, nz, lastnz, be);
     }
     uint32_t w = imageW / 4, h = imageH / 4;
     uint32_t bpp_bytes2 = siz == G_IM_SIZ_4b ? 1 : siz == G_IM_SIZ_8b ? 2 : siz == G_IM_SIZ_16b ? 4 : 8;

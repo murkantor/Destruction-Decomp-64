@@ -108,13 +108,13 @@ typedef struct {
     /* 0x0 */ u16 button;
     /* 0x2 */ s8 stick_x;
     /* 0x3 */ s8 stick_y;
-    /* 0x4 */ u8 errno;
+    /* 0x4 */ u8 errnum; /* errno in libultra; MinGW defines errno as a macro */
 } OSContPad;
 
 typedef struct {
     /* 0x0 */ u16 type;
     /* 0x2 */ u8 status;
-    /* 0x3 */ u8 errno;
+    /* 0x3 */ u8 errnum; /* errno in libultra; MinGW defines errno as a macro */
 } OSContStatus;
 
 #define MAXCONTROLLERS 4
