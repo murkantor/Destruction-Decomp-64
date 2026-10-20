@@ -624,7 +624,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80040B24` | `041724` | 0xe8 | `TrackMenu_Back` | `src/auto/41724.c` | C (generated) |
 | `80040C0C` | `04180C` | 0x300 | `Menu_ConfirmTrackSelect` | `asm/4180C.s` | asm |
 | `80040F0C` | `041B0C` | 0xcc | `Ui_RemapTextures` | `src/auto/41B0C.c` | C (generated) |
-| `80040FD8` | `041BD8` | 0x4a4 | `PakMenu_SelectSlot` | `asm/41BD8.s` | asm |
+| `80040FD8` | `041BD8` | 0x4a4 | `TrackMenu_Highlight` | `asm/41BD8.s` | asm |
 | `8004147C` | `04207C` | 0x1e8 | `TrackMenu_FormatRecords` | `src/auto/4207C.c` | C (generated) |
 | `80041664` | `042264` | 0x278 | `Menu_BuildIdList` | `src/auto/42264.c` | C (generated) |
 | `800418DC` | `0424DC` | 0x2a4 | `TrackMenu_Show` | `src/auto/424DC.c` | C (generated) |

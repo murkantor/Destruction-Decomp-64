@@ -20,7 +20,7 @@ void Ui_ResetScreen(s32, s32);
 void Menu_BuildIdList(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDef *);
-void PakMenu_SelectSlot(s32, s32);
+void TrackMenu_Highlight(s32, s32);
 void Cars_FreeObjects(void);
 
 void TrackMenu_Show(void) {
@@ -65,6 +65,6 @@ void TrackMenu_Show(void) {
     Ui_AddElement(gUi[0], 0, 0x17A);
     Ui_AddElement(gUi[0], 0, 0x17B);
     Ui_AddElement(gUi[0], 0, 0x17C);
-    PakMenu_SelectSlot(-1, D_800958B4[0]);
+    TrackMenu_Highlight(-1, D_800958B4[0]);
     Cars_FreeObjects();
 }

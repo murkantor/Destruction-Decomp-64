@@ -582,7 +582,7 @@ Files in `src/auto/` and `asm/` are named after their ROM offset; their real bou
 | `041724` | `80040B24` | 0xe8 | `src/auto/41724.c` | C (generated) | 1 | `TrackMenu_Back` |
 | `04180C` | `80040C0C` | 0x300 | `asm/4180C.s` | asm | 1 | `Menu_ConfirmTrackSelect` |
 | `041B0C` | `80040F0C` | 0xcc | `src/auto/41B0C.c` | C (generated) | 1 | `Ui_RemapTextures` |
-| `041BD8` | `80040FD8` | 0x4a4 | `asm/41BD8.s` | asm | 1 | `PakMenu_SelectSlot` |
+| `041BD8` | `80040FD8` | 0x4a4 | `asm/41BD8.s` | asm | 1 | `TrackMenu_Highlight` |
 | `04207C` | `8004147C` | 0x1e8 | `src/auto/4207C.c` | C (generated) | 1 | `TrackMenu_FormatRecords` |
 | `042264` | `80041664` | 0x278 | `src/auto/42264.c` | C (generated) | 1 | `Menu_BuildIdList` |
 | `0424DC` | `800418DC` | 0x2a4 | `src/auto/424DC.c` | C (generated) | 1 | `TrackMenu_Show` |

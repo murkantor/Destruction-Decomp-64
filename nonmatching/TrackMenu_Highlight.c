@@ -33,7 +33,7 @@ void TrackMenu_FormatRecords(s32);
 s32 Font_GetStringWidth(char *, s32);
 void Ui_SetElementPos(void *, s32, s32, f32, f32);
 
-void PakMenu_SelectSlot(s32 prev, s32 slot) {
+void TrackMenu_Highlight(s32 prev, s32 slot) {
     s32 ids[3] = { 0xB4, 0x3F, 0xB5 };
     ResEnt *ent;
     s32 i;
