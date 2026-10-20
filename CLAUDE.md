@@ -8,11 +8,14 @@ Rules:
 
 - On `main`, the N64 build must keep matching. `main` is finished, and `port-pc` does not take
   merges from it any more.
-- On `port-pc`, the C does not have to rebuild the matching ROM, but keep it as close to 1:1
-  with the original code as possible. Change it only slightly, to make it run (or run better)
-  on a PC, and never in a way that changes how the game plays or feels on hardware. The PC
-  build still reads symbol addresses from `build/dd64.elf`, so keep that N64 build compiling
-  (`make`); it need not match.
+- On `port-pc`, keep the C as close to 1:1 with the original code as possible. Change it
+  only slightly, to make it run (or run better) on a PC, and never in a way that changes how
+  the game plays or feels on hardware.
+- The N64 build on `port-pc` must still print `build/dd64.z64: OK`. This is not about
+  shipping N64 ROMs: the PC build takes every symbol's address from `build/dd64.elf` and maps
+  it onto the user's ROM data, so if any N64 code changes size, later code and data move and
+  the addresses no longer fit the ROM. Port-only changes go under `#ifdef TARGET_PC`, or in
+  macros that are empty on the N64 (`PORT_CONVERT`, `PORT_MARK_RAW` ...).
 - No ROM data in the repository: the port reads the user's own ROM at run time.
 - N64 bugs stay. Where one would crash on PC (a stack overflow the N64 layout absorbs, say),
   give it room on PC and keep the behaviour.
