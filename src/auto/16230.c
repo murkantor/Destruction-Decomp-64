@@ -26,7 +26,7 @@ void Shadow_Draw(Obj15630 *obj) {
     {
         Gfx *g = &obj->x2C4[0];
         g->w0 = 0xDA380000;
-        g->w1 = (u32)m - 0x80000000;
+        g->w1 = PHYS_ADDR(m);
     }
     {
         Gfx *g = &obj->x2C4[1];

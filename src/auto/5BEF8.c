@@ -67,8 +67,8 @@ Gfx *Camera_BuildProjection(Gfx *gfx, Cam *cam) {
     osWritebackDCache(cam->x0, 0x40);
     guMtxF2L(ident, cam->x4);
     osWritebackDCache(cam->x4, 0x40);
-    GFX2(gfx, 0xDA380007, (u32)cam->x0 - 0x80000000);
-    GFX2(gfx, 0xDA380003, (u32)cam->x4 - 0x80000000);
+    GFX2(gfx, 0xDA380007, PHYS_ADDR(cam->x0));
+    GFX2(gfx, 0xDA380003, PHYS_ADDR(cam->x4));
     GFX2(gfx, 0xDB0E0000, norm);
     GFX2(gfx, 0xDB040004, 2);
     GFX2(gfx, 0xDB04000C, 2);

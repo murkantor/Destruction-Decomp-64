@@ -1,13 +1,14 @@
 #include "common.h"
 #include "m2c.h"
 
-void Gfx_SubmitTask(s32, s32, s32);
+s32 Gfx_SubmitTask(s32, s32, s32);
 
-void Gfx_SubmitFrame(s32 arg0) {
-    Gfx_SubmitTask(arg0, 1, 0);
+/* Render_Frame checks the result for a failed submit */
+s32 Gfx_SubmitFrame(s32 arg0) {
+    return Gfx_SubmitTask(arg0, 1, 0);
 }
 
 
-void Gfx_SubmitFrameWait(s32 arg0, s32 arg1) {
-    Gfx_SubmitTask(arg0, 1, arg1);
+s32 Gfx_SubmitFrameWait(s32 arg0, s32 arg1) {
+    return Gfx_SubmitTask(arg0, 1, arg1);
 }

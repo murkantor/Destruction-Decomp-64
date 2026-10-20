@@ -7,25 +7,7 @@
 
 #include "port.h"
 
-static int sGfxTasks, sAudioTasks;
-
-void Port_VideoInit(void) {
-}
-
-void Port_VideoRunTask(OSTask *task) {
-    if (++sGfxTasks % 60 == 1) {
-        Port_Log("gfx task %d", sGfxTasks);
-    }
-}
-
-void Port_VideoSwap(void *framebuffer) {
-}
-
-void Port_VideoSetBlack(int black) {
-}
-
-void Port_VideoPresentIdle(void) {
-}
+static int sAudioTasks;
 
 void Port_AudioInit(void) {
 }

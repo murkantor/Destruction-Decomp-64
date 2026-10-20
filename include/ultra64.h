@@ -39,6 +39,16 @@ typedef double f64;
  * ASM_ALIAS gives a declaration another symbol's name. On PC the pin is dropped
  * and the alias gets the platform's symbol prefix (_ on 32-bit Windows).
  */
+/*
+ * The RSP address of a KSEG0 pointer. On PC the renderer takes host pointers,
+ * so the pointer is passed unchanged.
+ */
+#ifdef TARGET_PC
+#define PHYS_ADDR(p) ((u32)(p))
+#else
+#define PHYS_ADDR(p) ((u32)(p) - 0x80000000)
+#endif
+
 #ifdef TARGET_PC
 #define ASM_STR2(x) #x
 #define ASM_STR(x) ASM_STR2(x)

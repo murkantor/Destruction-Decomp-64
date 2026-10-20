@@ -133,7 +133,7 @@ Gfx *Weather_Draw(Cam *cam, Gfx *gfx) {
     for (i = 0; i < 4; i++) {
         guPosition(&D_800D2E80[i][frame], 0.0f, 0.0f, 0.0f, step, dir.x + offs[i].x * 0.8333333333333333,
                    dir.y + (offs[i].y + yoff) * 0.8333333333333333, dir.z + offs[i].z * 0.8333333333333333);
-        GFX2(gfx, 0xDA380000, (u32)&D_800D2E80[i][frame] - 0x80000000);
+        GFX2(gfx, 0xDA380000, PHYS_ADDR(&D_800D2E80[i][frame]));
         GFX2(gfx, 0xDE000000, w->bufs[frame]);
         GFX2(gfx, 0xD8380002, 0x40);
     }

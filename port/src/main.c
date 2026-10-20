@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include "port.h"
+#include "port_config.h"
 
 #define VI_RATE_NS (1000000000ull / 60)
 
@@ -62,6 +63,7 @@ int main(int argc, char **argv) {
     u64 nextRetrace;
 
     openLog();
+    Port_ConfigLoad();
     SDL_SetAppMetadata("Destruction Derby 64", "0.1", "dd64.pc");
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD | SDL_INIT_AUDIO)) {
         Port_Fatal("SDL_Init: %s", SDL_GetError());
@@ -71,6 +73,7 @@ int main(int argc, char **argv) {
                    "Put your cart image (.z64, .n64 or .v64) in the Data folder next to the game.");
     }
     Port_RamInit();
+    Port_CodeStubsInit();
     Port_OsInit();
     Port_RcpInit();
     Port_VideoInit();

@@ -11,7 +11,7 @@ project(dd64pc C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_EXTENSIONS ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
@@ -92,16 +92,21 @@ target_compile_options(game PRIVATE ${COMMON_FLAGS}
     -fgnu89-inline
     # Every memory access calls a hook in port/src/shadow.c, which converts
     # big-endian ROM data to host order where it is first read
-    -fsanitize=kernel-address "SHELL:--param asan-stack=0" "SHELL:--param asan-globals=0"
+    # (asan-globals=1: without it GCC skips accesses it can see land inside a
+    # global, and the game's globals are exactly the data that needs converting)
+    -fsanitize=kernel-address "SHELL:--param asan-stack=0" "SHELL:--param asan-globals=1"
     "SHELL:--param asan-instrumentation-with-call-threshold=0")
 
 # ---- Port ----
 file(GLOB PORT_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/port/src/*.c ${CMAKE_SOURCE_DIR}/port/src/*.cpp
-                                     ${CMAKE_SOURCE_DIR}/port/fast3d/*.cpp ${CMAKE_SOURCE_DIR}/port/fast3d/*.c)
+                                     ${CMAKE_SOURCE_DIR}/port/fast3d/*.cpp ${CMAKE_SOURCE_DIR}/port/fast3d/glad/*.c)
 add_executable(dd64 ${PORT_SRC} $<TARGET_OBJECTS:game>)
 target_include_directories(dd64 PRIVATE include port/include port/fast3d)
 target_compile_definitions(dd64 PRIVATE TARGET_PC)
-target_compile_options(dd64 PRIVATE ${COMMON_FLAGS} -Wall -Wno-unused-parameter -Wno-unused-function)
+target_compile_options(dd64 PRIVATE ${COMMON_FLAGS} -Wall -Wno-unused-parameter -Wno-unused-function
+    # Fast3D from Project Midas: keep its own warnings quiet
+    $<$<COMPILE_LANGUAGE:CXX>:-Wno-unused-variable -Wno-unused-but-set-variable -Wno-sign-compare
+                              -Wno-missing-field-initializers -Wno-format-truncation>)
 target_link_libraries(dd64 PRIVATE SDL3)
 # Block copies keep the big-endian marks with the bytes (port/src/shadow.c)
 target_link_options(dd64 PRIVATE -Wl,--wrap=memcpy,--wrap=memmove,--wrap=memset)
@@ -112,6 +117,8 @@ if(WIN32)
     # address (0x00000000-0x0FFFFFFF) in a display list.
     target_link_options(dd64 PRIVATE -m32 -static-libgcc -static-libstdc++
         -Wl,--image-base=0x10000000 -Wl,--disable-dynamicbase -Wl,--stack,16777216 -mwindows
+        # the N64 code addresses (0x80000000 up) are mapped for jump stubs (port/src/ram.c)
+        -Wl,--large-address-aware
         ${GEN_SYMS})
     add_custom_command(TARGET dd64 POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL3_MINGW_ROOT}/bin/SDL3.dll $<TARGET_FILE_DIR:dd64>)

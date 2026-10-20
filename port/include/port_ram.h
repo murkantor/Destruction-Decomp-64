@@ -1,8 +1,9 @@
-/* The table tools/port/gen_data.py writes, applied by port/src/ram.c. */
+/* The table tools/port/gen_data.py writes, applied by port/src/ram.c. stdint
+ * types only: the generated file declares every game function generically. */
 #ifndef PORT_RAM_H
 #define PORT_RAM_H
 
-#include "ultra64.h"
+#include <stdint.h>
 
 enum {
     FIX_SWAP16, /* byte-swap a u16 */
@@ -13,25 +14,27 @@ enum {
 };
 
 typedef struct {
-    u32 off; /* from gPortRamVram */
-    u32 kind;
+    uint32_t off; /* from gPortRamVram */
+    uint32_t kind;
     const void *func;
 } PortRamFix;
 
 typedef struct {
-    u32 addr;
+    uint32_t addr;
     const void *func;
 } PortFuncAddr;
 
 extern const PortRamFix gPortBlockFixes[];
-extern const u32 gPortBlockFixCount;
+extern const uint32_t gPortBlockFixCount;
 extern const PortRamFix gPortRamFixes[];
-extern const u32 gPortRamFixCount;
+extern const uint32_t gPortRamFixCount;
 extern const PortFuncAddr gPortFuncAddrs[];
-extern const u32 gPortFuncAddrCount;
-extern const u32 gPortRamVram;
-extern const u32 gPortRamRomStart;
-extern const u32 gPortRamRomEnd;
-extern const u32 gPortRamEnd;
+extern const uint32_t gPortFuncAddrCount;
+extern const PortFuncAddr gPortAllFuncs[];
+extern const uint32_t gPortAllFuncCount;
+extern const uint32_t gPortRamVram;
+extern const uint32_t gPortRamRomStart;
+extern const uint32_t gPortRamRomEnd;
+extern const uint32_t gPortRamEnd;
 
 #endif

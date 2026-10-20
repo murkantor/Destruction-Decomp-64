@@ -30,6 +30,11 @@
 extern u8 gRam[];
 u8 gPortShadow[RAM_SIZE + 16];
 
+static void copyMarks(void *d, const void *s, size_t n);
+void *__real_memcpy(void *d, const void *s, size_t n);
+void *__real_memmove(void *d, const void *s, size_t n);
+void *__real_memset(void *d, int c, size_t n);
+
 /* A bulk read of marked bytes, waiting for the bulk store that copies them */
 static __thread u32 tPendingSrc, tPendingLen, tPendingDst, tPendingDstLen;
 /* The last single-byte load read a marked byte: a byte-by-byte copy carries the mark */
@@ -54,7 +59,7 @@ static void report(const char *what, u32 off, u32 n, void *site) {
              (unsigned)(u32)(gRam + off), (unsigned)(RAM_VRAM + off), site);
 }
 
-void Port_MarkBE(const void *p, u32 len) {
+void Port_MarkBE(const void *p, uint32_t len) {
     u32 off = (u32)p - (u32)gRam;
 
     if (off < RAM_SIZE) {
@@ -65,7 +70,7 @@ void Port_MarkBE(const void *p, u32 len) {
     }
 }
 
-void Port_MarkNative(const void *p, u32 len) {
+void Port_MarkNative(const void *p, uint32_t len) {
     u32 off = (u32)p - (u32)gRam;
 
     if (off < RAM_SIZE) {
@@ -184,12 +189,8 @@ static inline void store(u32 addr, u32 n) {
 /* Struct copies: GCC checks the whole destination and source before an inline
    copy, in either order. A source with marks hands them to the destination. */
 static void bulkPair(void) {
-    u32 so = tPendingSrc - (u32)gRam, dOff = tPendingDst - (u32)gRam;
-
-    if (tPendingLen != 0 && tPendingLen == tPendingDstLen && so < RAM_SIZE) {
-        if (dOff < RAM_SIZE) {
-            memmove(gPortShadow + dOff, gPortShadow + so, tPendingLen);
-        }
+    if (tPendingLen != 0 && tPendingLen == tPendingDstLen) {
+        copyMarks((void *)tPendingDst, (const void *)tPendingSrc, tPendingLen);
         tPendingLen = tPendingDstLen = 0;
     }
 }
@@ -234,35 +235,36 @@ void __asan_store8_noabort(u32 a) { store(a, 8); }
 void __asan_store16_noabort(u32 a) { storeN(a, 16); }
 void __asan_storeN_noabort(u32 a, u32 n) { storeN(a, n); }
 void __asan_handle_no_return(void) {}
+/* Global variables the game code defines report themselves; nothing to do */
+void __asan_register_globals(void *globals, size_t n) {}
+void __asan_unregister_globals(void *globals, size_t n) {}
 
 /* Block copies from game code (and anything else linked in) carry the marks. */
-void *__real_memcpy(void *d, const void *s, size_t n);
-void *__real_memmove(void *d, const void *s, size_t n);
-void *__real_memset(void *d, int c, size_t n);
 
-void *__wrap_memcpy(void *d, const void *s, size_t n) {
+/* Copy the marks of n bytes from s to d, as far as either lies in gRam. */
+static void copyMarks(void *d, const void *s, size_t n) {
     u32 so = (u32)s - (u32)gRam, dOff = (u32)d - (u32)gRam;
 
-    if (dOff < RAM_SIZE) {
-        if (so < RAM_SIZE) {
-            __real_memmove(gPortShadow + dOff, gPortShadow + so, n);
-        } else {
-            __real_memset(gPortShadow + dOff, 0, n);
-        }
+    if (dOff >= RAM_SIZE) {
+        return;
     }
+    if (n > RAM_SIZE - dOff) {
+        n = RAM_SIZE - dOff;
+    }
+    if (so < RAM_SIZE && n <= RAM_SIZE - so) {
+        __real_memmove(gPortShadow + dOff, gPortShadow + so, n);
+    } else {
+        __real_memset(gPortShadow + dOff, 0, n);
+    }
+}
+
+void *__wrap_memcpy(void *d, const void *s, size_t n) {
+    copyMarks(d, s, n);
     return __real_memcpy(d, s, n);
 }
 
 void *__wrap_memmove(void *d, const void *s, size_t n) {
-    u32 so = (u32)s - (u32)gRam, dOff = (u32)d - (u32)gRam;
-
-    if (dOff < RAM_SIZE) {
-        if (so < RAM_SIZE) {
-            __real_memmove(gPortShadow + dOff, gPortShadow + so, n);
-        } else {
-            __real_memset(gPortShadow + dOff, 0, n);
-        }
-    }
+    copyMarks(d, s, n);
     return __real_memmove(d, s, n);
 }
 
@@ -273,8 +275,8 @@ void *__wrap_memset(void *d, int c, size_t n) {
 
 /* ---- Readers for host code ---- */
 
-u16 Port_Rd16(const void *p) {
-    u16 v;
+uint16_t Port_Rd16(const void *p) {
+    uint16_t v;
 
     memcpy(&v, p, 2);
     if (Port_IsBE(p)) {
@@ -283,8 +285,8 @@ u16 Port_Rd16(const void *p) {
     return v;
 }
 
-u32 Port_Rd32(const void *p) {
-    u32 v;
+uint32_t Port_Rd32(const void *p) {
+    uint32_t v;
 
     memcpy(&v, p, 4);
     if (Port_IsBE(p)) {
