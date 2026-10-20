@@ -53,6 +53,9 @@ extern Game *gGame[];
 extern s32 D_800958A8;
 extern s32 D_800958AC;
 extern s32 D_800958B4;
+#ifdef TARGET_PC
+#define D_800D1C20 gFieldCarIds /* RACE_CARS long (port/game/field_part0.c) */
+#endif
 extern s32 D_800D1C20[];
 extern s32 D_80095DF4[];
 extern HudSlot D_800958DC[];

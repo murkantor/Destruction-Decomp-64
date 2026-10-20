@@ -463,8 +463,8 @@ Car *Car_Create(CarStats *s) {
         }
     }
 #ifdef TARGET_PC
-    /* D_800D1C20 holds 12: the doubled field keeps every car's type in a longer
-       table as well (port/game/field_part0.c) */
+    /* D_800D1C20 holds 12: the doubled field keeps every car's type in
+       gFieldCarIds (port/game/field_part0.c), the first 12 in D_800D1C20 too */
     Port_Field0SetCarType(gGame->race->numCars, car->x34);
 #else
     D_800D1C20[gGame->race->numCars] = car->x34;

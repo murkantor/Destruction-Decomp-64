@@ -37,7 +37,16 @@ void Res_ReleaseInstance(s32 arg0) {
         if (M2C_FIELD(temp_v0, s32 *, 0x1C) >= 2) {
             temp_a0 = M2C_FIELD(M2C_FIELD(temp_v0, void **, 0x14), s32 **, 4);
             if (temp_a0 != NULL) {
+#ifdef TARGET_PC
+                /* The N64 destroys the second instance in the list but removes
+                   arg0's node: with arg0 not that one, the list keeps a destroyed
+                   instance (destroyed again later) and arg0 leaks. Instances
+                   released out of order (the doubled field's force-loaded cars)
+                   corrupt the heap; destroy arg0's own */
+                M2C_FIELD(temp_v0, M2C_UNK (**)(s32), 0x10)(arg0);
+#else
                 M2C_FIELD(temp_v0, M2C_UNK (**)(s32), 0x10)(*temp_a0);
+#endif
                 List_Remove(temp_v0 + 0x14, arg0);
             }
             M2C_FIELD(temp_v0, s32 *, 0x1C) = (s32) (M2C_FIELD(temp_v0, s32 *, 0x1C) - 1);
