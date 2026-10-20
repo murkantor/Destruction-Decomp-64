@@ -4,7 +4,7 @@ Notes for a native PC port, planned as a `port-pc` branch once the matching deco
 
 ## What stays in assembly, and what a port does with it
 
-The game code is C apart from the functions still being matched. What is left in `asm/` is runtime and hardware code that a port leaves out of the build and replaces.
+All game code is C. What is left in `asm/` is runtime and hardware code that a port leaves out of the build and replaces.
 
 | Group | Functions | Port |
 |---|---|---|
