@@ -1124,6 +1124,19 @@ static void texture_size(int i, float *w, float *h) {
 }
 
 /* Append one vertex in the layout the shader expects */
+/* Rectangles compute their texel coordinates themselves (gfx_draw_rectangle) */
+static bool emitting_rect;
+
+static float tile_shift(float c, uint8_t shift) {
+    if (shift == 0) {
+        return c;
+    }
+    if (shift <= 10) {
+        return c / (float)(1 << shift);
+    }
+    return c * (float)(1 << (16 - shift));
+}
+
 static void emit_vertex(const struct LoadedVertex *v, struct ColorCombiner *comb, bool use_alpha, bool use_fog,
                         float tex_w[2], float tex_h[2], bool linear) {
     buf_vbo[buf_vbo_len++] = v->x;
@@ -1136,8 +1149,15 @@ static void emit_vertex(const struct LoadedVertex *v, struct ColorCombiner *comb
             continue;
         }
         int tile = tile_for(t);
-        float u = (v->u - rdp.texture_tile[tile].uls * 8) / 32.0f;
-        float vv = (v->v - rdp.texture_tile[tile].ult * 8) / 32.0f;
+        float su = v->u, sv = v->v;
+        if (!emitting_rect) {
+            /* the tile's shift, as the RDP applies it before the tile origin:
+               1-10 divide by 2^shift, 11-15 multiply by 2^(16-shift) */
+            su = tile_shift(su, rdp.texture_tile[tile].shifts);
+            sv = tile_shift(sv, rdp.texture_tile[tile].shiftt);
+        }
+        float u = (su - rdp.texture_tile[tile].uls * 8) / 32.0f;
+        float vv = (sv - rdp.texture_tile[tile].ult * 8) / 32.0f;
         if (linear) {
             u += 0.5f;
             vv += 0.5f;
@@ -1524,9 +1544,11 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     }
     bool linear = false; /* rect texture coordinates already hit texel centres */
     const struct LoadedVertex *tri[6] = { &v[0], &v[1], &v[3], &v[0], &v[3], &v[2] };
+    emitting_rect = true;
     for (int i = 0; i < 6; i++) {
         emit_vertex(tri[i], comb, use_alpha, false, tex_w, tex_h, linear);
     }
+    emitting_rect = false;
     buf_vbo_num_tris += 2;
     if (buf_vbo_num_tris >= MAX_BUFFERED - 2) {
         gfx_flush();
