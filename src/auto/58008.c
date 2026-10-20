@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 pad[0x5C];
     s32 x5C;
@@ -25,9 +28,14 @@ void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     u8 *dst;
     u8 *src;
     s32 c, q, r;
-    s32 xx, yy, pp;
+    s32 xx, pp;
+    register s32 yy asm("$2");
     u8 *b0;
-    b0 = o->x90; pp = d->x64; xx = (s32)(x * 0.003125f * d->x5C) * bpp; yy = (s32)(y * (1.0f / 240.0f) * d->x60); base = b0 + (yy * pp + xx);
+    b0 = o->x90;
+    pp = d->x64;
+    xx = (s32)(x * 0.003125f * d->x5C) * bpp;
+    yy = (s32)(y * (1.0f / 240.0f) * d->x60) * pp;
+    base = b0 + xx + yy;
 
     for (off = 0; str[off] != 0; off++) {
         c = str[off] - 0x20;
@@ -47,9 +55,7 @@ void Font_BlitString(Obj *o, s32 x, s32 y, u8 *str) {
     }
     osWritebackDCacheAll();
 }
-/* agent55: score 2 (one addu). The original computes (b0 + xx) + yy*pp with b0 in v1; every form that adds b0 + xx first (168 statement orders x base forms, decl orders, s32/u32 types, &b0[..], b0 += xx) swaps v0/v1 throughout (score 10-14). */
-/* agent59: draft unchanged (1 word). Note sched1 runs before local-alloc, so
- * statement order in the setup line does not matter (all 24 orders identical).
- * "b0 + xx + pp * yy" gets pp=v1, yy=v0 right (5 words) but the product ties
- * to its first operand pp (v1) instead of yy (v0); "b0 + xx + yy * pp" ties
- * pp to d (v0). Need pp not to die at the mult, or d not to die at the pp load. */
+/* agent62: yy bound to $2 (v0). Without it local-alloc gives the b0/b0+xx
+ * qty (refs 4, short life) priority over the trunc/yy qty, so b0 takes v0 and
+ * pp/yy swap. The hard-reg binding makes the trunc result take the v0
+ * suggestion first. */

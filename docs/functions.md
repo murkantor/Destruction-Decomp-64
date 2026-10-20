@@ -28,7 +28,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80001670` | `002270` | 0x6c | `Math_SameSign` | `src/auto/2270.c` | C (generated) |
 | `800016DC` | `0022DC` | 0x2e4 | `AI_FindTargetAhead` | `src/auto/22DC.c` | C (generated) |
 | `800019C0` | `0025C0` | 0x1e8 | `Ai_AdjustLaneFromNeighbour` | `src/auto/25C0.c` | C (generated) |
-| `80001BB0` | `0027B0` | 0x1c8 | `Race_AssignSlotObjects` | `asm/27A8.s` | asm |
+| `80001BB0` | `0027B0` | 0x1c8 | `Race_AssignSlotObjects` | `src/auto/27B0.c` | C (generated) |
 | `80001D78` | `002978` | 0x148 | `Obj_CreateFromCfg` | `src/auto/2978.c` | C (generated) |
 | `80001EC0` | `002AC0` | 0x84 | `AiDriver_Load` | `src/auto/2AC0.c` | C (generated) |
 | `80001F44` | `002B44` | 0x1c | `AiDriver_Free` | `src/auto/2AC0.c` | C (generated) |
@@ -682,7 +682,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `8004845C` | `04905C` | 0x24c | `OptionsMenu_Back` | `src/auto/4905C.c` | C (generated) |
 | `800486A8` | `0492A8` | 0xd8 | `OptionsMenu_Update` | `src/auto/492A8.c` | C (generated) |
 | `80048780` | `049380` | 0x3ac | `OptionsMenu_Init` | `src/auto/49380.c` | C (generated) |
-| `80048B30` | `049730` | 0x4a8 | `HiScore_DrawTable` | `asm/4972C.s` | asm |
+| `80048B30` | `049730` | 0x4a8 | `HiScore_DrawTable` | `src/auto/49730.c` | C (generated) |
 | `80048FD8` | `049BD8` | 0x368 | `Menu_LayoutResultRows` | `src/auto/49BD8.c` | C (generated) |
 | `80049340` | `049F40` | 0x1e8 | `Ui_AddModeLabels` | `src/auto/49F40.c` | C (generated) |
 | `80049528` | `04A128` | 0x878 | `Records_Draw` | `src/auto/4A128.c` | C (generated) |
@@ -853,7 +853,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `80057308` | `057F08` | 0x2c | `Gfx_FlushFrames` | `src/auto/57F08.c` | C (generated) |
 | `80057334` | `057F34` | 0x68 | `Gfx_FreeAfterFrame` | `src/auto/57F08.c` | C (generated) |
 | `8005739C` | `057F9C` | 0x6c | `Sched_WaitRetrace` | `src/auto/57F9C.c` | C (generated) |
-| `80057408` | `058008` | 0x198 | `Font_BlitString` | `asm/58008.s` | asm |
+| `80057408` | `058008` | 0x18c | `Font_BlitString` | `src/auto/58008.c` | C (generated) |
 | `800575A0` | `0581A0` | 0x54 | `Font_InitDebug` | `src/auto/581A0.c` | C (generated) |
 | `800575F4` | `0581F4` | 0x8 | `func_800575F4` | `src/auto/581A0.c` | C (generated) |
 | `800575FC` | `0581FC` | 0x340 | `Gfx_InitRenderState` | `src/auto/581FC.c` | C (generated) |
@@ -892,7 +892,7 @@ State: **C** is cleaned up, **C (generated)** matches but still has placeholder 
 | `800595A8` | `05A1A8` | 0xa8 | `Text_MapChars2` | `src/auto/5A1A8.c` | C (generated) |
 | `80059650` | `05A250` | 0x4c | `Pak_SetGameInfo` | `src/auto/5A250.c` | C (generated) |
 | `8005969C` | `05A29C` | 0xe0 | `Pak_Init` | `src/auto/5A29C.c` | C (generated) |
-| `8005977C` | `05A37C` | 0x60 | `Pak_Check` | `asm/5A37C.s` | asm |
+| `8005977C` | `05A37C` | 0x60 | `Pak_Check` | `src/auto/5A37C.c` | C (generated) |
 | `800597DC` | `05A3DC` | 0x80 | `Pak_FindFile` | `src/auto/5A3DC.c` | C (generated) |
 | `8005985C` | `05A45C` | 0x84 | `Pak_AllocateFile` | `src/auto/5A3DC.c` | C (generated) |
 | `800598E0` | `05A4E0` | 0x7c | `Pak_DeleteFile` | `src/auto/5A3DC.c` | C (generated) |
