@@ -8,7 +8,7 @@ extern Game *gGame;
 extern Slot68 D_800958DC[];
 extern s8 D_800D31CC[];
 void Mem_Free(void *);
-void func_8003ECF8(void);
+void Cars_FreeObjects(void);
 void func_80024E44(void *);
 void func_8002550C(Race *);
 
@@ -27,7 +27,7 @@ void Game_FreeModeResources(Game *game) {
             Mem_Free(D_800958DC[i].ptr);
             D_800958DC[i].ptr = NULL;
         }
-        func_8003ECF8();
+        Cars_FreeObjects();
         break;
     case 2:
         func_80024E44(gGame->race->x70);

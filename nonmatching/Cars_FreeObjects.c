@@ -57,7 +57,7 @@ static inline Outer *FreeOuter(Outer *o) {
     return NULL;
 }
 
-void func_8003ECF8(void) {
+void Cars_FreeObjects(void) {
     s32 i;
     Outer *o;
     Inner *in;

@@ -5,7 +5,7 @@ typedef struct { u32 x0; s32 x4; u64 x8; s32 x10; s32 x14; s32 x18; s32 x1C; } C
 extern u8 *gGame;
 extern Credits D_80124560;
 extern const f64 D_800BB4A0;
-void func_8003ECF8(void);
+void Cars_FreeObjects(void);
 void Ui_ResetScreen(s32, s32);
 u64 Time_Get(void *);
 s32 Res_Get(s32);
@@ -15,7 +15,7 @@ void Credits_Init(void) {
     Credits *c;
     u64 *p;
     u64 t;
-    func_8003ECF8();
+    Cars_FreeObjects();
     Ui_ResetScreen(0x112C2, 0x112C3);
     c = &D_80124560;
     c->x0 = 0;

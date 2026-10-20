@@ -21,7 +21,7 @@ void Menu_BuildIdList(void);
 void Ui_AddElement(void *, s32, s32);
 void Ui_AddSpriteElement(void *, UiElemDef *);
 void PakMenu_SelectSlot(s32, s32);
-void func_8003ECF8(void);
+void Cars_FreeObjects(void);
 
 void func_800418DC(void) {
     UiElemDef e;
@@ -66,5 +66,5 @@ void func_800418DC(void) {
     Ui_AddElement(gUi[0], 0, 0x17B);
     Ui_AddElement(gUi[0], 0, 0x17C);
     PakMenu_SelectSlot(-1, D_800958B4[0]);
-    func_8003ECF8();
+    Cars_FreeObjects();
 }

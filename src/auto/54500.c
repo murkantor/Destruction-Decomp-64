@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct {
     u8 e_ident[16];
     u16 e_type;
@@ -68,6 +71,7 @@ typedef struct {
 
 void Elf_Relocate(Elf32_Ehdr *elf, s32 (*resolve)(char *))
 {
+    Elf32_Sym *s;
     Elf32_Shdr *symtab;
     Elf32_Shdr *strtab;
     u8 *data;
@@ -85,10 +89,13 @@ void Elf_Relocate(Elf32_Ehdr *elf, s32 (*resolve)(char *))
     for (i = 0; i < (s32)(rel->sh_size / rel->sh_entsize); i++) {
         if ((r->r_info & 0xFF) == 2) {
             sym = (Elf32_Sym *)((u8 *)elf + symtab->sh_offset + symtab->sh_entsize * (r->r_info >> 8));
+            s = sym;
             if (sym->st_shndx == 0) {
-                val = resolve((char *)elf + strtab->sh_offset + sym->st_name) + sym->st_value;
+                val = resolve((char *)elf + strtab->sh_offset + sym->st_name);
+                val += sym->st_value;
             } else {
-                val = (u32)elf + SHDR(elf, sym->st_shndx)->sh_offset + sym->st_value;
+                val = (u32)elf + SHDR(elf, sym->st_shndx)->sh_offset;
+                val += s->st_value;
             }
             *(u32 *)(data + r->r_offset) += val;
         }

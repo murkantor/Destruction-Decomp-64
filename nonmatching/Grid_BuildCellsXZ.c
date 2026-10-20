@@ -36,7 +36,7 @@ static inline void Grid_GetCell(Grid *g, GVert *v, s32 *cx, s32 *cz) {
     *cz = (v->z - g->minZ) * g->nz / (g->maxZ - g->minZ);
 }
 
-void func_8001A520(Grid *g, GVert *verts) {
+void Grid_BuildCellsXZ(Grid *g, GVert *verts) {
     s32 i;
     s32 j;
     s32 k;

@@ -57,7 +57,7 @@ extern u8 D_800958A1[];
 extern s32 D_800958B4[];
 void func_8001A240(s32 *, s32, s32, s32);
 void func_8001A388(s32, s32);
-void func_8001A520(s32, u8 *);
+void Grid_BuildCellsXZ(s32, u8 *);
 s32 Res_Get(s32);
 void func_80013A54(s32 *, s32 *, s8, s8, s16);
 void Sfx_AddEntry(Cmd *, s16, s8, s8);
@@ -93,7 +93,7 @@ void Script_Relocate(Obj *arg0, Script *arg1, s32 arg2) {
         for (i = 0; i < arg0->x110->x10; i++) {
             func_8001A388(arg0->x10C, i);
         }
-        func_8001A520(arg0->x10C, arg0->x110->xC);
+        Grid_BuildCellsXZ(arg0->x10C, arg0->x110->xC);
     }
     for (i = 0; i < arg1->x8; i++) {
         c = &arg1->x4[i];

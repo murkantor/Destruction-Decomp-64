@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 struct huft {
     u8 e;
     u8 b;
@@ -11,7 +14,7 @@ extern u32 D_800BCA10;
 extern u32 D_800BCA14;
 extern u32 D_800BCA18;
 extern u8 *D_800BCA30;
-extern u16 gInflateMaskBits[];
+extern const u16 gInflateMaskBits[];
 s32 Inflate_GetByte(void);
 void func_80052370(u8 *buf, u32 n);
 void *memcpy(void *, const void *, u32);

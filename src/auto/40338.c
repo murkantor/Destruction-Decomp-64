@@ -18,7 +18,7 @@ void Ui_SetElementX(void *, s32, s32, f32);
 char *strcpy(char *, const char *);
 s32 Font_GetStringWidth(char *, s32);
 void func_8002D3B8(s32);
-void func_8003ECF8(void);
+void Cars_FreeObjects(void);
 
 void PakMenu_ShowSaveSlots(void) {
     s32 i;
@@ -35,7 +35,7 @@ void PakMenu_ShowSaveSlots(void) {
     func_8002D3B8(1);
     func_8002D3B8(2);
     func_8002D3B8(3);
-    func_8003ECF8();
+    Cars_FreeObjects();
     if (D_80097335[0]) D_80097335[0] = 0;
     if (D_80097336) D_80097336 = 0;
     D_800958A4 = 4;

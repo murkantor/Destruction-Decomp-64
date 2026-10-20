@@ -16,7 +16,7 @@ extern UiTriple D_80096780[];
 void Ui_ResetScreen(s32, s32);
 void Ui_AddElement(void *, s32, s32);
 void Ui_RemoveElement(void *, s32);
-void func_8003ECF8(void);
+void Cars_FreeObjects(void);
 
 void func_8003FC08(void) {
     s32 i;
@@ -37,5 +37,5 @@ void func_8003FC08(void) {
     }
     Ui_RemoveElement(gUi[0], D_80096780[D_800958B0[0]].a);
     Ui_AddElement(gUi[0], 2, D_80096780[D_800958B0[0]].b);
-    func_8003ECF8();
+    Cars_FreeObjects();
 }

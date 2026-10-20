@@ -73,7 +73,7 @@ extern void Audio_UpdateVoices(void);
 void Mem_Fill(void *p, s32 v, s32 n);
 void func_8006B110(void *heap, s32 base, s32 len);
 void *alHeapDBAlloc(u8 *, s32, void *, s32, s32);
-void func_80067368(s32, s32);
+void Model_Relocate(s32, s32);
 void func_80067950(s32, SynCfg *, s32, s32 *, s32, s32, s32);
 void func_80065A2C(s32, s16);
 void func_8006B840(void *, void *);
@@ -104,7 +104,7 @@ s32 func_80065708(AudioConfig *c) {
     gVoices = alHeapDBAlloc(0, 0, &D_800CCA88, 1, gNumVoices * sizeof(Voice));
     Mem_Fill(D_800CCA9C, 0, gNumVoices * sizeof(SynVoice));
     Mem_Fill(gVoices, 0, gNumVoices * sizeof(Voice));
-    func_80067368(c->x18, c->x1C);
+    Model_Relocate(c->x18, c->x1C);
     t = c->x18;
     sc.x0 = gNumVoices;
     sc.x4 = gNumVoices;

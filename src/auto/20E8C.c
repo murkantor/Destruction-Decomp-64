@@ -1,3 +1,6 @@
+#include "common.h"
+#include "m2c.h"
+
 typedef struct { f32 x, y, z; } Vec3f;
 typedef struct { Vec3f a; Vec3f b; } Seg;
 typedef struct { u8 pad0[0x30]; Seg *segs; } World;
@@ -18,7 +21,7 @@ typedef struct {
     Vec3f pos;
 } Car;
 
-extern Game *gGame;
+extern Game *gGame[];
 extern void *gUi;
 extern s32 D_800958A8;
 extern s32 D_800958AC;
@@ -54,10 +57,7 @@ void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
     cb = p0.x - p1.x;                                                                            \
     cc = D_800D1B08[slot].x - pos.x;                                                             \
     ce = p0.z - p1.z;                                                                            \
-    if (ca * cb - cc * ce > 0.0)                                                                 \
-        cross = 1;                                                                               \
-    else                                                                                         \
-        cross = 0;                                                                               \
+    cross = (ca * cb - cc * ce > 0.0);                                                           \
     if (D_800958B4 == 7)                                                                         \
         cross ^= 1;                                                                              \
     if (D_800958B4 == 8 && seg >= 0x51 && seg < 0x145)                                 \
@@ -65,10 +65,11 @@ void Announcer_QueueRandom(s32 *, s32, s32, s32, s32);
 
 void Car_UpdateTrackSegment(Car *car)
 {
-    s32 dir = car->dir;
-    s32 seg = car->seg;
-    World *w = gGame->x1100;
-    u8 flag = 0;
+    s32 id;
+    s32 dir;
+    World *w;
+    s32 seg;
+    u8 flag;
     s32 slot;
     s32 i;
     s32 n;
@@ -76,15 +77,24 @@ void Car_UpdateTrackSegment(Car *car)
     Vec3f p0;
     Vec3f p1;
     f32 d;
-    u8 cross;
+    s32 cross;
     f32 ca, cb, cc, ce;
     s32 ids[6];
+    u8 fwd1;
+    u8 fwd2;
+    s32 *pi;
+
+    dir = car->dir;
+    flag = 0;
+    w = gGame[0]->x1100;
+    seg = car->seg;
+    id = car->x34;
 
     if (D_800958A8 == 3 && D_800958AC == 2) {
-        i = car->x34;
+        i = id;
     } else {
         for (i = 0; i < 12; i++) {
-            if (D_800D1C20[i] == car->x34)
+            if (D_800D1C20[i] == id)
                 break;
         }
     }
@@ -95,10 +105,11 @@ void Car_UpdateTrackSegment(Car *car)
 
     if (CHECK(seg, D_800B8AB0)) {
         CROSS()
-        if ((cross & (dir == 1)) || (!cross & (dir == -1))) {
+        fwd1 = dir == 1;
+        if ((cross & fwd1) || (!(u8)cross & (dir == -1))) {
             n = Racer_WrapNode(car, car->seg + car->dir);
             if (car->x30 == 0) {
-                if (gGame->x10FC != 0x19) {
+                if (gGame[0]->x10FC != 0x19) {
                     if (D_80091B14[car->x3C->x10]) {
                         D_80091B14[car->x3C->x10] = 0;
                         Ui_RemoveElement(gUi, car->x3C->x10 + 0xE2);
@@ -111,19 +122,21 @@ void Car_UpdateTrackSegment(Car *car)
                     D_80091B18[car->x3C->x10] = 0;
             }
             car->seg = n;
+            flag = 1;
         } else {
             Race_AddNodeDistance(car, seg);
+            flag = 1;
         }
-        flag = 1;
     }
 
     if (car->x30 == 0 && !flag) {
         n = Racer_WrapNode(car, seg - dir);
         if (CHECK(n, D_800B8AB8)) {
             CROSS()
-            if ((cross & (dir == 1)) || (!cross & (dir == -1))) {
+            fwd2 = dir == 1;
+            if ((cross & fwd2) || (!(u8)cross & (dir == -1))) {
                 if (car->x30 == 0) {
-                    if (gGame->x10FC != 0x19) {
+                    if (gGame[0]->x10FC != 0x19) {
                         if (D_80091B14[car->x3C->x10]) {
                             D_80091B14[car->x3C->x10] = 0;
                             Ui_RemoveElement(gUi, car->x3C->x10 + 0xE2);
@@ -141,36 +154,38 @@ void Car_UpdateTrackSegment(Car *car)
             }
             flag = 1;
         }
-    }
-    if (!flag && !car->x40) {
-        n = Racer_WrapNode(car, seg + dir * 3);
-        if (CHECK(n, D_800B8AC0)) {
-            car->seg = Racer_WrapNode(car, n + dir);
-            if (gGame->x10FC != 0x19) {
-                if (D_80091B14[car->x3C->x10]) {
-                    D_80091B14[car->x3C->x10] = 0;
-                    Ui_RemoveElement(gUi, car->x3C->x10 + 0xE2);
+        if (!flag && !car->x40) {
+            n = Racer_WrapNode(car, seg + dir * 3);
+            if (CHECK(n, D_800B8AC0)) {
+                n = Racer_WrapNode(car, n + dir);
+                car->seg = n;
+                if (gGame[0]->x10FC != 0x19) {
+                    if (D_80091B14[car->x3C->x10]) {
+                        D_80091B14[car->x3C->x10] = 0;
+                        Ui_RemoveElement(gUi, car->x3C->x10 + 0xE2);
+                    }
+                    D_80091B18[car->x3C->x10] = 0;
                 }
-                D_80091B18[car->x3C->x10] = 0;
+                flag = 1;
             }
-            flag = 1;
         }
-    }
-    if (!flag && !car->x40) {
-        n = Racer_WrapNode(car, seg - dir * 3);
-        if (CHECK(n, D_800B8AC8)) {
-            car->seg = n;
-            ids[0] = 0x86;
-            ids[1] = 0x87;
-            if (gGame->x10FC != 0x19) {
-                if (!D_80091B14[car->x3C->x10]) {
-                    D_80091B14[car->x3C->x10] = 1;
-                    Ui_AddElement(gUi, 2, car->x3C->x10 + 0xE2);
-                    if (gGame->x10FC == 0x1C) {
-                        if (D_800958A8 == 2)
-                            Msg_Queue(0x87, 0, 1, 0);
-                        else
-                            Announcer_QueueRandom(ids, 2, 0, 1, 0);
+        if (!flag && !car->x40) {
+            n = Racer_WrapNode(car, seg - dir * 3);
+            if (CHECK(n, D_800B8AC8)) {
+                car->seg = n;
+                pi = ids;
+                pi[0] = 0x86;
+                pi[1] = 0x87;
+                if (gGame[0]->x10FC != 0x19) {
+                    if (!D_80091B14[car->x3C->x10]) {
+                        D_80091B14[car->x3C->x10] = 1;
+                        Ui_AddElement(gUi, 2, car->x3C->x10 + 0xE2);
+                        if (gGame[0]->x10FC == 0x1C) {
+                            if (D_800958A8 == 2)
+                                Msg_Queue(0x87, 0, 1, 0);
+                            else
+                                Announcer_QueueRandom(pi, 2, 0, 1, 0);
+                        }
                     }
                 }
             }

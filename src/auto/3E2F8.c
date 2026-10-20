@@ -14,10 +14,10 @@ s32 func_8003D6F8(void) {
 
 M2C_UNK PakMenu_InsertPaks();                            /* extern */
 M2C_UNK Ui_ResetScreen(M2C_UNK, M2C_UNK);            /* extern */
-M2C_UNK func_8003ECF8();                            /* extern */
+M2C_UNK Cars_FreeObjects();                            /* extern */
 
 void func_8003D72C(void) {
-    func_8003ECF8();
+    Cars_FreeObjects();
     Ui_ResetScreen(0x112CC, 0x112CD);
     PakMenu_InsertPaks();
 }
