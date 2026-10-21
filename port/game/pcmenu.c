@@ -1,7 +1,8 @@
 /*
- * The PC options page, drawn in the game's own menus. On the options screen
- * (Z on the main menu) a line at the bottom offers it, and R opens it: a panel
- * over the options with the PC settings in pages (L or Z for the next page), in
+ * The PC options page, drawn in the game's own menus. On the main menu (under
+ * its line for Z, the options screen) and on the options screen (the pause
+ * menu's too) a line at the bottom offers it, and R opens it: a panel over the
+ * menu with the PC settings in pages (L or Z for the next page), in
  * the screen's own font and colours. While it is open it takes the controller
  * (port/src/os_hw.c gives the game no input); B or Start closes it. It is drawn
  * after the game's UI each frame (Render_Frame); the settings themselves are
@@ -65,8 +66,11 @@ int Port_OptIsOpen(void);
 void Port_OptMenuPad(u16 *buttons, s8 *x, s8 *y);
 int Port_OptCapturing(void);
 int Port_OptIsBindPage(int page);
+extern u32 gfx_scene_4x3; /* port/fast3d/gfx_pc.cpp */
 
+#define MODE_MAIN 0x13 /* the game mode menu: "press z-button for options menu" */
 #define MODE_OPTIONS 0x20
+#define MODE_RECORDS 0x27
 #define ROWS 7      /* rows shown at once */
 #define ROW_H 13
 #define PANEL_X0 22
@@ -90,6 +94,7 @@ int Port_OptIsBindPage(int page);
 #define GREEN 0x2EB043FF
 #define WHITE 0xF0F0F0FF
 #define GREY 0x9AA6B0FF
+#define HINT 0xFFEE00FF /* the main menu's "press z-button" line */
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
@@ -213,6 +218,17 @@ static Gfx *drawPanel(Gfx *g, s32 x0, s32 y0, s32 x1, s32 y1, u32 rgba) {
     return g;
 }
 
+/* A small triangle pointing up or down (the font has no arrows), centred on x */
+static Gfx *drawArrow(Gfx *g, s32 x, s32 y, s32 up, u32 rgba) {
+    s32 r;
+
+    for (r = 0; r < 4; r++) {
+        s32 half = up ? r : 3 - r;
+        g = drawPanel(g, x - half, y + r, x + half + 1, y + r + 1, rgba);
+    }
+    return g;
+}
+
 /* Edges and held-direction repeats, once a game frame */
 static u16 sPrev;
 static s32 sHeld, sHeldFrames;
@@ -295,7 +311,11 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
     Font *f;
     s32 i, x, y, n;
 
-    if (gGame == NULL || gGame->mode != MODE_OPTIONS) {
+    /* The pause menu's options and records screens cover the 4:3 area, the race still
+       drawn behind them: at a wide screen's sides it would show, so it keeps to the
+       4:3 area while they are up */
+    gfx_scene_4x3 = gGame != NULL && (gGame->mode == MODE_OPTIONS || gGame->mode == MODE_RECORDS);
+    if (gGame == NULL || (gGame->mode != MODE_OPTIONS && gGame->mode != MODE_MAIN)) {
         if (Port_OptIsOpen()) {
             Port_OptSetOpen(0);
         }
@@ -312,8 +332,9 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
             sSel = sTop = 0;
             playSound(6);
         } else {
-            static const char hint[] = "press r for pc options";
-            return drawLabel(g, f, 160 - textWidth(f, hint) / 2, 214, hint, GREY);
+            /* on the main menu under the line for Z, in its yellow */
+            static const char hint[] = "press r-button for pc options";
+            return drawLabel(g, f, 160 - textWidth(f, hint) / 2, gGame->mode == MODE_MAIN ? 222 : 214, hint, HINT);
         }
     } else {
         input();
@@ -325,19 +346,28 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
     for (i = 0; i < 3; i++) { /* layered: the rows behind barely show */
         g = drawPanel(g, PANEL_X0, PANEL_Y0, PANEL_X1, PANEL_Y1, 0x060C20C0);
     }
-    /* the pages, the current one lit */
-    x = PANEL_X0 + 10;
-    for (i = 0; i < Port_OptPages(); i++) {
-        g = drawLabel(g, f, x, PANEL_Y0 + 4, Port_OptPageName(i), i == sPage ? YELLOW : GREEN);
-        x += textWidth(f, Port_OptPageName(i)) + 12;
+    /* the pages, the current one lit, spaced to fit the panel */
+    {
+        s32 total = 0, gap, pages = Port_OptPages();
+        for (i = 0; i < pages; i++) {
+            total += textWidth(f, Port_OptPageName(i));
+        }
+        gap = pages > 1 ? (PANEL_X1 - PANEL_X0 - 20 - total) / (pages - 1) : 0;
+        gap = gap > 12 ? 12 : gap < 3 ? 3 : gap;
+        x = PANEL_X0 + 10 + (PANEL_X1 - PANEL_X0 - 20 - total - gap * (pages - 1)) / 2;
+        for (i = 0; i < pages; i++) {
+            g = drawLabel(g, f, x, PANEL_Y0 + 4, Port_OptPageName(i), i == sPage ? YELLOW : GREEN);
+            x += textWidth(f, Port_OptPageName(i)) + gap;
+        }
     }
     g = drawPanel(g, PANEL_X0 + 6, PANEL_Y0 + 19, PANEL_X1 - 6, PANEL_Y0 + 20, 0x2EB04380);
     n = Port_OptCount(sPage);
     for (i = sTop; i < n && i < sTop + ROWS; i++) {
         char v[48];
-        s32 room = PANEL_X1 - 12 - (PANEL_X0 + 12 + 96), len;
+        s32 room = PANEL_X1 - 12 - (PANEL_X0 + 12) - textWidth(f, Port_OptLabel(sPage, i)) - 8, len;
         y = PANEL_Y0 + 24 + (i - sTop) * ROW_H;
-        /* a value too long for the row (a list of bindings) loses its end */
+        /* a value too long for what the label leaves of the row (a list of bindings)
+           loses its end */
         for (len = 0; len < 47 && Port_OptValue(sPage, i)[len] != 0; len++) {
             v[len] = Port_OptValue(sPage, i)[len];
         }
@@ -349,8 +379,11 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
         g = drawLabel(g, f, PANEL_X0 + 12, y, Port_OptLabel(sPage, i), i == sSel ? YELLOW : GREEN);
         g = drawLabel(g, f, PANEL_X1 - 12 - textWidth(f, v), y, v, i == sSel ? YELLOW : WHITE);
     }
+    if (sTop > 0) {
+        g = drawArrow(g, 154, PANEL_Y0 + 27 + ROWS * ROW_H, 1, GREY); /* more above */
+    }
     if (sTop + ROWS < n) {
-        g = drawLabel(g, f, 156, PANEL_Y0 + 24 + ROWS * ROW_H, "v", GREY); /* more below */
+        g = drawArrow(g, 166, PANEL_Y0 + 27 + ROWS * ROW_H, 0, GREY); /* more below */
     }
     if (Port_OptCapturing()) {
         static const char note[] = "esc to cancel";
