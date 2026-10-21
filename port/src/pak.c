@@ -639,3 +639,9 @@ s32 osPfsFileState(OSPfs *pfs, s32 file, OSPfsState *state) {
     Port_WriteN64Bytes(state->game_name, d + 16, 16);
     return 0;
 }
+
+/* [saves] pak_screens: whether the game shows its Controller Pak screens
+   (port/game/pakauto.c takes them out) */
+int Port_PakScreens(void) {
+    return gPortConfig.pakScreens != 0;
+}
