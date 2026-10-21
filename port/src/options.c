@@ -100,6 +100,7 @@ static const Option kAudio[] = {
 static const Option kGame[] = {
     { "double field", &gPortConfig.doubleField, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "cpu unlockables", &gPortConfig.cpuUnlockables, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
+    { "skip intros", &gPortConfig.skipIntros, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
 };
 static const Option kControls[] = {
     { "rumble", &gPortConfig.rumble, kOffOn, kOffOnN, N(kOffOn), 0, 0 },

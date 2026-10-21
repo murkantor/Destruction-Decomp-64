@@ -43,6 +43,7 @@ typedef struct {
     /* [game] */
     int doubleField;         /* races with twice the cars (up to 24) */
     int cpuUnlockables;      /* computer cars may drive the unlockable cars */
+    int skipIntros;          /* the logos at boot pass at once: straight to the title */
     /* [saves] */
     int pakOnAllPorts;       /* every controller has a Controller Pak, not only the first */
     int pakScreens;          /* the game's Controller Pak screens; 0 = loads and saves without them */

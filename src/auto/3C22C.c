@@ -7,6 +7,9 @@ extern void *gUi[];
 extern s16 D_8011EEEA;
 void Ui_ClearDrawList(void *);
 void Game_SetNextMode(s32, s32);
+#ifdef TARGET_PC
+int Port_SkipIntros(void); /* port/src/config.c */
+#endif
 
 s32 Logo_N64Update(void) {
     s32 r = 0;
@@ -16,6 +19,11 @@ s32 Logo_N64Update(void) {
         return 0;
     }
     lim = 4000000000ULL;
+#ifdef TARGET_PC
+    if (Port_SkipIntros()) {
+        lim = 0; /* [game] skip_intros: on at once */
+    }
+#endif
     if (gGame->x10A8 >= lim) {
         Ui_ClearDrawList(gUi[0]);
         Game_SetNextMode(0, 1);

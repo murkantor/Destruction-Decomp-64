@@ -194,6 +194,8 @@ static const Setting sSettings[] = {
       "1 = twice the cars in every race (up to 24); the announcer counts the cars left once there are 11" },
     { "game", "cpu_unlockables", &gPortConfig.cpuUnlockables, 0,
       "1 = computer cars may drive the unlockable cars too" },
+    { "game", "skip_intros", &gPortConfig.skipIntros, 0,
+      "1 = the logos at start pass at once, straight to the title screen" },
     { "saves", "pak_on_all_ports", &gPortConfig.pakOnAllPorts, 0,
       "1 = every controller has a Controller Pak; 0 = only controller 1" },
     { "saves", "pak_screens", &gPortConfig.pakScreens, 0,
@@ -310,4 +312,9 @@ void Port_ConfigSave(void) {
         }
     }
     fclose(f);
+}
+
+/* [game] skip_intros, for the logo screens (src/auto/3C010.c, 3C108.c, 3C22C.c) */
+int Port_SkipIntros(void) {
+    return gPortConfig.skipIntros != 0;
 }
