@@ -416,14 +416,12 @@ Car *Car_Create(CarStats *s) {
         Res_ClearForceLoad();
     }
 #ifdef TARGET_PC
-    /* The doubled field force-loads the extra cars (Race_LoadCarResources) so each is
-       a car of its own; their models are shared, as in the mode above: a second
-       instance of a model would be released in the wrong order (Res_Release frees
-       the instance after the newest, Res_ReleaseInstance as well, and the cars go
-       in another order than they came) and free its textures twice */
-    if (gGame->race->numCars >= 12) {
-        Res_ClearForceLoad();
-    }
+    /* The doubled field force-loads the extra cars (Race_LoadCarResources), and with
+       them their model and its textures: a car's model is changed as it is damaged
+       (Car_DamagePart, the dents) and wrecked (the burnt palette, Car_UpdateWreck),
+       which a twin sharing it showed. Car_Free releases one instance of the model
+       per car (Res_Release), and Model_Free its own textures (Res_ReleaseInstance,
+       which destroys the instance it is given on PC). */
 #endif
     car->x190 = Res_GetEnd(Res_Get(D_800919F4[i]));
     ModelInst_Create(sp50, car->x160, car->x98, ((ResObj *)car->x190)->x20, 0, 0, 0.01f);
