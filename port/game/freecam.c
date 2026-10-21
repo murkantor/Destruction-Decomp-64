@@ -5,11 +5,16 @@
  * turns part of the way; let go and the view is home at once. It moves the eye
  * only where the view is built (Camera_BuildProjection), on a copy: the game's
  * camera, which the sound and everything else go by, is left as the game set
- * it. [input] free_camera turns it off.
+ * it. It works only while the players drive (the countdown and the race, the
+ * modes in which the game reads their controls: func_80024690), not in the
+ * course intro's fly-by or the title screen's demo races. [input] free_camera
+ * turns it off.
  */
 #include "common.h"
 
 typedef struct { f32 x, y, z; } Vec3f;
+
+extern u8 *gGame; /* its mode at 0x10FC */
 
 int Port_InputRightStick(int player, f32 *x, f32 *y);
 f32 sinf(f32);
@@ -20,8 +25,13 @@ f32 atan2f(f32, f32);
 /* The eye to draw from, for the view of player p (0-3) */
 void Port_FreeCamEye(int p, const Vec3f *eye, const Vec3f *at, Vec3f *out) {
     f32 sx, sy, m, yaw, dx, dz, c, s;
+    s16 mode;
 
     *out = *eye;
+    mode = *(s16 *)(gGame + 0x10FC);
+    if (mode != 0x1B && mode != 0x1C) {
+        return; /* the players are not driving: the game's camera as it is */
+    }
     if (!Port_InputRightStick(p, &sx, &sy) || (sx == 0.0f && sy == 0.0f)) {
         return; /* neutral: the game's own view */
     }
