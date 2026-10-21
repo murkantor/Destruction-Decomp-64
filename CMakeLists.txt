@@ -170,4 +170,6 @@ else()
     target_link_options(dd64 PRIVATE -m32 -no-pie -Wl,-Ttext-segment=0x10000000 -static-libgcc -static-libstdc++
         ${GEN_SYMS})
     target_link_libraries(dd64 PRIVATE m pthread dl)
+    # The SDL3 next to the game first (the Linux build ships one), then the system's
+    set_target_properties(dd64 PROPERTIES BUILD_RPATH "\$ORIGIN;/usr/lib/i386-linux-gnu")
 endif()
