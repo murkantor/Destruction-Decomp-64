@@ -166,6 +166,8 @@ if(WIN32)
     add_custom_command(TARGET dd64 POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL3_MINGW_ROOT}/bin/SDL3.dll $<TARGET_FILE_DIR:dd64>)
 else()
-    target_link_options(dd64 PRIVATE -m32 -no-pie -Wl,-Ttext-segment=0x10000000 ${GEN_SYMS})
+    # The C++ runtime linked in: 64-bit systems (the Steam Deck) may lack a 32-bit one
+    target_link_options(dd64 PRIVATE -m32 -no-pie -Wl,-Ttext-segment=0x10000000 -static-libgcc -static-libstdc++
+        ${GEN_SYMS})
     target_link_libraries(dd64 PRIVATE m pthread dl)
 endif()
