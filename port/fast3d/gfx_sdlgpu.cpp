@@ -6,7 +6,11 @@
  *
  * - One shader for every combiner (shaders/combiner.*.glsl, which the OpenGL
  *   backend runs too with DD64_UBERSHADER=1), compiled to SPIR-V ahead of
- *   time (shaders/spirv.h); a draw's combiner is in its uniforms.
+ *   time (shaders/spirv.h). Each combiner gets its own copy, the combiner's
+ *   values patched into the shader's specialisation constants, so the driver
+ *   compiles a program for it (as GL compiles the generated shaders); with
+ *   DD64_UBERSHADER=1 every draw runs the one shader, the combiner in its
+ *   uniforms.
  * - Every image is kept bottom row first, as GL keeps it, so the
  *   interpreter's viewports and scissors, gl_FragCoord (the noise) and the
  *   rasteriser's rules mean what they mean in GL. The window is a texture too
@@ -18,9 +22,8 @@
  * - Pipelines are made as draws need them, by vertex layout, depth mode,
  *   blending and the target's sample count.
  *
- * What it cannot do as the OpenGL backend does: SDL_gpu has no
- * mirror-clamp-to-edge, so mirrored clamping repeats the mirror (as GL does
- * without ARB_texture_mirror_clamp_to_edge).
+ * - SDL_gpu has no mirror-clamp-to-edge: those axes are sampled clamped to
+ *   the edge, and the shader mirrors the coordinate (uOpt.w).
  */
 #include <stdint.h>
 #include <stdbool.h>
@@ -69,6 +72,8 @@ struct GpuProgram {
     int32_t cc[4][4];     /* uCC */
     int32_t form[4];      /* uForm */
     int32_t opt[2];       /* uOpt.x and .y, without the three-point bits */
+    uint32_t index;       /* in programs, the pipeline key's bits 16-31 */
+    SDL_GPUShader* fs;    /* the combiner shader specialised for it, made with its first pipeline */
 };
 
 struct Texture {
@@ -77,6 +82,7 @@ struct Texture {
     bool mips;
     bool used;            /* a live texture id */
     SDL_GPUSampler* sampler;
+    uint8_t mirror_clamp; /* 1 s, 2 t: the shader mirrors that coordinate (uOpt.w) */
 };
 
 struct Framebuffer {
@@ -117,6 +123,8 @@ static SDL_GPUShader *combiner_vs, *combiner_fs;
 static std::map<uint32_t, SDL_GPUGraphicsPipeline*> pipelines;
 static std::map<uint32_t, SDL_GPUSampler*> samplers;
 static std::map<std::pair<uint64_t, uint32_t>, GpuProgram> shader_program_pool;
+static std::vector<GpuProgram*> programs; /* by index */
+static bool uber_only;                    /* DD64_UBERSHADER=1, or the constants are not found */
 static std::vector<Texture> textures;     /* by id; 0 is never handed out */
 static std::vector<uint32_t> free_texture_ids;
 static std::vector<Framebuffer> framebuffers;
@@ -311,6 +319,9 @@ static void run_uploads(void) {
 #define PK_DECAL (1u << 11)
 #define PK_BLEND(k) (((k) >> 12) & 3) /* 0 none, 1 alpha, 2 modulate */
 #define PK_MSAA(k) (((k) >> 14) & 3)  /* log2 of the target's samples */
+#define PK_PROGRAM(k) ((k) >> 16)     /* the program, unless uber_only */
+
+static SDL_GPUShader* program_shader(GpuProgram* prg);
 
 /* ZMODE_DEC: gfx_opengl.cpp's polygon offset, DD64_DEC_ZBIAS=factor,units as there */
 static float dec_bias_f = -4.0f, dec_bias_u = -8.0f;
@@ -378,7 +389,7 @@ static SDL_GPUGraphicsPipeline* get_pipeline(uint32_t key) {
     SDL_GPUGraphicsPipelineCreateInfo ci;
     SDL_zero(ci);
     ci.vertex_shader = combiner_vs;
-    ci.fragment_shader = combiner_fs;
+    ci.fragment_shader = uber_only ? combiner_fs : program_shader(programs[PK_PROGRAM(key)]);
     ci.vertex_input_state.vertex_buffer_descriptions = &vbd;
     ci.vertex_input_state.num_vertex_buffers = 1;
     ci.vertex_input_state.vertex_attributes = attrs;
@@ -527,6 +538,8 @@ static struct ShaderProgram* gfx_sdlgpu_create_and_load_new_shader(uint64_t shad
     prg->opt[0] = (int32_t)shader_id1;
     prg->opt[1] = (cc_features.used_textures[0] ? 1 : 0) | (cc_features.used_textures[1] ? 2 : 0) |
                   (current_filter_mode == FILTER_THREE_POINT ? 4 : 0);
+    prg->index = (uint32_t)programs.size();
+    programs.push_back(prg);
     cur_prg = prg;
     return (struct ShaderProgram*)prg;
 }
@@ -602,9 +615,9 @@ static void gfx_sdlgpu_upload_texture(const uint8_t* rgba32_buf, uint32_t width,
 static SDL_GPUSamplerAddressMode address_mode(uint32_t cm) {
     switch (cm) {
         case G_TX_NOMIRROR | G_TX_CLAMP:
+        case G_TX_MIRROR | G_TX_CLAMP: /* the shader mirrors the coordinate */
             return SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
         case G_TX_MIRROR | G_TX_WRAP:
-        case G_TX_MIRROR | G_TX_CLAMP: /* no mirror-clamp in SDL_gpu */
             return SDL_GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT;
     }
     return SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
@@ -651,6 +664,7 @@ static void gfx_sdlgpu_set_sampler_parameters(int tile, bool linear_filter, uint
     const bool linear = linear_filter && current_filter_mode == FILTER_LINEAR;
     const bool mips = linear && t.mips;
     t.sampler = get_sampler(linear, mips, mips ? gfx_anisotropy : 1, cms, cmt);
+    t.mirror_clamp = (cms == (G_TX_MIRROR | G_TX_CLAMP) ? 1 : 0) | (cmt == (G_TX_MIRROR | G_TX_CLAMP) ? 2 : 0);
 }
 
 static void gfx_sdlgpu_set_texture_filter(FilteringMode mode) {
@@ -706,7 +720,7 @@ static bool record_draw(Draw* d) {
     d->sc[0] = x0, d->sc[1] = y0, d->sc[2] = x1 - x0, d->sc[3] = y1 - y0;
     memcpy(d->vp, cur_vp, sizeof(cur_vp));
 
-    uint32_t key = prg->layout | (msaa_log2(fb.msaa) << 14);
+    uint32_t key = prg->layout | (msaa_log2(fb.msaa) << 14) | (uber_only ? 0 : prg->index << 16);
     if (depth_test) {
         key |= PK_DEPTH_TEST | (depth_mask ? PK_DEPTH_MASK : 0) | ((uint32_t)depth_func << 9) |
                (depth_decal ? PK_DECAL : 0);
@@ -726,6 +740,12 @@ static bool record_draw(Draw* d) {
     }
     u.opt[2] = (int32_t)frame_count;
     u.opt[3] = 0;
+    for (int t = 0; t < 2; t++) {
+        uint32_t id = cur_texture_ids[t];
+        if ((prg->layout & (1 << t)) && id != 0 && id < textures.size() && textures[id].tex != NULL) {
+            u.opt[3] |= textures[id].mirror_clamp << (2 * t);
+        }
+    }
     u.noise[0] = current_noise_scale;
     u.noise[1] = u.noise[2] = u.noise[3] = 0.0f;
     if (pass_uniforms.empty() || memcmp(&pass_uniforms.back(), &u, sizeof(u)) != 0) {
@@ -1031,6 +1051,63 @@ static SDL_GPUShader* make_shader(const uint32_t* code, size_t size, SDL_GPUShad
     ci.num_samplers = samplers_n;
     ci.num_uniform_buffers = uniforms_n;
     return SDL_CreateGPUShader(dev, &ci);
+}
+
+/* The combiner shader's specialisation constants (combiner.frag.glsl): SPEC,
+   uCC's 16 values, uForm's 4, uOpt.x, uOpt.y's low bits; the word in
+   combiner_frag_spv holding each one's value, by constant_id */
+#define SPEC_CONSTANTS 23
+static uint32_t spec_word[SPEC_CONSTANTS];
+
+static bool find_spec_constants(void) {
+    const uint32_t* w = combiner_frag_spv;
+    const size_t n = sizeof(combiner_frag_spv) / sizeof(w[0]);
+    std::map<uint32_t, uint32_t> spec_id; /* result id: constant_id */
+
+    /* the decorations come before the constants (the module's layout) */
+    for (size_t i = 5; i < n;) {
+        const uint32_t op = w[i] & 0xFFFF, len = w[i] >> 16;
+        if (len == 0 || i + len > n) {
+            return false;
+        }
+        if (op == 71 /* OpDecorate */ && len == 4 && w[i + 2] == 1 /* SpecId */) {
+            spec_id[w[i + 1]] = w[i + 3];
+        } else if (op == 50 /* OpSpecConstant */ && len == 4) {
+            auto it = spec_id.find(w[i + 2]);
+            if (it != spec_id.end() && it->second < SPEC_CONSTANTS) {
+                spec_word[it->second] = (uint32_t)(i + 3);
+            }
+        }
+        i += len;
+    }
+    for (uint32_t k = 0; k < SPEC_CONSTANTS; k++) {
+        if (spec_word[k] == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/* The combiner shader with prg's combiner in its constants */
+static SDL_GPUShader* program_shader(GpuProgram* prg) {
+    if (prg->fs != NULL) {
+        return prg->fs;
+    }
+    std::vector<uint32_t> code(combiner_frag_spv, combiner_frag_spv + sizeof(combiner_frag_spv) / sizeof(uint32_t));
+    code[spec_word[0]] = 1;
+    for (int k = 0; k < 16; k++) {
+        code[spec_word[1 + k]] = (uint32_t)prg->cc[k / 4][k % 4];
+    }
+    for (int k = 0; k < 4; k++) {
+        code[spec_word[17 + k]] = (uint32_t)prg->form[k];
+    }
+    code[spec_word[21]] = (uint32_t)prg->opt[0];
+    code[spec_word[22]] = (uint32_t)(prg->opt[1] & 7);
+    prg->fs = make_shader(code.data(), code.size() * sizeof(uint32_t), SDL_GPU_SHADERSTAGE_FRAGMENT, 2, 1);
+    if (prg->fs == NULL) {
+        sysFatalError("SDL_gpu: the combiner shader failed: %s", SDL_GetError());
+    }
+    return prg->fs;
 }
 
 static bool vi_init(void) {
@@ -1344,6 +1421,16 @@ static void gfx_sdlgpu_init(void) {
     combiner_fs = make_shader(combiner_frag_spv, sizeof(combiner_frag_spv), SDL_GPU_SHADERSTAGE_FRAGMENT, 2, 1);
     if (combiner_vs == NULL || combiner_fs == NULL) {
         sysFatalError("SDL_gpu: the combiner shader failed: %s", SDL_GetError());
+    }
+    {
+        const char* e = getenv("DD64_UBERSHADER");
+        uber_only = e != NULL && e[0] == '1';
+        if (!uber_only && !find_spec_constants()) {
+            sysLogPrintf(LOG_NOTE, "SDL_gpu: no specialisation constants in the combiner shader");
+            uber_only = true;
+        }
+        sysLogPrintf(LOG_NOTE, "SDL_gpu: %s", uber_only ? "one shader for every combiner"
+                                                       : "a shader for each combiner");
     }
 
     /* the texture unused sampler slots get: one white texel */

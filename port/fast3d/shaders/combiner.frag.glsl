@@ -15,7 +15,14 @@
  *           in (the generator decides when it first sees the combiner),
  *           8 and 16 texel 0 and 1 three-point filtered now
  *   uOpt.z: the frame count (noise)
+ *   uOpt.w: mirror-clamp, where the sampler cannot do it (SDL_gpu): 1 and 2
+ *           texel 0's s and t, 4 and 8 texel 1's; the sampler clamps to the
+ *           edge and the coordinate is mirrored here (GL leaves this 0)
  *   uNoise.x: the noise scale
+ *
+ * In SPIR-V the combiner can also be given as specialisation constants (SPEC 1,
+ * set by the SDL_gpu backend patching the constants' values): the driver then
+ * compiles a program for that one combiner, as the generated GL shaders are.
  */
 #ifdef VULKAN
 #define FS_IN(n) layout(location = n) in
@@ -28,6 +35,50 @@ layout(std140, set = 3, binding = 0) uniform CombinerUniforms {
     vec4 uNoise;
 };
 layout(location = 0) out vec4 outColor;
+
+layout(constant_id = 0) const int SPEC = 0;
+layout(constant_id = 1) const int S_CC0 = 0;
+layout(constant_id = 2) const int S_CC1 = 0;
+layout(constant_id = 3) const int S_CC2 = 0;
+layout(constant_id = 4) const int S_CC3 = 0;
+layout(constant_id = 5) const int S_CC4 = 0;
+layout(constant_id = 6) const int S_CC5 = 0;
+layout(constant_id = 7) const int S_CC6 = 0;
+layout(constant_id = 8) const int S_CC7 = 0;
+layout(constant_id = 9) const int S_CC8 = 0;
+layout(constant_id = 10) const int S_CC9 = 0;
+layout(constant_id = 11) const int S_CC10 = 0;
+layout(constant_id = 12) const int S_CC11 = 0;
+layout(constant_id = 13) const int S_CC12 = 0;
+layout(constant_id = 14) const int S_CC13 = 0;
+layout(constant_id = 15) const int S_CC14 = 0;
+layout(constant_id = 16) const int S_CC15 = 0;
+layout(constant_id = 17) const int S_FORM0 = 0;
+layout(constant_id = 18) const int S_FORM1 = 0;
+layout(constant_id = 19) const int S_FORM2 = 0;
+layout(constant_id = 20) const int S_FORM3 = 0;
+layout(constant_id = 21) const int S_OPT = 0; /* uOpt.x */
+layout(constant_id = 22) const int S_TEX = 0; /* uOpt.y's bits 1, 2 and 4 */
+
+ivec4 ccOf(int i) {
+    if (SPEC != 0) {
+        return i == 0 ? ivec4(S_CC0, S_CC1, S_CC2, S_CC3) : i == 1 ? ivec4(S_CC4, S_CC5, S_CC6, S_CC7)
+             : i == 2 ? ivec4(S_CC8, S_CC9, S_CC10, S_CC11) : ivec4(S_CC12, S_CC13, S_CC14, S_CC15);
+    }
+    return uCC[i];
+}
+int formOf(int i) {
+    if (SPEC != 0) {
+        return i == 0 ? S_FORM0 : i == 1 ? S_FORM1 : i == 2 ? S_FORM2 : S_FORM3;
+    }
+    return uForm[i];
+}
+int optsOf() {
+    return SPEC != 0 ? S_OPT : uOpt.x;
+}
+int texOf() {
+    return SPEC != 0 ? (S_TEX | (uOpt.y & 24)) : uOpt.y;
+}
 #else
 #define FS_IN(n) in
 uniform sampler2D uTex0;
@@ -37,6 +88,19 @@ uniform ivec4 uForm;
 uniform ivec4 uOpt;
 uniform vec4 uNoise;
 out vec4 outColor;
+
+ivec4 ccOf(int i) {
+    return uCC[i];
+}
+int formOf(int i) {
+    return uForm[i];
+}
+int optsOf() {
+    return uOpt.x;
+}
+int texOf() {
+    return uOpt.y;
+}
 #endif
 
 FS_IN(0) vec2 vTexCoord0;
@@ -60,7 +124,18 @@ FS_IN(9) vec4 vInput7;
 // Reference approach to color wrapping as per GLideN64
 // Return wrapped value of x in interval [low, high)
 #define WRAP(x, low, high) mod((x)-(low), (high)-(low)) + (low)
-#define TEX_OFFSET(tex, uv, texSize, off) texture(tex, uv - (off)/texSize)
+#define TEX_OFFSET(tex, uv, texSize, off) texFetch(tex, uv - (off)/texSize, mc)
+
+/* texture(), with mirror-clamp-to-edge on the axes in mc: the coordinate
+   mirrored once about 0, then clamped by the sampler. The gradients are the
+   unmirrored coordinate's, as the hardware mode's are (mc is uniform) */
+vec4 texFetch(in sampler2D tex, in vec2 uv, in ivec2 mc) {
+    if (mc == ivec2(0)) {
+        return texture(tex, uv);
+    }
+    vec2 m = vec2(mc.x != 0 ? abs(uv.x) : uv.x, mc.y != 0 ? abs(uv.y) : uv.y);
+    return textureGrad(tex, m, dFdx(uv), dFdy(uv));
+}
 
 float random(in vec3 value) {
     float random = dot(sin(value), vec3(12.9898, 78.233, 37.719));
@@ -71,7 +146,7 @@ float noiseRandom() {
     return random(vec3(floor(gl_FragCoord.xy * uNoise.x), float(uOpt.z)));
 }
 
-vec4 filter3point(in sampler2D tex, in vec2 texCoord, in vec2 texSize) {
+vec4 filter3point(in sampler2D tex, in vec2 texCoord, in vec2 texSize, in ivec2 mc) {
     vec2 offset = fract(texCoord*texSize - vec2(0.5));
     offset -= step(1.0, offset.x + offset.y);
     vec4 c0 = TEX_OFFSET(tex, texCoord, texSize, offset);
@@ -80,12 +155,13 @@ vec4 filter3point(in sampler2D tex, in vec2 texCoord, in vec2 texSize) {
     return c0 + abs(offset.x)*(c1-c0) + abs(offset.y)*(c2-c0);
 }
 
-vec4 hookTexture2D(in sampler2D tex, in vec2 uv, in int three_point_filter) {
-    if ((uOpt.y & 4) != 0) {
+vec4 hookTexture2D(in sampler2D tex, in vec2 uv, in int three_point_filter, in int mcBits) {
+    ivec2 mc = ivec2(mcBits & 1, mcBits & 2);
+    if ((texOf() & 4) != 0) {
         vec2 texSize = vec2(textureSize(tex, 0));
-        return mix(texture(tex, uv), filter3point(tex, uv, texSize), float(three_point_filter));
+        return mix(texFetch(tex, uv, mc), filter3point(tex, uv, texSize, mc), float(three_point_filter));
     }
-    return texture(tex, uv);
+    return texFetch(tex, uv, mc);
 }
 
 /* One combiner input as a vec4: the alpha formula takes .a of it, which is
@@ -128,21 +204,22 @@ vec4 ccFormula(ivec4 s, int form, vec4 texVal0, vec4 texVal1, vec4 texel) {
 }
 
 void main() {
-    int opts = uOpt.x;
+    int opts = optsOf();
+    int tex = texOf();
     vec4 texVal0 = vec4(0.0), texVal1 = vec4(0.0);
 
-    if ((uOpt.y & 1) != 0) {
-        texVal0 = hookTexture2D(uTex0, vTexCoord0, (uOpt.y >> 3) & 1);
+    if ((tex & 1) != 0) {
+        texVal0 = hookTexture2D(uTex0, vTexCoord0, (tex >> 3) & 1, uOpt.w & 3);
     }
-    if ((uOpt.y & 2) != 0) {
-        texVal1 = hookTexture2D(uTex1, vTexCoord1, (uOpt.y >> 4) & 1);
+    if ((tex & 2) != 0) {
+        texVal1 = hookTexture2D(uTex1, vTexCoord1, (tex >> 4) & 1, (uOpt.w >> 2) & 3);
     }
 
     vec4 texel = vec4(0.0);
     int cycles = (opts & OPT_2CYC) != 0 ? 2 : 1;
     for (int c = 0; c < cycles; c++) {
-        vec4 rgb = ccFormula(uCC[c * 2], uForm[c * 2], texVal0, texVal1, texel);
-        vec4 alpha = ccFormula(uCC[c * 2 + 1], uForm[c * 2 + 1], texVal0, texVal1, texel);
+        vec4 rgb = ccFormula(ccOf(c * 2), formOf(c * 2), texVal0, texVal1, texel);
+        vec4 alpha = ccFormula(ccOf(c * 2 + 1), formOf(c * 2 + 1), texVal0, texVal1, texel);
         texel = vec4(rgb.rgb, alpha.a);
         if (c == 0) {
             texel = WRAP(texel, -1.01, 1.01);
