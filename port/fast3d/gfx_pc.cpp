@@ -297,6 +297,10 @@ static float wide_k = 1.0f;            /* 4:3 width / framebuffer width */
  * screen z, which the game uses as a depth bias (vtrans z -8 around particles and
  * skid marks, so they sit on the road instead of fighting it) */
 static float vp_z_offset;
+static float vp_z_scale = 1023.0f; /* the viewport's z scale (G_MAXZ, usually) */
+/* G_ZS_PRIM: the depth the triangle being emitted has at every pixel, on the scale
+   vertices' z/w are on (NAN: its own) */
+static float emit_zprim = NAN;
 static bool vp_wide;                   /* the current draw uses the whole width */
 static int game_fb;                    /* the game draws here, presented to framebuffer 0 */
 static bool frame_started;
@@ -1082,6 +1086,7 @@ static void gfx_calc_and_set_viewport(const uint8_t *vp) {
     rdp.viewport_or_scissor_changed = true;
     int16_t zscale = rds16(vp + 4), ztrans = rds16(vp + 12);
     vp_z_offset = zscale != 0 ? (float)ztrans / zscale : 0.0f;
+    vp_z_scale = zscale != 0 ? (float)zscale : 1023.0f;
 }
 
 static void gfx_dp_set_scissor(uint32_t mode, uint32_t ulx, uint32_t uly, uint32_t lrx, uint32_t lry) {
@@ -1295,7 +1300,7 @@ static void emit_vertex(const struct LoadedVertex *v, struct ColorCombiner *comb
     interp_note_vertex(v);
     buf_vbo[buf_vbo_len++] = v->x;
     buf_vbo[buf_vbo_len++] = v->y;
-    buf_vbo[buf_vbo_len++] = v->z;
+    buf_vbo[buf_vbo_len++] = std::isnan(emit_zprim) ? v->z : emit_zprim * v->w;
     buf_vbo[buf_vbo_len++] = v->w;
 
     for (int t = 0; t < 2; t++) {
@@ -1423,9 +1428,16 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
         }
     }
     bool linear = (rdp.other_mode_h & (3U << G_MDSFT_TEXTFILT)) != G_TF_POINT;
+    /* G_ZS_PRIM: the RDP tests and writes the primitive depth (gDPSetPrimDepth), not
+       the triangle's own. A screen z (viewport units, z/w * scale + translate) is
+       the depth buffer's value / 32. Terminal Impact's backdrop behind the start line
+       is drawn so at the far plane (0x7FFE); with its own depth, the part near the
+       camera came out in front of the road. */
+    emit_zprim = (rdp.other_mode_l & G_ZS_PRIM) ? std::min(rdp.prim_depth / (32.0f * vp_z_scale), 1.0f) : NAN;
     for (int i = 0; i < 3; i++) {
         emit_vertex(v_arr[i], comb, use_alpha, use_fog, tex_w, tex_h, linear);
     }
+    emit_zprim = NAN;
     if (++buf_vbo_num_tris == MAX_BUFFERED) {
         FLUSH("full");
     }
@@ -2259,6 +2271,7 @@ struct InterpVtx {
     float ox, oy, oz, zoff;
     int16_t slot;
     uint8_t wide;
+    float zprim; /* G_ZS_PRIM's depth (emit_zprim), or NAN */
 };
 
 struct InterpSlot {
@@ -2338,7 +2351,7 @@ static int16_t interp_slot(const uint8_t *vtx) {
 
 static void interp_note_vertex(const struct LoadedVertex *v) {
     if (interp_recording) {
-        interp_pending.push_back({ v->ox, v->oy, v->oz, v->zoff, v->slot, v->wide });
+        interp_pending.push_back({ v->ox, v->oy, v->oz, v->zoff, v->slot, v->wide, emit_zprim });
     }
 }
 
@@ -2586,7 +2599,7 @@ extern "C" bool gfx_interp_present(bool black) {
             if (v.wide) {
                 x *= wide_k;
             }
-            z += v.zoff * w;
+            z = std::isnan(v.zprim) ? z + v.zoff * w : v.zprim * w;
             float *o = &out[k * stride];
             o[0] = x, o[1] = y, o[2] = z, o[3] = w;
         }
