@@ -130,6 +130,9 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
     f32 ft;
     f32 fs;
     f32 drive;
+#ifdef TARGET_PC
+    f32 full; /* the drive torque at a full press (analog pedals) */
+#endif
     f32 a;
     f32 b;
     f32 k;
@@ -226,7 +229,11 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
         f32 lim;
         drive = Car_GetDriveTorque(car);
 #ifdef TARGET_PC
+        full = drive;
         drive *= Port_CarDrive(car, p3); /* analog pedals (port/game/pedals.c) */
+        if (p1) {
+            full *= 0.1;
+        }
 #endif
         if (p1) {
             drive *= 0.1;
@@ -235,7 +242,16 @@ Vec3f Wheel_ComputeTireForce(Car *car, Wheel *w, f32 load, Vec3f *n, f32 *out, s
         lim = w->x1A0 * load;
         aq = fabsf(q);
         Vec3f_Dot(&dot, &vt, &vt);
+#ifdef TARGET_PC
+        /* Analog pedals: wheelspin or grip is decided by the full press's torque, as
+           the A button gives. Below the tyre's limit the grip branch sets the wheel's
+           speed from the ground's: a car at a dead stop has a still wheel on still
+           ground, which Car_ApplyWheelForces holds there, so a part-pressed trigger
+           could never move it again (after a crash that stopped it dead). */
+        if ((lim < fabsf(full * invR) || fabs(lon) > 8.0 || w->x1AC) && dot < 1225.0) {
+#else
         if ((lim < aq || fabs(lon) > 8.0 || w->x1AC) && dot < 1225.0) {
+#endif
             if (!w->x1AC) {
                 w->x1AC = 1;
                 w->x1B4 = 0;
