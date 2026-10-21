@@ -308,13 +308,21 @@ static float wide_k = 1.0f;            /* 4:3 width / framebuffer width */
  * screen z, which the game uses as a depth bias (vtrans z -8 around particles and
  * skid marks, so they sit on the road instead of fighting it) */
 static float vp_z_offset;
-static float vp_z_scale = 1023.0f; /* the viewport's z scale (G_MAXZ, usually) */
 /* G_ZS_PRIM: the depth the triangle being emitted has at every pixel, on the scale
    vertices' z/w are on (NAN: its own) */
 static float emit_zprim = NAN;
+
+extern "C" int32_t Port_GameDrawsWorld(void); /* port/game/gfxstate.c */
+
+/* The primitive depth (gDPSetPrimDepth) as a z/w, for what is drawn with G_ZS_PRIM:
+   0..0x7FFF over the depth range, the scale the rectangles have always used */
+static float prim_depth_ndc(void) {
+    return std::min(rdp.prim_depth / 32767.0f, 1.0f) * 2.0f - 1.0f;
+}
 static bool vp_wide;                   /* the current draw uses the whole width */
 static int game_fb;                    /* the game draws here, presented to framebuffer 0 */
 static bool frame_started;
+static bool frame_color_cleared; /* [video] draw_distance > 1: this frame's colour is cleared (gfx_dp_fill_rectangle) */
 
 static float buf_vbo[MAX_BUFFERED * (32 * 3)];
 static size_t buf_vbo_len;
@@ -1151,7 +1159,6 @@ static void gfx_calc_and_set_viewport(const uint8_t *vp) {
     rdp.viewport_or_scissor_changed = true;
     int16_t zscale = rds16(vp + 4), ztrans = rds16(vp + 12);
     vp_z_offset = zscale != 0 ? (float)ztrans / zscale : 0.0f;
-    vp_z_scale = zscale != 0 ? (float)zscale : 1023.0f;
 }
 
 static void gfx_dp_set_scissor(uint32_t mode, uint32_t ulx, uint32_t uly, uint32_t lrx, uint32_t lry) {
@@ -1495,11 +1502,14 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
     }
     bool linear = (rdp.other_mode_h & (3U << G_MDSFT_TEXTFILT)) != G_TF_POINT;
     /* G_ZS_PRIM: the RDP tests and writes the primitive depth (gDPSetPrimDepth), not
-       the triangle's own. A screen z (viewport units, z/w * scale + translate) is
-       the depth buffer's value / 32. Terminal Impact's backdrop behind the start line
-       is drawn so at the far plane (0x7FFE); with its own depth, the part near the
-       camera came out in front of the road. */
-    emit_zprim = (rdp.other_mode_l & G_ZS_PRIM) ? std::min(rdp.prim_depth / (32.0f * vp_z_scale), 1.0f) : NAN;
+       the triangle's own. In a race the game draws its sky dome so, at the far plane
+       (0x7FFE, Render_DrawSkyAndWorld), then the world at its own depths: with the
+       dome's own depth, Terminal Impact's dome behind the start line came out in
+       front of the road. Only there: the menus leave G_ZS_PRIM on from their 2D
+       backgrounds (Bg_Draw, 62248.c) while they draw a 3D model (the car select's
+       car), which at one depth for all its faces lost to the backgrounds drawn over
+       it (invisible), or showed its far side through its near one. */
+    emit_zprim = (rdp.other_mode_l & G_ZS_PRIM) && Port_GameDrawsWorld() ? prim_depth_ndc() : NAN;
     for (int i = 0; i < 3; i++) {
         emit_vertex(v_arr[i], comb, use_alpha, use_fog, tex_w, tex_h, linear);
     }
@@ -1770,7 +1780,7 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
      * (G_ZS_PRIM, gDPSetPrimDepth). The menus draw their backgrounds after the 3D scene at
      * prim depth 0xFFFF, the far plane, which the RDP passes wherever nothing was drawn. */
     bool prim_z = (rdp.other_mode_l & G_ZS_PRIM) != 0;
-    float z = prim_z ? std::min(rdp.prim_depth / 32767.0f, 1.0f) * 2.0f - 1.0f : -1.0f;
+    float z = prim_z ? prim_depth_ndc() : -1.0f;
     rsp.geometry_mode = prim_z ? G_ZBUFFER : 0;
     rdp.viewport.x = 0;
     rdp.viewport.y = 0;
@@ -1908,9 +1918,15 @@ static void gfx_dp_fill_rectangle(int32_t ulx, int32_t uly, int32_t lrx, int32_t
 
     stats.fills++;
     if (rdp.color_image_address != NULL && rdp.color_image_address == rdp.z_buf_address) {
-        /* clearing the depth buffer */
+        /* clearing the depth buffer. The game never clears the colour: the sky and the
+           world cover the screen, and where neither is drawn (past the world's edge)
+           the last frame stays, as on the N64. With [video] draw_distance > 1 more of
+           that void shows, so in the race's 3D world the frame's first depth clear
+           clears the colour to black too: no hall of mirrors. */
+        bool color = gfx_draw_distance > 1 && !frame_color_cleared && Port_GameDrawsWorld();
         FLUSH("fill");
-        gfx_rapi->clear_framebuffer(false, true);
+        gfx_rapi->clear_framebuffer(color, true);
+        frame_color_cleared |= color;
         return;
     }
     float x0 = ulx / 4.0f, y0 = uly / 4.0f, x1 = lrx / 4.0f, y1 = lry / 4.0f;
@@ -3064,6 +3080,7 @@ void gfx_start_frame(void) {
     rdp.viewport_or_scissor_changed = true;
     rdp.textures_changed[0] = rdp.textures_changed[1] = true;
     frame_started = true;
+    frame_color_cleared = false;
 }
 
 void gfx_run(const void *commands, uint32_t ucode_text) {
