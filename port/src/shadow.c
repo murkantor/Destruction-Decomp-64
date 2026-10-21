@@ -74,7 +74,10 @@ typedef struct {
  * MinGW's thread locals are emulated (__emutls_get_address: a call, TlsGetValue
  * and Get/SetLastError per use), which was a tenth of the game's CPU time. The
  * state is kept in a TLS slot instead, read straight from the thread's TEB
- * (the slot array at fs:0xE10, slots 0-63), and made on a thread's first use.
+ * (the slot array at fs:0xE10, slots 0-63; past those, the expansion array
+ * fs:0xF94 points to, which TlsSetValue makes on a thread's first use of
+ * one: programs that load many DLLs, overlays and the like, get one of those),
+ * and made on a thread's first use.
  */
 #include <windows.h>
 
@@ -85,8 +88,8 @@ static __attribute__((noinline)) HookState *newHookState(void) {
 
     if (sTlsIndex == TLS_OUT_OF_INDEXES) {
         DWORD i = TlsAlloc();
-        if (i >= 64) {
-            Port_Fatal("shadow: no TLS slot below 64 (got %lu)", (unsigned long)i);
+        if (i == TLS_OUT_OF_INDEXES) {
+            Port_Fatal("shadow: no TLS slot left");
         }
         InterlockedCompareExchange((volatile LONG *)&sTlsIndex, (LONG)i, (LONG)TLS_OUT_OF_INDEXES);
         if (sTlsIndex != i) {
@@ -107,6 +110,12 @@ static inline __attribute__((always_inline)) HookState *hookState(void) {
 
     if (__builtin_expect(sTlsIndex < 64, 1)) {
         __asm__("movl %%fs:0xE10(,%1,4), %0" : "=r"(t) : "r"(sTlsIndex));
+    } else if (sTlsIndex != TLS_OUT_OF_INDEXES) {
+        HookState **more;
+        __asm__("movl %%fs:0xF94, %0" : "=r"(more));
+        if (more != NULL) {
+            t = more[sTlsIndex - 64];
+        }
     }
     return __builtin_expect(t != NULL, 1) ? t : newHookState();
 }
