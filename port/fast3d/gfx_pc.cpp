@@ -47,6 +47,9 @@ bool gfx_framebuffers_enabled = true;
 uint32_t gfx_anisotropy = 1;
 uint32_t gfx_internal_height = 0;
 uint32_t gfx_aspect_mode = 0;
+extern "C" {
+uint32_t gfx_scene_4x3 = 0;
+}
 uint32_t gfx_edge_fill = 0;
 uint32_t gfx_draw_distance = 1;
 
@@ -227,6 +230,12 @@ static struct RSP {
     /* S2DEX object matrix */
     float obj_a, obj_d, obj_x, obj_y, obj_base_x, obj_base_y; /* B and C (rotation) are not drawn */
 } rsp;
+
+/* Widescreen draws perspective (3D) across the whole width, unless a menu that hides
+   the scene in the 4:3 area is up (gfx_scene_4x3) */
+static inline bool scene_wide(void) {
+    return gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f && !gfx_scene_4x3;
+}
 
 static struct RDP {
     uint16_t palette[256];
@@ -1003,7 +1012,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         float w = ob[0] * rsp.MP_matrix[0][3] + ob[1] * rsp.MP_matrix[1][3] + ob[2] * rsp.MP_matrix[2][3] +
                   rsp.MP_matrix[3][3];
 
-        if (gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f) {
+        if (scene_wide()) {
             x *= wide_k; /* perspective: widen the view (see vp_wide) */
         }
         z += vp_z_offset * w; /* screen z = z/w * scale + translate */
@@ -1011,7 +1020,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         d->oy = ob[1];
         d->oz = ob[2];
         d->zoff = vp_z_offset;
-        d->wide = gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f;
+        d->wide = scene_wide();
         d->slot = interp_slot(vtx - i * 16);
 
         short U = tc0 * rsp.texture_scaling_factor.s >> 16;
@@ -1470,7 +1479,7 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
         }
     }
 
-    bool wide = gfx_aspect_mode == 2 && rsp.P_matrix[2][3] != 0.0f;
+    bool wide = scene_wide();
     if (wide != vp_wide) {
         vp_wide = wide;
         rdp.viewport_or_scissor_changed = true;

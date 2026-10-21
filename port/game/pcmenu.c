@@ -65,8 +65,10 @@ int Port_OptIsOpen(void);
 void Port_OptMenuPad(u16 *buttons, s8 *x, s8 *y);
 int Port_OptCapturing(void);
 int Port_OptIsBindPage(int page);
+extern u32 gfx_scene_4x3; /* port/fast3d/gfx_pc.cpp */
 
 #define MODE_OPTIONS 0x20
+#define MODE_RECORDS 0x27
 #define ROWS 7      /* rows shown at once */
 #define ROW_H 13
 #define PANEL_X0 22
@@ -295,6 +297,10 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
     Font *f;
     s32 i, x, y, n;
 
+    /* The pause menu's options and records screens cover the 4:3 area, the race still
+       drawn behind them: at a wide screen's sides it would show, so it keeps to the
+       4:3 area while they are up */
+    gfx_scene_4x3 = gGame != NULL && (gGame->mode == MODE_OPTIONS || gGame->mode == MODE_RECORDS);
     if (gGame == NULL || gGame->mode != MODE_OPTIONS) {
         if (Port_OptIsOpen()) {
             Port_OptSetOpen(0);

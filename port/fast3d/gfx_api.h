@@ -29,6 +29,15 @@ extern uint32_t gfx_internal_height; /* lines the game is drawn at; 0 = the wind
 extern uint32_t gfx_edge_fill;   /* fill see-through texels' colour from their neighbours */
 extern uint32_t gfx_draw_distance; /* scenery and fog this many times further out; 1 = the N64's */
 extern uint32_t gfx_aspect_mode; /* 0 = 4:3 with side bars, 1 = stretch to the window, 2 = widescreen */
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* Widescreen: the 3D scene keeps to the 4:3 area, as on the N64, while a menu
+   that hides it there is up (port/game/pcmenu.c: the options screen over a race) */
+extern uint32_t gfx_scene_4x3;
+#ifdef __cplusplus
+}
+#endif
 
 void gfx_init(const struct GfxInitSettings *settings);
 
