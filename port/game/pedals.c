@@ -3,7 +3,8 @@
  * are pressed scales their car's engine torque and wheel braking
  * (Wheel_ComputeTireForce). The game's own flags (A, B) still decide whether the
  * car drives or brakes at all, and a full press, or a button, is the N64's
- * force: 1. Computer cars always get 1.
+ * force: 1. Computer cars always get 1, and so does a pedal not pressed at all
+ * (port/src/input.c), when the game drives a player's car itself.
  */
 #include "common.h"
 
