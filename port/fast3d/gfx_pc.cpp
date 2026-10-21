@@ -49,6 +49,7 @@ uint32_t gfx_internal_height = 0;
 uint32_t gfx_aspect_mode = 0;
 extern "C" {
 uint32_t gfx_scene_4x3 = 0;
+uint32_t gfx_scene_hidden = 0;
 }
 uint32_t gfx_edge_fill = 0;
 uint32_t gfx_seamless_sky = 1;
@@ -1715,6 +1716,9 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
     if (v1->clip_rej & v2->clip_rej & v3->clip_rej) {
         return;
     }
+    if (gfx_scene_hidden && rsp.P_matrix[2][3] != 0.0f) {
+        return; /* a menu covers the 3D (gfx_scene_hidden) */
+    }
     if (rsp.geometry_mode & G_CULL_BOTH) {
         float dx1 = v1->x / v1->w - v2->x / v2->w;
         float dy1 = v1->y / v1->w - v2->y / v2->w;
@@ -2178,8 +2182,10 @@ static void gfx_dp_fill_rectangle(int32_t ulx, int32_t uly, int32_t lrx, int32_t
            world cover the screen, and where neither is drawn (past the world's edge)
            the last frame stays, as on the N64. With [video] draw_distance > 1 more of
            that void shows, so in the race's 3D world the frame's first depth clear
-           clears the colour to black too: no hall of mirrors. */
-        bool color = gfx_draw_distance > 1 && !frame_color_cleared && Port_GameDrawsWorld();
+           clears the colour to black too: no hall of mirrors. So it does while a
+           menu covers the 3D (gfx_scene_hidden), for the edges it leaves. */
+        bool color = !frame_color_cleared &&
+                     ((gfx_draw_distance > 1 && Port_GameDrawsWorld()) || gfx_scene_hidden);
         FLUSH("fill");
         gfx_rapi->clear_framebuffer(color, true);
         frame_color_cleared |= color;

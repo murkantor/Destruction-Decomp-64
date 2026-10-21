@@ -36,6 +36,7 @@ extern "C" {
 /* Widescreen: the 3D scene keeps to the 4:3 area, as on the N64, while a menu
    that hides it there is up (port/game/pcmenu.c: the options screen over a race) */
 extern uint32_t gfx_scene_4x3;
+extern uint32_t gfx_scene_hidden; /* the 3D is not drawn (a menu covers it), the colour cleared */
 #ifdef __cplusplus
 }
 #endif
