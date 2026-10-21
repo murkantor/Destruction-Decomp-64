@@ -97,6 +97,15 @@ static void crashHandler(int sig, siginfo_t *si, void *uc) {
              (unsigned)m->gregs[REG_EAX], (unsigned)m->gregs[REG_EBX], (unsigned)m->gregs[REG_ECX],
              (unsigned)m->gregs[REG_EDX], (unsigned)m->gregs[REG_ESI], (unsigned)m->gregs[REG_EDI],
              (unsigned)m->gregs[REG_EBP], (unsigned)m->gregs[REG_ESP]);
+    {
+        /* the top of the stack: after a call through a null pointer (eip 0) the
+           caller's return address is the first word, which backtrace misses */
+        const u32 *sp = (const u32 *)m->gregs[REG_ESP];
+        int i;
+        for (i = 0; i < 16; i += 4) {
+            Port_Log("crash: stack +%02X %08X %08X %08X %08X", i * 4, sp[i], sp[i + 1], sp[i + 2], sp[i + 3]);
+        }
+    }
     n = backtrace(frames, 32);
     if (sLogFile != NULL) {
         fflush(sLogFile);
