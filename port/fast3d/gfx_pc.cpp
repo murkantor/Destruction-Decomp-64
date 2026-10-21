@@ -195,6 +195,7 @@ struct ColorCombiner {
 };
 
 static std::map<ColorCombinerKey, ColorCombiner> color_combiner_pool;
+static enum FilteringMode texture_filter_mode = FILTER_LINEAR; /* gfx_set_texture_filter */
 
 static struct RSP {
     float modelview_matrix_stack[MATRIX_STACK][4][4];
@@ -1184,6 +1185,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
     if (use_noise) options |= SHADER_OPT_NOISE;
     if (alpha_threshold) options |= SHADER_OPT_ALPHA_THRESHOLD;
     if (cycle_type == G_CYC_2CYCLE) options |= SHADER_OPT_2CYC;
+    if (texture_filter_mode == FILTER_THREE_POINT) options |= SHADER_OPT_THREE_POINT;
 
     uint64_t combine_mode = rdp.combine_mode;
     if (cycle_type == G_CYC_COPY) {
@@ -2787,6 +2789,13 @@ void gfx_set_vsync(int interval) {
     gfx_wapi->set_swap_interval(interval);
 }
 
+/* Three-point filtering is in the combiner programs (SHADER_OPT_THREE_POINT: a
+   change of mode picks other programs) and turns the samplers' own filtering off,
+   which each texture gets as it is loaded: so a change reloads the textures */
 void gfx_set_texture_filter(enum FilteringMode mode) {
+    if (mode != texture_filter_mode && gfx_rapi != NULL) {
+        gfx_texture_cache_clear();
+    }
+    texture_filter_mode = mode;
     gfx_rapi->set_texture_filter(mode);
 }

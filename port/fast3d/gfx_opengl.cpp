@@ -499,7 +499,7 @@ static struct ShaderProgram* gl_uber_create(uint64_t shader_id0, uint32_t shader
     }
     prg->opt[0] = (GLint)shader_id1;
     prg->opt[1] = (cc_features.used_textures[0] ? 1 : 0) | (cc_features.used_textures[1] ? 2 : 0) |
-                  (current_filter_mode == FILTER_THREE_POINT ? 4 : 0);
+                  ((shader_id1 & SHADER_OPT_THREE_POINT) ? 4 : 0);
 
     gfx_opengl_load_shader(prg);
     return prg;
@@ -517,7 +517,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     vs.len = fs.len = 0;
     size_t num_floats = 4;
     const int input_size = cc_features.opt_alpha ? 4 : 3;
-    const bool three_point = current_filter_mode == FILTER_THREE_POINT;
+    const bool three_point = (shader_id1 & SHADER_OPT_THREE_POINT) != 0;
 
     // Vertex shader
 
