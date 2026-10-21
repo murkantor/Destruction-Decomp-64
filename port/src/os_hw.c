@@ -413,9 +413,10 @@ void osContGetReadData(OSContPad *data) {
             data[i].errnum = CONT_NO_RESPONSE_ERROR;
         }
     }
-    /* The PC options page reads player 1; while it is open the game gets no input */
+    /* The PC options page reads player 1; while it is open (and until the button that
+       closed it is let go) the game gets no input */
     Port_InputNoteMenuPad(&data[0]);
-    if (Port_OptIsOpen()) {
+    if (Port_OptHoldsInput(data[0].button)) {
         for (i = 0; i < MAXCONTROLLERS; i++) {
             data[i].button = 0;
             data[i].stick_x = data[i].stick_y = 0;

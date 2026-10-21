@@ -72,6 +72,7 @@ void Port_VideoApplySettings(void);
 /* The PC options (options.c) */
 void Port_OptionsApplyPending(void);
 int Port_OptIsOpen(void);
+int Port_OptHoldsInput(u16 buttons);
 void Port_InputNoteMenuPad(const OSContPad *pad);
 union SDL_Event;
 int Port_InputCaptureEvent(const union SDL_Event *e);

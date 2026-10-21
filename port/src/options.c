@@ -272,11 +272,30 @@ void Port_OptChange(int page, int i, int dir) {
     SDL_SetAtomicInt(&sSave, 1);
 }
 
+static int sHoldGame; /* closed, the button that closed it still down */
+
 void Port_OptSetOpen(int open) {
     if (open) {
         loadDerived();
     }
+    if (sOpen && !open) {
+        sHoldGame = 1;
+    }
     sOpen = open;
+}
+
+/* Whether the game gets no input: while the page is open, and after it closes until
+   player 1 lets go of every button, so the B (or Start) that closed it is not taken
+   by the options screen too, which would go back to the main menu */
+int Port_OptHoldsInput(u16 buttons) {
+    if (sOpen) {
+        return 1;
+    }
+    if (sHoldGame && buttons != 0) {
+        return 1;
+    }
+    sHoldGame = 0;
+    return 0;
 }
 
 int Port_OptIsOpen(void) {
