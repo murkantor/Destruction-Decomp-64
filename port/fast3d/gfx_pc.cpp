@@ -51,9 +51,15 @@ extern "C" {
 uint32_t gfx_scene_4x3 = 0;
 }
 uint32_t gfx_edge_fill = 0;
+uint32_t gfx_seamless_sky = 1;
 uint32_t gfx_draw_distance = 1;
 
 static void fill_clear_texels(uint8_t *rgba, uint32_t w, uint32_t h);
+static void sky_note_upload(uint32_t id, uint32_t w, uint32_t h);
+/* Rectangles compute their texel coordinates themselves (gfx_draw_rectangle) */
+static bool emitting_rect;
+static int tile_for(int i);
+static float tile_shift(float c, uint8_t shift);
 
 extern int g_GfxPresentX, g_GfxPresentW;
 
@@ -772,6 +778,7 @@ static void import_texture(int i, int tile) {
         fill_clear_texels(tex_upload_buffer, w, h);
     }
     gfx_rapi->upload_texture(tex_upload_buffer, w, h);
+    sky_note_upload(id, w, h);
     {
         /* DD64_TEXDUMP=1: save each upload as tex_<n>_<w>x<h>.bmp (the first 200; with
          * DD64_DLDUMP set, only the uploads of the dumped task) */
@@ -845,12 +852,254 @@ static void fill_clear_texels(uint8_t *rgba, uint32_t w, uint32_t h) {
     }
 }
 
+/*
+ * [video] seamless_sky. The race's sky dome (the G_ZS_PRIM triangles of the 3D
+ * world, Render_DrawSkyAndWorld) is a panorama in pieces: quads round the
+ * camera in rings, each drawing one clamped tile over its whole width and height
+ * (Coastal: two rings of four 32x32 pieces; Jungle: one 64x32 piece repeated).
+ * Filtering a clamped tile holds the last half texel flat at each edge, and the
+ * art's edge texels do not quite match the next piece's, so at today's
+ * magnification each join is a band with a step in it: a seam in the clouds.
+ *
+ * Each piece is drawn instead from a copy with a one-texel border of its
+ * neighbours' edge texels (the next piece's first column at the right, and so
+ * on), so the filters run across the join as they would in one wrapped panorama.
+ * The neighbours come from the sky's own geometry: B is right of A where a quad
+ * of B has its u = 0 corners (at v = 0 and v = H) at the model positions of a
+ * quad of A's u = W corners; likewise in v between the rings. Only pieces of the
+ * same size count (the cap over the top is drawn as a fan); a piece with no
+ * neighbour found on a side keeps its own edge there, as the clamp did.
+ */
+struct SkyTexels {
+    uint32_t w, h;
+    std::vector<uint8_t> rgba;
+};
+struct SkyCorner {
+    uint32_t tex;
+    uint8_t corner; /* 0 (0,0), 1 (W,0), 2 (0,H), 3 (W,H) */
+    float x, y, z;
+};
+struct SkyPad {
+    uint32_t id;  /* the bordered copy */
+    int64_t nb[4]; /* the neighbours it was built with: left, right, above, below (-1 none) */
+};
+static std::unordered_map<uint32_t, SkyTexels> sky_texels; /* by texture id */
+static std::vector<SkyCorner> sky_corners;
+static std::unordered_map<uint32_t, SkyPad> sky_pads; /* by the piece's texture id */
+static bool sky_pad_on;                               /* emit_vertex: the triangle is drawn from a bordered copy */
+static uint32_t sky_pad_orig;                         /* ...of this texture, bound again after it (sky_triangle_done) */
+
+static bool sky_context(void) {
+    return (rdp.other_mode_l & G_ZS_PRIM) && Port_GameDrawsWorld() && !emitting_rect;
+}
+
+/* A texture was (re)uploaded under id: what was known about the id is gone, and
+   a sky piece's texels are kept */
+static void sky_note_upload(uint32_t id, uint32_t w, uint32_t h) {
+    if (!sky_texels.empty() || !sky_pads.empty()) {
+        sky_texels.erase(id);
+        sky_corners.erase(std::remove_if(sky_corners.begin(), sky_corners.end(),
+                                         [id](const SkyCorner &c) { return c.tex == id; }),
+                          sky_corners.end());
+        for (auto it = sky_pads.begin(); it != sky_pads.end();) {
+            bool uses = it->first == id;
+            for (int k = 0; k < 4; k++) {
+                uses |= it->second.nb[k] == (int64_t)id;
+            }
+            if (uses) {
+                gfx_rapi->delete_texture(it->second.id);
+                it = sky_pads.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+    if (sky_context() && w > 1 && h > 1 && w <= 256 && h <= 256) {
+        SkyTexels &t = sky_texels[id];
+        t.w = w;
+        t.h = h;
+        t.rgba.assign(tex_upload_buffer, tex_upload_buffer + w * h * 4);
+    }
+}
+
+static void sky_note_corner(uint32_t tex, uint8_t corner, const struct LoadedVertex *v) {
+    for (const SkyCorner &c : sky_corners) {
+        if (c.tex == tex && c.corner == corner && c.x == v->ox && c.y == v->oy && c.z == v->oz) {
+            return;
+        }
+    }
+    if (sky_corners.size() < 4096) {
+        sky_corners.push_back({ tex, corner, v->ox, v->oy, v->oz });
+    }
+}
+
+/* The piece next to tex on side dir (0 left, 1 right, 2 above, 3 below), or -1 */
+static int64_t sky_neighbour(uint32_t tex, int dir) {
+    static const uint8_t mine[4][2] = { { 0, 2 }, { 1, 3 }, { 0, 1 }, { 2, 3 } };
+    static const uint8_t theirs[4][2] = { { 1, 3 }, { 0, 2 }, { 2, 3 }, { 0, 1 } };
+    const SkyTexels &a = sky_texels[tex];
+    int64_t found = -1;
+
+    for (const SkyCorner &c1 : sky_corners) {
+        if (c1.tex != tex || c1.corner != mine[dir][0]) {
+            continue;
+        }
+        for (const SkyCorner &b1 : sky_corners) {
+            if (b1.corner != theirs[dir][0] || b1.x != c1.x || b1.y != c1.y || b1.z != c1.z) {
+                continue;
+            }
+            auto bt = sky_texels.find(b1.tex);
+            if (bt == sky_texels.end() || bt->second.w != a.w || bt->second.h != a.h) {
+                continue;
+            }
+            /* the other corner of the same side must meet too */
+            bool second = false;
+            for (const SkyCorner &c2 : sky_corners) {
+                if (c2.tex != tex || c2.corner != mine[dir][1]) {
+                    continue;
+                }
+                for (const SkyCorner &b2 : sky_corners) {
+                    if (b2.tex == b1.tex && b2.corner == theirs[dir][1] && b2.x == c2.x && b2.y == c2.y &&
+                        b2.z == c2.z) {
+                        second = true;
+                        break;
+                    }
+                }
+                if (second) {
+                    break;
+                }
+            }
+            if (!second) {
+                continue;
+            }
+            if (found >= 0 && found != (int64_t)b1.tex) {
+                return -1; /* two pieces claim the side: leave it */
+            }
+            found = b1.tex;
+        }
+    }
+    return found;
+}
+
+/* The bordered copy of piece tex (built or rebuilt as its neighbours become known),
+   or 0 when no neighbour is known yet */
+static uint32_t sky_padded(uint32_t tex) {
+    auto ti = sky_texels.find(tex);
+    if (ti == sky_texels.end()) {
+        return 0;
+    }
+    int64_t nb[4];
+    bool any = false;
+    for (int d = 0; d < 4; d++) {
+        nb[d] = sky_neighbour(tex, d);
+        any |= nb[d] >= 0;
+    }
+    auto pi = sky_pads.find(tex);
+    if (pi != sky_pads.end() && memcmp(pi->second.nb, nb, sizeof(nb)) == 0) {
+        return pi->second.id;
+    }
+    if (!any) {
+        return 0;
+    }
+    const SkyTexels &a = ti->second;
+    const uint32_t w = a.w, h = a.h, pw = w + 2, ph = h + 2;
+    static std::vector<uint8_t> buf;
+    buf.assign((size_t)pw * ph * 4, 0);
+    auto px = [&](const SkyTexels &t, uint32_t x, uint32_t y) { return &t.rgba[((size_t)y * t.w + x) * 4]; };
+    auto out = [&](uint32_t x, uint32_t y) { return &buf[((size_t)y * pw + x) * 4]; };
+    const SkyTexels *n[4];
+    for (int d = 0; d < 4; d++) {
+        n[d] = nb[d] >= 0 ? &sky_texels[(uint32_t)nb[d]] : NULL;
+    }
+    for (uint32_t y = 0; y < h; y++) {
+        memcpy(out(1, y + 1), px(a, 0, y), w * 4);
+        memcpy(out(0, y + 1), n[0] != NULL ? px(*n[0], w - 1, y) : px(a, 0, y), 4);
+        memcpy(out(w + 1, y + 1), n[1] != NULL ? px(*n[1], 0, y) : px(a, w - 1, y), 4);
+    }
+    for (uint32_t x = 0; x < w; x++) {
+        memcpy(out(x + 1, 0), n[2] != NULL ? px(*n[2], x, h - 1) : px(a, x, 0), 4);
+        memcpy(out(x + 1, h + 1), n[3] != NULL ? px(*n[3], x, 0) : px(a, x, h - 1), 4);
+    }
+    memcpy(out(0, 0), out(1, 0), 4); /* the corners: their row's border */
+    memcpy(out(w + 1, 0), out(w, 0), 4);
+    memcpy(out(0, h + 1), out(1, h + 1), 4);
+    memcpy(out(w + 1, h + 1), out(w, h + 1), 4);
+
+    FLUSH("sky");
+    uint32_t id = pi != sky_pads.end() ? pi->second.id : gfx_rapi->new_texture();
+    gfx_rapi->select_texture(0, id, false);
+    gfx_rapi->upload_texture(buf.data(), pw, ph);
+    SkyPad &pad = sky_pads[tex];
+    pad.id = id;
+    memcpy(pad.nb, nb, sizeof(nb));
+    rendering_state.textures[0] = UINT32_MAX; /* rebind whatever is drawn next */
+    return id;
+}
+
+/* A sky triangle about to be drawn from texture tile 0, its tile tw x th texels:
+   notes its corners, and draws it from the piece's bordered copy if there is one
+   (sky_pad_on, the tile's size grown by the border in tex_w, tex_h) */
+static void sky_triangle(struct LoadedVertex *const v[3], struct ColorCombiner *comb, bool linear, float tex_w[2],
+                         float tex_h[2]) {
+    uint32_t tex = rendering_state.textures[0];
+    auto ti = sky_texels.find(tex);
+    if (!comb->used_textures[0] || comb->used_textures[1] || ti == sky_texels.end() ||
+        (float)ti->second.w != tex_w[0] || (float)ti->second.h != tex_h[0]) {
+        return;
+    }
+    int tile = tile_for(0);
+    for (int i = 0; i < 3; i++) {
+        float u = (tile_shift(v[i]->u, rdp.texture_tile[tile].shifts) - rdp.texture_tile[tile].uls * 8) / 32.0f;
+        float t = (tile_shift(v[i]->v, rdp.texture_tile[tile].shiftt) - rdp.texture_tile[tile].ult * 8) / 32.0f;
+        int cu = fabsf(u) < 0.01f ? 0 : fabsf(u - tex_w[0]) < 0.01f ? 1 : -1;
+        int cv = fabsf(t) < 0.01f ? 0 : fabsf(t - tex_h[0]) < 0.01f ? 2 : -1;
+        if (cu >= 0 && cv >= 0) {
+            sky_note_corner(tex, (uint8_t)(cu + cv), v[i]);
+        }
+    }
+    if (!gfx_seamless_sky || rdp.texture_tile[tile].cms != G_TX_CLAMP || rdp.texture_tile[tile].cmt != G_TX_CLAMP) {
+        return;
+    }
+    uint32_t id = sky_padded(tex);
+    if (id == 0) {
+        return;
+    }
+    FLUSH("sky");
+    gfx_rapi->select_texture(0, id, false);
+    gfx_rapi->set_sampler_parameters(0, linear, G_TX_CLAMP, G_TX_CLAMP);
+    rendering_state.textures[0] = id;
+    tex_w[0] += 2.0f;
+    tex_h[0] += 2.0f;
+    sky_pad_on = true;
+    sky_pad_orig = tex;
+}
+
+/* After a triangle drawn from a bordered copy: the piece's own texture bound again,
+   with its sampler, so the state is the game's for whatever comes next */
+static void sky_triangle_done(bool linear) {
+    int tile = tile_for(0);
+    FLUSH("sky");
+    gfx_rapi->select_texture(0, sky_pad_orig, false);
+    gfx_rapi->set_sampler_parameters(0, linear, rdp.texture_tile[tile].cms, rdp.texture_tile[tile].cmt);
+    rendering_state.textures[0] = sky_pad_orig;
+    rendering_state.linear[0] = linear;
+    rendering_state.cms[0] = rdp.texture_tile[tile].cms;
+    rendering_state.cmt[0] = rdp.texture_tile[tile].cmt;
+    sky_pad_on = false;
+}
+
 void gfx_texture_cache_clear(void) {
     gfx_flush();
     for (auto &e : texture_cache) {
         gfx_rapi->delete_texture(e.second.texture_id);
     }
     texture_cache.clear();
+    for (auto &e : sky_pads) {
+        gfx_rapi->delete_texture(e.second.id);
+    }
+    sky_pads.clear();
+    sky_texels.clear();
+    sky_corners.clear();
     /* nothing bound (a recycled name must not pass for the texture bound) */
     rendering_state.textures[0] = rendering_state.textures[1] = UINT32_MAX;
 }
@@ -1352,9 +1601,6 @@ static void texture_size(int i, float *w, float *h) {
     *h = th;
 }
 
-/* Rectangles compute their texel coordinates themselves (gfx_draw_rectangle) */
-static bool emitting_rect;
-
 static float tile_shift(float c, uint8_t shift) {
     if (shift == 0) {
         return c;
@@ -1390,6 +1636,10 @@ static void emit_vertex(const struct LoadedVertex *v, struct ColorCombiner *comb
         }
         float u = (su - rdp.texture_tile[tile].uls * 8) / 32.0f;
         float vv = (sv - rdp.texture_tile[tile].ult * 8) / 32.0f;
+        if (t == 0 && sky_pad_on) {
+            u += 1.0f; /* past the bordered copy's border (sky_triangle) */
+            vv += 1.0f;
+        }
         if (linear) {
             u += 0.5f;
             vv += 0.5f;
@@ -1510,12 +1760,18 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx) {
        car), which at one depth for all its faces lost to the backgrounds drawn over
        it (invisible), or showed its far side through its near one. */
     emit_zprim = (rdp.other_mode_l & G_ZS_PRIM) && Port_GameDrawsWorld() ? prim_depth_ndc() : NAN;
+    if (!std::isnan(emit_zprim)) {
+        sky_triangle(v_arr, comb, linear, tex_w, tex_h);
+    }
     for (int i = 0; i < 3; i++) {
         emit_vertex(v_arr[i], comb, use_alpha, use_fog, tex_w, tex_h, linear);
     }
     emit_zprim = NAN;
     if (++buf_vbo_num_tris == MAX_BUFFERED) {
         FLUSH("full");
+    }
+    if (sky_pad_on) {
+        sky_triangle_done(linear);
     }
 }
 

@@ -107,6 +107,7 @@ void Port_VideoInit(void) {
     gfx_n64_aa = gPortConfig.n64AA;
     gfx_anisotropy = gPortConfig.anisotropy;
     gfx_edge_fill = gPortConfig.edgeFill != 0;
+    gfx_seamless_sky = gPortConfig.seamlessSky != 0;
     gfx_draw_distance = gPortConfig.drawDistance >= 1 ? gPortConfig.drawDistance : 1;
     gfx_internal_height = gPortConfig.internalHeight;
     gfx_aspect_mode = gPortConfig.stretch ? 1 : gPortConfig.widescreen ? 2 : 0;
@@ -129,6 +130,7 @@ void Port_VideoApplySettings(void) {
     gfx_draw_distance = gPortConfig.drawDistance >= 1 ? gPortConfig.drawDistance : 1;
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
+    gfx_seamless_sky = gPortConfig.seamlessSky != 0;
     if (gfx_edge_fill != (gPortConfig.edgeFill != 0)) {
         gfx_edge_fill = gPortConfig.edgeFill != 0;
         gfx_texture_cache_clear(); /* the textures load again, filled or not */

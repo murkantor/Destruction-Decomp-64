@@ -162,6 +162,8 @@ static const Setting sSettings[] = {
       "1 = a wide window shows more of the 3D view, unstretched, with the HUD and menus 4:3 in the middle" },
     { "video", "stretch", &gPortConfig.stretch, 0, "0 = keep 4:3 with side bars, 1 = stretch to the window" },
     { "video", "texture_filter", &gPortConfig.textureFilter, 1, "0 = nearest, 1 = bilinear, 2 = three-point (N64)" },
+    { "video", "seamless_sky", &gPortConfig.seamlessSky, 1,
+      "1 = the sky's pieces are filtered across their joins (no seams in the clouds); 0 = as the N64" },
     { "video", "edge_fill", &gPortConfig.edgeFill, 0,
       "1 = see-through texels take their neighbours' colour, so filtered cut-outs (trees) have no dark edge;"
       " 0 = as the N64" },
