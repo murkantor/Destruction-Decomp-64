@@ -88,7 +88,14 @@ void TrackMenu_Highlight(s32 prev, s32 slot) {
             break;
     }
     if (D_80095CC8[slot]) {
+#ifdef TARGET_PC
+        /* the NO sign of a locked track, put away for an open one: at -65 its
+           right edge (about 133 wide) was still on screen, hidden only by the
+           N64's overscan. Off the screen altogether */
+        Ui_SetElementPos(gUi[0], 2, 5, -1000.0f, 103.0f);
+#else
         Ui_SetElementPos(gUi[0], 2, 5, -65.0f, 103.0f);
+#endif
     } else {
         Ui_SetElementPos(gUi[0], 2, 5, 68.0f, 103.0f);
     }
