@@ -477,8 +477,11 @@ static void readPad(int channel, OSContPad *out) {
         }
         fakeGas(channel, &buttons, &gas);
         if (channel >= 0 && channel < MAXCONTROLLERS) {
-            sGas[channel] = gas;
-            sBrake[channel] = brake;
+            /* a pedal not pressed at all is 1, not 0: the game then drives or
+               brakes the car itself (the title screen's demo races drive the
+               player's car), and gets the N64's full force */
+            sGas[channel] = gas > 0.0f ? gas : 1.0f;
+            sBrake[channel] = brake > 0.0f ? brake : 1.0f;
         }
     }
     SDL_UnlockMutex(sLock);
