@@ -926,20 +926,31 @@ static int16_t interp_slot(const uint8_t *vtx);
 static float interp_guard_band(void);
 
 /*
- * [video] draw_distance: nothing the game draws is culled by distance on PC (no
- * far clip, the nearer level of detail always), so the only limit is the fog some
- * tracks set (Swamp, Glacier). With draw_distance k the fog is that of a vertex k
- * times nearer. Screen z of a perspective projection is a * w + b, so a vertex at
- * w / k has z / w + b (k - 1) / w; this is b (k - 1), b read from the projection
- * the game loaded (its look-at times guPerspective: column 2 is a times column 3
- * but for the translation row).
+ * [video] draw_distance k. The game sends the whole track every frame, and the
+ * RSP does not clip at the far plane, but the sky is drawn at the far plane's
+ * depth (gDPSetPrimDepth 0x7FFE): geometry past the far plane (4096 units)
+ * clamps to that depth and loses to it, so the scenery ends there. With k > 1
+ * the depth each vertex is drawn at is that of a far plane k times further out,
+ * and the fog some tracks set (Swamp, Glacier) is that of a vertex k times
+ * nearer; positions, the sky and the game's own z are as they were.
+ *
+ * Screen z of a perspective projection is a * w + b (the game's projection is a
+ * look-at times guPerspective: column 2 is a times column 3 but for the
+ * translation row), so z / w = a + b / w, -1 at the near plane w = b / (-1 - a)
+ * and 1 at the far plane w = b / (1 - a).
  */
-static float fog_distance_shift(void) {
-    const float(*p)[4] = rsp.P_matrix;
+struct FarRemap {
+    float fog;    /* added to z for the fog: a vertex k times nearer, b (k - 1) */
+    float da, db; /* added to z for the depth: a' w + b' - (a w + b), far plane k times further */
+};
+
+static FarRemap far_remap(const float p[4][4]) {
+    FarRemap f = { 0.0f, 0.0f, 0.0f };
+    const float k = (float)gfx_draw_distance;
     int r = 0;
 
     if (gfx_draw_distance <= 1) {
-        return 0.0f; /* the N64's */
+        return f; /* the N64's */
     }
     for (int i = 1; i < 3; i++) {
         if (fabsf(p[i][3]) > fabsf(p[r][3])) {
@@ -947,13 +958,26 @@ static float fog_distance_shift(void) {
         }
     }
     if (p[r][3] == 0.0f) {
-        return 0.0f; /* not a perspective */
+        return f; /* not a perspective */
     }
-    return (p[3][2] - p[r][2] / p[r][3] * p[3][3]) * (float)(gfx_draw_distance - 1);
+    const float a = p[r][2] / p[r][3], b = p[3][2] - a * p[3][3];
+    f.fog = b * (k - 1.0f);
+    if (fabsf(1.0f - a) < 1e-7f) {
+        return f;
+    }
+    const float wn = b / (-1.0f - a), wf = b / (1.0f - a);
+    if (!(wn > 0.0f && wf > wn)) {
+        return f;
+    }
+    const float wf2 = wf * k;
+    f.da = (wf2 + wn) / (wf2 - wn) - a;
+    f.db = -2.0f * wn * wf2 / (wf2 - wn) - b;
+    return f;
 }
 
 static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *vtx) {
     const float(*mv)[4] = rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1];
+    const FarRemap far = far_remap(rsp.P_matrix);
 
     if (rsp.lights_changed && (rsp.geometry_mode & G_LIGHTING)) {
         for (int i = 0; i < rsp.num_lights; i++) {
@@ -1045,7 +1069,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
 
         d->x = x;
         d->y = y;
-        d->z = z;
+        d->z = z + far.da * w + far.db; /* the depth drawn at ([video] draw_distance) */
         d->w = w;
         if (dl_dumping && dl_dumped_vtx < 3000) {
             dl_dumped_vtx++;
@@ -1058,7 +1082,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
             if (winv < 0.0f) {
                 winv = 32767.0f;
             }
-            float fog_z = (z + fog_distance_shift()) * winv * rsp.fog_mul + rsp.fog_offset;
+            float fog_z = (z + far.fog) * winv * rsp.fog_mul + rsp.fog_offset;
             if (fog_z < 0) fog_z = 0;
             if (fog_z > 255) fog_z = 255;
             d->color.a = (uint8_t)fog_z; /* F3DEX2 puts fog in shade alpha */
@@ -2812,11 +2836,13 @@ extern "C" bool gfx_interp_present(bool black) {
 
     /* each slot's matrix for this moment */
     static std::vector<float> mp;
+    static std::vector<FarRemap> far; /* each slot's, from its projection now ([video] draw_distance) */
     static unsigned n_presents, n_slots, n_blended, n_cut;
     static double behind_ms, ms_mtx, ms_replay, ms_present, ms_cpu_vtx, ms_gl_draw;
     uint64_t t0 = now;
     static const char *gfxlog = getenv("DD64_GFXLOG");
     mp.resize(cur->slots.size() * 16);
+    far.resize(cur->slots.size());
     if (prev->valid && interp_matched_for != (const void *)cur) {
         interp_match(cur, prev);
         interp_matched_for = cur;
@@ -2843,6 +2869,7 @@ extern "C" bool gfx_interp_present(bool black) {
         float m[4][4];
         gfx_matrix_mul(m, mv, p);
         memcpy(&mp[i * 16], m, sizeof(m));
+        far[i] = far_remap(p);
     }
     /* how far the picture is behind the newest game frame (negative: ahead of it) */
     if (prev->valid && cur->t_ns > prev->t_ns) {
@@ -2896,7 +2923,7 @@ extern "C" bool gfx_interp_present(bool black) {
             if (v.wide) {
                 x *= wide_k;
             }
-            z = std::isnan(v.zprim) ? z + v.zoff * w : v.zprim * w;
+            z = std::isnan(v.zprim) ? z + v.zoff * w + far[v.slot].da * w + far[v.slot].db : v.zprim * w;
             float *o = &out[k * stride];
             o[0] = x, o[1] = y, o[2] = z, o[3] = w;
         }
