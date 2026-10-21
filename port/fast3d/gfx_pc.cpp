@@ -313,6 +313,7 @@ static float prim_depth_ndc(void) {
 static bool vp_wide;                   /* the current draw uses the whole width */
 static int game_fb;                    /* the game draws here, presented to framebuffer 0 */
 static bool frame_started;
+static bool frame_color_cleared; /* [video] draw_distance > 1: this frame's colour is cleared (gfx_dp_fill_rectangle) */
 
 static float buf_vbo[MAX_BUFFERED * (32 * 3)];
 static size_t buf_vbo_len;
@@ -1880,9 +1881,15 @@ static void gfx_dp_fill_rectangle(int32_t ulx, int32_t uly, int32_t lrx, int32_t
 
     stats.fills++;
     if (rdp.color_image_address != NULL && rdp.color_image_address == rdp.z_buf_address) {
-        /* clearing the depth buffer */
+        /* clearing the depth buffer. The game never clears the colour: the sky and the
+           world cover the screen, and where neither is drawn (past the world's edge)
+           the last frame stays, as on the N64. With [video] draw_distance > 1 more of
+           that void shows, so in the race's 3D world the frame's first depth clear
+           clears the colour to black too: no hall of mirrors. */
+        bool color = gfx_draw_distance > 1 && !frame_color_cleared && Port_GameDrawsWorld();
         FLUSH("fill");
-        gfx_rapi->clear_framebuffer(false, true);
+        gfx_rapi->clear_framebuffer(color, true);
+        frame_color_cleared |= color;
         return;
     }
     float x0 = ulx / 4.0f, y0 = uly / 4.0f, x1 = lrx / 4.0f, y1 = lry / 4.0f;
@@ -3036,6 +3043,7 @@ void gfx_start_frame(void) {
     rdp.viewport_or_scissor_changed = true;
     rdp.textures_changed[0] = rdp.textures_changed[1] = true;
     frame_started = true;
+    frame_color_cleared = false;
 }
 
 void gfx_run(const void *commands, uint32_t ucode_text) {
