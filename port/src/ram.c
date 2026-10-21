@@ -1,16 +1,17 @@
 /*
  * The N64 RAM image, mapped at its own N64 addresses.
  *
- * 0x80000000-0x80410000 is mapped at start-up (free in a 32-bit process on a
- * 64-bit OS; on Windows the executable is large-address-aware):
+ * 0x80000000-0x82010000 is mapped first thing at start-up, before SDL loads any
+ * library that could land there (free in a 32-bit process on a 64-bit OS; on
+ * Windows the executable is large-address-aware):
  *
  *   0x80000400-0x8007ADD0  the N64 code addresses: at each function's address a
  *                          jump to the host function, so N64 function pointers
  *                          in data the game loads are callable
  *   0x8007ADD0-0x80400000  rsp_text, data, rodata, bss, the two boot blocks and
  *                          the heap, where the N64 has them
- *   0x80400000-0x80800000  more heap: the port's RAM is 8 MB (PORT_RAM_END)
- *   0x80800000-0x80810000  scratch for PORT_DMA_BUF (ultra64.h)
+ *   0x80400000-0x82000000  more heap: the port's RAM is 32 MB (PORT_RAM_END)
+ *   0x82000000-0x82010000  scratch for PORT_DMA_BUF (ultra64.h)
  *   then a no-access guard page, so a write past the end faults where it happens
  *
  * So every N64 pointer, in the data, in the boot blocks or in anything the game
@@ -74,9 +75,11 @@ static void writeJump(u32 at, const void *target) {
     memcpy(p + 1, &rel, 4);
 }
 
-void Port_RamInit(void) {
+static u8 *sMapped;
+
+/* Map the game's memory, before anything else can take the addresses */
+void Port_RamReserve(void) {
     u8 *base;
-    u32 i;
 
 #ifdef _WIN32
     base = VirtualAlloc((void *)MAP_BASE, MAP_END + PAGE - MAP_BASE, MEM_RESERVE | MEM_COMMIT,
@@ -88,6 +91,17 @@ void Port_RamInit(void) {
         base = NULL;
     }
 #endif
+    sMapped = base;
+}
+
+void Port_RamInit(void) {
+    u8 *base;
+    u32 i;
+
+    if (sMapped == NULL) {
+        Port_RamReserve();
+    }
+    base = sMapped;
     if (base != (u8 *)MAP_BASE || gRam != (u8 *)RAM_VRAM || gPortRamVram != RAM_VRAM) {
         Port_Fatal("Could not map the game's memory at 0x80000000.\n\n"
                    "Destruction Derby 64 needs a 64-bit operating system.");

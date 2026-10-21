@@ -26,6 +26,7 @@ int Port_RomLoad(void);
 u32 Port_RomRead32(u32 offset);
 
 /* ram.c: the N64 RAM image, mapped at its own addresses (0x80000000 up) */
+void Port_RamReserve(void);
 void Port_RamInit(void);
 void *Port_N64ToHost(uint32_t addr);
 uint32_t Port_HostToN64(const void *p);

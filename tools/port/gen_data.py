@@ -21,7 +21,7 @@ RAM_VRAM = 0x8007ADD0   # rsp_text, the first thing after the code
 RAM_ROM = 0x7B9D0
 DATA_ROM_END = 0xBD4A0  # end of rodata; bss follows
 RAM_END = 0x80400000     # the N64's RAM: data pointers point below it
-PC_RAM_END = 0x80800000  # the port's (port_shadow.h PORT_RAM_END): the heap ends here
+PC_RAM_END = 0x82000000  # the port's (port_shadow.h PORT_RAM_END): the heap ends here
 CODE_START, CODE_END = 0x80000400, RAM_VRAM
 
 # The block Boot_LoadData loads to 0x80134280 starts with three small functions,

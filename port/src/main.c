@@ -167,6 +167,7 @@ static void openLog(void) {
 }
 
 int main(int argc, char **argv) {
+    Port_RamReserve(); /* the game's memory at its N64 addresses, before SDL loads libraries */
     openLog();
 #ifdef _WIN32
     SetUnhandledExceptionFilter(crashHandler);

@@ -147,7 +147,9 @@ static const uint8_t *seg_addr(uint32_t w1) {
         if (segment_base[seg] != 0) {
             return (const uint8_t *)(segment_base[seg] + off);
         }
-        return n64_to_host(0x80000000u | off); /* physical */
+        /* physical (the game sets only segment 0, to 0): whole, as RAM runs past
+           16 MB on PC (port_shadow.h) */
+        return n64_to_host(0x80000000u | w1);
     }
     return (const uint8_t *)(uintptr_t)w1;
 }
