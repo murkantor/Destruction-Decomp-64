@@ -1,7 +1,8 @@
 /*
- * The PC options page, drawn in the game's own menus. On the options screen
- * (Z on the main menu) a line at the bottom offers it, and R opens it: a panel
- * over the options with the PC settings in pages (L or Z for the next page), in
+ * The PC options page, drawn in the game's own menus. On the main menu (under
+ * its line for Z, the options screen) and on the options screen (the pause
+ * menu's too) a line at the bottom offers it, and R opens it: a panel over the
+ * menu with the PC settings in pages (L or Z for the next page), in
  * the screen's own font and colours. While it is open it takes the controller
  * (port/src/os_hw.c gives the game no input); B or Start closes it. It is drawn
  * after the game's UI each frame (Render_Frame); the settings themselves are
@@ -67,6 +68,7 @@ int Port_OptCapturing(void);
 int Port_OptIsBindPage(int page);
 extern u32 gfx_scene_4x3; /* port/fast3d/gfx_pc.cpp */
 
+#define MODE_MAIN 0x13 /* the game mode menu: "press z-button for options menu" */
 #define MODE_OPTIONS 0x20
 #define MODE_RECORDS 0x27
 #define ROWS 7      /* rows shown at once */
@@ -92,6 +94,7 @@ extern u32 gfx_scene_4x3; /* port/fast3d/gfx_pc.cpp */
 #define GREEN 0x2EB043FF
 #define WHITE 0xF0F0F0FF
 #define GREY 0x9AA6B0FF
+#define HINT 0xFFEE00FF /* the main menu's "press z-button" line */
 
 #define GFX2(g, a, b) { Gfx *_g = (g)++; _g->w0 = (a); _g->w1 = (u32)(b); }
 
@@ -312,7 +315,7 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
        drawn behind them: at a wide screen's sides it would show, so it keeps to the
        4:3 area while they are up */
     gfx_scene_4x3 = gGame != NULL && (gGame->mode == MODE_OPTIONS || gGame->mode == MODE_RECORDS);
-    if (gGame == NULL || gGame->mode != MODE_OPTIONS) {
+    if (gGame == NULL || (gGame->mode != MODE_OPTIONS && gGame->mode != MODE_MAIN)) {
         if (Port_OptIsOpen()) {
             Port_OptSetOpen(0);
         }
@@ -329,8 +332,9 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
             sSel = sTop = 0;
             playSound(6);
         } else {
-            static const char hint[] = "press r for pc options";
-            return drawLabel(g, f, 160 - textWidth(f, hint) / 2, 214, hint, GREY);
+            /* on the main menu under the line for Z, in its yellow */
+            static const char hint[] = "press r-button for pc options";
+            return drawLabel(g, f, 160 - textWidth(f, hint) / 2, gGame->mode == MODE_MAIN ? 222 : 214, hint, HINT);
         }
     } else {
         input();
