@@ -3,6 +3,9 @@
  * starts the game's own boot() (which creates the N64 threads), then runs the
  * host side on this thread: SDL events, the RCP tasks and the 60 Hz VI clock.
  */
+#ifndef _WIN32
+#define _GNU_SOURCE /* the register names in ucontext.h (the crash handler) */
+#endif
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <stdarg.h>
@@ -75,6 +78,48 @@ static LONG WINAPI crashHandler(EXCEPTION_POINTERS *info) {
     }
     return EXCEPTION_CONTINUE_SEARCH;
 }
+#else
+#include <execinfo.h>
+#include <signal.h>
+#include <ucontext.h>
+#include <unistd.h>
+
+/* A crash on Linux: log the signal, the faulting address, the registers and the
+   call chain (the executable is not position-independent: addr2line -e
+   DestructionDerby64 takes the addresses as they are), then die as before */
+static void crashHandler(int sig, siginfo_t *si, void *uc) {
+    const mcontext_t *m = &((const ucontext_t *)uc)->uc_mcontext;
+    void *frames[32];
+    int n;
+
+    Port_Log("crash: signal %d at %08X, accessing %p", sig, (unsigned)m->gregs[REG_EIP], si->si_addr);
+    Port_Log("crash: eax %08X ebx %08X ecx %08X edx %08X esi %08X edi %08X ebp %08X esp %08X",
+             (unsigned)m->gregs[REG_EAX], (unsigned)m->gregs[REG_EBX], (unsigned)m->gregs[REG_ECX],
+             (unsigned)m->gregs[REG_EDX], (unsigned)m->gregs[REG_ESI], (unsigned)m->gregs[REG_EDI],
+             (unsigned)m->gregs[REG_EBP], (unsigned)m->gregs[REG_ESP]);
+    n = backtrace(frames, 32);
+    if (sLogFile != NULL) {
+        fflush(sLogFile);
+        backtrace_symbols_fd(frames, n, fileno(sLogFile));
+    }
+    backtrace_symbols_fd(frames, n, STDERR_FILENO);
+    signal(sig, SIG_DFL);
+    raise(sig);
+}
+
+static void installCrashHandler(void) {
+    static const int sigs[] = { SIGSEGV, SIGBUS, SIGILL, SIGFPE, SIGABRT };
+    struct sigaction sa;
+    size_t i;
+
+    SDL_zero(sa);
+    sa.sa_sigaction = crashHandler;
+    sa.sa_flags = SA_SIGINFO | SA_RESETHAND;
+    sigemptyset(&sa.sa_mask);
+    for (i = 0; i < SDL_arraysize(sigs); i++) {
+        sigaction(sigs[i], &sa, NULL);
+    }
+}
 #endif
 
 static void openLog(void) {
@@ -91,6 +136,8 @@ int main(int argc, char **argv) {
     openLog();
 #ifdef _WIN32
     SetUnhandledExceptionFilter(crashHandler);
+#else
+    installCrashHandler();
 #endif
     Port_ConfigLoad();
     SDL_SetAppMetadata("Destruction Derby 64", "0.1", "dd64.pc");
