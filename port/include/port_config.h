@@ -43,6 +43,7 @@ typedef struct {
     int raphnetPlayer;       /* the controller the adapter's first port is, 1-4 */
     /* [game] */
     int drones;              /* the computer cars times this, 1 (the N64's field) to 10 */
+    int droneCar;            /* the car every drone drives: -1 their own types, 0-23 */
     int cpuUnlockables;      /* computer cars may drive the unlockable cars */
     int skipIntros;          /* the logos at boot pass at once: straight to the title */
     /* [saves] */

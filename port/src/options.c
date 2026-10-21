@@ -75,6 +75,13 @@ static const int kKeyboard[] = { 0, 1, 2, 3, 4 };
 static const char *const kKeyboardN[] = { "nobody", "player 1", "player 2", "player 3", "player 4" };
 static const int kDrones[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 static const char *const kDronesN[] = { "1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x" };
+static const int kDroneCar[] = { -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+                                 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+static const char *const kDroneCarN[] = { "default", "car 1", "car 2", "car 3", "car 4", "car 5", "car 6",
+                                          "car 7", "car 8", "car 9", "car 10", "car 11", "car 12",
+                                          "bonus car 1", "bonus car 2", "bonus car 3", "bonus car 4",
+                                          "bonus car 5", "bonus car 6", "bonus car 7", "bonus car 8",
+                                          "bonus car 9", "bonus car 10", "bonus car 11", "bonus car 12" };
 static const int kPaks[] = { 0, 1 };
 static const char *const kPaksN[] = { "player 1 only", "every player" };
 
@@ -102,6 +109,7 @@ static const Option kAudio[] = {
 };
 static const Option kGame[] = {
     { "drones", &gPortConfig.drones, kDrones, kDronesN, N(kDrones), 0, 1 },
+    { "set all drones to", &gPortConfig.droneCar, kDroneCar, kDroneCarN, N(kDroneCar), 0, 0 },
     { "cpu unlockables", &gPortConfig.cpuUnlockables, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "skip intros", &gPortConfig.skipIntros, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
 };

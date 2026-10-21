@@ -195,6 +195,10 @@ static const Setting sSettings[] = {
     { "game", "drones", &gPortConfig.drones, 1,
       "The computer cars times this, 1 (as the N64) to 10, as many as the game's memory holds;"
       " the announcer counts the cars left once there are 11" },
+    { "game", "drone_car", &gPortConfig.droneCar, -1,
+      "The car every drone drives: -1 = the computer cars' own (with cpu_unlockables their twins too);"
+      " 0-11 cars 1-12, 12-23 their unlockable twins (bonus cars 1-12). The drones only, not the game's"
+      " own computer cars; never a player's car (its twin then)" },
     { "game", "cpu_unlockables", &gPortConfig.cpuUnlockables, 0,
       "1 = computer cars may drive the unlockable cars too" },
     { "game", "skip_intros", &gPortConfig.skipIntros, 0,
@@ -233,6 +237,7 @@ void Port_ConfigLoad(void) {
         gPortConfig.drones = 2;
     }
     gPortConfig.drones = SDL_clamp(gPortConfig.drones, 1, 10);
+    gPortConfig.droneCar = SDL_clamp(gPortConfig.droneCar, -1, 23);
     if (text == NULL) {
         Port_ConfigSave();
     }

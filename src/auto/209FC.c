@@ -15,6 +15,7 @@ void Res_ClearForceLoad(void);
 s32 Port_FieldExtraCars(s32 cars, s32 objects);
 s32 Port_FieldCarType(s32 type);
 s32 Port_FieldRoomForCar(s32 cars);
+s32 Port_FieldDroneType(s32 type, const s32 *players, s32 n);
 #endif
 
 void Race_LoadCarResources(void) {
@@ -94,7 +95,7 @@ void Race_LoadCarResources(void) {
                 continue;
             }
             Res_SetForceLoad();
-            Res_Get(D_80091AB4[Port_FieldCarType(i)]);
+            Res_Get(D_80091AB4[Port_FieldDroneType(i, &D_800958A8[6], D_800D31CC)]); /* [game] drone_car */
             count++;
             extra--;
         }

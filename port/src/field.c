@@ -61,6 +61,32 @@ s32 Port_FieldCarType(s32 type) {
     return type;
 }
 
+/* The car type a drone (a car past the game's own field) of base type `type`
+   drives: [game] drone_car, else as the computer cars (Port_FieldCarType). Never
+   a player's car (`players`, `n` of them, 0-23): the game tells the players' cars
+   by their type, so a player's car gives its twin, and if a player has that too,
+   the default */
+s32 Port_FieldDroneType(s32 type, const s32 *players, s32 n) {
+    s32 car = gPortConfig.droneCar, i, twin;
+
+    if (car < 0 || car > 23) {
+        return Port_FieldCarType(type);
+    }
+    twin = car < 12 ? car + 12 : car - 12;
+    for (i = 0; i < n; i++) {
+        if (players[i] == car) {
+            car = twin;
+            break;
+        }
+    }
+    for (i = 0; i < n; i++) {
+        if (players[i] == car) {
+            return Port_FieldCarType(type);
+        }
+    }
+    return car;
+}
+
 /* The announcer may call out how many cars are left: only once they are within the
    original game's field */
 s32 Port_FieldAnnounceCarsLeft(s32 left) {
