@@ -97,9 +97,16 @@ s32 MapUi_Init(void *ui) {
         }
 #ifdef TARGET_PC
         {
-            /* the doubled field: computer cars past the 11 the map has markers for
-               use the first ones' marker under a new element id */
+            /* the drones: computer cars past the 11 the map has markers for use the
+               first ones' marker under a new element id, while the UI's table of
+               them (24 long, the next table right after it) has room; the rest
+               have none (MapMarker_Update goes from the marker to its car) */
             s32 clone = 0;
+            if (!found && k >= 11 && *(s16 *)((u8 *)ui + 0x8B5E) >= 24) {
+                gGame->x1100->x74[i]->x48 = NULL;
+                k++;
+                continue;
+            }
             if (!found && k >= 11) {
                 clone = 0x200 + k;
                 id = D_8007F298[k % 11];

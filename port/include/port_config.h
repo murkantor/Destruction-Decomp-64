@@ -42,7 +42,7 @@ typedef struct {
     int raphnet;             /* read raphnet N64 adapters raw */
     int raphnetPlayer;       /* the controller the adapter's first port is, 1-4 */
     /* [game] */
-    int doubleField;         /* races with twice the cars (up to 24) */
+    int drones;              /* the computer cars times this, 1 (the N64's field) to 10 */
     int cpuUnlockables;      /* computer cars may drive the unlockable cars */
     int skipIntros;          /* the logos at boot pass at once: straight to the title */
     /* [saves] */

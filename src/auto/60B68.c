@@ -37,7 +37,16 @@ s32 Render_Init(AudioObj *o) {
     Heap_Alloc(gMainHeap, &o->x150, o->x88, 0x3F, 0);
     for (i = 0; i < 2; i++) {
         Heap_Alloc(gMainHeap, &o->x158[i], o->x84, 0x3F, 0);
+#ifdef TARGET_PC
+        {
+            /* the frame's display list: it grows with the drones' cars
+               (Port_FieldPoolScale: 1 = the N64's) */
+            s32 Port_FieldPoolScale(void);
+            Heap_Alloc(gMainHeap, &o->x178[i], 0xBB80 * Port_FieldPoolScale(), 7, 0);
+        }
+#else
         Heap_Alloc(gMainHeap, &o->x178[i], 0xBB80, 7, 0);
+#endif
     }
     return 0;
 }

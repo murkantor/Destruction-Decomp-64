@@ -130,17 +130,19 @@ void Race_PlaceCarsOnGrid(void)
             car = gGame[0]->track->cars[nc];
 #ifdef TARGET_PC
             if (nc >= 12) {
-                /* the doubled field: an arena has 12 starting places; the extra car
-                   starts behind the car on place nc - 12, facing the same way */
-                GridSlot *s0 = &data[nc - 12];
+                /* the drones: an arena has 12 starting places; the extra cars start
+                   in rows behind them, car nc behind place nc % 12, 7 units a row,
+                   facing the same way */
+                GridSlot *s0 = &data[nc % 12];
+                f32 back = 7.0f * (nc / 12);
                 f32 dx = s0->b.x - s0->a.x, dy = s0->b.y - s0->a.y, dz = s0->b.z - s0->a.z;
                 f32 l = sqrtf(dx * dx + dy * dy + dz * dz);
                 if (l > 0.001f) {
                     dx /= l, dy /= l, dz /= l;
                 }
-                car->pos.x = s0->a.x - dx * 7.0f;
-                car->pos.y = s0->a.y - dy * 7.0f;
-                car->pos.z = s0->a.z - dz * 7.0f;
+                car->pos.x = s0->a.x - dx * back;
+                car->pos.y = s0->a.y - dy * back;
+                car->pos.z = s0->a.z - dz * back;
                 car->pos2 = car->pos;
                 dir.x = dx, dir.y = dy, dir.z = dz;
                 car->basis = dir;

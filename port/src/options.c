@@ -73,6 +73,8 @@ static const int kRange[] = { 64, 70, 75, 80, 85, 90, 100, 110, 127 };
 static const char *const kRangeN[] = { "64", "70", "75", "80 - n64", "85", "90", "100", "110", "127" };
 static const int kKeyboard[] = { 0, 1, 2, 3, 4 };
 static const char *const kKeyboardN[] = { "nobody", "player 1", "player 2", "player 3", "player 4" };
+static const int kDrones[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+static const char *const kDronesN[] = { "1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x" };
 static const int kPaks[] = { 0, 1 };
 static const char *const kPaksN[] = { "player 1 only", "every player" };
 
@@ -99,7 +101,7 @@ static const Option kAudio[] = {
     { "audio delay", &gPortConfig.audioLatency, kLatency, kLatencyN, N(kLatency), 0, 1 },
 };
 static const Option kGame[] = {
-    { "double field", &gPortConfig.doubleField, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
+    { "drones", &gPortConfig.drones, kDrones, kDronesN, N(kDrones), 0, 1 },
     { "cpu unlockables", &gPortConfig.cpuUnlockables, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "skip intros", &gPortConfig.skipIntros, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
 };

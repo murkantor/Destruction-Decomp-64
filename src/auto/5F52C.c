@@ -34,6 +34,19 @@ Gfx *Font_DrawText(Gfx *gfx, Font *f, u8 *str, s16 x, s16 y, s16 maxPerLine) {
     u8 *p;
 
     n = 0;
+#ifdef TARGET_PC
+    {
+        /* a number is not wrapped (the drones' cars left past 99: the HUD's boxes
+           are two characters a line) */
+        u8 *q = str;
+        while (*q >= '0' && *q <= '9') {
+            q++;
+        }
+        if (*q == 0 && q != str) {
+            maxPerLine = 0;
+        }
+    }
+#endif
     if (f->x0 & 1) {
         GFX2(gfx, 0xFC119623, 0xFF2FFFFF);
         GFX2(gfx, 0xFA000000, f->alpha | ~0xFF);

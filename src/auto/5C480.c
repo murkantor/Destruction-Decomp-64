@@ -69,7 +69,14 @@ s32 Main_InitSystems(s32 pri, Cfg *cfg) {
 #endif
     if (cfg->x4 > 0) {
         void *ptr;
+#ifdef TARGET_PC
+        /* the drones: the matrices and viewports of a frame come from this pool,
+           so it grows with the cars (Port_FieldPoolScale: 1 = the N64's) */
+        s32 Port_FieldPoolScale(void);
+        Heap_Alloc(&gMainHeap, &blk, (cfg->x4 * Port_FieldPoolScale()) << 6, 0xF, 0);
+#else
         Heap_Alloc(&gMainHeap, &blk, cfg->x4 << 6, 0xF, 0);
+#endif
         ptr = HeapBlock_Ptr(&blk);
         Pool_Init(&gParticlePool, 0x40, ptr, HeapBlock_Size(&blk));
     }

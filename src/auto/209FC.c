@@ -12,8 +12,9 @@ s32 Res_Get(s32);
 void Res_SetForceLoad(void);
 void Res_ClearForceLoad(void);
 #ifdef TARGET_PC
-s32 Port_FieldExtraCars(s32 cars);
+s32 Port_FieldExtraCars(s32 cars, s32 objects);
 s32 Port_FieldCarType(s32 type);
+s32 Port_FieldRoomForCar(s32 cars);
 #endif
 
 void Race_LoadCarResources(void) {
@@ -81,12 +82,14 @@ void Race_LoadCarResources(void) {
         }
     }
 #ifdef TARGET_PC
-    /* The doubled field (port/src/field.c): as many computer cars again, each a
-       new car (force-loaded) of the computer cars' types in turn. Never a player's
-       type: the game tells the players' cars by their type. */
+    /* The drones (port/src/field.c): the computer cars again, up to nine times,
+       each a new car (force-loaded) of the computer cars' types in turn, while the
+       heap has room. Never a player's type: the game tells the players' cars by
+       their type. */
     if (D_800958A8[0] != 2 && !(D_800958A8[0] == 3 && D_800958A8[1] == 2)) {
-        s32 extra = Port_FieldExtraCars(count);
-        for (i = 0; extra > 0; i = (i + 1) % 12) {
+        extern u8 *gGame;
+        s32 extra = Port_FieldExtraCars(count, *(s16 *)(gGame + 0x1044)); /* the objects so far */
+        for (i = 0; extra > 0 && Port_FieldRoomForCar(count); i = (i + 1) % 12) {
             if (used[i]) {
                 continue;
             }
