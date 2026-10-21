@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "port.h"
 #include "port_config.h"
@@ -79,6 +80,7 @@ static LONG WINAPI crashHandler(EXCEPTION_POINTERS *info) {
     return EXCEPTION_CONTINUE_SEARCH;
 }
 #else
+#include <dlfcn.h>
 #include <execinfo.h>
 #include <signal.h>
 #include <ucontext.h>
@@ -104,6 +106,29 @@ static void crashHandler(int sig, siginfo_t *si, void *uc) {
         int i;
         for (i = 0; i < 16; i += 4) {
             Port_Log("crash: stack +%02X %08X %08X %08X %08X", i * 4, sp[i], sp[i + 1], sp[i + 2], sp[i + 3]);
+        }
+        /* the library and nearest symbol of each stack word that is in one */
+        for (i = 0; i < 16; i++) {
+            Dl_info d;
+            if (sp[i] >= 0x00100000u && dladdr((void *)sp[i], &d) && d.dli_fname != NULL) {
+                Port_Log("crash: stack +%02X %08X = %s+%X (%s+%X)", i * 4, sp[i], d.dli_fname,
+                         (unsigned)(sp[i] - (u32)d.dli_fbase), d.dli_sname != NULL ? d.dli_sname : "?",
+                         d.dli_saddr != NULL ? (unsigned)(sp[i] - (u32)d.dli_saddr) : 0u);
+            }
+        }
+    }
+    {
+        /* the libraries loaded, and where */
+        FILE *f = fopen("/proc/self/maps", "r");
+        char line[512];
+        while (f != NULL && fgets(line, sizeof(line), f) != NULL) {
+            if (SDL_strstr(line, ".so") != NULL && SDL_strstr(line, " r-xp ") != NULL) {
+                line[strcspn(line, "\n")] = 0;
+                Port_Log("crash: map %s", line);
+            }
+        }
+        if (f != NULL) {
+            fclose(f);
         }
     }
     n = backtrace(frames, 32);
