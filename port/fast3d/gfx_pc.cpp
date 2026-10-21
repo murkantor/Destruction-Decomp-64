@@ -2232,12 +2232,10 @@ static void gfx_run_dl(const uint8_t *cmd) {
  * the frames in between are drawn from the game's last two: each game frame's
  * backend calls are recorded, with every vertex's model-space position and the
  * matrices that placed it (a slot), and replayed with each slot's matrices
- * blended towards their match in the frame before. A slot is matched by the
- * vertex data it was first used with and how many times that data was used
- * before it in the frame (the same wheel model four times a car, say). Slots
- * with no match, and rectangles, are drawn as recorded; camera cuts and
- * teleports snap instead of blending. Only the presentation changes: the game
- * runs at its own rate whatever the display does.
+ * blended towards their match in the frame before (interp_match). Slots with no
+ * match, and rectangles, are drawn as recorded; camera cuts and teleports snap
+ * instead of blending. Only the presentation changes: the game runs at its own
+ * rate whatever the display does.
  */
 
 static void update_framebuffer_sizes(void);
@@ -2267,12 +2265,15 @@ struct InterpSlot {
     uint32_t pkey; /* which projection load */
 };
 
+/* A slot's match in the frame before (interp_match): -1 for none */
+static std::vector<int> interp_matches;
+static const void *interp_matched_for; /* the frame interp_matches is for */
+
 struct InterpFrame {
     std::vector<InterpCmd> cmds;
     std::vector<float> vbo;
     std::vector<InterpVtx> vtx;
     std::vector<InterpSlot> slots;
-    std::unordered_map<uint64_t, int> by_key;
     std::unordered_map<uint32_t, int> by_pkey;
     std::unordered_map<uintptr_t, uint16_t> uses; /* recording: vertex data seen so far */
     uint32_t proj_loads;
@@ -2327,7 +2328,6 @@ static int16_t interp_slot(const uint8_t *vtx) {
         s.key = (uint64_t)(uintptr_t)vtx << 16 | n;
         s.pkey = f->proj_loads;
         interp_cur_slot = (int16_t)f->slots.size();
-        f->by_key[s.key] = interp_cur_slot;
         if (f->by_pkey.find(s.pkey) == f->by_pkey.end()) {
             f->by_pkey[s.pkey] = interp_cur_slot;
         }
@@ -2439,7 +2439,6 @@ static void interp_begin_frame(void) {
     f->vbo.clear();
     f->vtx.clear();
     f->slots.clear();
-    f->by_key.clear();
     f->by_pkey.clear();
     f->uses.clear();
     f->proj_loads = 0;
@@ -2454,6 +2453,7 @@ static void interp_end_frame(void) {
     interp_game_frames++;
     InterpFrame *done = interp_rec;
     done->valid = true;
+    interp_matched_for = NULL;
     done->t_ns = SDL_GetTicksNS();
     interp_rec = interp_prev;
     interp_prev = interp_cur;
@@ -2464,6 +2464,107 @@ static void mtx_lerp(float out[4][4], const float a[4][4], const float b[4][4], 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             out[i][j] = a[i][j] + (b[i][j] - a[i][j]) * t;
+        }
+    }
+}
+
+/* A modelview's rotation and size: false unless it is a rotation (no mirror)
+   times one scale, within a few percent */
+static bool mv_rotation(const float m[4][4], float r[3][3], float &scale) {
+    float len[3];
+    for (int i = 0; i < 3; i++) {
+        len[i] = sqrtf(m[i][0] * m[i][0] + m[i][1] * m[i][1] + m[i][2] * m[i][2]);
+    }
+    scale = (len[0] + len[1] + len[2]) / 3.0f;
+    if (scale < 1e-12f) {
+        return false;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (fabsf(len[i] - scale) > 0.05f * scale) {
+            return false;
+        }
+        for (int j = 0; j < 3; j++) {
+            r[i][j] = m[i][j] / len[i];
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        const float *u = r[i], *v = r[(i + 1) % 3];
+        if (fabsf(u[0] * v[0] + u[1] * v[1] + u[2] * v[2]) > 0.05f) {
+            return false;
+        }
+    }
+    float det = r[0][0] * (r[1][1] * r[2][2] - r[1][2] * r[2][1]) - r[0][1] * (r[1][0] * r[2][2] - r[1][2] * r[2][0]) +
+                r[0][2] * (r[1][0] * r[2][1] - r[1][1] * r[2][0]);
+    return det > 0.0f;
+}
+
+static void rot_to_quat(const float r[3][3], float q[4]) {
+    const float tr = r[0][0] + r[1][1] + r[2][2];
+    if (tr > 0.0f) {
+        float k = sqrtf(tr + 1.0f) * 2.0f;
+        q[0] = 0.25f * k, q[1] = (r[2][1] - r[1][2]) / k, q[2] = (r[0][2] - r[2][0]) / k, q[3] = (r[1][0] - r[0][1]) / k;
+    } else if (r[0][0] > r[1][1] && r[0][0] > r[2][2]) {
+        float k = sqrtf(1.0f + r[0][0] - r[1][1] - r[2][2]) * 2.0f;
+        q[0] = (r[2][1] - r[1][2]) / k, q[1] = 0.25f * k, q[2] = (r[0][1] + r[1][0]) / k, q[3] = (r[0][2] + r[2][0]) / k;
+    } else if (r[1][1] > r[2][2]) {
+        float k = sqrtf(1.0f + r[1][1] - r[0][0] - r[2][2]) * 2.0f;
+        q[0] = (r[0][2] - r[2][0]) / k, q[1] = (r[0][1] + r[1][0]) / k, q[2] = 0.25f * k, q[3] = (r[1][2] + r[2][1]) / k;
+    } else {
+        float k = sqrtf(1.0f + r[2][2] - r[0][0] - r[1][1]) * 2.0f;
+        q[0] = (r[1][0] - r[0][1]) / k, q[1] = (r[0][2] + r[2][0]) / k, q[2] = (r[1][2] + r[2][1]) / k, q[3] = 0.25f * k;
+    }
+}
+
+static void quat_to_rot(const float q[4], float r[3][3]) {
+    const float w = q[0], x = q[1], y = q[2], z = q[3];
+    r[0][0] = 1 - 2 * (y * y + z * z), r[0][1] = 2 * (x * y - w * z), r[0][2] = 2 * (x * z + w * y);
+    r[1][0] = 2 * (x * y + w * z), r[1][1] = 1 - 2 * (x * x + z * z), r[1][2] = 2 * (y * z - w * x);
+    r[2][0] = 2 * (x * z - w * y), r[2][1] = 2 * (y * z + w * x), r[2][2] = 1 - 2 * (x * x + y * y);
+}
+
+/*
+ * A modelview between a and b: the rotation turned (slerp) and the size and
+ * position moved in a straight line. A plain blend of the matrices shrinks a
+ * model that turns far in a frame (a spinning wheel: to nothing at half a
+ * turn). Matrices that are not a rotation and a size are blended plainly.
+ */
+static void mv_blend(float out[4][4], const float a[4][4], const float b[4][4], float t) {
+    float ra[3][3], rb[3][3], sa, sb, qa[4], qb[4], q[4];
+
+    mtx_lerp(out, a, b, t);
+    if (!mv_rotation(a, ra, sa) || !mv_rotation(b, rb, sb)) {
+        return;
+    }
+    rot_to_quat(ra, qa);
+    rot_to_quat(rb, qb);
+    float d = qa[0] * qb[0] + qa[1] * qb[1] + qa[2] * qb[2] + qa[3] * qb[3];
+    if (d < 0.0f) {
+        d = -d;
+        for (int i = 0; i < 4; i++) {
+            qb[i] = -qb[i];
+        }
+    }
+    float wa = 1.0f - t, wb = t;
+    if (d < 0.9995f) {
+        const float th = acosf(std::min(d, 1.0f)), sn = sinf(th);
+        wa = sinf((1.0f - t) * th) / sn;
+        wb = sinf(t * th) / sn;
+    }
+    float n = 0.0f;
+    for (int i = 0; i < 4; i++) {
+        q[i] = qa[i] * wa + qb[i] * wb;
+        n += q[i] * q[i];
+    }
+    n = 1.0f / sqrtf(n);
+    for (int i = 0; i < 4; i++) {
+        q[i] *= n;
+    }
+    float r[3][3];
+    quat_to_rot(q, r);
+    const float sc = sa + (sb - sa) * t;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            out[i][j] = r[i][j] * sc;
         }
     }
 }
@@ -2484,6 +2585,114 @@ static bool proj_cut(const float a[4][4], const float b[4][4]) {
 static bool mv_jump(const float a[4][4], const float b[4][4]) {
     float dx = a[3][0] - b[3][0], dy = a[3][1] - b[3][1], dz = a[3][2] - b[3][2];
     return dx * dx + dy * dy + dz * dz > 50.0f * 50.0f;
+}
+
+static float mv_dist2(const InterpSlot &a, const InterpSlot &b) {
+    float dx = a.mv[3][0] - b.mv[3][0], dy = a.mv[3][1] - b.mv[3][1], dz = a.mv[3][2] - b.mv[3][2];
+    return dx * dx + dy * dy + dz * dz;
+}
+
+/* The model's size in a modelview matrix (the camera only rotates) */
+static float mv_scale(const InterpSlot &a) {
+    float n = 0.0f;
+    for (int r = 0; r < 3; r++) {
+        n += sqrtf(a.mv[r][0] * a.mv[r][0] + a.mv[r][1] * a.mv[r][1] + a.mv[r][2] * a.mv[r][2]);
+    }
+    return n / 3.0f;
+}
+
+/*
+ * Each slot of cur paired with the slot of prev that drew the same thing. The
+ * vertex data's address alone is not enough: a model drawn many times (a wheel
+ * on every car) comes in another order when cars pass or leave the view, and
+ * what the game builds each frame (the player's wheels, the tyre smoke) is in a
+ * new buffer each time, which may be the one another object had the frame
+ * before. So: among the slots with the same vertex data, the nearest pairs win;
+ * the slots left over are paired the same way with prev's left over. A pair must
+ * be under the same projection, at the same scale and less than a teleport apart.
+ */
+static void interp_match(const InterpFrame *cur, const InterpFrame *prev) {
+    struct Pair {
+        float d;
+        int i, j;
+    };
+    static std::vector<Pair> pairs;
+    static std::vector<uint8_t> taken;
+    static std::vector<float> scale_cur, scale_prev;
+    static std::unordered_map<uintptr_t, std::vector<int>> prev_by_addr;
+    const size_t nc = cur->slots.size(), np = prev->slots.size();
+
+    interp_matches.assign(nc, -1);
+    taken.assign(np, 0);
+    scale_cur.resize(nc);
+    scale_prev.resize(np);
+    for (size_t i = 0; i < nc; i++) {
+        scale_cur[i] = mv_scale(cur->slots[i]);
+    }
+    for (size_t j = 0; j < np; j++) {
+        scale_prev[j] = mv_scale(prev->slots[j]);
+    }
+    auto fits = [&](int i, int j, float &d) {
+        const InterpSlot &a = cur->slots[i], &b = prev->slots[j];
+        const float sa = scale_cur[i], sb = scale_prev[j];
+        if (a.pkey != b.pkey || sa > sb * 1.2f || sb > sa * 1.2f) {
+            return false;
+        }
+        d = mv_dist2(a, b);
+        return d <= 50.0f * 50.0f;
+    };
+    auto assign = [&]() {
+        std::sort(pairs.begin(), pairs.end(), [](const Pair &x, const Pair &y) { return x.d < y.d; });
+        for (const Pair &p : pairs) {
+            if (interp_matches[p.i] < 0 && !taken[p.j]) {
+                interp_matches[p.i] = p.j;
+                taken[p.j] = 1;
+            }
+        }
+        pairs.clear();
+    };
+
+    /* the same vertex data */
+    for (auto &e : prev_by_addr) {
+        e.second.clear();
+    }
+    for (size_t j = 0; j < np; j++) {
+        prev_by_addr[(uintptr_t)(prev->slots[j].key >> 16)].push_back((int)j);
+    }
+    pairs.clear();
+    for (size_t i = 0; i < nc; i++) {
+        auto it = prev_by_addr.find((uintptr_t)(cur->slots[i].key >> 16));
+        if (it == prev_by_addr.end()) {
+            continue;
+        }
+        for (int j : it->second) {
+            float d;
+            if (fits((int)i, j, d)) {
+                pairs.push_back({ d, (int)i, j });
+            }
+        }
+    }
+    assign();
+
+    /* the rest: built afresh each frame, or moved */
+    std::vector<int> left;
+    for (size_t j = 0; j < np; j++) {
+        if (!taken[j]) {
+            left.push_back((int)j);
+        }
+    }
+    for (size_t i = 0; i < nc && !left.empty(); i++) {
+        if (interp_matches[i] >= 0) {
+            continue;
+        }
+        for (int j : left) {
+            float d;
+            if (fits((int)i, j, d)) {
+                pairs.push_back({ d, (int)i, j });
+            }
+        }
+    }
+    assign();
 }
 
 /*
@@ -2511,6 +2720,10 @@ extern "C" bool gfx_interp_present(bool black) {
     uint64_t t0 = now;
     static const char *gfxlog = getenv("DD64_GFXLOG");
     mp.resize(cur->slots.size() * 16);
+    if (prev->valid && interp_matched_for != (const void *)cur) {
+        interp_match(cur, prev);
+        interp_matched_for = cur;
+    }
     for (size_t i = 0; i < cur->slots.size(); i++) {
         const InterpSlot &s = cur->slots[i];
         float mv[4][4], p[4][4];
@@ -2521,9 +2734,9 @@ extern "C" bool gfx_interp_present(bool black) {
             auto pi = prev->by_pkey.find(s.pkey);
             if (pi != prev->by_pkey.end() && !proj_cut(prev->slots[pi->second].p, s.p)) {
                 mtx_lerp(p, prev->slots[pi->second].p, s.p, t);
-                auto mi = prev->by_key.find(s.key);
-                if (mi != prev->by_key.end() && !mv_jump(prev->slots[mi->second].mv, s.mv)) {
-                    mtx_lerp(mv, prev->slots[mi->second].mv, s.mv, t);
+                int j = interp_matches[i];
+                if (j >= 0 && !mv_jump(prev->slots[j].mv, s.mv)) {
+                    mv_blend(mv, prev->slots[j].mv, s.mv, t);
                     n_blended++;
                 }
             } else {
