@@ -537,7 +537,7 @@ static struct ShaderProgram* gfx_sdlgpu_create_and_load_new_shader(uint64_t shad
     }
     prg->opt[0] = (int32_t)shader_id1;
     prg->opt[1] = (cc_features.used_textures[0] ? 1 : 0) | (cc_features.used_textures[1] ? 2 : 0) |
-                  (current_filter_mode == FILTER_THREE_POINT ? 4 : 0);
+                  ((shader_id1 & SHADER_OPT_THREE_POINT) ? 4 : 0);
     prg->index = (uint32_t)programs.size();
     programs.push_back(prg);
     cur_prg = prg;

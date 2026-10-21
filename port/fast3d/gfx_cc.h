@@ -34,6 +34,7 @@ enum {
 #define SHADER_OPT_NOISE (1 << 3)
 #define SHADER_OPT_2CYC (1 << 4)
 #define SHADER_OPT_ALPHA_THRESHOLD (1 << 5)
+#define SHADER_OPT_THREE_POINT (1 << 6) /* the texture filter is three-point: the program filters */
 
 struct ColorCombinerKey {
     uint64_t combine_mode;

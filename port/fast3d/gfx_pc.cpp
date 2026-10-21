@@ -196,6 +196,7 @@ struct ColorCombiner {
 };
 
 static std::map<ColorCombinerKey, ColorCombiner> color_combiner_pool;
+static enum FilteringMode texture_filter_mode = FILTER_LINEAR; /* gfx_set_texture_filter */
 
 static struct RSP {
     float modelview_matrix_stack[MATRIX_STACK][4][4];
@@ -1215,6 +1216,7 @@ static struct ColorCombiner *prepare_draw(bool use_fog_ok, bool *use_alpha_out, 
     if (use_noise) options |= SHADER_OPT_NOISE;
     if (alpha_threshold) options |= SHADER_OPT_ALPHA_THRESHOLD;
     if (cycle_type == G_CYC_2CYCLE) options |= SHADER_OPT_2CYC;
+    if (texture_filter_mode == FILTER_THREE_POINT) options |= SHADER_OPT_THREE_POINT;
 
     uint64_t combine_mode = rdp.combine_mode;
     if (cycle_type == G_CYC_COPY) {
@@ -1670,6 +1672,45 @@ static void gfx_dp_set_fill_color(uint32_t packed) {
 
 /* ---- Rectangles ---- */
 
+/*
+ * With MSAA, a rectangle edge inside a pixel (the screen at a scale that is not a
+ * whole number, 1920x1080's 4.5) covers it in part: the pixel is drawn, blended by
+ * its coverage, its texture coordinate run on past the edge. Around the glyphs of
+ * the HUD and menu fonts that is a faint extra row or column, or a texel from the
+ * other side of the tile. Without MSAA the pixel is drawn only if its centre is
+ * inside. This moves the edges to the pixel boundaries that rule gives (in the
+ * framebuffer, through the viewport rectangles are drawn with), and the texture
+ * coordinates with them, so each pixel centre samples what it did: the rectangle
+ * draws the pixels it draws without MSAA, whole.
+ */
+static void snap_rectangle(float *ulx, float *uly, float *lrx, float *lry, float *s0, float *t0, float *s1, float *t1,
+                           bool flip) {
+    const struct XYWidthHeight &vp = rendering_state.viewport;
+    const float sx = vp.width / (float)NATIVE_WIDTH, sy = vp.height / (float)NATIVE_HEIGHT;
+
+    if (sx <= 0.0f || sy <= 0.0f || *lrx <= *ulx || *lry <= *uly) {
+        return;
+    }
+    /* N64 x to framebuffer x and back; y counts up from the bottom there */
+    auto snap_x = [&](float x) { return (ceilf(vp.x + x * sx - 0.5f) - vp.x) / sx; };
+    auto snap_y = [&](float y) {
+        return NATIVE_HEIGHT - (ceilf(vp.y + (NATIVE_HEIGHT - y) * sy - 0.5f) - vp.y) / sy;
+    };
+    const float nx0 = snap_x(*ulx), nx1 = snap_x(*lrx), ny0 = snap_y(*uly), ny1 = snap_y(*lry);
+    /* s runs along x and t along y (flipped: the other way round), linearly */
+    const float fx0 = (nx0 - *ulx) / (*lrx - *ulx), fx1 = (nx1 - *ulx) / (*lrx - *ulx);
+    const float fy0 = (ny0 - *uly) / (*lry - *uly), fy1 = (ny1 - *uly) / (*lry - *uly);
+    const float ds = *s1 - *s0, dt = *t1 - *t0;
+    if (!flip) {
+        *s1 = *s0 + fx1 * ds, *s0 = *s0 + fx0 * ds;
+        *t1 = *t0 + fy1 * dt, *t0 = *t0 + fy0 * dt;
+    } else {
+        *s1 = *s0 + fy1 * ds, *s0 = *s0 + fy0 * ds;
+        *t1 = *t0 + fx1 * dt, *t0 = *t0 + fx0 * dt;
+    }
+    *ulx = nx0, *lrx = nx1, *uly = ny0, *lry = ny1;
+}
+
 /* A screen-space rectangle in N64 pixels, drawn with the current state. */
 static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float s0, float t0, float s1, float t1,
                                bool flip, bool textured) {
@@ -1689,6 +1730,10 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     vp_wide = gfx_aspect_mode == 2 && !textured && ulx <= 0.0f && lrx >= NATIVE_WIDTH;
     rdp.viewport_or_scissor_changed = true;
     apply_viewport_and_scissor();
+
+    if (gfx_msaa_level > 1) {
+        snap_rectangle(&ulx, &uly, &lrx, &lry, &s0, &t0, &s1, &t1, flip);
+    }
 
     bool use_alpha, use_fog, texture_edge;
     struct ColorCombiner *comb = prepare_draw(false, &use_alpha, &use_fog, &texture_edge);
@@ -3039,6 +3084,13 @@ void gfx_set_vsync(int interval) {
     gfx_wapi->set_swap_interval(interval);
 }
 
+/* Three-point filtering is in the combiner programs (SHADER_OPT_THREE_POINT: a
+   change of mode picks other programs) and turns the samplers' own filtering off,
+   which each texture gets as it is loaded: so a change reloads the textures */
 void gfx_set_texture_filter(enum FilteringMode mode) {
+    if (mode != texture_filter_mode && gfx_rapi != NULL) {
+        gfx_texture_cache_clear();
+    }
+    texture_filter_mode = mode;
     gfx_rapi->set_texture_filter(mode);
 }
