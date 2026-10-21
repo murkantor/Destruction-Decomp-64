@@ -1756,9 +1756,14 @@ static void snap_rectangle(float *ulx, float *uly, float *lrx, float *lry, float
     *ulx = nx0, *lrx = nx1, *uly = ny0, *lry = ny1;
 }
 
+/* Widescreen: the rectangle being drawn is one of a translucent sprite's sides, in
+   whole-width coordinates (see the end of gfx_draw_rectangle) */
+static bool rect_side_wide;
+
 /* A screen-space rectangle in N64 pixels, drawn with the current state. */
 static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float s0, float t0, float s1, float t1,
                                bool flip, bool textured) {
+    const float in_ulx = ulx, in_lrx = lrx, in_s0 = s0, in_t0 = t0, in_s1 = s1, in_t1 = t1;
     uint32_t saved_geometry_mode = rsp.geometry_mode;
     struct XYWidthHeight saved_viewport = rdp.viewport;
     /* A rectangle has no z of its own: it is depth tested only with the primitive depth
@@ -1772,7 +1777,7 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     rdp.viewport.width = NATIVE_WIDTH;
     rdp.viewport.height = NATIVE_HEIGHT;
     /* widescreen: a fill across the whole screen (a clear, a fade) covers the sides too */
-    vp_wide = gfx_aspect_mode == 2 && !textured && ulx <= 0.0f && lrx >= NATIVE_WIDTH;
+    vp_wide = gfx_aspect_mode == 2 && (rect_side_wide || (!textured && ulx <= 0.0f && lrx >= NATIVE_WIDTH));
     rdp.viewport_or_scissor_changed = true;
     apply_viewport_and_scissor();
 
@@ -1838,6 +1843,29 @@ static void gfx_draw_rectangle(float ulx, float uly, float lrx, float lry, float
     rsp.geometry_mode = saved_geometry_mode;
     rdp.viewport = saved_viewport;
     rdp.viewport_or_scissor_changed = true;
+
+    /* Widescreen: a translucent sprite across the whole 4:3 width (the course intro
+       card's darker band, the pause menu's dimming) goes on to the window's edges,
+       its edge columns of texels drawn out over the sides, as a clamped texture
+       would. Opaque pictures (the menus' backgrounds) keep to the 4:3 area. */
+    if (gfx_aspect_mode == 2 && textured && !rect_side_wide && wide_k < 1.0f && in_ulx <= 0.0f &&
+        in_lrx >= NATIVE_WIDTH && (rdp.other_mode_l & FORCE_BL) != 0) {
+        const float edge = NATIVE_WIDTH / 2.0f * (1.0f - wide_k); /* the 4:3 area's left, whole-width */
+        rect_side_wide = true;
+        for (int side = 0; side < 2; side++) {
+            /* the texel column at the 4:3 area's edge, half a texel in */
+            const float f = ((side ? NATIVE_WIDTH : 0.0f) - in_ulx) / (in_lrx - in_ulx);
+            const float xa = side ? NATIVE_WIDTH - edge : 0.0f, xb = side ? NATIVE_WIDTH : edge;
+            if (!flip) {
+                float e = in_s0 + f * (in_s1 - in_s0) + (side ? -0.5f : 0.5f) * (in_s1 >= in_s0 ? 1.0f : -1.0f);
+                gfx_draw_rectangle(xa, uly, xb, lry, e, in_t0, e, in_t1, flip, true);
+            } else {
+                float e = in_t0 + f * (in_t1 - in_t0) + (side ? -0.5f : 0.5f) * (in_t1 >= in_t0 ? 1.0f : -1.0f);
+                gfx_draw_rectangle(xa, uly, xb, lry, in_s0, e, in_s1, e, flip, true);
+            }
+        }
+        rect_side_wide = false;
+    }
 }
 
 static void gfx_dp_texture_rectangle(int32_t ulx, int32_t uly, int32_t lrx, int32_t lry, uint8_t tile, int16_t uls,
