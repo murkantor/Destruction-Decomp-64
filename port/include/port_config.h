@@ -23,6 +23,7 @@ typedef struct {
     int widescreen;          /* 1 = 3D fills the window, 2D stays 4:3 in the middle */
     int textureFilter;       /* 0 point, 1 bilinear, 2 three-point (N64) */
     int edgeFill;            /* see-through texels take their neighbours' colour (no dark cut-out edges) */
+    int drawDistance;        /* the fog that many times further out: 1 = N64, 2, 4, 8 */
     int showFps;             /* the frame counter in the corner */
     int renderer;            /* 0 OpenGL, 1 SDL_gpu (Vulkan); read at start */
     /* [audio] */
