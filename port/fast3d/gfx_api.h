@@ -27,7 +27,7 @@ extern bool gfx_framebuffers_enabled;
 extern uint32_t gfx_anisotropy;  /* 1 = off; 2..16 samples */
 extern uint32_t gfx_internal_height; /* lines the game is drawn at; 0 = the window's */
 extern uint32_t gfx_edge_fill;   /* fill see-through texels' colour from their neighbours */
-extern uint32_t gfx_draw_distance; /* fog that far out times this; 1 = the N64's */
+extern uint32_t gfx_draw_distance; /* scenery and fog this many times further out; 1 = the N64's */
 extern uint32_t gfx_aspect_mode; /* 0 = 4:3 with side bars, 1 = stretch to the window, 2 = widescreen */
 
 void gfx_init(const struct GfxInitSettings *settings);
