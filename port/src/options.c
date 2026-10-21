@@ -107,6 +107,7 @@ static const Option kControls[] = {
     { "stick dead zone", &gPortConfig.deadzone, kDeadzone, kDeadzoneN, N(kDeadzone), 0, 0 },
     { "stick range", &gPortConfig.stickRange, kRange, kRangeN, N(kRange), 0, 0 },
     { "right stick camera", &gPortConfig.freeCamera, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
+    { "camera dead zone", &gPortConfig.cameraDeadzone, kDeadzone, kDeadzoneN, N(kDeadzone), 0, 0 },
     { "analog pedals", &gPortConfig.analogPedals, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "keyboard drives", &gPortConfig.keyboardPlayer, kKeyboard, kKeyboardN, N(kKeyboard), 0, 0 },
     { "raphnet adapter", &gPortConfig.raphnet, kOffOn, kOffOnN, N(kOffOn), 0, 1 },

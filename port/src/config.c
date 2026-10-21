@@ -180,6 +180,8 @@ static const Setting sSettings[] = {
       "Stick value at full tilt: an N64 controller reads about 80, the maximum is 127" },
     { "input", "free_camera", &gPortConfig.freeCamera, 1,
       "1 = the right stick turns the camera around the car (and no longer presses the C buttons)" },
+    { "input", "camera_deadzone", &gPortConfig.cameraDeadzone, 20,
+      "Right stick dead zone (the free camera), percent of full tilt" },
     { "input", "analog_pedals", &gPortConfig.analogPedals, 1,
       "1 = the right trigger is the gas and the left the brake, by how far they are pressed"
       " (the triggers no longer press Z and R)" },

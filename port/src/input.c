@@ -632,10 +632,11 @@ int Port_InputCaptureEvent(const SDL_Event *e) {
     return 1;
 }
 
-/* The free camera: a player's right stick, -1 to 1 each way (right, up), with the
-   dead zone. 0 if the free camera is off or the player has no gamepad. */
+/* The free camera: a player's right stick, -1 to 1 each way (right, up), with its
+   own dead zone ([input] camera_deadzone), the travel past it scaled to the full
+   range. 0 if the free camera is off or the player has no gamepad. */
 int Port_InputRightStick(int player, float *x, float *y) {
-    float dz = gPortConfig.deadzone / 100.0f, vx = 0.0f, vy = 0.0f;
+    float dz = gPortConfig.cameraDeadzone / 100.0f, vx = 0.0f, vy = 0.0f, mag;
     int ok = 0;
 
     *x = *y = 0.0f;
@@ -666,9 +667,11 @@ int Port_InputRightStick(int player, float *x, float *y) {
             }
         }
     }
-    if (vx * vx + vy * vy > dz * dz) {
-        *x = vx > 1.0f ? 1.0f : vx < -1.0f ? -1.0f : vx;
-        *y = vy > 1.0f ? 1.0f : vy < -1.0f ? -1.0f : vy;
+    mag = SDL_sqrtf(vx * vx + vy * vy);
+    if (mag > dz && dz < 1.0f) {
+        float k = (mag > 1.0f ? 1.0f : (mag - dz) / (1.0f - dz)) / mag;
+        *x = vx * k;
+        *y = vy * k;
     }
     return ok;
 }
