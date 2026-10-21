@@ -45,6 +45,7 @@ typedef struct {
     int cpuUnlockables;      /* computer cars may drive the unlockable cars */
     /* [saves] */
     int pakOnAllPorts;       /* every controller has a Controller Pak, not only the first */
+    int pakScreens;          /* the game's Controller Pak screens; 0 = loads and saves without them */
 } PortConfig;
 
 extern PortConfig gPortConfig;

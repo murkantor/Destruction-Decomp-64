@@ -196,6 +196,8 @@ static const Setting sSettings[] = {
       "1 = computer cars may drive the unlockable cars too" },
     { "saves", "pak_on_all_ports", &gPortConfig.pakOnAllPorts, 0,
       "1 = every controller has a Controller Pak; 0 = only controller 1" },
+    { "saves", "pak_screens", &gPortConfig.pakScreens, 0,
+      "0 = load and save without the Controller Pak screens; 1 = the N64's screens" },
 };
 
 void Port_ConfigLoad(void) {

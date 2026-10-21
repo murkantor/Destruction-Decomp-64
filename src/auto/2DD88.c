@@ -22,6 +22,9 @@ void Game_SetNextMode(s32, s32);
 u8 Pak_Open(s32 *);
 s32 func_80020F00(void *, s8);
 void Cheat_ResetAll(void);
+#ifdef TARGET_PC
+int Port_PakScreens(void); /* port/src/pak.c: [saves] pak_screens */
+#endif
 
 void Game_RunStartupChecks(void) {
     Controller *c;
@@ -38,6 +41,11 @@ void Game_RunStartupChecks(void) {
         func_80063380(1);
         Game_SetNextMode(0x12, 1);
     } else if (Pak_Open(&type)) {
+#ifdef TARGET_PC
+        if (!Port_PakScreens()) {
+            goto fail; /* no note manager or repair with START held: on to the logos */
+        }
+#endif
         if (type == 0) {
             if ((c->xC & 0x1000) || D_800D31F8) {
                 func_80063380(1);
