@@ -36,7 +36,7 @@ typedef struct { u8 pad[0x1074]; u8 x1074; u8 pad1075[0x10FC - 0x1075]; s16 x10F
 extern Game *gGame;
 extern u8 D_8008F820;
 extern u8 D_80131F08;
-extern WeatherType D_8008F824[];
+extern WeatherType D_8008F824[2];
 extern Weather D_800D1AA0;
 extern s8 D_800D1AE4;
 extern s8 D_800D1AE5;

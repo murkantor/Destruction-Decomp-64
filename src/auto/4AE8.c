@@ -35,6 +35,7 @@ Vec3f Path_AvoidEdges(Seg *seg, EdgeList *list)
 
     hit = 0;
     for (i = 0; i < list->count; i++) {
+        PORT_CONVERT(&list->items[i], 7, 4); /* copied into a local */
         edge = list->items[i];
         hit = Seg_Intersect2D(seg, &edge);
         if (hit) {

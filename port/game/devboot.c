@@ -6,7 +6,11 @@
  *   track    0-11: 0 pit, 1 jungle, 2 industrial, 3 ground zero (arenas),
  *            4 city, 5 coastal, 6 swamp, 7 airport, 8 sewer, 9 desert,
  *            10 glacier, 11 death. Default 5.
- *   type     0 championship, 1 single race, 2 time trial (tracks 4-11). Default 1.
+ *   type     0 championship, 1 single race, 2 time trial (tracks 4-11),
+ *            3 multiplayer (players 2-4). Default 1.
+ *   sub      the multiplayer game (D_800958AC): 0 derby, 1 tag, 2 team (arenas),
+ *            3 race (tracks 4-11, two players). The track is moved to one the
+ *            game allows, as its menu does (GameTypeMenu_Select). Default 0.
  *   cup      difficulty / cup 0-3. Default 0.
  *   car      the player's car 0-23 (spec 1000 + 100 * car). Default 0.
  *   players  1-4. Default 1.
@@ -69,10 +73,14 @@ void Port_DevBoot(void) {
     car = optionIn(spec, "car", 0, 0, 23);
     players = optionIn(spec, "players", 1, 1, 4);
     D_800958A4 = players;
-    D_800958A8 = optionIn(spec, "type", 1, 0, 2);
-    D_800958AC = 0;
+    D_800958A8 = optionIn(spec, "type", 1, 0, 3);
+    D_800958AC = optionIn(spec, "sub", 0, 0, 3);
     D_800958B0 = optionIn(spec, "cup", 0, 0, 3);
     D_800958B4 = optionIn(spec, "track", 5, 0, 11);
+    if (D_800958A8 == 3 && (D_800958AC == 3) != (D_800958B4 >= 4)) {
+        D_800958B4 = D_800958AC == 3 ? 4 : 0;
+        Port_Log("devboot: track %d for multiplayer game %d", D_800958B4, D_800958AC);
+    }
     D_800958BC = 0;
     for (i = 0; i < 4; i++) {
         D_800958C0[i] = i == 0 ? car : i;
@@ -89,6 +97,6 @@ void Port_DevBoot(void) {
     }
     func_80063380(2);          /* major mode: race */
     Game_SetNextMode(0x1A, 1); /* course intro, then countdown and race */
-    Port_Log("devboot: track %d type %d cup %d car %d players %d", D_800958B4, D_800958A8, D_800958B0, car,
-             players);
+    Port_Log("devboot: track %d type %d sub %d cup %d car %d players %d", D_800958B4, D_800958A8, D_800958AC,
+             D_800958B0, car, players);
 }

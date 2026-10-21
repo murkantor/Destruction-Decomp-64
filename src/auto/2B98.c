@@ -15,6 +15,7 @@ void *Track_LoadNodeSegs(s32 id) {
     Track *t;
 
     Res_Load(id, p);
+    PORT_CONVERT(p, n * 6, 4); /* two Vec3f each, passed by value */
     t = gGame->x1100;
     t->x30 = p;
     t->x38 = n;

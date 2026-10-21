@@ -23,7 +23,7 @@ extern Vec3f D_800B8790;
 extern s32 D_800958B4;
 extern u8 D_8008F820;
 extern u8 D_80131F08;
-extern WeatherType D_8008F824[];
+extern WeatherType D_8008F824[2];
 extern Weather D_800D1AA0;
 extern s8 D_800D1AE4;
 extern s8 D_800D1AE5;

@@ -141,7 +141,8 @@ class Layout:
 
     def leaves(self, off, base, out, depth=0, room=None):
         """Append (offset, width) for each scalar; width UNKNOWN for bytes to leave alone.
-        room: bytes the object has, for an array declared without a bound (`T x[]`)."""
+        room: for an array declared without a bound (`T x[]`), (bytes to the next symbol, bytes to
+        the next symbol a C file declares)."""
         if off is None or depth > 40:
             return
         tag, a, kids = self.dies.get(off, (None, {}, []))
@@ -176,8 +177,13 @@ class Layout:
             es = self.size(et)
             if count is None and room and es and self.is_struct(et):
                 # `T x[]` of a struct type: up to the next symbol. Not for scalar
-                # element types: m2c declares unknown data as `s32 D_x[]`.
-                count = room // es
+                # element types: m2c declares unknown data as `s32 D_x[]`. The N64
+                # map has symbols inside tables (a field the code reaches by
+                # address: D_8008F828 in D_8008F824's first element). When the next
+                # symbol is inside the first element, the table runs on to the next
+                # symbol C declares, if that is a whole number of elements.
+                near, declared = room
+                count = declared // es if near < es and declared % es == 0 else near // es
             if count is None or not es:
                 return
             if es == 1 and not self.is_plain_char(et):
@@ -188,9 +194,19 @@ class Layout:
                 out.extend((base + i * es + o, w) for o, w in one)
 
 
-def globals_of(obj, objdump, room):
+def dwarf_of(obj, objdump):
     text = subprocess.run([objdump, '--dwarf=info', obj], capture_output=True, text=True, check=False).stdout
-    dies, top = parse(text)
+    return parse(text)
+
+
+def declared_names(parsed):
+    """The globals an object's C declares"""
+    dies, top = parsed
+    return {attr_name(dies[off][1]) for off in top if dies[off][0] == 'DW_TAG_variable'} - {None}
+
+
+def globals_of(parsed, room):
+    dies, top = parsed
     lay = Layout(dies)
     result = []
     for off in top:
@@ -228,13 +244,23 @@ def main():
     for name, value, typ, bind in read_symbols(args.elf):
         if name and typ != 2 and RAM_LO <= value < RAM_HI:
             addrs.setdefault(name, value)
-    # Bytes up to the next symbol, for arrays declared without a bound
-    starts = sorted(set(addrs.values()))
-    nxt = {a: b for a, b in zip(starts, starts[1:])}
+    with ThreadPoolExecutor(os.cpu_count()) as ex:
+        parsed = list(ex.map(lambda o: dwarf_of(o, args.objdump), objects))
+    declared = set()
+    for p in parsed:
+        declared |= {unrename.get(n, n) for n in declared_names(p)}
+
+    # Bytes up to the next symbol, and to the next one C declares, for arrays declared without a bound
+    def following(values):
+        starts = sorted(set(values))
+        return {a: b for a, b in zip(starts, starts[1:])}
+    nxt = following(addrs.values())
+    nxt_declared = following(addrs[n] for n in declared if n in addrs)
     room = {}
     for name, value in addrs.items():
         if value in nxt:
-            room[name] = room[HOST_RENAMES.get(name, name)] = nxt[value] - value
+            r = (nxt[value] - value, nxt_declared.get(value, nxt[value]) - value)
+            room[name] = room[HOST_RENAMES.get(name, name)] = r
 
     # Every byte: (unit start, width), or UNKNOWN where declarations disagree
     bytemap = {}
@@ -258,7 +284,7 @@ def main():
                 return
 
     with ThreadPoolExecutor(os.cpu_count()) as ex:
-        for result in ex.map(lambda o: globals_of(o, args.objdump, room), objects):
+        for result in ex.map(lambda p: globals_of(p, room), parsed):
             for name, leaves in result:
                 addr = addrs.get(unrename.get(name, name))
                 if addr is None:

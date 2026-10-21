@@ -20,6 +20,7 @@ Vec3f Seg_AvoidCircleXZ(Seg *s, Circle *c) {
     f32 disc;
     f32 d;
 
+    PORT_CONVERT(c, 4, 4); /* c->c is passed by value */
     toC.x = c->c.x - s->a.x;
     toC.y = 0.0f;
     toC.z = c->c.z - s->a.z;
