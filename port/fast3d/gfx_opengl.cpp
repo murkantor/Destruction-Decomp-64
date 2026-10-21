@@ -55,7 +55,7 @@ struct Framebuffer {
     bool has_depth_buffer;
     uint32_t msaa_level;
 
-    GLuint fbo, clrbuf, clrbuf_msaa, rbo;
+    GLuint fbo, clrbuf_msaa, rbo; /* clrbuf_msaa: the colour target, multisampled or not */
     GLuint clrtex_msaa;   /* N64 AA: the colour target as a multisample TEXTURE (readable per sample) */
     bool msaa_is_texture; /* which of the two is attached */
 };
@@ -1329,16 +1329,6 @@ static int gfx_opengl_create_framebuffer() {
     size_t i = framebuffers.size();
     framebuffers.resize(i + 1);
 
-    GLuint clrbuf;
-    GLint had_tex = 0;
-    glGenTextures(1, &clrbuf);
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &had_tex);
-    glBindTexture(GL_TEXTURE_2D, clrbuf);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, (GLuint)had_tex);
-    framebuffers[i].clrbuf = clrbuf;
     framebuffers[i].clrtex_msaa = 0;
     framebuffers[i].msaa_is_texture = false;
 
@@ -1405,8 +1395,12 @@ static void gfx_opengl_update_framebuffer_parameters(int fb_id, uint32_t width, 
             if (fb.width != width || fb.height != height || fb.msaa_level != msaa_level || fb.msaa_is_texture != want_tex) {
                 realloc = true;
                 if (msaa_level <= 1) {
-                    gl_alloc_rgb8(fb.clrbuf, width, height);
-                    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb.clrbuf, 0);
+                    /* a renderbuffer, as with MSAA: nothing samples it, and drawing
+                       into an RGB8 texture ran at a third of the speed at 4K (Intel) */
+                    glBindRenderbuffer(GL_RENDERBUFFER, fb.clrbuf_msaa);
+                    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB8, width, height);
+                    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+                    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, fb.clrbuf_msaa);
                 } else if (want_tex) {
                     if (fb.clrtex_msaa == 0) {
                         glGenTextures(1, &fb.clrtex_msaa);
