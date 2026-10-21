@@ -73,6 +73,18 @@ s32 Hud_UpdateRacerTimers(s32 a0, s8 idx) {
     if (gGame[0]->x1074 != 0) {
         return 0;
     }
+#ifdef TARGET_PC
+    /* The game flips the colour each update: at 60 updates a second (the N64 ran
+       this at its frame rate, about 30) it flickered twice as fast. One flip per
+       1/30 s */
+    {
+        static u64 sLastFlip[4];
+        if (rem != 0 && (f64)rem < D_800B8260 && now - sLastFlip[idx & 3] < 33333333ULL) {
+            return 0;
+        }
+        sLastFlip[idx & 3] = now;
+    }
+#endif
     if (rem != 0 && (f64)rem < D_800B8260) {
         if (D_8007EED0[idx] == 0) {
             D_8007EED0[idx] = 1;

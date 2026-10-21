@@ -68,13 +68,10 @@ int Port_OptCapturing(void);
 int Port_OptIsBindPage(int page);
 extern u32 gfx_scene_4x3; /* port/fast3d/gfx_pc.cpp */
 extern u32 gfx_scene_hidden;
+s32 Port_GameDrawsWorld(void); /* port/game/gfxstate.c */
 
 #define MODE_MAIN 0x13 /* the game mode menu: "press z-button for options menu" */
-#define MODE_INTRO 0x1A   /* the course intro */
-#define MODE_COUNTDOWN 0x1B
-#define MODE_RACE 0x1C
 #define MODE_PAUSE 0x1F   /* the pause menu */
-#define MODE_EXIT 0x21    /* the pause menu's "are you sure you wish to exit?" */
 #define MODE_RECORDS 0x27
 #define MODE_OPTIONS 0x20
 #define ROWS 7      /* rows shown at once */
@@ -317,15 +314,14 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
     Font *f;
     s32 i, x, y, n;
 
-    /* Widescreen shows more of the 3D only while racing (the course intro, the
-       countdown, the race) and on the pause menu and its exit question. Everywhere
-       else (the menus, the title screen's demo, the screens reached from pause, the
-       results) the 3D keeps to the 4:3 area and the sides are black, as the N64's
-       overscan. The options and records screens cover the race but for their
-       edges, which the N64's overscan hid: the race is not drawn behind them. */
-    gfx_scene_4x3 = gGame == NULL || !(gGame->mode == MODE_INTRO || gGame->mode == MODE_COUNTDOWN ||
-                                       gGame->mode == MODE_RACE || gGame->mode == MODE_PAUSE ||
-                                       gGame->mode == MODE_EXIT);
+    /* Widescreen shows more of the 3D while the game draws a race's world: the
+       course intro, the countdown, the race, the pause menu and its exit question,
+       the title screen's demo race, the finish and placings. In the menus (car
+       select's car and the like) the 3D keeps to the 4:3 area and the sides are
+       black, as the N64's overscan. The options and records screens reached from
+       pause cover the race but for their edges, which the N64's overscan hid: the
+       race is not drawn behind them. */
+    gfx_scene_4x3 = !Port_GameDrawsWorld();
     gfx_scene_hidden = gGame != NULL && (gGame->mode == MODE_OPTIONS || gGame->mode == MODE_RECORDS);
     if (gGame == NULL || (gGame->mode != MODE_OPTIONS && gGame->mode != MODE_MAIN)) {
         if (Port_OptIsOpen()) {
