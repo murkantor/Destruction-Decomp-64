@@ -49,7 +49,7 @@ extern s32 D_80096EC0;
 #ifdef TARGET_PC
 /* The doubled field (port/src/field.c): the place counts every car of the race, the
    slots past 12 kept in port/game/field_part1.c; past 12th it is written out
-   (Port_FieldShowPlace), as the game has sprites and call-outs for 12 places */
+   (Port_FieldShowPlace), as the game has sprites for 12 places */
 extern s32 gFieldD_80095D04[];
 extern s32 gFieldD_80095D34[];
 extern s32 gFieldD_80095D64[];
@@ -168,7 +168,9 @@ void Race_WaitForOthers(void) {
         }
 #ifdef TARGET_PC
         else if (counts[0] >= 12) {
-            /* no call-out past 12th */
+            /* the lines are a comment on the finish, the same for the places down
+               to 12th: past it, 12th's */
+            Msg_Queue(race->x10 == 1 ? a.v[11] : b.v[11], 500, 1, 0);
         }
 #endif
         else if (race->x10 == 1) {

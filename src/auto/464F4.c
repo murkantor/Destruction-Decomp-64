@@ -67,7 +67,9 @@ s32 Race_UpdateFinish(void) {
                 }
 #ifdef TARGET_PC
                 else if (D_80096EC0 >= 12) {
-                    /* no call-out past 12th */
+                    /* the lines are a comment on the finish, the same for the
+                       places down to 12th: past it, 12th's */
+                    Msg_Queue(info->x10 == 1 ? a.v[11] : b.v[11], 500, 1, 0);
                 }
 #endif
                 else if (info->x10 == 1) {

@@ -18,6 +18,11 @@ s32 gFieldD_80095D34[FIELD_EXTRA];    /* car x20 */
 s32 gFieldD_80095D64[FIELD_EXTRA];    /* car x1C */
 s32 gFieldD_80095D94[FIELD_EXTRA][3]; /* the pot awarded, per round */
 s32 gFieldD_80095DF4[FIELD_EXTRA];    /* health left x 100 (arenas) */
+s32 gFieldD_80126188[FIELD_EXTRA];    /* the race's championship prize (D_80126188[].x0) */
+
+/* Per slot, the championship season: the points so far (Race_ProcessResult; reset
+   with func_8002D0E0's 12 at the start of a cup) */
+s32 gFieldD_80095CD4[FIELD_EXTRA];
 u64 gFieldD_80095E28[FIELD_EXTRA][5]; /* lap times, best lap, total */
 
 /* Per slot, track 8 (the one with a crossing): the last branch each car took

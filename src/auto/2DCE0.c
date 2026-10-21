@@ -8,6 +8,9 @@ extern u8 D_80095CC8[12];
 extern s32 D_80095D00[];
 extern u8 D_80095CD3[];
 extern s32 D_801252F4;
+#ifdef TARGET_PC
+extern s32 gFieldD_80095CD4[]; /* the doubled field: the season's slots past 12 (port/game/field_part1.c) */
+#endif
 
 void func_8002D0E0(s32 k) {
     s32 n = D_80095CB8[k];
@@ -28,5 +31,10 @@ void func_8002D0E0(s32 k) {
     for (i = 11; i >= 0; i--) {
         D_80095D00[i - 11] = 0;
     }
+#ifdef TARGET_PC
+    for (i = 0; i < RACE_CARS + 1 - 12; i++) {
+        gFieldD_80095CD4[i] = 0;
+    }
+#endif
     D_801252F4 = 0;
 }

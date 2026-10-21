@@ -57,8 +57,8 @@ void Timer_Start(void *, u64);
 #ifdef TARGET_PC
 /* The doubled field (port/src/field.c): the standings rank every car of the race,
    the slots past 12 kept in port/game/field_part1.c (their scores here); the table
-   shows the first 12. A car of the first 12 slots placed below them wins nothing
-   from the 12-place prize list (D_80096720) */
+   shows the first 12. A car placed below them wins nothing from the 12-place
+   prize list (D_80096720) */
 extern s32 gFieldD_80095D04[];
 extern s32 gFieldD_80095D34[];
 static s32 sFieldScore[RACE_CARS - 12];
@@ -66,11 +66,14 @@ static s32 sFieldScore[RACE_CARS - 12];
 #define RESULT_SLOTS (D_80095A70 > 12 ? D_80095A70 : 12)
 #define SCORE(i) (*((i) < 12 ? &D_80126188[i].x4 : &sFieldScore[(i) - 12]))
 #define ROW_TAKEN(r) ((r) < 12 && D_801238F0[r].name[0])
+extern s32 gFieldD_80126188[];
+#define PRIZE(i) (*((i) < 12 ? &D_80126188[i].x0 : &gFieldD_80126188[(i) - 12]))
 #else
 #define FIELD_SLOT(t, i) t[i]
 #define RESULT_SLOTS 12
 #define SCORE(i) D_80126188[i].x4
 #define ROW_TAKEN(r) D_801238F0[r].name[0]
+#define PRIZE(i) D_80126188[i].x0
 #endif
 
 static inline s32 Rank_Get(s32 i) {
@@ -147,14 +150,14 @@ void Results_DrawStandings(void) {
         }
 #ifdef TARGET_PC
         if (rank >= 12) {
-            if (i < 12 && D_800958A8 == 0) {
-                D_80126188[i].x0 = 0;
+            if (D_800958A8 == 0) {
+                PRIZE(i) = 0;
             }
             continue;
         }
 #endif
         if (D_800958A8 == 0) {
-            D_80126188[i].x0 = D_80096720[rank];
+            PRIZE(i) = D_80096720[rank];
         }
         p = Race_GetSlotCarId(i);
         for (k = 0; k < D_800958A4; k++) {

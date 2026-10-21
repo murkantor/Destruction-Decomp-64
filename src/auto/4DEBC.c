@@ -25,6 +25,20 @@ void Game_SetNextMode(s32, s32);
 void func_80063380(s32);
 void Announcer_ClearQueue(void);
 void Msg_Queue(s32, s32, s32, s32);
+#ifdef TARGET_PC
+/* The doubled field (port/src/field.c): the season counts every car of the races,
+   the slots past 12 kept in port/game/field_part1.c */
+extern s32 D_80095A70;
+extern s32 gFieldD_80095CD4[];
+extern s32 gFieldD_80126188[];
+#define SEASON_SLOTS (D_80095A70 > 12 ? D_80095A70 : 12)
+#define SEASON(i) (*((i) < 12 ? &D_80095CD4[i] : &gFieldD_80095CD4[(i) - 12]))
+#define PRIZE(i) (*((i) < 12 ? &D_80126188[i].x0 : &gFieldD_80126188[(i) - 12]))
+#else
+#define SEASON_SLOTS 12
+#define SEASON(i) D_80095CD4[i]
+#define PRIZE(i) D_80126188[i].x0
+#endif
 
 s32 Race_ProcessResult(void) {
     s32 i;
@@ -34,8 +48,8 @@ s32 Race_ProcessResult(void) {
 
     {
         s32 k;
-        for (k = 0; k < 12; k++) {
-            D_80095CD4[k] += D_80126188[k].x0;
+        for (k = 0; k < SEASON_SLOTS; k++) {
+            SEASON(k) += PRIZE(k);
         }
     }
     idx = Race_FindCarSlot(D_800958C0);
@@ -46,8 +60,8 @@ s32 Race_ProcessResult(void) {
     if (D_80095CB8[D_800958B0[0]] - 1 < D_801252F4) {
         ok = 0;
         rank = 0;
-        for (i = 0; i < 12; i++) {
-            if (i != idx && D_80095CD4[i] > D_80095CD4[idx]) {
+        for (i = 0; i < SEASON_SLOTS; i++) {
+            if (i != idx && SEASON(i) > D_80095CD4[idx]) {
                 rank++;
             }
         }

@@ -36,6 +36,22 @@ char *strcpy(char *, const char *);
 void HiScore_DrawTable(void *, s32, s32);
 void Menu_LayoutResultRows(f32, void *, s32);
 void Timer_Start(void *, s64);
+#ifdef TARGET_PC
+/* The doubled field (port/src/field.c): the season counts every car of the races,
+   the slots past 12 kept in port/game/field_part1.c */
+extern s32 D_80095A70;
+extern s32 gFieldD_80095CD4[];
+extern s32 gFieldD_80126188[];
+#define SEASON_SLOTS (D_80095A70 > 12 ? D_80095A70 : 12)
+#define SEASON(i) (*((i) < 12 ? &D_80095CD4[i] : &gFieldD_80095CD4[(i) - 12]))
+#define PRIZE(i) (*((i) < 12 ? &D_80126188[i].x0 : &gFieldD_80126188[(i) - 12]))
+#define ROW_TAKEN(r) ((r) < 12 && D_801238F0[r].x0[0] != 0) /* the table shows the first 12 */
+#else
+#define SEASON_SLOTS 12
+#define SEASON(i) D_80095CD4[i]
+#define PRIZE(i) D_80126188[i].x0
+#define ROW_TAKEN(r) (D_801238F0[r].x0[0] != 0)
+#endif
 
 void Results_BuildTable(void) {
     Str2 sfx;
@@ -73,26 +89,31 @@ void Results_BuildTable(void) {
     for (m = 11 * sizeof(Row); m >= 0; m -= sizeof(Row)) {
         ((char *)D_801238F0)[m] = 0;
     }
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < SEASON_SLOTS; i++) {
         rank = 0;
-        total = D_80126188[i].x0 + D_80095CD4[i];
-        for (k = 0; k < 12; k++) {
-            rank += (total < D_80126188[k].x0 + D_80095CD4[k]) & (k != i);
+        total = PRIZE(i) + SEASON(i);
+        for (k = 0; k < SEASON_SLOTS; k++) {
+            rank += (total < PRIZE(k) + SEASON(k)) & (k != i);
         }
         busy = 1;
         do {
-            if (D_801238F0[rank].x0[0] != 0) {
+            if (ROW_TAKEN(rank)) {
                 rank++;
             } else {
                 busy = 0;
             }
         } while (busy);
+#ifdef TARGET_PC
+        if (rank >= 12) {
+            continue;
+        }
+#endif
         n = Race_GetSlotCarId(i);
         sprintf((char *)D_801238F0[rank].x0, D_80096510[n].first);
         strcat((char *)D_801238F0[rank].x0, sfx.c);
         strcat((char *)D_801238F0[rank].x0, D_80096510[n].last);
-        sprintf(D_801238F0[rank].x14, D_800BAF68, D_80126188[i].x0);
-        sprintf(D_801238F0[rank].x1E, D_800BAF68, D_80095CD4[i] + D_80126188[i].x0);
+        sprintf(D_801238F0[rank].x14, D_800BAF68, PRIZE(i));
+        sprintf(D_801238F0[rank].x1E, D_800BAF68, SEASON(i) + PRIZE(i));
         n = Race_GetSlotCarId(i);
         for (k = 0; k < D_800958A4.count; k++) {
             if (n == D_800958A4.list[k]) {
