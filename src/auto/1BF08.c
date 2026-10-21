@@ -43,6 +43,7 @@ extern void Commentary_PickRandom(s32 *, s32, s32, s32);
 extern f32 Car_GetSpeed(Car *);
 #ifdef TARGET_PC
 s32 Port_FieldAnnounceCarsLeft(s32 left);
+void Port_FieldAnnounceWreck(s32 left, s32 racing);
 /* the race record's car count, after its list */
 typedef struct { u8 pad[0x74 + 4 * RACE_CARS]; s32 ncars; } RaceCars;
 #endif
@@ -78,6 +79,11 @@ void Announcer_UpdateRace(void) {
         return;
     }
     n = race->x0 - 1;
+#ifdef TARGET_PC
+    /* [game] announce_all_wrecks: a wreck while more cars are left than the
+       numbered lines go to (the drones) gets the lines' opening, no number */
+    Port_FieldAnnounceWreck(n, *(s16 *)((u8 *)gGame + 0x10FC) == 0x1C);
+#endif
 #ifdef TARGET_PC
     /* the doubled field: no call-out while more cars are left than the original
        game's field has (port/src/field.c), and the lines (tbl) go to 10 */

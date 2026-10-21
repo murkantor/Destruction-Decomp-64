@@ -39,6 +39,10 @@ s16 Obj_NextId(void);
 u64 Time_Get(u64 *);
 void Pool_PushCopy(void *, Req7744 *);
 
+#ifdef TARGET_PC
+static s64 sVoiceFor = -1; /* Sound_PlayVoiceFor's length, ns (-1: the line's own) */
+#endif
+
 void Sound_PlayVoice(void *obj, Vec3f pos, s32 id) {
     Req7744 req;
     Vec3f zero = D_800B7F20;
@@ -62,6 +66,20 @@ void Sound_PlayVoice(void *obj, Vec3f pos, s32 id) {
     req.x14 = D_801326A8[id];
     t = &D_80132200[id];
     req.x38 = (*t != -1) ? *t + Time_Get(&gGameTime) : -1;
+#ifdef TARGET_PC
+    if (sVoiceFor >= 0) {
+        req.x38 = sVoiceFor + Time_Get(&gGameTime); /* stopped there (the voices expire at x38) */
+    }
+#endif
     req.x48 = 0;
     Pool_PushCopy(obj, &req);
 }
+
+#ifdef TARGET_PC
+/* A line cut after `ns` ([game] announce_all_wrecks, Announcer_Update) */
+void Sound_PlayVoiceFor(void *obj, Vec3f pos, s32 id, u64 ns) {
+    sVoiceFor = (s64)ns;
+    Sound_PlayVoice(obj, pos, id);
+    sVoiceFor = -1;
+}
+#endif

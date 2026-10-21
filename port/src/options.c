@@ -110,6 +110,7 @@ static const Option kAudio[] = {
 static const Option kGame[] = {
     { "drones", &gPortConfig.drones, kDrones, kDronesN, N(kDrones), 0, 1 },
     { "set all drones to", &gPortConfig.droneCar, kDroneCar, kDroneCarN, N(kDroneCar), 0, 0 },
+    { "announce every wreck", &gPortConfig.announceAllWrecks, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "cpu unlockables", &gPortConfig.cpuUnlockables, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
     { "skip intros", &gPortConfig.skipIntros, kOffOn, kOffOnN, N(kOffOn), 0, 0 },
 };

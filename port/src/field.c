@@ -87,6 +87,44 @@ s32 Port_FieldDroneType(s32 type, const s32 *players, s32 n) {
     return car;
 }
 
+/* [game] announce_all_wrecks. The announcer's cars-left lines (D_800B8840: 0x8E
+   "one" to 0x97 "ten") open with the same phrase, then a pause, then the number;
+   past ten cars nothing is said. With the option, a wreck there queues the ten
+   line (0x97) cut at its pause (Announcer_Update asks Port_FieldAnnounceCut), one
+   at a time, as the game's own queue paces it */
+#define LINE_TEN 0x97
+#define LINE_OPENING_NS 1250000000ull
+void Msg_Queue(s32 id, s32 delay, u8 force, u8 once);
+
+static s32 sWreckLast = 0x7FFF;
+static s32 sCutPending;
+
+void Port_FieldAnnounceWreck(s32 left, s32 racing) {
+    if (!racing || left > sWreckLast) {
+        sWreckLast = left; /* a new race, the countdown */
+        if (!racing) {
+            sCutPending = 0;
+        }
+        return;
+    }
+    if (left < sWreckLast) {
+        sWreckLast = left;
+        if (gPortConfig.announceAllWrecks && left >= 11 && sCutPending == 0) {
+            sCutPending = 1;
+            Msg_Queue(LINE_TEN, 0, 1, 0);
+        }
+    }
+}
+
+/* The announcer is about to play `id`: how long, in ns, if it is to be cut (0: whole) */
+u64 Port_FieldAnnounceCut(s32 id) {
+    if (id == LINE_TEN && sCutPending > 0) {
+        sCutPending--;
+        return LINE_OPENING_NS;
+    }
+    return 0;
+}
+
 /* The announcer may call out how many cars are left: only once they are within the
    original game's field */
 s32 Port_FieldAnnounceCarsLeft(s32 left) {

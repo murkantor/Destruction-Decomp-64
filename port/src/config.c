@@ -199,6 +199,9 @@ static const Setting sSettings[] = {
       "The car every drone drives: -1 = the computer cars' own (with cpu_unlockables their twins too);"
       " 0-11 cars 1-12, 12-23 their unlockable twins (bonus cars 1-12). The drones only, not the game's"
       " own computer cars; never a player's car (its twin then)" },
+    { "game", "announce_all_wrecks", &gPortConfig.announceAllWrecks, 0,
+      "1 = while more cars are left than the announcer's numbered lines go to (the drones), each wreck"
+      " gets the opening of those lines (\"that's another one down\"), no number; from 10 down as the N64" },
     { "game", "cpu_unlockables", &gPortConfig.cpuUnlockables, 0,
       "1 = computer cars may drive the unlockable cars too" },
     { "game", "skip_intros", &gPortConfig.skipIntros, 0,

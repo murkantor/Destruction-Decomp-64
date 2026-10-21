@@ -44,6 +44,7 @@ typedef struct {
     /* [game] */
     int drones;              /* the computer cars times this, 1 (the N64's field) to 10 */
     int droneCar;            /* the car every drone drives: -1 their own types, 0-23 */
+    int announceAllWrecks;   /* a wreck past the numbered cars-left lines: their opening, no number */
     int cpuUnlockables;      /* computer cars may drive the unlockable cars */
     int skipIntros;          /* the logos at boot pass at once: straight to the title */
     /* [saves] */
