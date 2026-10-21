@@ -917,6 +917,7 @@ static void gfx_sp_pop_matrix(uint32_t count) {
 }
 
 static int16_t interp_slot(const uint8_t *vtx);
+static float interp_guard_band(void);
 
 static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *vtx) {
     const float(*mv)[4] = rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1];
@@ -999,12 +1000,14 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
         d->u = U;
         d->v = V;
 
-        /* trivial clip rejection */
+        /* trivial clip rejection (past a guard band while a frame is recorded for
+           interpolation: see interp_guard_band) */
+        const float gw = w * interp_guard_band();
         d->clip_rej = 0;
-        if (x < -w) d->clip_rej |= 1;
-        if (x > w) d->clip_rej |= 2;
-        if (y < -w) d->clip_rej |= 4;
-        if (y > w) d->clip_rej |= 8;
+        if (x < -gw) d->clip_rej |= 1;
+        if (x > gw) d->clip_rej |= 2;
+        if (y < -gw) d->clip_rej |= 4;
+        if (y > gw) d->clip_rej |= 8;
         if (z < -w) d->clip_rej |= 16;
 
         d->x = x;
@@ -2286,6 +2289,14 @@ uint32_t gfx_interp_mode; /* 0 off, 1 interpolate, 2 extrapolate (no added lag) 
 static InterpFrame interp_store[3];
 static InterpFrame *interp_prev = &interp_store[0], *interp_cur = &interp_store[1], *interp_rec = &interp_store[2];
 static bool interp_recording;
+
+/* A triangle rejected as off screen is not recorded, so the frames drawn between
+   game frames could not show it as the camera turns it into view: polygons went
+   missing at the edges of the screen. While recording, only triangles past half a
+   screen more on each side are rejected (the GPU clips the rest). */
+static float interp_guard_band(void) {
+    return interp_recording ? 1.5f : 1.0f;
+}
 static unsigned interp_game_frames; /* recorded so far, for DD64_GFXLOG */
 static int16_t interp_cur_slot = -1;
 static std::vector<InterpVtx> interp_pending; /* vertices of the batch not yet drawn */
