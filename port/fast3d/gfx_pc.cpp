@@ -47,6 +47,9 @@ bool gfx_framebuffers_enabled = true;
 uint32_t gfx_anisotropy = 1;
 uint32_t gfx_internal_height = 0;
 uint32_t gfx_aspect_mode = 0;
+uint32_t gfx_edge_fill = 0;
+
+static void fill_clear_texels(uint8_t *rgba, uint32_t w, uint32_t h);
 
 extern int g_GfxPresentX, g_GfxPresentW;
 
@@ -742,6 +745,9 @@ static void import_texture(int i, int tile) {
         w = h = 1;
         memset(tex_upload_buffer, 0, 4);
     }
+    if (gfx_edge_fill) {
+        fill_clear_texels(tex_upload_buffer, w, h);
+    }
     gfx_rapi->upload_texture(tex_upload_buffer, w, h);
     {
         /* DD64_TEXDUMP=1: save each upload as tex_<n>_<w>x<h>.bmp (the first 200; with
@@ -763,6 +769,57 @@ static void import_texture(int i, int tile) {
     rendering_state.textures[i] = id;
     bound_w[i] = w;
     bound_h[i] = h;
+}
+
+/*
+ * [video] edge_fill: a cut-out texture's see-through texels (alpha 0) are mostly
+ * black, and filtering mixes them into the edge texels, which then draw dark
+ * (the N64 shows this too). This gives each see-through texel the average colour
+ * of the visible ones round it, in two passes (the filters reach a texel; the
+ * mipmaps further), wrapping at the edges as the tiles do. Alpha stays as it is.
+ */
+static void fill_clear_texels(uint8_t *rgba, uint32_t w, uint32_t h) {
+    static std::vector<uint8_t> known;
+    static std::vector<uint32_t> fills; /* index, then the colour */
+    const uint32_t n = w * h;
+    uint32_t i, clear = 0;
+
+    known.resize(n);
+    for (i = 0; i < n; i++) {
+        known[i] = rgba[i * 4 + 3] != 0;
+        clear += !known[i];
+    }
+    if (clear == 0 || clear == n) {
+        return;
+    }
+    for (int pass = 0; pass < 2; pass++) {
+        fills.clear();
+        for (uint32_t y = 0; y < h; y++) {
+            for (uint32_t x = 0; x < w; x++) {
+                if (known[y * w + x]) {
+                    continue;
+                }
+                uint32_t r = 0, g = 0, b = 0, c = 0;
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dx = -1; dx <= 1; dx++) {
+                        const uint32_t j = ((y + h + dy) % h) * w + (x + w + dx) % w;
+                        if (known[j]) {
+                            r += rgba[j * 4], g += rgba[j * 4 + 1], b += rgba[j * 4 + 2], c++;
+                        }
+                    }
+                }
+                if (c != 0) {
+                    fills.push_back(y * w + x);
+                    fills.push_back((r / c) | (g / c) << 8 | (b / c) << 16);
+                }
+            }
+        }
+        for (i = 0; i < fills.size(); i += 2) {
+            uint8_t *p = rgba + fills[i] * 4;
+            p[0] = (uint8_t)fills[i + 1], p[1] = (uint8_t)(fills[i + 1] >> 8), p[2] = (uint8_t)(fills[i + 1] >> 16);
+            known[fills[i]] = 1;
+        }
+    }
 }
 
 void gfx_texture_cache_clear(void) {

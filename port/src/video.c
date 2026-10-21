@@ -106,6 +106,7 @@ void Port_VideoInit(void) {
     gfx_msaa_level = gPortConfig.msaa;
     gfx_n64_aa = gPortConfig.n64AA;
     gfx_anisotropy = gPortConfig.anisotropy;
+    gfx_edge_fill = gPortConfig.edgeFill != 0;
     gfx_internal_height = gPortConfig.internalHeight;
     gfx_aspect_mode = gPortConfig.stretch ? 1 : gPortConfig.widescreen ? 2 : 0;
     gfx_init(&set);
@@ -126,6 +127,10 @@ void Port_VideoApplySettings(void) {
     gfx_show_fps = gPortConfig.showFps != 0;
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
+    if (gfx_edge_fill != (gPortConfig.edgeFill != 0)) {
+        gfx_edge_fill = gPortConfig.edgeFill != 0;
+        gfx_texture_cache_clear(); /* the textures load again, filled or not */
+    }
     gfx_sdl_set_window(gPortConfig.fullscreen, gPortConfig.fullscreenExclusive, gPortConfig.windowWidth,
                        gPortConfig.windowHeight);
     sNextPresentNs = 0;

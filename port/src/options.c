@@ -85,6 +85,7 @@ static const Option kVideo[] = {
     { "anti-aliasing", &gPortConfig.msaa, kMsaa, kMsaaN, N(kMsaa), 1, 0 },
     { "n64 aa blur", &gPortConfig.n64AA, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
     { "texture filter", &gPortConfig.textureFilter, kFilter, kFilterN, N(kFilter), 1, 0 },
+    { "clean cut-outs", &gPortConfig.edgeFill, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
     { "anisotropy", &gPortConfig.anisotropy, kAniso, kAnisoN, N(kAniso), 1, 1 },
     { "fps counter", &gPortConfig.showFps, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
     { "renderer", &gPortConfig.renderer, kRenderer, kRendererN, N(kRenderer), 0, 1 },
