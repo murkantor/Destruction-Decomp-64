@@ -1,7 +1,13 @@
 #include "common.h"
 #include "m2c.h"
 
+#ifdef TARGET_PC
+/* Bytes: the block's real layout is Save_CopyToGlobal's (50CCC.c), its names
+   chars. As words, the boot conversion swapped the record names in fours */
+typedef struct { u8 x[0x308]; } SaveData;
+#else
 typedef struct { s32 x[0x308 / 4]; } SaveData;
+#endif
 extern u8 D_80097D58;
 extern s32 D_80097D50;
 extern SaveData D_80097A10;

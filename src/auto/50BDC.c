@@ -1,9 +1,16 @@
 #include "common.h"
 #include "m2c.h"
 
+#ifdef TARGET_PC
+/* Bytes: see Pak_SaveGame (512E4.c) */
+typedef struct {
+    u8 w[0x308];
+} SaveBuf;
+#else
 typedef struct {
     u32 w[0xC2];
 } SaveBuf;
+#endif
 extern SaveBuf D_80097A10;
 extern u8 D_80097D58;
 extern s32 D_80097D50;
