@@ -38,6 +38,9 @@ void Car_OnCollision(Car *, s32, Car *, s32, f32);
 void Car_DeformMeshAtImpact(Car *, s32, Vec3f, s32);
 void Debris_Spawn(Car *, Vec3f, s32);
 void Pad_Rumble(s32, s32, f32);
+#ifdef TARGET_PC
+s32 Port_Field0Doubled(void); /* port/game/field_part0.c */
+#endif
 
 void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
 {
@@ -75,12 +78,28 @@ void Car_OnCollision2(Coll *a, Vec3f posA, Coll *b, Vec3f posB, f32 force)
             break;
     }
 
+#ifdef TARGET_PC
+    if (Port_Field0Doubled()) {
+        /* The doubled field: an extra car has its twin's type (x34), so the last
+           pair is kept by car, or a hit of a twin would pass for a repeat of the
+           pair before (and score nothing) */
+        static Car *sLastA, *sLastB;
+        if (D_800D1C50 != -1 && ((carA == sLastA && carB == sLastB) || (carA == sLastB && carB == sLastA)))
+            return;
+        sLastA = carA;
+        sLastB = carB;
+        D_800D1C50 = carA->x34;
+        D_801260D0 = carB->x34;
+    } else
+#endif
+    {
     if (D_800D1C50 == carA->x34 && D_801260D0 == carB->x34)
         return;
     if (D_801260D0 == carA->x34 && D_800D1C50 == carB->x34)
         return;
     D_800D1C50 = carA->x34;
     D_801260D0 = carB->x34;
+    }
 
     if (carA == carB) {
         if (force < D_800B9010)
