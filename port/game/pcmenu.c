@@ -69,10 +69,11 @@ int Port_OptIsBindPage(int page);
 extern u32 gfx_scene_4x3; /* port/fast3d/gfx_pc.cpp */
 
 #define MODE_MAIN 0x13 /* the game mode menu: "press z-button for options menu" */
+#define MODE_INTRO 0x1A   /* the course intro */
+#define MODE_COUNTDOWN 0x1B
+#define MODE_RACE 0x1C
 #define MODE_PAUSE 0x1F   /* the pause menu */
 #define MODE_OPTIONS 0x20
-#define MODE_EXIT 0x21    /* the pause menu's "are you sure you wish to exit?" */
-#define MODE_RECORDS 0x27
 #define ROWS 7      /* rows shown at once */
 #define ROW_H 13
 #define PANEL_X0 22
@@ -313,12 +314,13 @@ Gfx *Port_PcMenuDraw(Gfx *g) {
     Font *f;
     s32 i, x, y, n;
 
-    /* Paused, the race is still drawn behind the pause menu and every screen reached
-       from it (its options and records screens cover the 4:3 area): in widescreen it
-       keeps to the 4:3 area then, the sides black, as the N64's overscan. The
-       options and records screens off the main menu draw no race. */
-    gfx_scene_4x3 = gGame != NULL && (gGame->mode == MODE_PAUSE || gGame->mode == MODE_OPTIONS ||
-                                      gGame->mode == MODE_EXIT || gGame->mode == MODE_RECORDS);
+    /* Widescreen shows more of the 3D only while racing (the course intro, the
+       countdown, the race) and on the pause menu's first screen. Everywhere else
+       (the menus, the title screen's demo, the screens reached from pause, the
+       results) the 3D keeps to the 4:3 area and the sides are black, as the N64's
+       overscan. */
+    gfx_scene_4x3 = gGame == NULL || !(gGame->mode == MODE_INTRO || gGame->mode == MODE_COUNTDOWN ||
+                                       gGame->mode == MODE_RACE || gGame->mode == MODE_PAUSE);
     if (gGame == NULL || (gGame->mode != MODE_OPTIONS && gGame->mode != MODE_MAIN)) {
         if (Port_OptIsOpen()) {
             Port_OptSetOpen(0);
