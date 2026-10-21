@@ -48,6 +48,7 @@ uint32_t gfx_anisotropy = 1;
 uint32_t gfx_internal_height = 0;
 uint32_t gfx_aspect_mode = 0;
 uint32_t gfx_edge_fill = 0;
+uint32_t gfx_draw_distance = 1;
 
 static void fill_clear_texels(uint8_t *rgba, uint32_t w, uint32_t h);
 
@@ -919,6 +920,33 @@ static void gfx_sp_pop_matrix(uint32_t count) {
 static int16_t interp_slot(const uint8_t *vtx);
 static float interp_guard_band(void);
 
+/*
+ * [video] draw_distance: nothing the game draws is culled by distance on PC (no
+ * far clip, the nearer level of detail always), so the only limit is the fog some
+ * tracks set (Swamp, Glacier). With draw_distance k the fog is that of a vertex k
+ * times nearer. Screen z of a perspective projection is a * w + b, so a vertex at
+ * w / k has z / w + b (k - 1) / w; this is b (k - 1), b read from the projection
+ * the game loaded (its look-at times guPerspective: column 2 is a times column 3
+ * but for the translation row).
+ */
+static float fog_distance_shift(void) {
+    const float(*p)[4] = rsp.P_matrix;
+    int r = 0;
+
+    if (gfx_draw_distance <= 1) {
+        return 0.0f; /* the N64's */
+    }
+    for (int i = 1; i < 3; i++) {
+        if (fabsf(p[i][3]) > fabsf(p[r][3])) {
+            r = i;
+        }
+    }
+    if (p[r][3] == 0.0f) {
+        return 0.0f; /* not a perspective */
+    }
+    return (p[3][2] - p[r][2] / p[r][3] * p[3][3]) * (float)(gfx_draw_distance - 1);
+}
+
 static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *vtx) {
     const float(*mv)[4] = rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1];
 
@@ -1025,7 +1053,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const uint8_t *v
             if (winv < 0.0f) {
                 winv = 32767.0f;
             }
-            float fog_z = z * winv * rsp.fog_mul + rsp.fog_offset;
+            float fog_z = (z + fog_distance_shift()) * winv * rsp.fog_mul + rsp.fog_offset;
             if (fog_z < 0) fog_z = 0;
             if (fog_z > 255) fog_z = 255;
             d->color.a = (uint8_t)fog_z; /* F3DEX2 puts fog in shade alpha */

@@ -49,6 +49,8 @@ static const int kInterp[] = { 0, 1, 2 };
 static const char *const kInterpN[] = { "off", "smooth", "low latency" };
 static const int kMsaa[] = { 1, 2, 4, 8 };
 static const char *const kMsaaN[] = { "off", "2x", "4x", "8x" };
+static const int kDistance[] = { 1, 2, 4, 8 };
+static const char *const kDistanceN[] = { "n64", "x2", "x4", "x8" };
 static const int kFilter[] = { 0, 1, 2 };
 static const char *const kFilterN[] = { "nearest", "bilinear", "n64 3-point" };
 static const int kAniso[] = { 1, 2, 4, 8, 16 };
@@ -86,6 +88,7 @@ static const Option kVideo[] = {
     { "n64 aa blur", &gPortConfig.n64AA, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
     { "texture filter", &gPortConfig.textureFilter, kFilter, kFilterN, N(kFilter), 1, 0 },
     { "clean cut-outs", &gPortConfig.edgeFill, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
+    { "draw distance", &gPortConfig.drawDistance, kDistance, kDistanceN, N(kDistance), 1, 0 },
     { "anisotropy", &gPortConfig.anisotropy, kAniso, kAnisoN, N(kAniso), 1, 1 },
     { "fps counter", &gPortConfig.showFps, kOffOn, kOffOnN, N(kOffOn), 1, 0 },
     { "renderer", &gPortConfig.renderer, kRenderer, kRendererN, N(kRenderer), 0, 1 },

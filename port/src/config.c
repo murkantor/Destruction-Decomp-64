@@ -165,6 +165,9 @@ static const Setting sSettings[] = {
     { "video", "edge_fill", &gPortConfig.edgeFill, 0,
       "1 = see-through texels take their neighbours' colour, so filtered cut-outs (trees) have no dark edge;"
       " 0 = as the N64" },
+    { "video", "draw_distance", &gPortConfig.drawDistance, 1,
+      "1 = as the N64; 2, 4 or 8 = the fog (Swamp, Glacier) that many times further out."
+      " Nothing else is cut off by distance" },
     { "video", "renderer", &gPortConfig.renderer, 0,
       "opengl, or sdlgpu: SDL's GPU API (Vulkan). Takes effect the next time the game starts", kRendererNames },
     { "audio", "volume", &gPortConfig.volume, 100, "Master volume, 0-100" },

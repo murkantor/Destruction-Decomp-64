@@ -107,6 +107,7 @@ void Port_VideoInit(void) {
     gfx_n64_aa = gPortConfig.n64AA;
     gfx_anisotropy = gPortConfig.anisotropy;
     gfx_edge_fill = gPortConfig.edgeFill != 0;
+    gfx_draw_distance = gPortConfig.drawDistance >= 1 ? gPortConfig.drawDistance : 1;
     gfx_internal_height = gPortConfig.internalHeight;
     gfx_aspect_mode = gPortConfig.stretch ? 1 : gPortConfig.widescreen ? 2 : 0;
     gfx_init(&set);
@@ -125,6 +126,7 @@ void Port_VideoApplySettings(void) {
     gfx_internal_height = gPortConfig.internalHeight;
     gfx_aspect_mode = gPortConfig.stretch ? 1 : gPortConfig.widescreen ? 2 : 0;
     gfx_show_fps = gPortConfig.showFps != 0;
+    gfx_draw_distance = gPortConfig.drawDistance >= 1 ? gPortConfig.drawDistance : 1;
     gfx_set_vsync(gPortConfig.vsync);
     gfx_set_texture_filter(gPortConfig.textureFilter);
     if (gfx_edge_fill != (gPortConfig.edgeFill != 0)) {
