@@ -7,8 +7,9 @@
  * camera, which the sound and everything else go by, is left as the game set
  * it. It works only while the players drive (the countdown and the race, the
  * modes in which the game reads their controls: func_80024690), not in the
- * course intro's fly-by or the title screen's demo races. [input] free_camera
- * turns it off.
+ * course intro's fly-by or the title screen's demo races. A stick within
+ * SNAP of straight up, right, down or left is taken as exactly that, so the
+ * straight views hold steady. [input] free_camera turns it off.
  */
 #include "common.h"
 
@@ -21,6 +22,9 @@ f32 sinf(f32);
 f32 cosf(f32);
 f32 sqrtf(f32);
 f32 atan2f(f32, f32);
+
+#define SNAP (10.0f * 3.14159265f / 180.0f) /* radians either side of each quarter turn */
+#define QUARTER (3.14159265f / 2.0f)
 
 /* The eye to draw from, for the view of player p (0-3) */
 void Port_FreeCamEye(int p, const Vec3f *eye, const Vec3f *at, Vec3f *out) {
@@ -39,7 +43,15 @@ void Port_FreeCamEye(int p, const Vec3f *eye, const Vec3f *at, Vec3f *out) {
     if (m > 1.0f) {
         m = 1.0f;
     }
-    yaw = atan2f(sx, sy) * m; /* up 0, right a quarter turn, down a half */
+    yaw = atan2f(sx, sy); /* up 0, right a quarter turn, down a half */
+    {
+        f32 q = (yaw >= 0.0f ? (s32)(yaw / QUARTER + 0.5f) : -(s32)(-yaw / QUARTER + 0.5f)) * QUARTER;
+        f32 d = yaw - q;
+        if (d > -SNAP && d < SNAP) {
+            yaw = q;
+        }
+    }
+    yaw *= m;
     c = cosf(yaw);
     s = sinf(yaw);
     dx = eye->x - at->x;
